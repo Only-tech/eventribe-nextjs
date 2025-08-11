@@ -16,7 +16,7 @@ export default function App() {
     }, 1500); 
 
     const redirectTimer = setTimeout(() => {
-      router.push('/event');
+      router.push('/id');
     }, 2000); 
 
     return () => {

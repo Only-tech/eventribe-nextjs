@@ -1,38 +1,3 @@
-import { DefaultSession } from 'next-auth';
-import { DefaultJWT } from 'next-auth/jwt';
-
-// 'next-auth' to extend the types
-declare module 'next-auth' {
-  /**
-   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-   */
-  interface Session {
-    user: {
-      id: string;
-      name: string;
-      email: string;
-      isAdmin: boolean; 
-    } & DefaultSession['user'];
-  }
-
-  /**
-   * The shape of the user object returned in the JWT.
-   */
-  interface User {
-    isAdmin: boolean; 
-  }
-}
-
-declare module 'next-auth/jwt' {
- 
-  interface JWT extends DefaultJWT {
-    id: string;
-    name: string;
-    email: string;
-    isAdmin: boolean; 
-  }
-}
-
 export type Event = {
   id: string;
   title: string;

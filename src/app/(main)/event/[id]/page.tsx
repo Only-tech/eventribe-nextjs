@@ -8,9 +8,16 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { isUserRegisteredForEvent, registerForEvent, unregisterFromEvent } from '@/app/lib/data';
 import { revalidatePath } from 'next/cache'; 
 
+interface EventDetailPageProps {
+  params: {
+    id: string;
+  };
+}
 
-export default async function EventDetailPage({ params }: { params: { id: string } }) {
-  const id = params.id;
+// EventDetailPage component
+export default async function EventDetailPage({ params }: EventDetailPageProps) {
+  // const id = params.id;
+  const { id } = await Promise.resolve(params);
   const event = await fetchEventById(Number(id));
   const session = await getServerSession(authOptions); 
 
@@ -23,8 +30,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
     notFound();
   }
 
-  // Determine the image source. If event.image_url is null, undefined, or an empty string,
-  // use the fallback placeholder image.
+  // Determine the image source. If event.image_url is null, undefined, or an empty string, use the fallback placeholder image.
 
 const imageUrl = event.image_url
   ? `/${event.image_url.replace(/^(\.\.\/|\/)?(public\/)?/, '')}`

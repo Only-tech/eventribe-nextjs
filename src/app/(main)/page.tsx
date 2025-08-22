@@ -10,7 +10,9 @@ export default async function Page({
     query?: string;
   };
 }) {
-  const query = searchParams?.query || '';
+  // const query = searchParams?.query || '';
+  const params = await searchParams;
+  const query = params?.query ?? '';
   const events = await fetchEvents(query);
 
   return (

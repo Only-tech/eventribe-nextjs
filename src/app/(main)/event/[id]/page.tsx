@@ -8,8 +8,13 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { isUserRegisteredForEvent, registerForEvent, unregisterFromEvent } from '@/app/lib/data';
 import { revalidatePath } from 'next/cache'; 
 
-// This is the EventDetailPage component
-export default async function EventDetailPage({ params }: { params: { id: string } }) {
+type PageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default async function EventDetailPage({ params }: PageProps) {
   const id = params.id;
   // const id = Number(params.id);
   const event = await fetchEventById(Number(id));

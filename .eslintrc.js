@@ -26,6 +26,16 @@ module.exports = {
 
     '@next/next/no-html-link-for-pages': 'off',
   },
+
+  overrides: [
+    {
+      files: ['src/app/api/**/*.ts'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 'off',
+      },
+    },
+  ],
+
   settings: {
     react: {
       version: 'detect',

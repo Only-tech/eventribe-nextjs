@@ -16,6 +16,7 @@ export async function POST(request: Request) {
     if (user) {
       // I plan to set up a session or JWT here.
       // For now, I'll just return a success message 
+      /* eslint-disable @typescript-eslint/no-unused-vars */
       const { password_hash: _password_hash, ...userWithoutHash } = user; // Destructure to exclude password_hash
       return NextResponse.json({ message: 'Connexion réussie !', user: userWithoutHash }, { status: 200 });
     } else {

@@ -1,16 +1,18 @@
 'use client'; 
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import { Suspense } from 'react';
 
-export default function LoginPage() {
+function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,10 +50,17 @@ export default function LoginPage() {
     <div className="max-w-md mx-auto bg-[rgb(248,248,236)] p-8 rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Connexion</h1>
 
+      {/* Show error message if a callbackUrl is present */}
+      {searchParams.get('error') && (
+        <p className="text-red-600 bg-red-100 text-center font-semibold p-3 rounded-lg mb-4">
+          Une erreur est survenue lors de la connexion.
+        </p>
+      )}
+      
       {message && (
-        <div className={`mb-4 text-center font-semibold p-3 rounded-lg ${isSuccess ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+        <p className={`mb-4 text-center font-semibold p-3 rounded-lg ${isSuccess ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
           {message}
-        </div>
+        </p>
       )}
 
       <form onSubmit={handleSubmit}>
@@ -94,5 +103,16 @@ export default function LoginPage() {
         .
       </p>
     </div>
+  );
+}
+
+
+
+// Wrap the client component with a Suspense boundary in the server component
+export default function LoginPage() {
+  return (
+      <Suspense fallback={<div>Chargement du formulaire...</div>}>
+        <LoginForm />
+      </Suspense>    
   );
 }

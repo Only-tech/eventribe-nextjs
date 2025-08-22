@@ -16,8 +16,8 @@ interface EventDetailPageProps {
 
 // EventDetailPage component
 export default async function EventDetailPage({ params }: EventDetailPageProps) {
-  // const id = params.id;
-  const { id } = await Promise.resolve(params);
+
+  const { id } = params;
   const event = await fetchEventById(Number(id));
   const session = await getServerSession(authOptions); 
 

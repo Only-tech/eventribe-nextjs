@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { fetchRegisteredEventsForUser } from '@/app/lib/data';
 import { getServerSession } from 'next-auth'; // Import getServerSession for server-side session access
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '@/app/lib/auth';
+
 
 export async function GET(request: Request) {
   try {

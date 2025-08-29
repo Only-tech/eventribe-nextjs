@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { unregisterFromEvent } from '@/app/lib/data';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route';
+import { authOptions } from '@/app/lib/auth';
+
 
 export async function POST(request: Request) {
   try {

@@ -1,7 +1,3 @@
-
-import { AuthOptions, DefaultSession, DefaultUser } from 'next-auth';
-import { DefaultJWT } from 'next-auth/jwt';
-
 import NextAuth from 'next-auth';
 import { authOptions } from '@/app/lib/auth'; // ✅ OK si auth.ts n’est pas un fichier route
 

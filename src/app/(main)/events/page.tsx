@@ -7,14 +7,10 @@ import { Event } from '@/app/lib/definitions';
 export default async function Page({
   searchParams,
 }: {
-  searchParams?: {
-    query?: string;
-  };
+  searchParams: Promise<{ query?: string }>;
 }) {
-  // const query = searchParams?.query || '';
-  const params = await searchParams;
-  const query = params?.query ?? '';
-  const events = await fetchEvents(query);
+  const { query } = await searchParams;
+  const events = await fetchEvents(query ?? '');
 
   return (
     <main>

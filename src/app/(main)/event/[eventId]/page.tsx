@@ -12,9 +12,10 @@ import { Event } from '@/app/lib/definitions';
 export default async function EventDetailPage({
   params,
 }: {
-  params: { eventId: string };
+  params: Promise<{ eventId: string }>;
 }) {
-  const id = Number(params.eventId);
+  const { eventId } = await params;
+  const id = Number(eventId);
 
   const event: Event | null = await fetchEventById(id);
   const session = await getServerSession(authOptions);

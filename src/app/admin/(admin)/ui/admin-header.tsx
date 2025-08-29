@@ -1,7 +1,6 @@
 'use client'; // Client Component to use useSession
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react'; 
 import { useState, useEffect, useRef } from 'react'; 
 import { Bars3Icon, XMarkIcon, UserGroupIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';

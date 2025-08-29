@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { authOptions } from '@/app/lib/auth';
+
 import { put } from '@vercel/blob'; // Import the put function from Vercel Blob
 
 // Helper function to check admin status

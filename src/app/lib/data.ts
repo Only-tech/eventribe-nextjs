@@ -2,13 +2,59 @@ import { Pool } from 'pg';
 import { Event, Participant, Registration } from './definitions';
 import { unstable_noStore as noStore } from 'next/cache';
 
-// Configures the DB connection
-export const pool = new Pool({ // EXPORT THE POOL
-  connectionString: process.env.POSTGRES_URL,
-  ssl: {
-    rejectUnauthorized: false, // Required for connections to Vercel Postgres
-  },
-});
+// // Configures the DB connection
+// export const pool = new Pool({ // EXPORT THE POOL
+//   connectionString: process.env.POSTGRES_URL,
+//   ssl: {
+//     rejectUnauthorized: false, // Required for connections to Vercel Postgres
+//   },
+// });
+
+declare global {
+  var pgPool: Pool | undefined;
+}
+
+const pool =
+  globalThis.pgPool ??
+  new Pool({
+    connectionString: process.env.POSTGRES_URL,
+    ssl: { rejectUnauthorized: false },
+    max: 5,
+    idleTimeoutMillis: 10000,
+    connectionTimeoutMillis: 5000,
+  });
+
+globalThis.pgPool = pool;
+
+export { pool };
+
+/**
+ * Fetch Images Url from DB with random option.
+ * @returns Images URL.
+ */
+export async function fetchEventImageUrls(): Promise<string[]> {
+  noStore();
+  let client;
+  try {
+    client = await pool.connect();
+    const result = await client.query(`
+      SELECT image_url FROM events
+      WHERE image_url IS NOT NULL
+      ORDER BY RANDOM()
+      LIMIT 10;
+    `);
+    const imageUrls = result.rows.map(row => row.image_url);
+    console.log(`Récupération de ${imageUrls.length} URL d'images pour l'écran de bienvenue.`);
+    return imageUrls;
+  } catch (error) {
+    console.error("Erreur lors de la récupération des URL d'images :", error);
+    return [];
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+}
 
 // Fetch Events from DB with Search option.
 export async function fetchEvents(query: string): Promise<Event[]> {
@@ -497,3 +543,6 @@ export async function deleteEvent(eventId: number): Promise<boolean> {
     }
   }
 }
+
+
+export * from './auth';

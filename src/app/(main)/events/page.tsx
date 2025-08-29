@@ -2,6 +2,7 @@ import EventCard from '@/app/ui/EventCard';
 import { fetchEvents } from '@/app/lib/data';
 import { Event } from '@/app/lib/definitions';
 
+
 // The home page is an asynchronous component that retrieves and displays events.
 export default async function Page({
   searchParams,

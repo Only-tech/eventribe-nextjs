@@ -365,13 +365,14 @@ export default function ManageEventsPage() {
               {(previewImage || imageUrl) && (
                 <div className="mt-4 flex justify-center">
                   <Image
-                    src={normalizeImagePath(previewImage || imageUrl)}
+                    src={previewImage || normalizeImagePath(imageUrl)}
                     alt="Aperçu de l'image"
                     width={200}
                     height={150}
                     style={{ objectFit: 'cover' }}
                     className="rounded-md shadow-sm"
                   />
+
                 </div>
               )}
 

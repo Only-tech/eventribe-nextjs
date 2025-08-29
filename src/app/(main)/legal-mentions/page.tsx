@@ -86,7 +86,7 @@ export default function LegalMentionsPage() {
           </h2>
           <p>Tout litige en relation avec &apos;utilisation du site eventribe est soumis au droit français. En dehors des cas où la loi ne le permet pas, il est fait attribution exclusive de juridiction aux tribunaux compétents de Nevers.</p>
         </div>
-        <Link href="/" className="absolute mt-3 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out block text-center max-w-xs mx-auto">
+        <Link href="/events" className="absolute mt-3 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out block text-center max-w-xs mx-auto">
             Retour
         </Link>
       </section>
@@ -176,7 +176,7 @@ export default function LegalMentionsPage() {
           </ul>
           <p>Pour exercer ces droits, veuillez nous contacter à contact@eventribe.site.</p>
         </div>
-        <Link href="/" className="absolute mt-15 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out block text-center max-w-xs mx-auto">
+        <Link href="/events" className="absolute mt-15 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out block text-center max-w-xs mx-auto">
             Retour
         </Link>
       </section>

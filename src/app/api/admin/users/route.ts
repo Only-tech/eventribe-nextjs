@@ -15,7 +15,7 @@ async function getAdminSession() {
 export async function GET() {
   const { error, session } = await getAdminSession();
   if (error) return error;
-  console.log(`Admin ${session?.user?.email} a consulté la liste des utilisateurs.`);
+  console.log(`Admin ${session?.user?.email ?? 'inconnu'} a consulté la liste des utilisateurs.`);
 
   try {
     const users = await getAllUsers();

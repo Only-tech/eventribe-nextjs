@@ -8,15 +8,13 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 import { registerAction, unregisterAction } from '@/app/lib/actions';
 import { Event } from '@/app/lib/definitions';
 
-interface EventDetailPageProps {
-  params: {
-    eventId: string; 
-  };
-};
 
-export default async function EventDetailPage({ params }: EventDetailPageProps) {
-  const resolvedParams = await params;
-  const id = Number(resolvedParams.eventId);
+export default async function EventDetailPage({
+  params,
+}: {
+  params: { eventId: string };
+}) {
+  const id = Number(params.eventId);
 
   const event: Event | null = await fetchEventById(id);
   const session = await getServerSession(authOptions);

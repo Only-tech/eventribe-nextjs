@@ -118,16 +118,16 @@ export default function Header() {
                     Accueil
                     </Link>
                 </li>
-                <li>
-                    <Link href="/my-events" className="relative flex flex-row items-center gap-1 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
-                    <CalendarDaysIcon className="inline-block w-5 h-5" />
-                    <span>Mes Inscriptions</span>
-                    </Link>
-                </li>
                 {status === 'loading' ? (
                     <li>Chargement...</li>
                 ) : session ? (
                     <>
+                    <li>
+                        <Link href="/my-events" className="relative flex flex-row items-center gap-1 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                        <CalendarDaysIcon className="inline-block w-5 h-5" />
+                        <span>Mes Inscriptions</span>
+                        </Link>
+                    </li>
                     {session.user.isAdmin && (
                         <li>
                         <Link href="/admin" className="inline-flex items-center gap-1 transition-colors duration-300 hover:text-[#ff952aff] py-2 group" 

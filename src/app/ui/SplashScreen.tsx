@@ -66,7 +66,7 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
 
     return (
         <div
-            className={`relative flex min-h-screen items-center justify-center bg-[#f5f5dc] transition-opacity duration-500 ease-in-out overflow-hidden ${
+            className={`relative p-2 flex min-h-screen items-center justify-center bg-[#f5f5dc] transition-opacity duration-500 ease-in-out overflow-hidden ${
                 isFadingOut ? 'opacity-0' : 'opacity-100'
             }`}
         >
@@ -96,7 +96,7 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
                 </div>
             </div>
 
-            <div className="relative z-10 text-center bg-white/45 bg-contain bg-fixed backdrop-blur-md rounded-4xl p-12 border-8 border-[#f5f5dc] ring ring-[#ff952aff] shadow-lg"
+            <div className="relative z-10 text-center bg-white/45 bg-contain bg-fixed backdrop-blur-md rounded-4xl p-6 lg:p-12 border-8 border-[#f5f5dc] ring ring-[#ff952aff] shadow-lg"
             style={{ backgroundImage: "url('/images/SplashPaintBreak.svg')" }}>
                 <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight drop-shadow-lg mb-10">
                     Bienvenue sur eventribe

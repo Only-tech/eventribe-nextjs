@@ -77,7 +77,7 @@ export default function RegisterPage() {
         </div>
       )}
 
-      <GoogleReCaptchaProvider reCaptchaKey="TA_CLE_SITE_RECAPTCHA">
+      <GoogleReCaptchaProvider reCaptchaKey="6LeuC7wrAAAAAISa4m3R1BL2uRwEMu57nK-z_8uT">
       <form className="space-y-6" onSubmit={handleSubmit}>
         <Recaptcha onVerify={(token) => setCaptchaToken(token)} />
         <FloatingLabelInput

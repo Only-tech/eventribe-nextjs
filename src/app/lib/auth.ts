@@ -159,6 +159,38 @@ export async function deleteUser(userId: number, currentUserId: number): Promise
   }
 }
 
+
+/**
+ * Updates a user's information.
+ * @param id The user ID.
+ * @param data The new user data.
+ * @returns True if the update is successful, false otherwise.
+ */
+export async function updateUser(id: string, data: { username: string; email: string; }): Promise<boolean> {
+  let client;
+  try {
+    client = await pool.connect();
+    await client.query(
+      `UPDATE users
+       SET
+         username = $1,
+         email = $2
+       WHERE id = $3`,
+      [data.username, data.email, id]
+    );
+    console.log("Informations de l'utilisateur mises à jour avec succès !");
+    return true;
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour des informations de l'utilisateur:", error);
+    return false;
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+}
+
+
 /**
  * Updates a user's admin status.
  * @param userId 
@@ -224,7 +256,7 @@ export const authOptions: AuthOptions = {
         if (user) {
           return {
             id: user.id.toString(),
-            name: user.username,
+            username: user.username,
             email: user.email,
             isAdmin: user.is_admin,
           };
@@ -240,7 +272,7 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.name = user.name;
+        token.username = user.username;
         token.email = user.email;
         token.isAdmin = user.isAdmin;
       }
@@ -249,7 +281,7 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
-        session.user.name = token.name;
+        session.user.username = token.username;
         session.user.email = token.email;
         session.user.isAdmin = token.isAdmin;
       }

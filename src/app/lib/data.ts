@@ -76,6 +76,7 @@ export async function fetchEvents(query: string): Promise<Event[]> {
         e.description_long,
         e.available_seats,
         e.image_url,
+        e.created_by,
         CAST(COUNT(r.id) AS INTEGER) AS registered_count
       FROM
         events e
@@ -115,6 +116,69 @@ export async function fetchEvents(query: string): Promise<Event[]> {
   }
 }
 
+
+/**
+ * Fetches events created by a specific user.
+ * @param userId The ID of the user.
+ * @returns A list of events.
+ */
+export async function fetchEventsByUserId(userId: number): Promise<Event[]> {
+  noStore();
+
+  let client;
+  try {
+    client = await pool.connect();
+    const result = await client.query<Event>(
+      `SELECT
+        e.id,
+        e.title,
+        e.description_short,
+        e.description_long,
+        e.event_date,
+        e.location,
+        e.available_seats,
+        e.image_url,
+        e.created_by,
+        CAST(COUNT(r.id) AS INTEGER) AS registered_count
+      FROM
+        events e
+      LEFT JOIN
+        registrations r ON e.id = r.event_id
+      WHERE
+        e.created_by = $1
+      GROUP BY
+        e.id
+      ORDER BY
+        e.event_date ASC;`,
+      [userId]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error('Erreur lors de la récupération des événements de l\'utilisateur:', error);
+    return [];
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+}
+
+// fetches events where id and created_by
+export async function fetchUserEventById(userId: number, eventId: number): Promise<Event | null> {
+  const client = await pool.connect();
+  try {
+    const result = await client.query<Event>(
+      `SELECT * FROM events WHERE id = $1 AND created_by = $2`,
+      [eventId, userId]
+    );
+    return result.rows[0] || null;
+  } finally {
+    client.release();
+  }
+}
+
+
+
 /**
  * Get all Events with Registration Count.
  * @returns {Promise<Event[]>}Events List.
@@ -134,6 +198,7 @@ export async function getAllEventsWithRegistrationCount(): Promise<Event[]> {
         e.description_long,
         e.available_seats,
         e.image_url,
+        e.created_by,
         CAST(COUNT(r.id) AS INTEGER) AS registered_count
       FROM
         events e
@@ -174,6 +239,7 @@ export async function fetchEventById(id: number): Promise<Event | null> {
         e.description_long,
         e.available_seats,
         e.image_url,
+        e.created_by,
         CAST(COUNT(r.id) AS INTEGER) AS registered_count
       FROM
         events e
@@ -225,6 +291,7 @@ export async function fetchRegisteredEventsForUser(userId: string): Promise<(Eve
         e.available_seats,
         e.image_url,
         r.registered_at,
+        e.created_by,
         CAST(COUNT(reg.id) AS INTEGER) AS registered_count
       FROM
         events e
@@ -469,9 +536,9 @@ export async function createEvent(data: Omit<Event, 'id' | 'registered_count'>):
   try {
     client = await pool.connect();
     await client.query(
-      `INSERT INTO events (title, description_short, description_long, event_date, location, available_seats, image_url)
-       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
-      [data.title, data.description_short, data.description_long, data.event_date, data.location, data.available_seats, data.image_url]
+      `INSERT INTO events (title, description_short, description_long, event_date, location, available_seats, image_url, created_by)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [data.title, data.description_short, data.description_long, data.event_date, data.location, data.available_seats, data.image_url, data.created_by]
     );
     console.log("Event created successfully!");
     return true;

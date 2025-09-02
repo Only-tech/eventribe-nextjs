@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
-import { Bars3Icon, XMarkIcon, CalendarDaysIcon, MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, CalendarDaysIcon, MagnifyingGlassIcon, XCircleIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Header() {
@@ -128,6 +128,12 @@ export default function Header() {
                         <span>Mes Inscriptions</span>
                         </Link>
                     </li>
+                    <li>
+                        <Link href="/account" className="relative flex flex-row items-center gap-1 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                            <UserCircleIcon className="inline-block h-5 w-5" />
+                            <span>Compte</span>
+                        </Link>
+                    </li>
                     {session.user.isAdmin && (
                         <li>
                         <Link href="/admin" className="inline-flex items-center gap-1 transition-colors duration-300 hover:text-[#ff952aff] py-2 group" 
@@ -147,7 +153,7 @@ export default function Header() {
                         onClick={handleSignOut}
                         className="flex flex-row items-center gap-2 transition-colors duration-300 hover:text-[#ff952aff] py-2 w-full text-left cursor-pointer"
                         title="Se déconnecter">
-                            <span>({session.user.name})</span>
+                            <span>Hi {session.user.username} !</span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5"></path>
                                 <polyline points="16 17 21 12 16 7"></polyline>

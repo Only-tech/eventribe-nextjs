@@ -35,7 +35,7 @@ tbody tr:hover {
 
 input:hover,
 textarea:hover {
-  background-color: #135eea09;
+  /* background-color: #135eea09; */
   overflow: hidden;
 }
 
@@ -205,5 +205,27 @@ body .lateralScrollBar::-webkit-scrollbar-thumb {
 
   60% {
     transform: scale(1.0);
+  }
+}
+
+
+/* Account Greating Notice  */
+@keyframes banner {
+  0% {
+    transform: translateX(100%);
+  }
+
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-banner {
+  animation: banner 10s linear infinite;
+}
+
+ @media (min-width: 1024px) {
+  .animate-banner {
+    animation: banner 15s linear infinite;
   }
 }

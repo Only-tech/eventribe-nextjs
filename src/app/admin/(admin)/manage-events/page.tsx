@@ -266,9 +266,6 @@ export default function ManageEventsPage() {
 
   return (
     <div className="p-3">
-      <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">
-        {action === 'create' ? 'Créer un nouvel événement' : action === 'edit' ? 'Modifier l\'événement' : 'Gérer les Événements'}
-      </h1>
 
       {message && (
         <div className={`mb-4 text-center font-semibold p-3 rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
@@ -277,136 +274,90 @@ export default function ManageEventsPage() {
       )}
 
       {(action === 'create' || action === 'edit') && (
-        <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700">Titre :</label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="description_short" className="block text-sm font-medium text-gray-700">Description courte :</label>
-              <textarea
-                id="description_short"
-                name="description_short"
-                rows={3}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-                value={descriptionShort}
-                onChange={(e) => setDescriptionShort(e.target.value)}
-                required
-              ></textarea>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="description_long" className="block text-sm font-medium text-gray-700">Description longue :</label>
-              <textarea
-                id="description_long"
-                name="description_long"
-                rows={6}
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-                value={descriptionLong}
-                onChange={(e) => setDescriptionLong(e.target.value)}
-              ></textarea>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="event_date" className="block text-sm font-medium text-gray-700">Date et heure :</label>
-              <input
-                type="datetime-local"
-                id="event_date"
-                name="event_date"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-                value={eventDate}
-                onChange={(e) => setEventDate(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="location" className="block text-sm font-medium text-gray-700">Lieu :</label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                required
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="available_seats" className="block text-sm font-medium text-gray-700">Places disponibles :</label>
-              <input
-                type="number"
-                id="available_seats"
-                name="available_seats"
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-                value={availableSeats}
-                onChange={(e) => setAvailableSeats(Number(e.target.value))}
-                required
-                min="0"
-              />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="image" className="block text-sm font-medium text-gray-700">Image de l&apos;événement :</label>
-              <input
-                type="file"
-                id="image"
-                name="image"
-                accept="image/*"
-                className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 hover:file:bg-[#E8E5D8]"
-                onChange={handleImageChange}
-                disabled={uploadingImage} // Disable input during upload
-              />
-              {(previewImage || imageUrl) && (
-                <div className="mt-4 flex justify-center">
-                  <Image
-                    src={previewImage || normalizeImagePath(imageUrl)}
-                    alt="Aperçu de l'image"
-                    width={200}
-                    height={150}
-                    style={{ objectFit: 'cover' }}
-                    className="rounded-md shadow-sm"
-                  />
-
+        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:pb-10 xl:pb-12 rounded-2xl shadow-xl mx-auto bg-white sm:mb-15">
+            <h2 className="text-3xl font-bold mb-6 sm:mb-10 text-gray-800 text-center">{action === 'create' ? 'Créer un événement' : action === 'edit' ? 'Modifier l\'événement' : 'Gérer les Événements'}</h2>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
+                <div className="relative group">
+                    <input type="text" id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
+                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Titre</label>
                 </div>
-              )}
-
-              {uploadingImage && (
-                <p className="text-center text-sm text-gray-500 mt-2">Chargement de l&apos;image...</p>
-              )}
+                <div className="relative group">
+                    <input type="datetime-local" id="event_date" name="event_date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
+                    <label htmlFor="event_date" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Date et heure</label>
+                </div>
+                <div className="relative group">
+                    <input type="text" id="location" name="location" value={location} onChange={(e) => setLocation(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
+                    <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Lieu</label>
+                </div>
+                <div className="relative group">
+                    <input type="number" id="available_seats" name="available_seats" value={availableSeats} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
+                    <label htmlFor="available_seats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Places disponibles</label>
+                </div>
+                <div className="relative group md:col-span-2">
+                    <textarea id="description_short" name="description_short" value={descriptionShort} onChange={(e) => setDescriptionShort(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" rows={2}></textarea>
+                    <label htmlFor="description_short" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Description courte</label>
+                </div>
+                <div className="relative group md:col-span-2">
+                    <textarea id="description_long" name="description_long" value={descriptionLong} onChange={(e) => setDescriptionLong(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" rows={4}></textarea>
+                    <label htmlFor="description_long" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Description longue</label>
+                </div>
+                <div className="relative group">
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept="image/*"
+                        className="peer mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]"
+                        onChange={handleImageChange}
+                        disabled={uploadingImage}
+                    />
+                    <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Image de l&apos;événement</label>
+                    {(previewImage || imageUrl) && (
+                        <div className="mt-4 flex justify-center sm:absolute bg-white sm:shadow-[0px_20px_15px_rgba(0,_0,_0,_0.1)] rounded-xl px-2 pb-2">
+                            <Image
+                                src={previewImage || normalizeImagePath(imageUrl)}
+                                alt="Aperçu de l'image"
+                                width={200}
+                                height={150}
+                                style={{ objectFit: 'cover', height: '150px' }}
+                                className="rounded-md shadow-sm"
+                            />
+                        </div>
+                    )}
+    
+                    {uploadingImage && (
+                        <p className="text-center text-sm text-gray-500 mt-2">Chargement de l&apos;image...</p>
+                    )}
+                </div>
+                <div className="flex flex-col sm:flex-row sm:justify-end gap-4 mt-4">
+                    <button
+                        type="button"
+                        onClick={() => router.push('/admin/manage-events')} 
+                        className=" h-11 min-w-32 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-600 hover:bg-[#FFF] hover:border-gray-800 cursor-pointer duration-300 ease-in-out group"
+                    >
+                        <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" /> 
+                        <span>Annuler</span>
+                    </button>
+                    <button
+                        type="submit"
+                        className="h-11 min-w-32 px-5 py-2 rounded-full text-base text-[#FFF] whitespace-nowrap hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 cursor-pointer duration-300 ease-in-out group"
+                        disabled={uploadingImage}
+                    >
+                        <PlusIcon className="inline-block w-4 h-4 mr-2 group-hover:animate-bounce" />
+                        {action === 'create' ? 'Créer' : 'Mettre à jour'}
+                    </button>
+                </div>
             </div>
-            <div className="flex flex-col sm:flex-row sm:justify-end gap-4">
-              <button
-                type="button"
-                onClick={() => router.push('/admin/manage-events')} 
-                className=" h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-600 hover:bg-[#FFF] hover:border-gray-800 cursor-pointer duration-300 ease-in-out group"
-              >
-                <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" /> 
-                <span>Annuler</span>
-              </button>
-              <button
-                type="submit"
-                className="px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 cursor-pointer duration-300 ease-in-out"
-                disabled={uploadingImage} // Disable button during image upload
-              >
-                {action === 'create' ? 'Créer l\'événement' : 'Mettre à jour l\'événement'}
-              </button>
-            </div>
-          </form>
-        </div>
+        </form> 
       )}
 
       {action === 'list' && (
         <>
           <div className="mb-6 text-center flex justify-end">
             <Link href="/admin/manage-events?action=create" className=" h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 cursor-pointer duration-300 ease-in-out group">
-              <span>Créer un nouvel événement</span>
-              <PlusIcon className="inline-block w-4 h-4 ml-2 group-hover:animate-bounce" />
+              <PlusIcon className="inline-block w-4 h-4 mr-2 group-hover:animate-bounce" />
+              <span>Créer un événement</span>
             </Link>
           </div>
 
@@ -462,8 +413,9 @@ export default function ManageEventsPage() {
       )}
 
       <div className="mt-10 text-center">
-        <Link href="/admin" className="h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-gray-800 cursor-pointer duration-300 ease-in-out">
-          Retour au tableau de bord
+        <Link href="/admin" className="h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-gray-800 cursor-pointer duration-300 ease-in-out group">
+          <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" />
+          <span>Tableau de bord</span>
         </Link>
       </div>
 

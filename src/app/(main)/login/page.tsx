@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
+import { EyeIcon, EyeSlashIcon, FingerPrintIcon } from '@heroicons/react/24/outline';
+
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,12 +15,13 @@ export default function LoginPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setMessage(''); // Clear previous messages
+    setMessage(''); 
 
     try {
-      // Use signIn from next-auth/react
       const result = await signIn('credentials', {
         redirect: false, // Prevent NextAuth from redirecting automatically
         email,
@@ -34,7 +38,7 @@ export default function LoginPage() {
         setIsSuccess(true);
         // Redirect to home page on successful login
         setTimeout(() => {
-          router.push('/');
+          router.push('/events');
         }, 1500);
       }
     } catch (error) {
@@ -46,7 +50,10 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-md mx-auto bg-[rgb(248,248,236)] p-8 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Connexion</h1>
+      <h1 className="flex items-center justify-center text-3xl font-bold text-gray-900 mb-8">
+          <FingerPrintIcon className="w-8 h-8 mr-2" />
+          <span>Connexion</span>
+      </h1>
 
       {message && (
         <div className={`mb-4 text-center font-semibold p-3 rounded-lg ${isSuccess ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
@@ -54,30 +61,39 @@ export default function LoginPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email :</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-6">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe :</label>
-          <input
-            type="password"
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <FloatingLabelInput
+          id="email"
+          label="Adresse email"
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <div className="relative">
+          <FloatingLabelInput
+            label="Mot de passe"
+            type={showPassword ? 'text' : 'password'}
             id="password"
             name="password"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="pr-10" 
           />
+          <button
+            type="button" // Important to unsubmit the form
+            onClick={() => setShowPassword(!showPassword)} 
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 cursor-pointer"
+            aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
+          >
+            {showPassword ? (
+              <EyeSlashIcon className="h-5 w-5" />
+            ) : (
+              <EyeIcon className="h-5 w-5" />
+            )}
+          </button>
         </div>
         <button
           type="submit"

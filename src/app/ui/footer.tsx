@@ -15,7 +15,7 @@ export default function Footer() {
     <footer className="bg-[#f5f5dc] text-gray-700 pt-10 pb-2 w-full">
       <div className="flex flex-wrap gap-20 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
         {/* About us */}
-        <div className="max-w-md [@media(max-width:449px)]:max-w-[300px] text-justify [@media(max-width:849px)]:order-3 [@media(max-width:849px)]:justify-center mx-auto">
+        <div className="max-w-md xl:max-w-lg @md:max-w-[300px] text-justify [@media(max-width:849px)]:order-3 [@media(max-width:849px)]:justify-center mx-auto">
           <h3 className="text-2xl text-gray-800 border-b-1 font-bold pb-1 mb-6">À propos de nous</h3>
           <p>
             eventribe connecte organisateurs et passionnés à travers des rencontres humaines et projets culturels.
@@ -32,6 +32,7 @@ export default function Footer() {
             {session ? (
               <>
                 <li><Link href="/my-events" className="hover:text-[#ff952aff] transition duration-300">Mes Inscriptions</Link></li>
+                <li><Link href="/account" className="hover:text-[#ff952aff] transition duration-300">Compte</Link></li>
                 {session.user.isAdmin && (
                   <li><Link href="/admin" className="hover:text-[#ff952aff] transition duration-300">Administration</Link></li>
                 )}

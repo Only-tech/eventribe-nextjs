@@ -4,28 +4,15 @@
  * @returns  "/" or URL absolute
  */
 export const normalizeImagePath = (path: string | null): string => {
-    if (!path || path.trim() === '') {
-        return 'https://placehold.co/600x400/E0E0E0/333333?text=Image+non+disponible';
+    if (!path) {
+        return `https://placehold.co/200x150.png?text=Image`;
     }
 
-    if (path.startsWith('http://') || path.startsWith('https://')) {
+    if (path.startsWith('http') || path.startsWith('/')) {
         return path;
     }
 
-    if (path.startsWith('../public/')) {
-        return '/' + path.replace('../public/', '');
-    }
-
-    if (path.startsWith('public/')) {
-        return '/' + path.replace('public/', '');
-    }
-
-    if (path.startsWith('/')) {
-        return path;
-    }
-
-    return '/' + path;
+    return path;
 };
-
 
 

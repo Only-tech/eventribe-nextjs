@@ -8,6 +8,7 @@ export type Event = {
   available_seats: number;
   image_url: string | null;
   registered_count: number;
+  created_by: string;
 };
 
 export type User = {

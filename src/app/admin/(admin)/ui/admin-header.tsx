@@ -79,7 +79,7 @@ export default function AdminHeader() {
               onClick={handleSignOut}
               className="flex flex-row items-center gap-2 transition-opacity duration-300 hover:opacity-65 py-2 w-full text-left"
               title="Se déconnecter">
-                <span>({session.user.name})</span>
+                <span>Hi {session.user.username} !</span>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5"></path>
                   <polyline points="16 17 21 12 16 7"></polyline>

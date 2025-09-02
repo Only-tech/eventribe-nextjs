@@ -3,6 +3,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
+import { EyeIcon, EyeSlashIcon, FingerPrintIcon } from '@heroicons/react/24/outline';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import Recaptcha from '@/app/ui/Recaptcha';
+
+
 
 export default function RegisterPage() {
   const [username, setUsername] = useState('');
@@ -12,6 +18,12 @@ export default function RegisterPage() {
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState('');
+
+  body: JSON.stringify({ username, email, password, confirm_password: confirmPassword, captcha: captchaToken })
+
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -54,7 +66,10 @@ export default function RegisterPage() {
 
   return (
     <div className="max-w-md mx-auto bg-[rgb(248,248,236)] p-8 rounded-lg shadow-lg">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6 text-center">Inscription</h1>
+      <h1 className="flex items-center justify-center text-3xl font-bold text-gray-900 mb-8">
+          <FingerPrintIcon className="w-8 h-8 mr-2" />
+          <span>Inscription</span>
+      </h1>
 
       {message && (
         <div className={`mb-4 text-center font-semibold p-3 rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
@@ -62,55 +77,76 @@ export default function RegisterPage() {
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">Nom d&apos;utilisateur :</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email :</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">Mot de passe :</label>
-          <input
-            type="password"
+      <GoogleReCaptchaProvider reCaptchaKey="TA_CLE_SITE_RECAPTCHA">
+      <form className="space-y-6" onSubmit={handleSubmit}>
+        <Recaptcha onVerify={(token) => setCaptchaToken(token)} />
+        <FloatingLabelInput
+          label="Nom d'utilisateur"
+          type="text"
+          id="username"
+          name="username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
+        <FloatingLabelInput
+          id="email"
+          label="Adresse email"
+          type="email"
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <div className="relative">
+          <FloatingLabelInput
+            label="Mot de passe"
+            type={showPassword ? 'text' : 'password'}
             id="password"
             name="password"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
+            className="pr-10" 
           />
+          <button
+            type="button" // Important to unsubmit the form
+            onClick={() => setShowPassword(!showPassword)} 
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 cursor-pointer"
+            aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
+          >
+            {showPassword ? (
+              <EyeSlashIcon className="h-5 w-5" />
+            ) : (
+              <EyeIcon className="h-5 w-5" />
+            )}
+          </button>
         </div>
-        <div className="mb-6">
-          <label htmlFor="confirm_password" className="block text-sm font-medium text-gray-700">Confirmer le mot de passe :</label>
-          <input
-            type="password"
+        <div className="relative">
+          <FloatingLabelInput
+            label="Confirmer le mot de passe"
+            type={showPassword ? 'text' : 'password'}
             id="confirm_password"
             name="confirm_password"
-            className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#ff952aff] focus:border-[#ff952aff] sm:text-sm"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
             required
+            className="pr-10" 
           />
+          <button
+            type="button" // Important to unsubmit the form
+            onClick={() => setShowPassword(!showPassword)} 
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 cursor-pointer"
+            aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
+          >
+            {showPassword ? (
+              <EyeSlashIcon className="h-5 w-5" />
+            ) : (
+              <EyeIcon className="h-5 w-5" />
+            )}
+          </button>
         </div>
+        
         <button
           type="submit"
           className="px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer w-full"
@@ -122,6 +158,7 @@ export default function RegisterPage() {
           </svg>
         </button>
       </form>
+      </GoogleReCaptchaProvider>
       <p className="mt-6 text-center text-gray-600">
         Déjà un compte ?{' '}
         <Link href="/login" className="text-indigo-600 hover:underline">

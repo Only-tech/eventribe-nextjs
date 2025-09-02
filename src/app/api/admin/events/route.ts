@@ -35,6 +35,7 @@ export async function POST(request: Request) {
         location,
         available_seats: Number(available_seats),
         image_url: image_url || null,
+        created_by: ''
       });
 
       if (success) {
@@ -76,6 +77,7 @@ export async function PUT(request: Request) {
       location,
       available_seats: Number(available_seats),
       image_url: image_url || null,
+      created_by: ''
     });
 
     if (success) {

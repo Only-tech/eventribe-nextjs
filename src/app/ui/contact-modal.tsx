@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState, FormEvent, useRef } from 'react';
+import React, { useState, FormEvent, useRef, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+import FloatingLabelInput from '@/app/ui/FloatingLabelInput'; 
+import { EnvelopeIcon } from '@heroicons/react/16/solid';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -22,7 +24,21 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [emailError, setEmailError] = useState('');
   const [messageError, setMessageError] = useState('');
 
+  // State for the textarea focus
+  const [isMessageFocused, setIsMessageFocused] = useState(false);
+
   const form = useRef<HTMLFormElement>(null);
+
+  // Clean status
+  useEffect(() => {
+    if (formStatus) {
+      const timer = setTimeout(() => {
+        setFormStatus('');
+      }, 5000); 
+      return () => clearTimeout(timer);
+    }
+  }, [formStatus]);
+
 
   if (!isOpen) return null;
 
@@ -62,10 +78,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         isValid = false;
     }
 
-    // If any validation fails, stop the submission
-    if (!isValid) {
-        return;
-    }
+    if (!isValid) return;
 
     setLoading(true);
 
@@ -102,6 +115,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     });
   };
 
+  // Logic textarea label animation
+  const isMessageLabelActive = isMessageFocused || message.length > 0;
+
   return (
     <div
       id="contactModal"
@@ -114,24 +130,26 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-[#ff952aff] text-2xl font-bold hover:animate-pulse transform duration-300 ease-in-out"
+          className="absolute top-4 right-4 text-gray-500 hover:text-[#ff952aff] text-2xl font-bold"
           aria-label="Quitter"
           title="Quitter"
         >
           &times;
         </button>
-        <h2 className="text-xl text-gray-900 text-center font-semibold mb-4 mt-1">Contactez-nous</h2>
+        <h1 className="flex items-center justify-center text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
+          <EnvelopeIcon className="w-8 h-8 mr-2" />
+          <span>Contactez-nous</span>
+        </h1>
         
-        <form ref={form} id="contact-form" className="grid gap-4" onSubmit={handleSubmit} noValidate>
+        <form ref={form} id="contact-form" className="grid gap-6" onSubmit={handleSubmit} noValidate>
           {/* Name Field */}
           <div>
-            <label htmlFor="name"></label>
-            <input
+            <FloatingLabelInput
               id="name"
               type="text"
               name="name"
-              placeholder="Votre nom | Organisation *"
-              className={`w-full h-11 border p-2 rounded-full shadow-sm focus:outline-none ${nameError ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-[#ff952aff] focus:border-[#ff952aff]'}`}
+              label="Votre nom | Organisation *"
+              className={`rounded-[9999px!important] ${nameError ? 'border-red-500' : 'rounded-full'}`}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -140,29 +158,40 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
           {/* Message Field */}
           <div>
-            <label htmlFor="message"></label>
-            <textarea
-              id="message"
-              name="message"
-              rows={4}
-              placeholder="Votre message *"
-              className={`w-full border p-2 resize-none rounded-md shadow-sm focus:outline-none ${messageError ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-[#ff952aff] focus:border-[#ff952aff]'}`}
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            ></textarea>
+            <div className="relative">
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                className={`peer block w-full p-3 pt-3 border resize-none rounded-md shadow-sm focus:outline-none ${messageError ? 'border-red-500' : 'border-gray-300 focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]'}`}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onFocus={() => setIsMessageFocused(true)}
+                onBlur={() => setIsMessageFocused(false)}
+              ></textarea>
+              <label
+                htmlFor="message"
+                className={`absolute pointer-events-none transition-all duration-200 ease-in-out px-3 ${
+                  isMessageLabelActive
+                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[rgb(248,248,236)]'
+                    : 'top-1/12 -translate-y-1/12 text-base text-gray-500'
+                }`}
+              >
+                Votre message *
+              </label>
+            </div>
             {messageError && <p className="text-red-600 text-sm mt-1 ml-2">{messageError}</p>}
           </div>
           
           <div className="flex flex-col [@media(min-width:449px)]:flex-row gap-4 items-start">
-            {/* Email Field */}
+            {/* Email Field - MODIFIÉ */}
             <div className="flex-grow w-full">
-              <label htmlFor="email"></label>
-              <input
+              <FloatingLabelInput
                 id="email"
                 type="email"
                 name="email"
-                placeholder="Votre email *"
-                className={`w-full h-11 border p-2 rounded-full shadow-sm focus:outline-none ${emailError ? 'border-red-500 ring-red-300' : 'border-gray-300 focus:ring-[#ff952aff] focus:border-[#ff952aff]'}`}
+                label="Votre email *"
+                className={`rounded-[9999px!important] ${emailError ? 'border-red-500' : 'rounded-full'}`}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
@@ -179,20 +208,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <span>Envoi</span>
                   <svg viewBox="0 0 50 50" className="inline-block w-6 h-6 ml-2">
                     <circle cx="25" cy="25" r="20" stroke="#ff952aff" strokeWidth="5" fill="none" strokeLinecap="round" strokeDasharray="30 70">
-                      <animateTransform
-                        attributeName="transform"
-                        type="rotate"
-                        repeatCount="indefinite"
-                        dur="1s"
-                        from="0 25 25"
-                        to="360 25 25" />
+                      <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" from="0 25 25" to="360 25 25" />
                     </circle>
                   </svg>
                 </>
               ) : (
                 <>
                   <span>Envoyer</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" className="inline-block w-4 h-4  group-hover:animate-bounce ml-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" className="inline-block w-4 h-4 group-hover:animate-bounce ml-2">
                     <path d="M205.66,149.66l-72,72a8,8,0,0,1-11.32,0l-72-72a8,8,0,0,1,11.32-11.32L120,196.69V40a8,8,0,0,1,16,0V196.69l58.34-58.35a8,8,0,0,1,11.32,11.32Z"></path>
                   </svg>
                 </>
@@ -201,13 +224,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           </div>
 
           {/* Global Form Status */}
-          <div className="items-center flex flex-col">
-            {formStatus && (
-              <p className={`w-full text-center mt-4 p-3 rounded-lg ${isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+          {formStatus && (
+              <p className={`w-full text-center p-3 rounded-lg ${isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                 {formStatus}
               </p>
-            )}
-          </div>
+          )}
         </form>
       </div>
     </div>

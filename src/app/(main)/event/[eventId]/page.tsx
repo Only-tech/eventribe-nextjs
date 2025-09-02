@@ -26,7 +26,7 @@ export default async function EventDetailPage({
 
   const imageUrl = event.image_url
     ? `/${event.image_url.replace(/^(\.\.\/|\/)?(public\/)?/, '')}`
-    : 'https://placehold.co/600x400/E0E0E0/333333?text=Image+non+disponible';
+    : 'https://placehold.co/600x400.png?text=Image+non+disponible';
 
   const remainingSeats = event.available_seats;
   const isLoggedIn = !!session;
@@ -34,21 +34,23 @@ export default async function EventDetailPage({
   const isRegistered = isLoggedIn && userId ? await isUserRegisteredForEvent(userId, id) : false;
 
   return (
-    <div className="px-3 py-8 bg-[rgb(248,248,236)] rounded-lg shadow-lg md:p-8 xl:max-w-7xl mx-auto items-center">
-      <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{event.title}</h1>
+    <div className=" px-3 py-8 bg-[rgb(248,248,236)]/95 rounded-lg lg:rounded-2xl shadow-lg md:p-8 max-w-7xl mx-auto items-center transform transition-transform duration-300 hover:shadow-2xl group">
+    <div className="lg:flex">  
+      <h1 className="lg:hidden text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">{event.title}</h1>
 
-      <div className="relative w-full h-55 sm:h-96 mb-6 rounded-lg overflow-hidden">
+      <div className="relative w-full lg:min-w-sm lg:max-w-md h-55 sm:h-96 mb-6 rounded-lg overflow-hidden">
         <Image
           src={imageUrl.startsWith('/https://') ? imageUrl.slice(1) : imageUrl}
           alt={`${event.title}`}
           fill
           style={{ objectFit: 'cover' }}
-          className="w-full h-full"
+          className="w-full h-full group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1"
         />
       </div>
 
-      <div className="flex flex-col md:flex-row gap-6 mb-6">
-        <div className="min-w-[330px] xl:min-w-[380px]">
+      <div className="flex flex-col md:flex-row lg:flex-col lg:justify-center lg:pl-6 gap-6 mb-6">
+        <div className="min-w-[330px]">
+          <h1 className="hidden lg:flex text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">{event.title}</h1>
           <p className="text-gray-700 text-lg mb-2">
             <CalendarIcon className="inline-block w-5 h-5 mr-1" />{' '}
             {new Date(event.event_date).toLocaleString('fr-FR', {
@@ -64,18 +66,19 @@ export default async function EventDetailPage({
             <MapPinIcon className="inline-block w-5 h-5 mr-1" /> {event.location}
           </p>
           <p className="text-gray-700 text-lg mb-2">
-            <UsersIcon className="inline-block w-4 h-4 mr-1" />
-            <strong className="text-gray-900">Places disponibles :</strong> {remainingSeats}
+            <UsersIcon className="inline-block w-6 h-6 mr-1" />
+            <strong className="text-gray-800">Places disponibles :</strong> {remainingSeats}
           </p>
         </div>
         <div>
-          <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+          <p className="text-justify text-gray-700 leading-relaxed whitespace-pre-line">
             {event.description_long}
           </p>
         </div>
       </div>
+    </div>
 
-      <div className="mt-8 mb-2 flex justify-center">
+      <div className="mt-8 lg:mt-2 mb-2 lg:mb-0 flex justify-center">
         {isLoggedIn && userId ? (
           isRegistered ? (
             <form action={unregisterAction.bind(null, userId, id)}>
@@ -114,7 +117,7 @@ export default async function EventDetailPage({
         className="absolute h-11 inline-flex items-center justify-center mt-3 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out"
       >
         <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" />
-        <span>Retour</span>
+        <span>Page d&apos;accueil</span>
       </Link>
     </div>
   );

@@ -1,9 +1,24 @@
 import { NextResponse } from 'next/server';
 import { registerUser } from '@/app/lib/auth';
 
+const verifyCaptcha = async (token: string) => {
+  const res = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
+  });
+  const data = await res.json();
+  return data.success && data.score > 0.5;
+};
+
+
 export async function POST(request: Request) {
   try {
-    const { username, email, password, confirm_password } = await request.json();
+    const { username, email, password, confirm_password, captcha } = await request.json();
+
+    if (!captcha || !(await verifyCaptcha(captcha))) {
+      return NextResponse.json({ message: 'Échec de la vérification du captcha.' }, { status: 403 });
+    }
 
     // Basic validation
     if (!username || !email || !password || !confirm_password) {
@@ -25,7 +40,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Inscription réussie ! Vous pouvez maintenant vous connecter.' }, { status: 201 });
     } else {
       // The registerUser function already logs specific errors,
-      // here we return a generic error or a more specific one if needed from registerUser's return
       return NextResponse.json({ message: "Le nom d'utilisateur ou l'email existe déjà." }, { status: 409 });
     }
   } catch (error) {

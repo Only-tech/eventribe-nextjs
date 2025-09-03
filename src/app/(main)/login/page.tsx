@@ -38,7 +38,7 @@ export default function LoginPage() {
         setIsSuccess(true);
         // Redirect to home page on successful login
         setTimeout(() => {
-          router.push('/events');
+          router.push('/');
         }, 1500);
       }
     } catch (error) {

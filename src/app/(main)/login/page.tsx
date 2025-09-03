@@ -50,8 +50,8 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-md mx-auto bg-[rgb(248,248,236)] p-8 rounded-lg shadow-lg">
-      <h1 className="flex items-center justify-center text-3xl font-bold text-gray-900 mb-8">
-          <FingerPrintIcon className="w-8 h-8 mr-2" />
+      <h1 className="flex flex-col items-center justify-center text-3xl font-bold text-gray-900 mb-8">
+          <FingerPrintIcon className="w-auto h-16  mb-4" />
           <span>Connexion</span>
       </h1>
 

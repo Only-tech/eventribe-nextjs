@@ -1,6 +1,6 @@
 import { compare, hash } from 'bcrypt';
 import { pool } from '@/app/lib/data'; 
-import { User } from './definitions'; // Assuming User type is defined in definitions.ts
+import { User } from './definitions'; 
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { AuthOptions } from 'next-auth';
 
@@ -14,7 +14,7 @@ import { AuthOptions } from 'next-auth';
  * @returns Successful, false otherwise.
  */
 export async function registerUser(username: string, email: string, password_plain: string): Promise<boolean> {
-  let client; // Declare client outside try block
+  let client;
   try {
     client = await pool.connect(); // Get a client from the shared pool
 
@@ -56,9 +56,9 @@ export async function registerUser(username: string, email: string, password_pla
  * @returns Successful, null otherwise.
  */
 export async function loginUser(email: string, password_plain: string): Promise<User | null> {
-  let client; // Declare client outside try block
+  let client; 
   try {
-    client = await pool.connect(); // Get a client from the shared pool
+    client = await pool.connect(); 
 
     // Retrieve the user by email
     const result = await client.query<User>( 

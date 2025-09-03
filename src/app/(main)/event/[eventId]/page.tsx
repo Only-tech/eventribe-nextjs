@@ -36,7 +36,7 @@ export default async function EventDetailPage({
   return (
     <div className=" px-3 py-8 bg-[rgb(248,248,236)]/95 rounded-lg lg:rounded-2xl shadow-lg md:p-8 max-w-7xl mx-auto items-center transform transition-transform duration-300 hover:shadow-2xl group">
     <div className="lg:flex">  
-      <h1 className="lg:hidden text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">{event.title}</h1>
+      <h1 className="lg:hidden text-3xl md:text-4xl text-center lg:text-start font-extrabold text-gray-900 mb-4">{event.title}</h1>
 
       <div className="relative w-full lg:min-w-sm lg:max-w-md h-55 sm:h-96 mb-6 rounded-lg overflow-hidden">
         <Image

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
-import { EyeIcon, EyeSlashIcon, FingerPrintIcon } from '@heroicons/react/24/outline';
+import { EyeIcon, EyeSlashIcon, FingerPrintIcon, PlusIcon } from '@heroicons/react/24/outline';
 
 
 
@@ -56,8 +56,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-[rgb(248,248,236)] p-8 rounded-lg shadow-lg">
-      <h1 className="flex flex-col items-center justify-center text-3xl font-bold text-gray-900 mb-8">
+    <div className="max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-8 rounded-lg shadow-lg">
+      <h1 className="flex flex-col items-center justify-center text-3xl font-bold text-gray-900 dark:text-white mb-8">
           <FingerPrintIcon className="w-auto h-16  mb-4" />
           <span>Inscription</span>
       </h1>
@@ -101,7 +101,7 @@ export default function RegisterPage() {
           <button
             type="button" 
             onClick={() => setShowPassword(!showPassword)} 
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 cursor-pointer"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 cursor-pointer"
             aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
           >
             {showPassword ? (
@@ -125,7 +125,7 @@ export default function RegisterPage() {
           <button
             type="button" 
             onClick={() => setShowPassword(!showPassword)} 
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 cursor-pointer"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 cursor-pointer"
             aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
           >
             {showPassword ? (
@@ -138,16 +138,13 @@ export default function RegisterPage() {
         
         <button
           type="submit"
-          className="h-11 px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer w-full"
+          className="h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer w-full"
         >
-          S&apos;inscrire&nbsp;
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-            viewBox="0 0 256 256" className="inline-block -translate-y-0.5 group-hover:animate-bounce">
-            <path d="M136 120h56a8 8 0 0 1 0 16h-56v56a8 8 0 0 1-16 0v-56H64a8 8 0 0 1 0-16h56V64a8 8 0 0 1 16 0v56z" />
-          </svg>
+          <span>S&apos;inscrire</span>
+          <PlusIcon className="h-4 w-4 ml-2 group-hover:animate-bounce"/>
         </button>
       </form>
-      <p className="mt-6 text-center text-gray-600">
+      <p className="mt-6 text-center text-gray-700 dark:text-gray-500">
         Déjà un compte ?{' '}
         <Link href="/login" className="text-indigo-600 hover:underline">
           Connectez-vous ici

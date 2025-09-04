@@ -62,11 +62,6 @@ button:active {
   border-radius: 5px;
 }
 
-body .lateralScrollBar::-webkit-scrollbar-thumb {
-  background: #111827;
-  border-radius: 5px;
-}
-
 ::-webkit-scrollbar-thumb:hover {
   background: #eee;
   border: 2px solid #111827;

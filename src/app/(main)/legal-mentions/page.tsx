@@ -14,8 +14,8 @@ export default function LegalMentionsPage() {
 
   return (
     <>
-      <section className="max-w-4xl mx-auto bg-[rgb(248,248,236)] p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-extrabrabold text-gray-900 mb-6 text-center">Mentions Légales</h1>
+      <section className="max-w-4xl mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-8 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-extrabrabold text-gray-900 dark:text-white mb-6 text-center">Mentions Légales</h1>
 
         <div className="mb-8">
           <h2 className="section-title text-2xl font-bold text-gray-800 mb-3">
@@ -92,8 +92,8 @@ export default function LegalMentionsPage() {
       </section>
 
 
-      <section id="politique-confidentialite" className="max-w-4xl mx-auto bg-[rgb(248,248,236)] p-20 px-8 mt-200 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-extrabrabold text-gray-900 mb-8 text-center">Politique de Confidentialité</h1>
+      <section id="politique-confidentialite" className="max-w-4xl mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-20 px-8 mt-200 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-extrabrabold text-gray-900 dark:text-white mb-8 text-center">Politique de Confidentialité</h1>
 
         <p className="mb-4">Dernière mise à jour : {lastUpdateDate}</p>
 

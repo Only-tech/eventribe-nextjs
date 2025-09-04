@@ -66,7 +66,7 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
 
     return (
         <div
-            className={`relative p-2 flex min-h-screen items-center justify-center bg-[#f5f5dc] transition-opacity duration-500 ease-in-out overflow-hidden ${
+            className={`relative p-2 flex min-h-screen items-center justify-center bg-[#f5f5dc] dark:bg-zinc-950 transition-opacity duration-500 ease-in-out overflow-hidden ${
                 isFadingOut ? 'opacity-0' : 'opacity-100'
             }`}
         >

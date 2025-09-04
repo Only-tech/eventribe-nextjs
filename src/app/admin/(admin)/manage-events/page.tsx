@@ -261,7 +261,7 @@ export default function ManageEventsPage() {
   };
 
   if (loading && action === 'list') {
-    return <p className="text-center text-gray-600 text-lg">Chargement des événements...</p>;
+    return <p className="text-center text-gray-700 text-lg">Chargement des événements...</p>;
   }
 
   return (
@@ -362,7 +362,7 @@ export default function ManageEventsPage() {
           </div>
 
           {events.length === 0 ? (
-            <p className="text-center text-gray-600 text-lg">Aucun événement à gérer pour le moment.</p>
+            <p className="text-center text-gray-700 text-lg">Aucun événement à gérer pour le moment.</p>
           ) : (
             <div className="overflow-x-auto bg-white rounded-xl shadow-lg">
               <table className="min-w-full divide-y divide-gray-200">

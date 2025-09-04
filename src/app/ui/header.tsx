@@ -67,12 +67,12 @@ export default function Header() {
     return (
         <header
             ref={headerRef} // Attach the ref to the header
-            className={`fixed top-0 z-10000 w-full bg-[#f5f5dc] text-gray-800 shadow-lg transition-transform duration-500 py-1 px-[5%] flex flex-row justify-between items-center ${
+            className={`fixed top-0 z-10000 w-full bg-[#f5f5dc] dark:bg-zinc-950 text-gray-800 dark:text-[#ff952aff] shadow-lg transition-transform duration-500 py-1 px-[5%] flex flex-row justify-between items-center ${
                 scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
             }`}
             >
             <Link href="/" className=" relative text-lg font-semibold w-18 h-18 flex items-center justify-center group" title="eventribe, plus proches des événements à venir">
-                <span className="relative z-10 text-base group-hover:text-[#ff952aff] bg-[#f5f5dc] transition-colors duration-300 ease-in-out cursor-pointer">eventribe</span>
+                <span className="relative z-10 text-base group-hover:text-[#ff952aff] bg-[#f5f5dc] dark:bg-zinc-950 transition-colors duration-300 ease-in-out cursor-pointer">eventribe</span>
                 <Image
                 src="/images/SplashPaintOrange.svg"
                 alt="Logo Eventribe"
@@ -98,7 +98,7 @@ export default function Header() {
                     <button
                         type="button"
                         onClick={handleClearSearch}
-                        className="p-1 flex items-center justify-center text-gray-500 hover:text-gray-700 transition-colors cursor-pointer"
+                        className="p-1 flex items-center justify-center text-gray-500 hover:text-gray-700 dark:text-gray-400 transition-colors cursor-pointer"
                         title="Effacer la recherche"
                     >
                         <XCircleIcon className="w-5 h-5 animate-pulse" /> 
@@ -112,9 +112,9 @@ export default function Header() {
             </div>
 
             <nav className="flex flex-row gap-8 items-center">
-                <ul className={`mobile-menu flex items-center gap-8 text-lg font-medium [@media(max-width:1024px)]:flex-col [@media(max-width:1024px)]:absolute [@media(max-width:1024px)]:top-full [@media(max-width:1024px)]:left-0 [@media(max-width:1024px)]:w-full [@media(max-width:1024px)]:bg-[#f5f5dc] [@media(max-width:1024px)]:shadow-lg [@media(max-width:1024px)]:py-4 [@media(max-width:1024px)]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} [@media(min-width:1024px)]:flex`}>
+                <ul className={`mobile-menu flex items-center gap-8 text-lg font-medium [@media(max-width:1024px)]:flex-col [@media(max-width:1024px)]:absolute [@media(max-width:1024px)]:top-full [@media(max-width:1024px)]:left-0 [@media(max-width:1024px)]:w-full [@media(max-width:1024px)]:bg-[#f5f5dc] dark:bg-zinc-950 [@media(max-width:1024px)]:shadow-lg [@media(max-width:1024px)]:py-4 [@media(max-width:1024px)]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} [@media(min-width:1024px)]:flex`}>
                 <li>
-                    <Link href="/events" className="transition-colors duration-300 hover:text-[#ff952aff] whitespace-nowrap py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link href="/events" className="transition-colors duration-300 dark:hover:text-gray-400 hover:text-[#ff952aff] whitespace-nowrap py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
                     Accueil
                     </Link>
                 </li>
@@ -123,20 +123,20 @@ export default function Header() {
                 ) : session ? (
                     <>
                     <li>
-                        <Link href="/my-events" className="relative flex flex-row items-center gap-1 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/my-events" className="relative flex flex-row items-center gap-1 dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
                         <CalendarDaysIcon className="inline-block w-5 h-5" />
                         <span>Mes Inscriptions</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/account" className="relative flex flex-row items-center gap-1 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/account" className="relative flex flex-row items-center gap-1 dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
                             <UserCircleIcon className="inline-block h-5 w-5" />
                             <span>Compte</span>
                         </Link>
                     </li>
                     {session.user.isAdmin && (
                         <li>
-                        <Link href="/admin" className="inline-flex items-center gap-1 transition-colors duration-300 hover:text-[#ff952aff] py-2 group" 
+                        <Link href="/admin" className="inline-flex items-center gap-1 dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2 group" 
                             title="Aller à l'administration"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -151,7 +151,7 @@ export default function Header() {
                     <li>
                         <button
                         onClick={handleSignOut}
-                        className="flex flex-row items-center gap-2 transition-colors duration-300 hover:text-[#ff952aff] py-2 w-full text-left cursor-pointer"
+                        className="flex flex-row items-center gap-2 dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2 w-full text-left cursor-pointer"
                         title="Se déconnecter">
                             <span>Hi {session.user.username} !</span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -165,12 +165,12 @@ export default function Header() {
                 ) : (
                     <>
                     <li>
-                        <Link href="/login" className="transition-colors duration-300 hover:text-[#ff952aff] py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/login" className="dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
                         Connexion
                         </Link>
                     </li>
                     <li>
-                        <Link href="/register" className="transition-colors duration-300 hover:text-[#ff952aff] py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/register" className="dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
                         Inscription
                         </Link>
                     </li>

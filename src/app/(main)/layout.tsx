@@ -11,8 +11,7 @@ export default function MainLayout({
 }) {
   return (
     <> {/* Using a fragment because <html> and <body> are in the global root layout */}
-      <div className="min-h-screen w-full flex flex-col text-[#333] bg-[#f5f5dc] bg-cover bg-fixed bg-center font-sans"
-        style={{ backgroundImage: "url('/images/SplashPaintOrange.svg')" }}> 
+      <div className="min-h-screen w-full flex flex-col text-[#333] dark:text-gray-300 bg-[#f5f5dc] dark:bg-zinc-950 bg-cover bg-fixed bg-center font-sans bg-[url('/images/SplashPaintOrange.svg')] dark:bg-none">
         <Suspense fallback={<div className="text-center py-4">Chargement du menu...</div>}>
           <Header />
         </Suspense>

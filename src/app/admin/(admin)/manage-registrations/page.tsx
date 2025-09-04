@@ -147,7 +147,7 @@ export default function ManageRegistrationsPage() {
   };
 
   if (loading) {
-    return <p className="text-center text-gray-600 text-lg">Chargement des inscriptions...</p>;
+    return <p className="text-center text-gray-700 text-lg">Chargement des inscriptions...</p>;
   }
 
   return (
@@ -161,7 +161,7 @@ export default function ManageRegistrationsPage() {
       )}
 
       {events.length === 0 ? (
-        <p className="text-center text-gray-600 text-lg">Aucun événement avec des inscriptions à gérer pour le moment.</p>
+        <p className="text-center text-gray-700 text-lg">Aucun événement avec des inscriptions à gérer pour le moment.</p>
       ) : (
         <div className="grid grid-cols-1 [@media(min-width:1600px)]:grid-cols-2 gap-10">
           {events.map((event) => (
@@ -172,7 +172,7 @@ export default function ManageRegistrationsPage() {
               >
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900">{event.title}</h2>
-                  <p className="text-gray-600 text-sm mt-1">
+                  <p className="text-gray-700 text-sm mt-1">
                     <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
                     {new Date(event.event_date).toLocaleString('fr-FR', {
                       day: '2-digit',
@@ -205,9 +205,9 @@ export default function ManageRegistrationsPage() {
               {expandedEventId === event.id && (
                 <div id={`participants-table-${event.id}`} className="mt-6">
                   {loadingParticipants === event.id ? (
-                    <p className="text-center text-gray-600">Chargement des participants...</p>
+                    <p className="text-center text-gray-700">Chargement des participants...</p>
                   ) : participants[event.id]?.length === 0 ? (
-                    <p className="text-center text-gray-600">Aucun participant inscrit pour cet événement.</p>
+                    <p className="text-center text-gray-700">Aucun participant inscrit pour cet événement.</p>
                   ) : (
                     <div className="overflow-x-auto">
                       <table className="min-w-full divide-y divide-gray-200">

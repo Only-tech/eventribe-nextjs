@@ -34,9 +34,9 @@ export default async function EventDetailPage({
   const isRegistered = isLoggedIn && userId ? await isUserRegisteredForEvent(userId, id) : false;
 
   return (
-    <div className=" px-3 py-8 bg-[rgb(248,248,236)]/95 rounded-lg lg:rounded-2xl shadow-lg md:p-8 max-w-7xl mx-auto items-center transform transition-transform duration-300 hover:shadow-2xl group">
+    <div className=" px-3 py-8 bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white/95 rounded-lg lg:rounded-2xl shadow-lg md:p-8 max-w-7xl mx-auto items-center transform transition-transform duration-300 hover:shadow-2xl group">
     <div className="lg:flex">  
-      <h1 className="lg:hidden text-3xl md:text-4xl text-center lg:text-start font-extrabold text-gray-900 mb-4">{event.title}</h1>
+      <h1 className="lg:hidden text-3xl md:text-4xl text-center lg:text-start font-extrabold text-gray-900 dark:text-white mb-4">{event.title}</h1>
 
       <div className="relative w-full lg:min-w-sm lg:max-w-md h-55 sm:h-96 mb-6 rounded-lg overflow-hidden">
         <Image
@@ -50,8 +50,8 @@ export default async function EventDetailPage({
 
       <div className="flex flex-col md:flex-row lg:flex-col lg:justify-center lg:pl-6 gap-6 mb-6">
         <div className="min-w-[330px]">
-          <h1 className="hidden lg:flex text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">{event.title}</h1>
-          <p className="text-gray-700 text-lg mb-2">
+          <h1 className="hidden lg:flex text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">{event.title}</h1>
+          <p className="text-gray-700 dark:text-gray-400 text-lg mb-2">
             <CalendarIcon className="inline-block w-5 h-5 mr-1" />{' '}
             {new Date(event.event_date).toLocaleString('fr-FR', {
               day: '2-digit',
@@ -62,16 +62,16 @@ export default async function EventDetailPage({
             })}{' '}
             GMT+2
           </p>
-          <p className="text-gray-700 text-lg mb-2">
+          <p className="text-gray-700 dark:text-gray-400 text-lg mb-2">
             <MapPinIcon className="inline-block w-5 h-5 mr-1" /> {event.location}
           </p>
-          <p className="text-gray-700 text-lg mb-2">
-            <UsersIcon className="inline-block w-6 h-6 mr-1" />
-            <strong className="text-gray-800">Places disponibles :</strong> {remainingSeats}
+          <p className="text-gray-700 dark:text-gray-400 text-lg mb-2">
+            <UsersIcon className="inline-block w-6 h-6 mr-2" />
+            <strong className="text-gray-800 dark:text-white">Places disponibles :</strong> {remainingSeats}
           </p>
         </div>
         <div>
-          <p className="text-justify text-gray-700 leading-relaxed whitespace-pre-line">
+          <p className="text-justify text-gray-700 dark:text-gray-400 leading-relaxed whitespace-pre-line">
             {event.description_long}
           </p>
         </div>
@@ -93,7 +93,7 @@ export default async function EventDetailPage({
             <form action={registerAction.bind(null, userId, id)}>
               <button
                 type="submit"
-                className="h-11 inline-flex items-center justify-center px-5 py-2 mb-8 rounded-full text-base font-medium transition-colors group border-[0.5px] shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer"
+                className="h-11 inline-flex items-center justify-center px-5 py-2 mb-8 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer"
               >
                 <span>S&apos;inscrire</span>
                 <PlusIcon className="inline-block w-4 h-4 group-hover:animate-bounce ml-2" />
@@ -103,7 +103,7 @@ export default async function EventDetailPage({
             <p className="text-red-600 font-bold text-lg rounded-lg p-3 bg-red-100">Complet !</p>
           )
         ) : (
-          <p className="text-gray-600">
+          <p className="text-gray-700 dark:text-gray-500">
             <Link href="/login" className="text-indigo-600 hover:underline">
               Connectez-vous
             </Link>{' '}

@@ -147,7 +147,7 @@ export default function ManageUsersPage() {
   };
 
   if (loading) {
-    return <p className="text-center text-gray-600 text-lg">Chargement des utilisateurs...</p>;
+    return <p className="text-center text-gray-700 text-lg">Chargement des utilisateurs...</p>;
   }
 
   return (
@@ -161,7 +161,7 @@ export default function ManageUsersPage() {
       )}
 
       {users.length === 0 ? (
-        <p className="text-center text-gray-600 text-lg">Aucun utilisateur enregistré pour le moment.</p>
+        <p className="text-center text-gray-700 text-lg">Aucun utilisateur enregistré pour le moment.</p>
       ) : (
         <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
           <table className="min-w-full divide-y divide-gray-200">

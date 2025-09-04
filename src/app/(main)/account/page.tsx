@@ -384,47 +384,47 @@ export default function UserAccountManageEventsPage() {
 
     // Form to create and edit an event
     const renderForm = () => (
-        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-2xl shadow-xl mx-auto bg-[rgb(248,248,236)] sm:mb-15">
-            <h2 className="text-3xl font-bold mb-6 sm:mb-10 text-gray-800 text-center">{action === 'create' ? 'Créer un événement' : 'Modifier l\'événement'}</h2>
+        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-2xl shadow-xl mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white sm:mb-15">
+            <h2 className="text-3xl font-bold mb-6 sm:mb-10 text-gray-800 dark:text-[#ff952aff] text-center">{action === 'create' ? 'Créer un événement' : 'Modifier l\'événement'}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
                 <div className="relative">
-                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 px-1 py-0 ml-4 bg-[rgb(248,248,236)]">Titre</label>
+                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Titre</label>
                     <input type="text" id="title" name="title" value={title ?? ''} onChange={(e) => setTitle(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="eventDate" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 px-1 py-0 ml-4 bg-[rgb(248,248,236)]">Date et heure</label>
+                    <label htmlFor="eventDate" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Date et heure</label>
                     <input type="datetime-local" id="eventDate" name="event_date" value={eventDate ?? ''} onChange={(e) => setEventDate(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 px-1 py-0 ml-4 bg-[rgb(248,248,236)]">Lieu</label>
+                    <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Lieu</label>
                     <input type="text" id="location" value={location ?? ''} onChange={(e) => setLocation(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 px-1 py-0 ml-4 bg-[rgb(248,248,236)]">Places disponibles</label>
+                    <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Places disponibles</label>
                     <input type="number" id="availableSeats" value={availableSeats ?? ''} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative md:col-span-2">
-                    <label htmlFor="descriptionShort" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 px-1 py-0 ml-4 bg-[rgb(248,248,236)]">Description courte</label>
+                    <label htmlFor="descriptionShort" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Description courte</label>
                     <textarea id="descriptionShort" name="description_short" value={descriptionShort ?? ''} onChange={(e) => setDescriptionShort(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" rows={2}></textarea>
                 </div>
                 <div className="relative md:col-span-2">
-                    <label htmlFor="descriptionLong" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 px-1 py-0 ml-4 bg-[rgb(248,248,236)]">Description longue</label>
+                    <label htmlFor="descriptionLong" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Description longue</label>
                     <textarea id="descriptionLong" name="description_long" value={descriptionLong ?? ''} onChange={(e) => setDescriptionLong(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" rows={4}></textarea>
                 </div>
                 <div className="relative ">
-                    <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 px-1 py-0 ml-4 bg-[rgb(248,248,236)]">Image de l&apos;événement</label>
+                    <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Image de l&apos;événement</label>
                     <input
                         type="file"
                         id="image"
                         name="image"
                         accept="image/*"
-                        className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]"
+                        className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 dark:text-gray-400 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]"
                         onChange={handleImageChange}
                         disabled={uploadingImage}
                     />
                     {(previewImage || imageUrl) && (
-                        <div className="mt-4 flex justify-center sm:absolute bg-[rgb(248,248,236)] sm:shadow-[0px_20px_15px_rgba(0,_0,_0,_0.1)] rounded-xl px-2 pb-2">
+                        <div className="mt-4 flex justify-center sm:absolute bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white sm:shadow-[0px_20px_15px_rgba(0,_0,_0,_0.1)] rounded-xl px-2 pb-2">
                             <Image
                                 src={previewImage || normalizeImagePath(imageUrl)}
                                 alt="Aperçu de l'image"
@@ -472,18 +472,18 @@ export default function UserAccountManageEventsPage() {
                 {!isEditingInfo ? (
                     <div
                         onClick={() => setIsEditingInfo(true)}
-                        className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group border-[0.5px] shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] group-hover:bg-[#E8E5D8] hover:border-transparent mx-auto transition-all duration-300 ease-in-out">
+                        className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group border-[0.5px] dark:text-zinc-600  shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] dark:bg-zinc-950 hover:bg-[#E8E5D8] hover:dark:bg-zinc-900 group-hover:dark:bg-zinc-900 group-hover:bg-[#E8E5D8] hover:border-transparent mx-auto transition-all duration-300 ease-in-out">
                         
-                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-3xl sm:text-4xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 mr-6 sm:mr-12 bg-[#F0EEE5] group-hover:bg-[#E8E5D8] border-t-[0.2px] group transition-all duration-300 ease-in-out">
+                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-3xl sm:text-4xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white mr-6 sm:mr-12 bg-[#F0EEE5] dark:bg-zinc-950 group-hover:bg-[#E8E5D8] group-hover:dark:bg-zinc-900 border-t-[0.2px] group transition-all duration-300 ease-in-out">
                             Mon Compte
                         </h2>
                         <h3 className="md:col-span-2 inline-flex items-center text-2xl font-bold mb-3"><FingerPrintIcon className="inline-block w-10 h-10 mr-2" />Mes identifiants</h3>
                         <div className="relative">
-                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] group-hover:bg-[#E8E5D8] transition-colors duration-300">Nom d&apos;utilisateur</p>
+                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-zinc-950 group-hover:bg-[#E8E5D8] group-hover:dark:bg-zinc-900 transition-colors duration-300">Nom d&apos;utilisateur</p>
                             {session && (<p className="block w-full h-12 px-3 pb-2 pt-3 border border-gray-300 text-lg text-start rounded-md shadow-sm"> {session.user.username} </p>)}
                         </div>
                         <div className="relative">
-                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] group-hover:bg-[#E8E5D8] transition-colors duration-300">Adresse mail</p>
+                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-zinc-950 group-hover:bg-[#E8E5D8] group-hover:dark:bg-zinc-900 transition-colors duration-300">Adresse mail</p>
                             {session && (<p className="block w-full h-12 px-3 pb-2 pt-3 border border-gray-300 text-lg text-start rounded-md shadow-sm"> {session.user.email} </p>)}
                         </div>
                         <div className="md:col-span-2 h-full mx-auto w-full max-w-[90%] border-t-[0.2px] group-hover:border-gray-400"></div>
@@ -501,8 +501,8 @@ export default function UserAccountManageEventsPage() {
 
                     </div>
                 ) : (
-                    <div className="relative max-w-md mx-auto bg-[rgb(248,248,236)] p-8 rounded-lg shadow-lg transition-all duration-300 ease-in-out">
-                        <h2 className="absolute z-10 px-3 py-1 rounded-t-2xl text-xl right-0 top-0 -translate-y-1/2 font-bold text-gray-500 mr-8 bg-[rgb(248,248,236)]">
+                    <div className="relative max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-8 rounded-lg shadow-lg transition-all duration-300 ease-in-out">
+                        <h2 className="absolute z-10 px-3 py-1 rounded-t-2xl text-xl right-0 top-0 -translate-y-1/2 font-bold text-gray-500 mr-8 bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-gray-400">
                             Mon Compte
                         </h2>
                         <button
@@ -514,7 +514,7 @@ export default function UserAccountManageEventsPage() {
                         >
                             &times;
                         </button>
-                        <h3 className="flex items-center justify-center text-2xl font-bold text-gray-900 mb-6">
+                        <h3 className="flex items-center justify-center text-2xl font-bold text-gray-900 dark:text-white mb-6">
                             <FingerPrintIcon className="w-8 h-8 mr-2" />
                             <span className="text-center">Modifier mes identifiants</span>
                         </h3>
@@ -557,7 +557,7 @@ export default function UserAccountManageEventsPage() {
             </div>
             
             <div className="flex flex-col sm:flex-row justify-evenly gap-5 items-center mb-6 mt-8">
-                <h2 className="text-3xl font-extrabold text-gray-900">Mes événements</h2>
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff]">Mes événements</h2>
                 <button
                     onClick={() => {
                         setAction('create');
@@ -580,9 +580,9 @@ export default function UserAccountManageEventsPage() {
             </div>
 
             {loading ? (
-                <p className="text-center text-xl text-gray-700">Chargement des événements...</p>
+                <p className="text-center text-xl text-gray-700 dark:text-gray-300">Chargement des événements...</p>
             ) : events.length === 0 ? (
-                <p className="text-center text-gray-600 text-lg">
+                <p className="text-center text-gray-700 dark:text-gray-300 text-lg">
                     Vous n&apos;avez pas encore créé d&apos;événements.
                 </p>
             ) : (
@@ -590,7 +590,7 @@ export default function UserAccountManageEventsPage() {
             // ------- EVENTS ------------
             <div className="grid grid-cols-1 [@media(min-width:1600px)]:grid-cols-2 gap-10">
             {events.map((event) => (
-                <div key={event.id} className="max-w-5xl w-full bg-white/95 rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
+                <div key={event.id} className="max-w-5xl w-full bg-white/95 dark:bg-zinc-900 dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
                 
                 
                 <div
@@ -609,15 +609,15 @@ export default function UserAccountManageEventsPage() {
 
                     <div className="flex flex-row justify-between items-center max-w-2xl w-full">
                         <div>
-                            <h2 className="text-2xl font-bold text-gray-900">{event.title}</h2>
-                            <p className="text-gray-600 text-sm mt-1">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
+                            <p className="text-gray-700 dark:text-gray-500 text-sm mt-1">
                                 <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
                                 {new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
                                 <span className="ml-4">
                                 <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
                                 </span>
                             </p>
-                            <p className="text-gray-700 mt-2">
+                            <p className="text-gray-700 dark:text-gray-400 mt-2">
                                 Inscrits: {event.registered_count} / {event.available_seats}
                             </p>
                         </div>
@@ -625,21 +625,21 @@ export default function UserAccountManageEventsPage() {
                         <div className="flex flex-col gap-2 border-l-[0.2px] border-gray-300 pl-2 ml-1 sm:ml-3">
                             <button
                                 onClick={() => handleEditClick(event)}
-                                className="text-indigo-600 hover:text-indigo-900 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                                className="text-indigo-600 hover:text-indigo-900 p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors"
                                 title="Modifier"
                             >
                                 <PencilIcon className="w-6 h-6" />
                             </button>
                             <button
                                 onClick={() => handleDelete(event.id)}
-                                className="text-red-600 hover:text-red-900 p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
+                                className="text-red-600 hover:text-red-900 p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors"
                                 title="Supprimer"
                             >
                                 <TrashIcon className="w-6 h-6" />
                             </button>
 
                             <button
-                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition-colors flex items-center justify-center"
+                            className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors flex items-center justify-center"
                             aria-expanded={expandedEventId === event.id}
                             aria-controls={`participants-table-${event.id}`}
                             title="Voir les participants"
@@ -657,13 +657,13 @@ export default function UserAccountManageEventsPage() {
               {expandedEventId === event.id && (
                 <div id={`participants-table-${event.id}`} className="mt-6">
                   {loadingParticipants === event.id ? (
-                    <p className="text-center text-gray-600">Chargement des participants...</p>
+                    <p className="text-center text-gray-700 dark:text-gray-500">Chargement des participants...</p>
                   ) : participants[event.id]?.length === 0 ? (
-                    <p className="text-center text-gray-600">Aucun participant inscrit pour cet événement.</p>
+                    <p className="text-center text-gray-700 dark:text-gray-500">Aucun participant inscrit pour cet événement.</p>
                   ) : (
                     <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-gray-200">
-                        <thead className="bg-gray-50">
+                      <table className="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden">
+                        <thead className="bg-gray-50 dark:bg-zinc-800">
                           <tr>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom d&apos;utilisateur</th>
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
@@ -671,12 +671,12 @@ export default function UserAccountManageEventsPage() {
                             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                           </tr>
                         </thead>
-                        <tbody className="bg-white divide-y divide-gray-200">
+                        <tbody className="bg-white dark:bg-zinc-700 divide-y divide-gray-200">
                           {participants[event.id]?.map((participant) => (
                             <tr key={participant.user_id}>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{participant.username}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{participant.email}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.username}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500  dark:text-gray-400">{participant.email}</td>
+                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500  dark:text-gray-400">
                                 {new Date(participant.registered_at).toLocaleString('fr-FR', {
                                   day: '2-digit',
                                   month: '2-digit',
@@ -721,7 +721,7 @@ export default function UserAccountManageEventsPage() {
         <div className="w-full mx-auto">
 
             {authStatus === 'loading' && (
-                <p className="text-center text-xl text-gray-700 py-10">Chargement de la session...</p>
+                <p className="text-center text-xl text-gray-700 dark:text-gray-400 py-10">Chargement de la session...</p>
             )}
 
             {message && (

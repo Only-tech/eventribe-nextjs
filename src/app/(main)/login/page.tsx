@@ -49,8 +49,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-[rgb(248,248,236)] p-8 rounded-lg shadow-lg">
-      <h1 className="flex flex-col items-center justify-center text-3xl font-bold text-gray-900 mb-8">
+    <div className="max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-8 rounded-lg shadow-lg">
+      <h1 className="flex flex-col items-center justify-center text-3xl font-bold text-gray-900 dark:text-white mb-8">
           <FingerPrintIcon className="w-auto h-16  mb-4" />
           <span>Connexion</span>
       </h1>
@@ -85,7 +85,7 @@ export default function LoginPage() {
           <button
             type="button" // Important to unsubmit the form
             onClick={() => setShowPassword(!showPassword)} 
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 cursor-pointer"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-gray-400 cursor-pointer"
             aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
           >
             {showPassword ? (
@@ -97,12 +97,12 @@ export default function LoginPage() {
         </div>
         <button
           type="submit"
-          className="w-full px-5 py-2 rounded-full text-base font-medium transition-colors border-[0.5px] shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer"
+          className="w-full px-5 py-2 rounded-full text-base font-medium transition-colors border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer"
         >
           Se connecter
         </button>
       </form>
-      <p className="mt-6 text-center text-gray-600">
+      <p className="mt-6 text-center text-gray-700 dark:text-gray-500">
         Pas encore de compte ?{' '}
         <Link href="/register" className="text-indigo-600 hover:underline">
           Inscrivez-vous ici

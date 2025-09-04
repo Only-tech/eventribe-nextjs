@@ -25,12 +25,12 @@ export default async function Page({
 
   return (
     <main>
-      <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-15 text-center">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-15 text-center">
         {query ? `Résultats de recherche pour "${query}"` : 'Découvrez les événements à venir'}
       </h1>
 
       {events.length === 0 ? (
-        <p className="text-center text-gray-600 text-lg">
+        <p className="text-center text-gray-700 dark:text-gray-500 text-lg">
           Aucun événement n&apos;est disponible pour le moment. Revenez plus tard !
         </p>
       ) : (
@@ -42,7 +42,7 @@ export default async function Page({
       )}
 
       <div className="mt-20">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-5 border-b-1 pb-2">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2">
           Les intemporels
         </h1>
         <Carousel imageUrls={imageUrls} />

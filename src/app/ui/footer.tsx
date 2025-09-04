@@ -12,11 +12,11 @@ export default function Footer() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   return (
-    <footer className="bg-[#f5f5dc] text-gray-700 pt-10 pb-2 w-full">
+    <footer className="bg-[#f5f5dc] dark:bg-zinc-950 text-gray-700 dark:text-gray-400 pt-10 pb-2 w-full">
       <div className="flex flex-wrap gap-20 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
         {/* About us */}
         <div className="max-w-lg @md:max-w-[300px] text-justify [@media(max-width:849px)]:order-3 [@media(max-width:849px)]:justify-center mx-auto">
-          <h3 className="text-2xl text-gray-800 border-b-1 font-bold pb-1 mb-6">À propos de nous</h3>
+          <h3 className="text-2xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-6">À propos de nous</h3>
           <p>
             eventribe connecte organisateurs et passionnés à travers des rencontres humaines et projets culturels.
             Que vous soyez artiste, pro ou curieux, la plateforme vous accompagne : création d’événements, inscriptions, suivi et bien plus encore.
@@ -26,7 +26,7 @@ export default function Footer() {
 
         {/* Navigation */}
         <div className="[@media(max-width:849px)]:order-1 [@media(max-width:849px)]:justify-center mx-auto">
-          <h3 className="text-2xl text-gray-800 border-b-1 font-bold pb-1 mb-6">Navigation</h3>
+          <h3 className="text-2xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-6">Navigation</h3>
           <ul className="flex flex-col space-y-2 font-medium">
             <li><Link href="/" className="hover:text-[#ff952aff] transition duration-300">Accueil</Link></li>
             {session ? (
@@ -51,7 +51,7 @@ export default function Footer() {
         {/* Partners */}
         <div className="[@media(max-width:849px)]:order-2 [@media(max-width:849px)]:justify-center mx-auto">
           <div className="mb-6">
-            <h3 className="text-2xl text-gray-800 border-b-1 font-bold pb-1 mb-4">Nos partenaires</h3>
+            <h3 className="text-2xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-4">Nos partenaires</h3>
             <div className="flex flex-col gap-2">
               <figure className="flex flex-row h-14 gap-4"> 
                 <Image
@@ -108,14 +108,14 @@ export default function Footer() {
           >
             Contactez-nous
           </button>
-          <Link href="/" className="relative text-2xl text font-semibold mb-2 md:mb-0 w-25 h-25 flex items-center justify-center group mx-auto [@media(max-width:849px)]:order-4" title="eventribe, plus proches des événements à venir">
-              <span className="relative z-10 group-hover:text-[#ff952aff] bg-[#f5f5dc] transition-colors duration-300 ease-in-out cursor-pointer">eventribe</span>
+          <Link href="/" className="relative text-xl text font-semibold mb-2 md:mb-0 w-20 h-20 flex items-center justify-center group mx-auto [@media(max-width:849px)]:order-4" title="eventribe, plus proches des événements à venir">
+              <span className="relative z-10 group-hover:text-[#ff952aff] bg-[#f5f5dc] dark:bg-zinc-950 dark:text-[#ff952aff] transition-colors duration-300 ease-in-out cursor-pointer">eventribe</span>
               <Image
               className="absolute inset-0 filter grayscale transition duration-300 ease-in-out group-hover:filter-none hover:filter-none animate-pulse group-hover:animate-none"
               src="/images/SplashPaintOrange.svg" 
               alt="Eventribe Logo"
-              width={100} 
-              height={100}
+              width={80} 
+              height={80}
               />
           </Link>
         </div>

@@ -125,7 +125,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-[rgb(248,248,236)] rounded-lg shadow-lg p-6 w-full max-w-md relative group"
+        className="bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white rounded-lg shadow-lg p-6 w-full max-w-md relative group"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -136,7 +136,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         >
           &times;
         </button>
-        <h1 className="flex items-center justify-center text-2xl sm:text-3xl font-bold text-gray-900 mb-8">
+        <h1 className="flex items-center justify-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-8">
           <EnvelopeIcon className="w-8 h-8 mr-2" />
           <span>Contactez-nous</span>
         </h1>
@@ -173,7 +173,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 htmlFor="message"
                 className={`absolute pointer-events-none transition-all duration-200 ease-in-out px-3 ${
                   isMessageLabelActive
-                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[rgb(248,248,236)]'
+                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white'
                     : 'top-1/12 -translate-y-1/12 text-base text-gray-500'
                 }`}
               >
@@ -200,7 +200,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full px-5 py-2 [@media(min-width:449px)]:w-32 h-11 inline-flex items-center justify-center rounded-full text-base font-medium transition-colors group border-[0.5px] shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer"
+              className="w-full px-5 py-2 [@media(min-width:449px)]:w-32 h-11 inline-flex items-center justify-center rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer"
               disabled={loading}
             >
               {loading ? (

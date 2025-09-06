@@ -24,7 +24,7 @@ export default async function Page({
  
 
   return (
-    <main>
+    <div>
       <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-15 text-center">
         {query ? `Résultats de recherche pour "${query}"` : 'Découvrez les événements à venir'}
       </h1>
@@ -34,7 +34,7 @@ export default async function Page({
           Aucun événement n&apos;est disponible pour le moment. Revenez plus tard !
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-8 xl:gap-12 mx-auto w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-8 xl:gap-12 w-full">
           {events.map((event: Event) => (
             <EventCard key={event.id} event={event} />
           ))}
@@ -47,6 +47,6 @@ export default async function Page({
         </h1>
         <Carousel imageUrls={imageUrls} />
       </div>
-    </main>
+    </div>
   );
 }

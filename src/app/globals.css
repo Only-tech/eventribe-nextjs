@@ -2,7 +2,7 @@
 @import 'aos/dist/aos.css';
 
 :root {
-  --background: #ffffff;
+  --background: #f5f5dc;
   --foreground: #171717;
 }
 
@@ -15,7 +15,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #222222;
     --foreground: #ededed;
   }
 }
@@ -45,26 +45,29 @@ button:active {
   transform: scale(0.95);
 }
 
+:root {
+  --h-scrollbar-thumb-color: #ff952aff;
+  --h-scrollbar-track-color: transparent;
+}
+
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f5f5dc;
-}
-
-.lateralScrollBar::-webkit-scrollbar-track {
-  background: #f4f7f6;
+  background: var(--h-scrollbar-track-color);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff952aff;
-  border-radius: 5px;
+  background: transparent !important;
+  border-left: 2px solid var(--h-scrollbar-thumb-color);
+  
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #eee;
-  border: 2px solid #111827;
+  background: #f5f5dc !important;
+  border: 2px solid #ff952aff;
+  border-radius: 5px;
 }
 
 

@@ -138,21 +138,21 @@ export default function MyEventsPage() {
         <>
           <p className="text-center text-gray-700 dark:text-gray-500 text-lg">Vous n&apos;êtes inscrit à aucun événement pour le moment.</p>
           <div className="text-center mt-4">
-            <Link href="/" className="inline-block px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out">
-              Découvrir des événements&nbsp;
-              <ArrowDownIcon className="inline-block w-4 h-4 -translate-y-0.5 group-hover:animate-bounce" />
+            <Link href="/" className="inline-flex justify-center items-center px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out">
+              Découvrir des événements
+              <ArrowDownIcon className="inline-block ml-1 w-4 h-4 -translate-y-0.5 group-hover:animate-bounce" />
             </Link>
           </div>
         </>
       ) : (
-        <div className="grid grid-cols-1 [@media(min-width:1600px)]:grid-cols-2 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(660px,1fr))] gap-10">
           {myEvents.map((event) => {
 
             const imageSrc = normalizeImagePath(event.image_url);
 
 
             return (
-              <div key={event.id} className="flex  items-center max-w-5xl w-full bg-white/95 dark:bg-zinc-900 dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
+              <div key={event.id} className="flex  items-center max-w-2xl w-full bg-white/95 dark:bg-[#1E1E1E] dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
                 <div className="hidden md:block relative w-80 h-50 overflow-hidden rounded-lg mr-6">
                   <Image
                     src={imageSrc}
@@ -166,27 +166,27 @@ export default function MyEventsPage() {
                   />        
                 </div>
 
-                <div className="flex flex-row justify-between items-center max-w-2xl w-full">
-                  <div>
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
+                <div className="flex flex-col  items-center max-w-2xl w-full">
+                  <div className="w-full">
+                    <h2 className="text-2xl text-center min-[500px]:text-start font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
                     <p className="text-gray-700 dark:text-gray-500 text-sm mt-1">
                         <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
                         {new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})} GMT+1
-                        <span className="ml-4">
-                        <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
-                        </span>
                     </p>
-                    <p className="text-gray-700 dark:text-gray-400 mt-2  mb-4 flex-grow">{event.description_short}</p>
-                    <p className="text-sm text-gray-500 mb-4">Inscrit le {new Date(event.registered_at).toLocaleString('fr-FR', {
+                    <p className="text-gray-700 dark:text-gray-500 text-sm mt-1">
+                        <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
+                    </p>
+                    <p className="text-gray-700 text-center min-[500px]:text-start dark:text-gray-400 mt-2  mb-4 flex-grow">{event.description_short}</p>
+                  </div>
+                  <div className="flex  gap-2 items-center justify-between w-full">
+                    <p className="text-sm text-gray-500 ">Inscrit le {new Date(event.registered_at).toLocaleString('fr-FR', {
                       day: '2-digit',
                       month: '2-digit',
                       year: 'numeric',
                       hour: '2-digit',
                       minute: '2-digit'
                     })}</p>
-                  </div>
-
-                  <div className="flex flex-col gap-2 border-l-[0.2px] border-gray-300 pl-2 ml-1 sm:ml-3">
+                    <div className="flex gap-2">
                     <button
                       onClick={() => handleUnregister(event.id)}
                       className="text-red-600 hover:text-red-900 p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors"
@@ -205,7 +205,9 @@ export default function MyEventsPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
                       </svg>
                     </Link>
+                    </div>
                   </div>
+
                 </div>
               </div>
             );

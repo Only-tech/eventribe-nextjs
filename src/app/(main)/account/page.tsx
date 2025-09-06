@@ -384,36 +384,36 @@ export default function UserAccountManageEventsPage() {
 
     // Form to create and edit an event
     const renderForm = () => (
-        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-2xl shadow-xl mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white sm:mb-15">
+        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-2xl shadow-xl mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white sm:mb-15 transition-all dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
             <h2 className="text-3xl font-bold mb-6 sm:mb-10 text-gray-800 dark:text-[#ff952aff] text-center">{action === 'create' ? 'Créer un événement' : 'Modifier l\'événement'}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
                 <div className="relative">
-                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Titre</label>
+                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Titre</label>
                     <input type="text" id="title" name="title" value={title ?? ''} onChange={(e) => setTitle(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="eventDate" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Date et heure</label>
+                    <label htmlFor="eventDate" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Date et heure</label>
                     <input type="datetime-local" id="eventDate" name="event_date" value={eventDate ?? ''} onChange={(e) => setEventDate(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Lieu</label>
+                    <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Lieu</label>
                     <input type="text" id="location" value={location ?? ''} onChange={(e) => setLocation(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Places disponibles</label>
+                    <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Places disponibles</label>
                     <input type="number" id="availableSeats" value={availableSeats ?? ''} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative md:col-span-2">
-                    <label htmlFor="descriptionShort" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Description courte</label>
+                    <label htmlFor="descriptionShort" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Description courte</label>
                     <textarea id="descriptionShort" name="description_short" value={descriptionShort ?? ''} onChange={(e) => setDescriptionShort(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" rows={2}></textarea>
                 </div>
                 <div className="relative md:col-span-2">
-                    <label htmlFor="descriptionLong" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Description longue</label>
+                    <label htmlFor="descriptionLong" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Description longue</label>
                     <textarea id="descriptionLong" name="description_long" value={descriptionLong ?? ''} onChange={(e) => setDescriptionLong(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" rows={4}></textarea>
                 </div>
                 <div className="relative ">
-                    <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-zinc-900">Image de l&apos;événement</label>
+                    <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-gray-400 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Image de l&apos;événement</label>
                     <input
                         type="file"
                         id="image"
@@ -424,7 +424,7 @@ export default function UserAccountManageEventsPage() {
                         disabled={uploadingImage}
                     />
                     {(previewImage || imageUrl) && (
-                        <div className="mt-4 flex justify-center sm:absolute bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white sm:shadow-[0px_20px_15px_rgba(0,_0,_0,_0.1)] rounded-xl px-2 pb-2">
+                        <div className="mt-4 flex justify-center sm:absolute bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white sm:shadow-[0px_20px_15px_rgba(0,_0,_0,_0.1)] rounded-xl px-2 pb-2">
                             <Image
                                 src={previewImage || normalizeImagePath(imageUrl)}
                                 alt="Aperçu de l'image"
@@ -472,18 +472,18 @@ export default function UserAccountManageEventsPage() {
                 {!isEditingInfo ? (
                     <div
                         onClick={() => setIsEditingInfo(true)}
-                        className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group border-[0.5px] dark:text-zinc-600  shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] dark:bg-zinc-950 hover:bg-[#E8E5D8] hover:dark:bg-zinc-900 group-hover:dark:bg-zinc-900 group-hover:bg-[#E8E5D8] hover:border-transparent mx-auto transition-all duration-300 ease-in-out">
+                        className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group border-[0.5px] dark:text-zinc-600  shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] dark:bg-[#1F1F1F] hover:bg-[#E8E5D8] hover:dark:bg-[#1E1E1E] group-hover:dark:bg-[#1E1E1E] group-hover:bg-[#E8E5D8] hover:border-transparent mx-auto transition-all duration-300 ease-in-out">
                         
-                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-3xl sm:text-4xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white mr-6 sm:mr-12 bg-[#F0EEE5] dark:bg-zinc-950 group-hover:bg-[#E8E5D8] group-hover:dark:bg-zinc-900 border-t-[0.2px] group transition-all duration-300 ease-in-out">
+                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-3xl sm:text-4xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white mr-6 sm:mr-12 bg-[#F0EEE5] dark:bg-[#1F1F1F] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] border-t-[0.2px] group transition-all duration-300 ease-in-out">
                             Mon Compte
                         </h2>
                         <h3 className="md:col-span-2 inline-flex items-center text-2xl font-bold mb-3"><FingerPrintIcon className="inline-block w-10 h-10 mr-2" />Mes identifiants</h3>
                         <div className="relative">
-                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-zinc-950 group-hover:bg-[#E8E5D8] group-hover:dark:bg-zinc-900 transition-colors duration-300">Nom d&apos;utilisateur</p>
+                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-[#1F1F1F] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Nom d&apos;utilisateur</p>
                             {session && (<p className="block w-full h-12 px-3 pb-2 pt-3 border border-gray-300 text-lg text-start rounded-md shadow-sm"> {session.user.username} </p>)}
                         </div>
                         <div className="relative">
-                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-zinc-950 group-hover:bg-[#E8E5D8] group-hover:dark:bg-zinc-900 transition-colors duration-300">Adresse mail</p>
+                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-[#1F1F1F] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Adresse mail</p>
                             {session && (<p className="block w-full h-12 px-3 pb-2 pt-3 border border-gray-300 text-lg text-start rounded-md shadow-sm"> {session.user.email} </p>)}
                         </div>
                         <div className="md:col-span-2 h-full mx-auto w-full max-w-[90%] border-t-[0.2px] group-hover:border-gray-400"></div>
@@ -501,8 +501,8 @@ export default function UserAccountManageEventsPage() {
 
                     </div>
                 ) : (
-                    <div className="relative max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-8 rounded-lg shadow-lg transition-all duration-300 ease-in-out">
-                        <h2 className="absolute z-10 px-3 py-1 rounded-t-2xl text-xl right-0 top-0 -translate-y-1/2 font-bold text-gray-500 mr-8 bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-gray-400">
+                    <div className="relative max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8 rounded-lg shadow-lg transition-all duration-300 ease-in-out">
+                        <h2 className="absolute z-10 px-3 py-1 rounded-t-2xl text-xl right-0 top-0 -translate-y-1/2 font-bold text-gray-500 mr-8 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-400">
                             Mon Compte
                         </h2>
                         <button
@@ -573,7 +573,7 @@ export default function UserAccountManageEventsPage() {
                         setImageFile(null);
                         setMessage('');
                     }}
-                    className="h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 cursor-pointer duration-300 ease-in-out group">
+                    className="h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-all border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 cursor-pointer duration-300 ease-in-out group">
               <PlusIcon className="inline-block w-4 h-4 mr-2 group-hover:animate-bounce" />
               <span>Créer un événement</span>
                 </button>
@@ -588,9 +588,9 @@ export default function UserAccountManageEventsPage() {
             ) : (
 
             // ------- EVENTS ------------
-            <div className="grid grid-cols-1 [@media(min-width:1600px)]:grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 min-[1600px]:grid-cols-2 gap-10">
             {events.map((event) => (
-                <div key={event.id} className="max-w-5xl w-full bg-white/95 dark:bg-zinc-900 dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
+                <div key={event.id} className="max-w-5xl w-full bg-white/95 dark:bg-[#1E1E1E] dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
                 
                 
                 <div

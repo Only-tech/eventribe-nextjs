@@ -12,7 +12,7 @@ export default function Footer() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   return (
-    <footer className="bg-[#f5f5dc] dark:bg-zinc-950 text-gray-700 dark:text-gray-400 pt-10 pb-2 w-full">
+    <footer className="bg-[#f5f5dc] dark:bg-[#1E1E1E] text-gray-700 dark:text-gray-400 pt-10 pb-2 w-full">
       <div className="flex flex-wrap gap-20 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
         {/* About us */}
         <div className="max-w-lg @md:max-w-[300px] text-justify [@media(max-width:849px)]:order-3 [@media(max-width:849px)]:justify-center mx-auto">
@@ -104,12 +104,12 @@ export default function Footer() {
           {/* Contact button */}
           <button
             onClick={() => setIsContactModalOpen(true)}
-            className="fixed z-1000 bottom-0 left-10 bg-[#ff952aff] text-xl font-semibold px-8 py-2 rounded-t-full text-gray-900 hover:text-[#ff952aff] transition-colors group border-0 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] hover:bg-gray-900 cursor-pointer duration-300 ease-in-out"
+            className="fixed z-1000 bottom-0 left-10 bg-[#ff952aff] text-xl font-semibold px-8 py-2 rounded-t-full text-gray-900 hover:text-[#ff952aff] transition-all group border-0 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] hover:bg-gray-900 cursor-pointer duration-300 ease-in-out"
           >
             Contactez-nous
           </button>
-          <Link href="/" className="relative text-xl text font-semibold mb-2 md:mb-0 w-20 h-20 flex items-center justify-center group mx-auto [@media(max-width:849px)]:order-4" title="eventribe, plus proches des événements à venir">
-              <span className="relative z-10 group-hover:text-[#ff952aff] bg-[#f5f5dc] dark:bg-zinc-950 dark:text-[#ff952aff] transition-colors duration-300 ease-in-out cursor-pointer">eventribe</span>
+          <Link href="/" className="relative text-lg text font-semibold mb-2 md:mb-0 w-20 h-20 flex items-center justify-center group mx-auto [@media(max-width:849px)]:order-4" title="eventribe, plus proches des événements à venir">
+              <span className="relative z-10 group-hover:text-[#ff952aff] bg-[#f5f5dc] dark:bg-[#222222] dark:text-[#ff952aff] transition-colors duration-300 ease-in-out cursor-pointer">eventribe</span>
               <Image
               className="absolute inset-0 filter grayscale transition duration-300 ease-in-out group-hover:filter-none hover:filter-none animate-pulse group-hover:animate-none"
               src="/images/SplashPaintOrange.svg" 

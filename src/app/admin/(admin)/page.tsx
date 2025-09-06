@@ -22,7 +22,7 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="p-3">
-      <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center">Tableau de bord Administrateur</h1>
+      <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Tableau de bord Administrateur</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {/* Total Events Card */}

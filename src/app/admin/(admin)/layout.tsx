@@ -26,7 +26,7 @@ export default async function AdminLayout({
 
   return (
     <> {/* Using a fragment because <html> and <body> are in the global root layout */}
-      <div className="min-h-screen w-full flex flex-col text-[#333] bg-[#f4f7f6] bg-cover bg-fixed bg-center font-sans"
+      <div className="admin min-h-screen w-full flex flex-col text-[#333] bg-[#f4f7f6] bg-cover bg-fixed bg-center font-sans"
           style={{ backgroundImage: "url('/images/SplashPaint.svg')" }}> 
         <AdminHeader />
         <main className="flex-grow max-w-[98%] sm:max-w-[95%] xl:max-w-[90%] w-full py-8 mx-auto mt-[80px]">

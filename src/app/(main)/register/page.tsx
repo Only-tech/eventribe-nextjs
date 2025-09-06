@@ -1,6 +1,6 @@
 'use client'; 
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
@@ -15,9 +15,21 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+    // const [formStatus, setFormStatus] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
+
+  // Clean status
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage('');
+      }, 5000); 
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -27,8 +39,11 @@ export default function RegisterPage() {
     if (password !== confirmPassword) {
       setMessage('Les mots de passe ne correspondent pas.');
       setIsSuccess(false);
+      setLoading(false);
       return;
     }
+
+    setLoading(true);
 
     try {
       const response = await fetch('/api/auth/register', {
@@ -44,19 +59,25 @@ export default function RegisterPage() {
       if (response.ok) {
         setMessage(data.message);
         setIsSuccess(true);
+        setLoading(false);
+         setTimeout(() => {
+          router.push('/login');
+        }, 1500);
       } else {
         setMessage(data.message || "Erreur d'inscription. Veuillez réessayer.");
         setIsSuccess(false);
+        setLoading(false);
       }
     } catch (error) {
       console.error('Erreur lors de la soumission du formulaire d\'inscription:', error);
       setMessage('Une erreur est survenue. Veuillez réessayer plus tard.');
       setIsSuccess(false);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-8 rounded-lg shadow-lg">
+    <div className="max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8 rounded-lg shadow-lg dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
       <h1 className="flex flex-col items-center justify-center text-3xl font-bold text-gray-900 dark:text-white mb-8">
           <FingerPrintIcon className="w-auto h-16  mb-4" />
           <span>Inscription</span>
@@ -139,9 +160,23 @@ export default function RegisterPage() {
         <button
           type="submit"
           className="h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer w-full"
+           disabled={loading}
         >
+          {loading ? (
+          <>
+            <span>Inscription</span>
+            <svg viewBox="0 0 50 50" className="inline-block w-6 h-6 ml-2">
+              <circle cx="25" cy="25" r="20" stroke="#ff952aff" strokeWidth="5" fill="none" strokeLinecap="round" strokeDasharray="30 70">
+                <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" from="0 25 25" to="360 25 25" />
+              </circle>
+            </svg>
+          </>
+        ) : (
+          <>
           <span>S&apos;inscrire</span>
           <PlusIcon className="h-4 w-4 ml-2 group-hover:animate-bounce"/>
+          </>
+        )}
         </button>
       </form>
       <p className="mt-6 text-center text-gray-700 dark:text-gray-500">

@@ -34,7 +34,7 @@ export default async function EventDetailPage({
   const isRegistered = isLoggedIn && userId ? await isUserRegisteredForEvent(userId, id) : false;
 
   return (
-    <div className=" px-3 py-8 bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white/95 rounded-lg lg:rounded-2xl shadow-lg md:p-8 max-w-7xl mx-auto items-center transform transition-transform duration-300 hover:shadow-2xl group">
+    <div className=" px-3 py-8 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/95 rounded-lg lg:rounded-2xl shadow-lg md:p-8 max-w-7xl mx-auto items-center transform transition-transform duration-300 hover:shadow-2xl group dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
     <div className="lg:flex">  
       <h1 className="lg:hidden text-3xl md:text-4xl text-center lg:text-start font-extrabold text-gray-900 dark:text-white mb-4">{event.title}</h1>
 

@@ -14,7 +14,7 @@ export default function ConfirmationModal({ isOpen, message, onConfirm, onCancel
 
   return (
     <div className="fixed inset-0 bg-black/65 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
+      <div className="bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4">
         <p className="text-lg font-semibold text-gray-800 dark:text-gray-300 mb-6 text-center">{message}</p>
         <div className="flex justify-center gap-4">
           <button

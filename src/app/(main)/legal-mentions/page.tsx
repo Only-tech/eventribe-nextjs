@@ -14,11 +14,11 @@ export default function LegalMentionsPage() {
 
   return (
     <>
-      <section className="max-w-4xl mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-8 rounded-lg shadow-lg">
+      <section className="max-w-4xl mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-300 p-8 rounded-lg shadow-lg dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
         <h1 className="text-4xl font-extrabrabold text-gray-900 dark:text-white mb-6 text-center">Mentions Légales</h1>
 
         <div className="mb-8">
-          <h2 className="section-title text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="section-title text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="section-number">1.</span> <span className="section-text">Informations Légales</span>
           </h2>
           <p className="mb-2"><strong>Nom du Site Web :</strong> eventribe</p>
@@ -33,14 +33,14 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-3">2. Hébergement</h2>
+          <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">2. Hébergement</h2>
           <p className="mb-2"><strong>Hébergeur :</strong> DigitalOcean</p>
           <p className="mb-2"><strong>Adresse de l&apos;hébergeur :</strong> New York, États-Unis</p>
           <p className="mb-2"><strong>Téléphone de l&apos;hébergeur :</strong> +1 1 23 45 67 89</p>
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">3.</span>
             <span>Propriété Intellectuelle</span>
           </h2>
@@ -49,7 +49,7 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">4.</span> <span>Limitations de Responsabilité</span>
           </h2>
           <p className="mb-2">eventribe ne pourra être tenu responsable des dommages directs et indirects causés au matériel de l&apos;utilisateur, lors de l&apos;accès au site eventribe, et résultant soit de l&apos;utilisation d&apos;un matériel ne répondant pas aux spécifications indiquées au point 4, soit de l&apos;apparition d&apos;un bug ou d&apos;une incompatibilité.</p>
@@ -59,7 +59,7 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">5.</span>
             <span>Gestion des Données Personnelles</span>
           </h2>
@@ -70,7 +70,7 @@ export default function LegalMentionsPage() {
         <div></div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">6.</span>
             <span>Liens Hypertextes et Cookies</span>
           </h2>
@@ -80,7 +80,7 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">7.</span>
             <span>Droit Applicable et Attribution de Juridiction</span>
           </h2>
@@ -92,7 +92,7 @@ export default function LegalMentionsPage() {
       </section>
 
 
-      <section id="politique-confidentialite" className="max-w-4xl mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-20 px-8 mt-200 rounded-lg shadow-lg">
+      <section id="politique-confidentialite" className="max-w-4xl mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-300 p-20 px-8 mt-200 rounded-lg shadow-lg dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
         <h1 className="text-4xl font-extrabrabold text-gray-900 dark:text-white mb-8 text-center">Politique de Confidentialité</h1>
 
         <p className="mb-4">Dernière mise à jour : {lastUpdateDate}</p>
@@ -100,7 +100,7 @@ export default function LegalMentionsPage() {
         <p className="mb-8">Nous nous engageons à protéger votre vie privée. Cette section détaille comment nous collectons, utilisons et protégeons les informations personnelles que vous nous fournissez sur eventribe.</p>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">1.</span>
             <span>Données collectées</span>
           </h2>
@@ -114,7 +114,7 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">2.</span>
             <span>Finalité de la collecte</span>
           </h2>
@@ -130,7 +130,7 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">3.</span>
             <span>Destinataires des données</span>
           </h2>
@@ -138,7 +138,7 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">4.</span>
             <span>Durée de conservation</span>
           </h2>
@@ -151,7 +151,7 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">5.</span>
             <span>Sécurité des données</span>
           </h2>
@@ -159,7 +159,7 @@ export default function LegalMentionsPage() {
         </div>
 
         <div className="mb-8">
-          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 mb-3">
+          <h2 className="flex flex-row gap-2 text-2xl font-bold text-gray-800 dark:text-gray-400 mb-3">
             <span className="max-w-fit w-fit">6.</span>
             <span>Vos droits</span>
           </h2>

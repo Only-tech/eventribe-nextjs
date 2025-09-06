@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -20,6 +21,8 @@ export default function LoginPage() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setMessage(''); 
+
+    setLoading(true);
 
     try {
       const result = await signIn('credentials', {
@@ -30,6 +33,7 @@ export default function LoginPage() {
 
       if (result?.error) {
         // Handle login error
+        setLoading(false);
         setMessage('Email ou mot de passe incorrect.');
         setIsSuccess(false);
       } else {
@@ -49,7 +53,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-zinc-900 dark:text-white p-8 rounded-lg shadow-lg">
+    <div className="max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8 rounded-lg shadow-lg dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
       <h1 className="flex flex-col items-center justify-center text-3xl font-bold text-gray-900 dark:text-white mb-8">
           <FingerPrintIcon className="w-auto h-16  mb-4" />
           <span>Connexion</span>
@@ -98,8 +102,25 @@ export default function LoginPage() {
         <button
           type="submit"
           className="w-full px-5 py-2 rounded-full text-base font-medium transition-colors border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer"
-        >
-          Se connecter
+           disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <span>Connexion</span>
+                  <svg viewBox="0 0 50 50" className="inline-block w-6 h-6 ml-2">
+                    <circle cx="25" cy="25" r="20" stroke="#ff952aff" strokeWidth="5" fill="none" strokeLinecap="round" strokeDasharray="30 70">
+                      <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" from="0 25 25" to="360 25 25" />
+                    </circle>
+                  </svg>
+                </>
+              ) : (
+                <>
+                  <span>Se connecter</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" className="inline-block w-4 h-4 group-hover:animate-bounce ml-2">
+                    <path d="M205.66,149.66l-72,72a8,8,0,0,1-11.32,0l-72-72a8,8,0,0,1,11.32-11.32L120,196.69V40a8,8,0,0,1,16,0V196.69l58.34-58.35a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </>
+              )}
         </button>
       </form>
       <p className="mt-6 text-center text-gray-700 dark:text-gray-500">

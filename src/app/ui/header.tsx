@@ -4,8 +4,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
-import { Bars3Icon, XMarkIcon, CalendarDaysIcon, MagnifyingGlassIcon, XCircleIcon, UserCircleIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, XCircleIcon,  } from '@heroicons/react/24/outline';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { FingerPrintIcon, UserIcon, CalendarDateRangeIcon, HomeIcon, UserCircleIcon} from '@heroicons/react/24/solid';
 
 export default function Header() {
     const { data: session, status } = useSession();
@@ -67,7 +68,7 @@ export default function Header() {
     return (
         <header
             ref={headerRef} // Attach the ref to the header
-            className={`fixed top-0 z-10000 w-full bg-[#f5f5dc] dark:bg-[#222222] text-gray-800 dark:text-[#ff952aff] shadow-lg transition-transform duration-500 py-1 px-[5%] flex flex-row justify-between items-center ${
+            className={`fixed top-0 z-10000 w-full bg-[#f5f5dc] dark:bg-[#222222] text-gray-800 dark:text-gray-400 shadow-lg transition-transform duration-500 py-1 px-[5%] flex flex-row justify-between items-center ${
                 scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
             }`}
             >
@@ -83,7 +84,7 @@ export default function Header() {
             </Link>
 
             {/*search Bar */}
-            <div className="relative flex-grow mx-6 max-w-lg">
+            <div className="relative flex-grow mx-6 max-xl:max-w-sm max-w-lg">
                 <form onSubmit={handleSearchSubmit} className="group flex items-center">
                 <div className="group w-full flex flex-row rounded-full border border-gray-300 transition duration-300 hover:border-[#ff952aff] focus-within:border-[#ff952aff] overflow-hidden">
                     <input
@@ -105,17 +106,18 @@ export default function Header() {
                     </button>
                     )}
                 </div>
-                <button type="submit" className="ml-2 p-2 rounded-full bg-[#ff952aff] text-white hover:bg-[#111827] transition-colors duration-300  cursor-pointer" title="Rechercher">
+                <button type="submit" className="ml-2 p-2 rounded-full bg-[#ff952aff] text-white hover:bg-[#111827] dark:hover:bg-gray-400 transition-colors duration-300  cursor-pointer" title="Rechercher">
                     <MagnifyingGlassIcon className="w-5 h-5" /> 
                 </button>
                 </form>
             </div>
 
-            <nav className="flex flex-row gap-8 items-center">
-                <ul className={`mobile-menu flex items-center gap-8 text-lg font-medium max-lg:flex-col max-lg:absolute max-lg:top-full max-lg:left-0 max-lg:w-full max-lg:bg-[#f5f5dc] dark:bg-[#222222] max-lg:shadow-lg max-lg:py-4 max-lg:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-lg:flex`}>
+            <nav className="flex flex-row gap-6 items-center">
+                <ul className={`mobile-menu flex items-start min-lg:items-center gap-3 min-lg:gap-6 text-lg font-medium max-lg:flex-col max-lg:absolute max-lg:top-full max-lg:left-0 max-lg:w-full max-lg:bg-[#f5f5dc] dark:bg-[#222222] max-lg:shadow-lg max-lg:py-4 max-lg:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-lg:flex rounded-b-2xl`}>
                 <li>
-                    <Link href="/events" className="transition-colors duration-300 dark:hover:text-gray-400 hover:text-[#ff952aff] whitespace-nowrap py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
-                    Accueil
+                    <Link href="/events" className="inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] " onClick={() => setIsMobileMenuOpen(false)}>
+                        < HomeIcon  className="inline-block w-6 h-6 -translate-y-0.5"/>
+                        <span>Accueil</span>
                     </Link>
                 </li>
                 {status === 'loading' ? (
@@ -123,20 +125,20 @@ export default function Header() {
                 ) : session ? (
                     <>
                     <li>
-                        <Link href="/my-events" className="relative flex flex-row items-center gap-1 dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
-                        <CalendarDaysIcon className="inline-block w-5 h-5" />
-                        <span>Mes Inscriptions</span>
+                        <Link href="/my-events" className="flex flex-row whitespace-nowrap items-center gap-1  transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)]" onClick={() => setIsMobileMenuOpen(false)}>
+                            <CalendarDateRangeIcon className="inline-block w-6 h-6 -translate-y-0.5" />
+                            <span>Mes Inscriptions</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/account" className="relative flex flex-row items-center gap-1 dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2" onClick={() => setIsMobileMenuOpen(false)}>
-                            <UserCircleIcon className="inline-block h-5 w-5" />
+                        <Link href="/account" className="flex flex-row whitespace-nowrap items-center gap-1  transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)]" onClick={() => setIsMobileMenuOpen(false)}>
+                            <UserCircleIcon className="inline-block h-6 w-6" />
                             <span>Compte</span>
                         </Link>
                     </li>
                     {session.user.isAdmin && (
                         <li>
-                        <Link href="/admin" className="inline-flex items-center gap-1 dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2 group" 
+                        <Link href="/admin" className="inline-flex items-center gap-1 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] group" 
                             title="Aller à l'administration"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -151,7 +153,7 @@ export default function Header() {
                     <li>
                         <button
                         onClick={handleSignOut}
-                        className="flex flex-row items-center gap-2 dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2 w-full text-left cursor-pointer"
+                        className="flex flex-row items-center gap-2 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] "
                         title="Se déconnecter">
                             <span>Hi {session.user.username} !</span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -165,13 +167,15 @@ export default function Header() {
                 ) : (
                     <>
                     <li>
-                        <Link href="/login" className="dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
-                        Connexion
+                        <Link href="/login" className="flex flex-row items-center gap-1 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)]" onClick={() => setIsMobileMenuOpen(false)}>
+                            <FingerPrintIcon  className="inline-block h-6 w-6"/>
+                            <span>Connexion</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/register" className="dark:hover:text-gray-400 transition-colors duration-300 hover:text-[#ff952aff] py-2 block" onClick={() => setIsMobileMenuOpen(false)}>
-                        Inscription
+                        <Link href="/register" className="flex flex-row items-center gap-1 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)]" onClick={() => setIsMobileMenuOpen(false)}>
+                            <FingerPrintIcon  className="inline-block h-6 w-6"/>
+                            <span>Inscription</span>
                         </Link>
                     </li>
                     </>

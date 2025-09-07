@@ -368,19 +368,19 @@ export default function ManageEventsPage() {
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Titre</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lieu</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Places Disp.</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inscrits</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Événement</th>
+                    <th className="px-6 py-3 hidden sm:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th className="px-6 py-3 hidden lg:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lieu</th>
+                    <th className="px-6 py-3 hidden sm:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Places Disp.</th>
+                    <th className="px-6 py-3 hidden min-[900px]:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inscrits</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                   {events.map((event) => (
                     <tr key={event.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{event.title}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 min-w-46 sm:min-w-55 min-[1025px]:whitespace-nowrap text-sm font-medium text-gray-900">{event.title}</td>
+                      <td className="px-6 py-4 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500">
                         {new Date(event.event_date).toLocaleString('fr-FR', {
                           day: '2-digit',
                           month: '2-digit',
@@ -389,18 +389,18 @@ export default function ManageEventsPage() {
                           minute: '2-digit'
                         })}
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{event.location}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{event.available_seats}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{event.registered_count}</td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex gap-2">
-                        <Link href={`/admin/manage-events?action=edit&id=${event.id}`} className="text-[#4A90E2] hover:text-indigo-900 border-1 rounded-full bg-white hover:bg-amber-50 px-4 pb-1 pt-1 shadow-lg h-7 flex items-center justify-center">
-                          <PencilIcon className="w-4 h-4" /> Modifier
+                      <td className="px-6 py-4 min-w-55 hidden lg:table-cell text-sm text-gray-500">{event.location}</td>
+                      <td className="px-6 py-4 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500">{event.available_seats}</td>
+                      <td className="px-6 py-4 hidden min-[900px]:table-cell whitespace-nowrap text-sm text-gray-500">{event.registered_count}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-between gap-2">
+                        <Link href={`/admin/manage-events?action=edit&id=${event.id}`} title="Modifier" className="text-[#4A90E2] hover:text-indigo-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 xl:w-27 shadow-lg  flex items-center justify-center">
+                          <PencilIcon className="w-4 h-4" /><span className="hidden xl:inline-flex ml-1">Modifier</span>
                         </Link>
                         <button
-                          onClick={() => handleDelete(event.id)}
-                          className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 px-2.5 pb-1 pt-0.5 shadow-lg h-7 flex items-center justify-center"
+                          onClick={() => handleDelete(event.id)} title="Supprimer"
+                          className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 xl:w-27 shadow-lg  flex items-center justify-center"
                         >
-                          <TrashIcon className="w-4 h-4" /> Supprimer
+                          <TrashIcon className="w-4 h-4" /><span className="hidden xl:inline-flex ml-1">Supprimer</span>
                         </button>
                       </td>
                     </tr>

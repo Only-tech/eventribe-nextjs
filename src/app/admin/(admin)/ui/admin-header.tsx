@@ -52,7 +52,7 @@ export default function AdminHeader() {
         <Link href="/admin" className="text-lg transition-opacity duration-300 hover:opacity-65 whitespace-nowrap">
           Tableau de bord
         </Link>
-        <ul className={`mobile-menu flex items-center gap-8 text-lg font-medium max-lg:flex-col max-lg:absolute max-lg:top-full max-lg:left-0 max-lg:w-full max-lg:bg-gray-900 max-lg:shadow-lg max-lg:py-4 max-lg:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} [@media(min-width:1024px)]:flex`}>
+        <ul className={`mobile-menu flex items-start min-lg:items-center gap-3 min-lg:gap-8 text-lg font-medium max-lg:flex-col max-lg:absolute max-lg:top-full max-lg:left-0 max-lg:w-full max-lg:bg-gray-900 max-lg:shadow-lg max-lg:py-4 max-lg:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-lg:flex rounded-b-2xl`}>
           <li>
             <Link href="/admin/manage-events" className="relative flex flex-row items-center gap-1 transition-opacity duration-300 hover:opacity-65 py-2" onClick={() => setIsMobileMenuOpen(false)}>
               <Cog6ToothIcon className="inline-block w-5 h-5" />

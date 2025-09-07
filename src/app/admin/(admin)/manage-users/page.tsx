@@ -167,19 +167,19 @@ export default function ManageUsersPage() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom d&apos;utilisateur</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date d&apos;inscription</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
+                <th className="px-6 py-3 hidden min-[870px]:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date d&apos;inscription</th>
+                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {users.map((user) => (
                 <tr key={user.id}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.username}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{user.email}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.username}</td>
+                  <td className="px-1 sm:px-6 py-4 sm:whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                  <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <button
                       onClick={() => handleToggleAdminStatus(user.id, user.is_admin, user.username)}
                       className={`px-3 py-1 rounded-full text-xs font-semibold cursor-pointer ${
@@ -190,7 +190,7 @@ export default function ManageUsersPage() {
                       {user.is_admin ? 'Oui' : 'Non'}
                     </button>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  <td className="px-6 py-4 hidden min-[870px]:table-cell whitespace-nowrap text-sm text-gray-500">
                     {new Date(user.created_at).toLocaleString('fr-FR', {
                       day: '2-digit',
                       month: '2-digit',
@@ -199,13 +199,13 @@ export default function ManageUsersPage() {
                       minute: '2-digit'
                     })}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                  <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
                       onClick={() => handleDeleteUser(user.id, user.username)}
-                      className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 px-2.5 pb-1 pt-0.5 shadow-lg h-7 flex items-center justify-center cursor-pointer"
+                      className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 md:w-30 shadow-lg  flex items-center justify-center"
                       disabled={session?.user?.id === user.id} // Disable if it's the current user
                     >
-                      <TrashIcon className="w-4 h-4" /> Supprimer
+                      <TrashIcon className="w-4 h-4" /><span className="hidden md:inline-flex ml-1">Supprimer</span>
                     </button>
                   </td>
                 </tr>

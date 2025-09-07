@@ -514,8 +514,8 @@ export default function UserAccountManageEventsPage() {
                         >
                             &times;
                         </button>
-                        <h3 className="flex items-center justify-center text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                            <FingerPrintIcon className="w-8 h-8 mr-2" />
+                        <h3 className="flex max-[450px]:flex-col items-center justify-center text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                            <FingerPrintIcon className="w-8 h-8 mr-2 max-[450px]:mb-3" />
                             <span className="text-center">Modifier mes identifiants</span>
                         </h3>
                         <form className="space-y-6" onSubmit={handleUpdateAccount}>
@@ -587,7 +587,7 @@ export default function UserAccountManageEventsPage() {
                 </p>
             ) : (
 
-            // ------- EVENTS ------------
+    // ------- EVENTS ------------
             <div className="grid grid-cols-1 min-[1600px]:grid-cols-2 gap-10">
             {events.map((event) => (
                 <div key={event.id} className="max-w-5xl w-full bg-white/95 dark:bg-[#1E1E1E] dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
@@ -665,18 +665,18 @@ export default function UserAccountManageEventsPage() {
                       <table className="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden">
                         <thead className="bg-gray-50 dark:bg-zinc-800">
                           <tr>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom d&apos;utilisateur</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inscrit le</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                            <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                            <th className="px-6 py-3 text-left text-xs hidden sm:table-cell font-medium text-gray-500 uppercase tracking-wider">Inscrit le</th>
+                            <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                           </tr>
                         </thead>
                         <tbody className="bg-white dark:bg-zinc-700 divide-y divide-gray-200">
                           {participants[event.id]?.map((participant) => (
                             <tr key={participant.user_id}>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.username}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500  dark:text-gray-400">{participant.email}</td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500  dark:text-gray-400">
+                              <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.username}</td>
+                              <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500  dark:text-gray-400">{participant.email}</td>
+                              <td className="px-6 py-4 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-gray-400">
                                 {new Date(participant.registered_at).toLocaleString('fr-FR', {
                                   day: '2-digit',
                                   month: '2-digit',
@@ -685,12 +685,12 @@ export default function UserAccountManageEventsPage() {
                                   minute: '2-digit'
                                 })}
                               </td>
-                              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                              <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <button
                                   onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.username)}
-                                  className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 px-2.5 pb-1 pt-0.5 shadow-lg h-7 flex items-center justify-center"
+                                  className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 md:w-30 shadow-lg  flex items-center justify-center"
                                 >
-                                  <TrashIcon className="w-4 h-4" /> Désinscrire
+                                  <TrashIcon className="w-4 h-4" /><span className="hidden md:inline-flex ml-1">Supprimer</span>
                                 </button>
                               </td>
                             </tr>

@@ -42,7 +42,7 @@ export default async function Page({
       )}
 
       <div className="mt-20">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2 sm:mr-[40%]">
           Les intemporels
         </h1>
         <Carousel imageUrls={imageUrls} />

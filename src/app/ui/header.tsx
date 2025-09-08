@@ -5,8 +5,8 @@ import Image from 'next/image';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
 import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, XCircleIcon,  } from '@heroicons/react/24/outline';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { FingerPrintIcon, UserIcon, CalendarDateRangeIcon, HomeIcon, UserCircleIcon} from '@heroicons/react/24/solid';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { FingerPrintIcon, CalendarDateRangeIcon, HomeIcon, UserCircleIcon} from '@heroicons/react/24/solid';
 
 export default function Header() {
     const { data: session, status } = useSession();
@@ -14,6 +14,8 @@ export default function Header() {
     const headerRef = useRef<HTMLElement>(null); 
     const [scrollingUp, setScrollingUp] = useState(true); 
     const lastScrollY = useRef(0); 
+
+    const pathname =usePathname();
 
     const router = useRouter();
     const searchParams = useSearchParams(); 
@@ -115,7 +117,11 @@ export default function Header() {
             <nav className="flex flex-row gap-6 items-center">
                 <ul className={`mobile-menu flex items-start min-lg:items-center gap-3 min-lg:gap-6 text-lg font-medium max-lg:flex-col max-lg:absolute max-lg:top-full max-lg:left-0 max-lg:w-full max-lg:bg-[#f5f5dc] dark:bg-[#222222] max-lg:shadow-lg max-lg:py-4 max-lg:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-lg:flex rounded-b-2xl`}>
                 <li>
-                    <Link href="/events" className="inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] " onClick={() => setIsMobileMenuOpen(false)}>
+                    <Link href="/events" 
+                        className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                        pathname === '/events' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    >
                         < HomeIcon  className="inline-block w-6 h-6 -translate-y-0.5"/>
                         <span>Accueil</span>
                     </Link>
@@ -125,13 +131,21 @@ export default function Header() {
                 ) : session ? (
                     <>
                     <li>
-                        <Link href="/my-events" className="flex flex-row whitespace-nowrap items-center gap-1  transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)]" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/my-events" 
+                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                            pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
                             <CalendarDateRangeIcon className="inline-block w-6 h-6 -translate-y-0.5" />
                             <span>Mes Inscriptions</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/account" className="flex flex-row whitespace-nowrap items-center gap-1  transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)]" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/account" 
+                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                            pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
                             <UserCircleIcon className="inline-block h-6 w-6" />
                             <span>Compte</span>
                         </Link>
@@ -167,13 +181,21 @@ export default function Header() {
                 ) : (
                     <>
                     <li>
-                        <Link href="/login" className="flex flex-row items-center gap-1 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)]" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/login" 
+                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                            pathname === '/login' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
                             <FingerPrintIcon  className="inline-block h-6 w-6"/>
                             <span>Connexion</span>
                         </Link>
                     </li>
                     <li>
-                        <Link href="/register" className="flex flex-row items-center gap-1 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)]" onClick={() => setIsMobileMenuOpen(false)}>
+                        <Link href="/register" 
+                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                            pathname === '/register' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
+                            onClick={() => setIsMobileMenuOpen(false)}
+                        >
                             <FingerPrintIcon  className="inline-block h-6 w-6"/>
                             <span>Inscription</span>
                         </Link>

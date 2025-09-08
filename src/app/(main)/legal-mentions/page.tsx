@@ -1,3 +1,4 @@
+import { ArrowUpIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 export const metadata = {
@@ -22,7 +23,7 @@ export default function LegalMentionsPage() {
             <span className="section-number">1.</span> <span className="section-text">Informations Légales</span>
           </h2>
           <p className="mb-2"><strong>Nom du Site Web :</strong> eventribe</p>
-          <p className="mb-2"><strong>URL :</strong> https://www.eventribe.site</p>
+          <p className="mb-2"><strong>URL :</strong> https://www.eventribe.vercel.app</p>
           <p className="mb-2"><strong>Propriétaire du Site :</strong> Cédrick F.</p>
           <p className="mb-2"><strong>Statut juridique :</strong> SARL</p>
           <p className="mb-2"><strong>Adresse :</strong> Nevers, France</p>
@@ -86,8 +87,9 @@ export default function LegalMentionsPage() {
           </h2>
           <p>Tout litige en relation avec &apos;utilisation du site eventribe est soumis au droit français. En dehors des cas où la loi ne le permet pas, il est fait attribution exclusive de juridiction aux tribunaux compétents de Nevers.</p>
         </div>
-        <Link href="/events" className="absolute mt-3 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out block text-center max-w-xs mx-auto">
-            Retour
+        <Link href="/events" className="absolute  h-11 inline-flex items-center justify-center mt-3 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out">
+          <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" />
+          <span>Page d&apos;accueil</span>
         </Link>
       </section>
 
@@ -176,8 +178,9 @@ export default function LegalMentionsPage() {
           </ul>
           <p>Pour exercer ces droits, veuillez nous contacter à contact@eventribe.site.</p>
         </div>
-        <Link href="/events" className="absolute mt-15 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out block text-center max-w-xs mx-auto">
-            Retour
+        <Link href="/events" className="absolute  h-11 inline-flex items-center justify-center mt-15 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out">
+          <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" />
+          <span>Page d&apos;accueil</span>
         </Link>
       </section>
     </>

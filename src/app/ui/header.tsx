@@ -74,13 +74,13 @@ export default function Header() {
                 scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
             }`}
             >
-            <Link href="/" className="text-lg font-semibold w-25 h-18 flex items-center justify-center group" title="eventribe, plus proches des événements à venir">
+            <Link href="/" className="w-25 h-18" title="eventribe, plus proches des événements à venir">
                 <Image
-                src="/images/SplashPaintOrangeEventribe.svg"
+                src="/images/SplashPaintEventribeLogo.svg"
                 alt="Logo Eventribe"
                 width={100}
                 height={72}
-                className="w-full h-full filter grayscale transition-all duration-300 ease-in-out group-hover:filter-none bg-contain animate-pulse group-hover:animate-none"
+                className="w-full h-full bg-contain"
                 />
             </Link>
 

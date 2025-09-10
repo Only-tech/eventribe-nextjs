@@ -687,10 +687,11 @@ export default function UserAccountManageEventsPage() {
                               </td>
                               <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <button
-                                  onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.username)}
-                                  className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 md:w-30 shadow-lg  flex items-center justify-center"
+                                    onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.username)}
+                                    className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 md:w-30 shadow-lg  flex items-center justify-center"
+                                    title="Désinscrire"    
                                 >
-                                  <TrashIcon className="w-4 h-4" /><span className="hidden md:inline-flex ml-1">Supprimer</span>
+                                    <TrashIcon className="w-4 h-4" /><span className="hidden md:inline-flex ml-1">Désinscrire</span>
                                 </button>
                               </td>
                             </tr>

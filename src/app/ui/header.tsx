@@ -15,7 +15,7 @@ export default function Header() {
     const [scrollingUp, setScrollingUp] = useState(true); 
     const lastScrollY = useRef(0); 
 
-    const pathname =usePathname();
+    const pathname = usePathname();
 
     const router = useRouter();
     const searchParams = useSearchParams(); 
@@ -84,6 +84,16 @@ export default function Header() {
                 className="absolute inset-0 filter grayscale transition duration-300 ease-in-out group-hover:filter-none bg-contain animate-pulse group-hover:animate-none"
                 />
             </Link>
+                
+                        <Link href="/" className=" relative text-lg font-semibold w-18 h-18 flex items-center justify-center">
+                <Image
+                src="/images/BlueDoorOpen.svg"
+                alt="Logo Eventribe"
+                width={72}
+                height={72}
+                className="transition duration-300 ease-in-out group-hover:filter-none bg-contain"
+                />
+            </Link>
 
             {/*search Bar */}
             <div className="relative flex-grow mx-6 max-xl:max-w-sm max-w-lg">
@@ -118,7 +128,7 @@ export default function Header() {
                 <ul className={`mobile-menu flex items-start min-lg:items-center gap-3 min-lg:gap-6 text-lg font-medium max-lg:flex-col max-lg:absolute max-lg:top-full max-lg:left-0 max-lg:w-full max-lg:bg-[#f5f5dc] dark:bg-[#222222] max-lg:shadow-lg max-lg:py-4 max-lg:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-lg:flex rounded-b-2xl`}>
                 <li>
                     <Link href="/events" 
-                        className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                        className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                         pathname === '/events' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -132,7 +142,7 @@ export default function Header() {
                     <>
                     <li>
                         <Link href="/my-events" 
-                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                             pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -142,7 +152,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link href="/account" 
-                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                             pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -152,7 +162,7 @@ export default function Header() {
                     </li>
                     {session.user.isAdmin && (
                         <li>
-                        <Link href="/admin" className="inline-flex items-center gap-1 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] group" 
+                        <Link href="/admin" className="inline-flex items-center gap-1 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] group" 
                             title="Aller à l'administration"
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -167,7 +177,7 @@ export default function Header() {
                     <li>
                         <button
                         onClick={handleSignOut}
-                        className="flex flex-row items-center gap-2 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] "
+                        className="flex flex-row items-center gap-2 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] "
                         title="Se déconnecter">
                             <span>Hi {session.user.username} !</span>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -182,7 +192,7 @@ export default function Header() {
                     <>
                     <li>
                         <Link href="/login" 
-                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                             pathname === '/login' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -192,7 +202,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link href="/register" 
-                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_rgba(0,0,0,0.6)] dark:hover:shadow-[inset_0px_2px_1px_rgba(255,255,255,0.5)] ${ 
+                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                             pathname === '/register' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >

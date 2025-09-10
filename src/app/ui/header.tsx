@@ -84,16 +84,6 @@ export default function Header() {
                 className="absolute inset-0 filter grayscale transition duration-300 ease-in-out group-hover:filter-none bg-contain animate-pulse group-hover:animate-none"
                 />
             </Link>
-                
-                        <Link href="/" className=" relative text-lg font-semibold w-18 h-18 flex items-center justify-center">
-                <Image
-                src="/images/BlueDoorOpen.svg"
-                alt="Logo Eventribe"
-                width={72}
-                height={72}
-                className="transition duration-300 ease-in-out group-hover:filter-none bg-contain"
-                />
-            </Link>
 
             {/*search Bar */}
             <div className="relative flex-grow mx-6 max-xl:max-w-sm max-w-lg">
@@ -125,10 +115,10 @@ export default function Header() {
             </div>
 
             <nav className="flex flex-row gap-6 items-center">
-                <ul className={`mobile-menu flex items-start min-lg:items-center gap-3 min-lg:gap-6 text-lg font-medium max-lg:flex-col max-lg:absolute max-lg:top-full max-lg:left-0 max-lg:w-full max-lg:bg-[#f5f5dc] dark:bg-[#222222] max-lg:shadow-lg max-lg:py-4 max-lg:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-lg:flex rounded-b-2xl`}>
+                <ul className={`mobile-menu flex items-start min-[1025px]:items-center gap-3 min-[1025px]:gap-6 text-lg font-medium max-[1025px]:flex-col max-[1025px]:absolute max-[1025px]:top-full max-[1025px]:left-0 max-[1025px]:w-full bg-[#f5f5dc] dark:bg-[#222222] max-[1025px]:shadow-lg max-[1025px]:py-4 max-[1025px]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-[1025px]:flex rounded-b-2xl`}>
                 <li>
                     <Link href="/events" 
-                        className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
+                        className={`inline-flex whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                         pathname === '/events' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                     >
@@ -142,7 +132,7 @@ export default function Header() {
                     <>
                     <li>
                         <Link href="/my-events" 
-                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
+                            className={`inline-flex whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                             pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -152,7 +142,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link href="/account" 
-                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
+                            className={`inline-flex whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                             pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -177,13 +167,25 @@ export default function Header() {
                     <li>
                         <button
                         onClick={handleSignOut}
-                        className="flex flex-row items-center gap-2 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] "
+                        className="inline-flex items-center gap-2 whitespace-nowrap transition-colors duration-300 hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] "
                         title="Se déconnecter">
                             <span>Hi {session.user.username} !</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5"></path>
-                                <polyline points="16 17 21 12 16 7"></polyline>
-                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            <svg width="30" height="30" viewBox="0 0 448 417" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <linearGradient id="swatch14">
+                                        <stop style={{ stopColor: '#08263a', stopOpacity: 1 }} offset="0"/>
+                                        <stop style={{ stopColor: '#4baae6', stopOpacity: 1 }} offset="1"/>
+                                    </linearGradient>
+                                    <linearGradient href="#swatch14" id="linearGradient14" x1="128.13605" y1="387.32764" x2="161.17738" y2="60.820076" gradientUnits="userSpaceOnUse" spreadMethod="reflect" />
+                                </defs>
+                                <g>
+                                    <g transform="translate(-3.9714294,-4.5387755)">
+                                        <path style={{ fill: 'url(#linearGradient14)' }}
+                                             d="M 188.08556,404.50827 C 173.77467,400.78055 153.8118,393.6119 139.5,387.06124 c -2.2,-1.00696 -6.925,-3.05955 -10.5,-4.5613 -8.29088,-3.48277 -28.22881,-13.73621 -39.059053,-20.08683 C 79.332662,356.19264 66.603994,344.12121 59.5722,333.61243 52.657556,323.27873 44.584492,307.51963 42.449513,300.18794 34.40446,272.56056 31.878417,170.14878 38.660956,117.81875 39.677846,101.445 44.442775,84.157812 52.264917,69.527943 57.090709,61.822601 69.47294,47.569548 71.414638,47.484904 72.011587,47.458881 74.3,46.63369 76.5,45.651147 92.44277,38.530935 118.71273,42.02308 156,56.219323 c 3.575,1.361096 11.19411,5.147028 13.71834,6.3481 15.318,7.036753 29.55215,14.744035 30.06359,16.278364 7.49087,5.203212 14.22862,12.595114 19.71526,20.182901 1.64845,2.459222 3.23508,4.696312 3.52583,4.971312 0.97818,0.92516 8.83997,17.45656 10.46249,22 5.69314,15.94218 7.35262,27.17524 8.49459,57.5 1.99149,52.88388 1.75977,115.66532 -0.5278,143 -0.73645,8.8 -1.603,20.85388 -1.92567,26.78641 -0.99532,18.29972 -6.27796,33.2571 -15.06263,42.64862 -9.66915,10.33711 -20.13657,12.80395 -36.37844,8.57324 z"/>
+                                        <path style={{ fill: 'currentColor', fillOpacity: 1 }}
+                                            d="m 240.39871,351.0472 c 0.31403,-4.15096 0.8563,-11.9347 1.20504,-17.2972 0.34875,-5.3625 0.99801,-9.75 1.44281,-9.75 3.45881,0 17.40518,-2.39774 21.45344,-3.68839 6.50762,-2.07475 14.70061,-7.51448 18.45235,-12.25144 6.38742,-8.06478 9.10707,-16.0551 10.57188,-31.06017 1.24999,-12.80458 3.82388,-18.0095 10.67611,-21.58928 4.02091,-2.10062 12.65521,-1.79617 16.5588,0.58388 7.29092,4.44533 8.36529,9.69968 5.82859,28.5054 -3.97289,29.45285 -20.42887,52.50569 -46.08773,64.56335 -9.81173,4.61075 -13.54769,5.62648 -28.73665,7.81293 l -11.93561,1.71813 z m 111.0698,-70.10936 c -3.51212,-1.02158 -9.28852,-6.33422 -10.57971,-9.73031 -1.31769,-3.46579 -1.07826,-9.83503 0.5071,-13.48965 0.76775,-1.76983 6.61775,-8.38554 13,-14.70157 C 360.77816,236.70028 366,231.18778 366,230.76631 366,230.34484 345.96055,230 321.46788,230 c -48.39312,0 -48.49471,-0.0107 -53.5584,-5.62684 -5.76082,-6.38935 -6.28512,-14.33761 -1.40985,-21.37263 C 271.43325,195.88131 270.51942,196 320.40113,196 344.93051,196 365,195.68533 365,195.30074 c 0,-0.38459 -5.16353,-5.92717 -11.4745,-12.31685 -15.02107,-15.20839 -17.21175,-20.58955 -12.22276,-30.02387 4.06211,-7.68156 13.24251,-10.84744 21.47938,-7.4072 4.43279,1.85142 45.79498,42.59684 50.22686,49.47791 4.27003,6.62977 6.25414,16.17861 4.89235,23.54519 -1.89716,10.2627 -4.43648,13.60668 -28.58071,37.63748 -26.13467,26.01187 -28.38121,27.47928 -37.85211,24.72444 z M 303.83049,169.97321 c -4.0073,-2.11684 -7.37943,-6.21373 -8.25909,-10.0342 C 295.26253,158.59755 294.32411,147.6 293.48602,135.5 291.39188,105.26564 289.64084,94.04717 285.79724,86.239693 281.68267,77.881826 272.25145,68.993708 264.31703,65.996448 251.81949,61.27545 218.92822,58.056557 182.81822,58.020596 c -20.65159,-0.02057 -20.69392,-0.02512 -29,-3.121607 C 128.14755,45.329026 113.32549,41.859904 97.596838,41.740307 86.340236,41.654714 78.690533,43.23456 73.25,46.768511 72.0125,47.572341 71,48.018466 71,47.759901 71,46.596052 83.702026,38.549778 90.255008,35.562549 106.98661,27.935315 138.20927,23.951828 181.5,23.921221 c 44.36534,-0.03137 78.45884,4.221795 94.23601,11.755935 22.1114,10.558954 39.66859,31.272343 45.62159,53.822844 3.79442,14.3736 8.60233,66.06136 6.68524,71.8702 -1.12719,3.41542 -4.92735,7.55545 -8.7271,9.50761 -3.37606,1.73449 -11.37373,1.26729 -15.48525,-0.9046 z"/>
+                                    </g>
+                                </g>
                             </svg>
                         </button>
                     </li>
@@ -192,7 +194,7 @@ export default function Header() {
                     <>
                     <li>
                         <Link href="/login" 
-                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
+                            className={`inline-flex whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                             pathname === '/login' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -202,7 +204,7 @@ export default function Header() {
                     </li>
                     <li>
                         <Link href="/register" 
-                            className={`inline-flex flex-row whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
+                            className={`inline-flex whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
                             pathname === '/register' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
@@ -215,7 +217,7 @@ export default function Header() {
                 </ul>
                 <button
                 id="burgerBtn"
-                className="flex text-4xl min-lg:hidden cursor-pointer"
+                className="flex text-4xl min-[1025px]:hidden cursor-pointer"
                 title="Menu"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >

@@ -108,16 +108,15 @@ export default function Footer() {
           >
             Contactez-nous
           </button>
-          <Link href="/" className="relative text-lg text font-semibold mb-2 md:mb-0 w-20 h-20 flex items-center justify-center group mx-auto max-[849px]:order-4" title="eventribe, plus proches des événements à venir">
-              <span className="relative z-10 group-hover:text-[#ff952aff] bg-[#f5f5dc] dark:bg-[#1E1E1E] dark:text-gray-400 transition-colors duration-300 ease-in-out cursor-pointer">eventribe</span>
-              <Image
-              className="absolute inset-0 filter grayscale transition duration-300 ease-in-out group-hover:filter-none hover:filter-none animate-pulse group-hover:animate-none"
-              src="/images/SplashPaintOrange.svg" 
-              alt="Eventribe Logo"
-              width={80} 
-              height={80}
-              />
-          </Link>
+          <Link href="/" className="text-lg font-semibold w-25 h-18 flex items-center justify-center group" title="eventribe, plus proches des événements à venir">
+                <Image
+                src="/images/SplashPaintOrangeEventribe.svg"
+                alt="Logo Eventribe"
+                width={100}
+                height={72}
+                className="w-full h-full filter grayscale transition-all duration-300 ease-in-out group-hover:filter-none bg-contain animate-pulse group-hover:animate-none"
+                />
+            </Link>
         </div>
 
       </div>

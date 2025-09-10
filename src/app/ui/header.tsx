@@ -74,14 +74,13 @@ export default function Header() {
                 scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
             }`}
             >
-            <Link href="/" className=" relative text-lg font-semibold w-18 h-18 flex items-center justify-center group" title="eventribe, plus proches des événements à venir">
-                <span className="relative z-10 text-base group-hover:text-[#ff952aff] bg-[#f5f5dc] dark:bg-[#222222] transition-colors duration-300 ease-in-out cursor-pointer">eventribe</span>
+            <Link href="/" className="text-lg font-semibold w-25 h-18 flex items-center justify-center group" title="eventribe, plus proches des événements à venir">
                 <Image
-                src="/images/SplashPaintOrange.svg"
+                src="/images/SplashPaintOrangeEventribe.svg"
                 alt="Logo Eventribe"
-                width={72}
+                width={100}
                 height={72}
-                className="absolute inset-0 filter grayscale transition duration-300 ease-in-out group-hover:filter-none bg-contain animate-pulse group-hover:animate-none"
+                className="w-full h-full filter grayscale transition-all duration-300 ease-in-out group-hover:filter-none bg-contain animate-pulse group-hover:animate-none"
                 />
             </Link>
 

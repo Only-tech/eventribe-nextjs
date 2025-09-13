@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { normalizeImagePath } from '@/app/lib/utils';
 import Image from 'next/image';
-import { TrashIcon, CalendarDaysIcon, MapPinIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/outline'; 
+import { TrashIcon, CalendarDaysIcon, MapPinIcon, ArrowUpIcon, ArrowDownIcon, ChevronDownIcon } from '@heroicons/react/24/outline'; 
 import ConfirmationModal from '@/app/ui/confirmation-modal'; 
 
 // Define the type for registered events, extending the base Event type
@@ -126,7 +126,7 @@ export default function MyEventsPage() {
 
   return (
     <div className="p-3">
-      <h1 className="text-4xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-8 text-center">Mes Inscriptions</h1>
+      <h1 className="text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-8 text-center">Mes Inscriptions</h1>
 
       {message && (
         <div className={`mb-4 text-center font-semibold p-3 rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
@@ -152,59 +152,55 @@ export default function MyEventsPage() {
 
 
             return (
-              <div key={event.id} className="flex  items-center max-w-2xl w-full bg-white/95 dark:bg-[#1E1E1E] dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
-                <div className="hidden md:block relative w-80 h-50 overflow-hidden rounded-lg mr-6">
+              <div key={event.id} className="flex items-center text-sm max-w-2xl w-full bg-white/95 dark:bg-[#1E1E1E] dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
+                <div className="hidden md:block relative w-70 h-45 overflow-hidden rounded-lg mr-6">
                   <Image
                     src={imageSrc}
                     alt={`Image de l'événement ${event.title}`}
                     fill
                     style={{ objectFit: 'cover' }}
-                    className="w-full h-50 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1"
+                    className="w-full h-45 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1"
                     onError={(e) => {
                       e.currentTarget.src = 'https://placehold.co/600x400.png?text=Image+non+disponible';
                     }}
                   />        
                 </div>
 
-                <div className="flex flex-col  items-center max-w-2xl w-full">
-                  <div className="w-full">
-                    <h2 className="text-2xl text-center min-[500px]:text-start font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
-                    <p className="text-gray-700 dark:text-gray-500 text-sm mt-1">
+                <div className="flex flex-col  items-center max-w-sm w-full">
+                  <div className="w-full flex flex-col">
+                    <h2 className="text-base text-center min-[500px]:text-start font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
+                    <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-xs mt-1">
                         <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
                         {new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})} GMT+1
                     </p>
-                    <p className="text-gray-700 dark:text-gray-500 text-sm mt-1">
+                    <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-sm mt-1">
                         <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
                     </p>
-                    <p className="text-gray-700 text-center min-[500px]:text-start dark:text-gray-400 mt-2  mb-4 flex-grow">{event.description_short}</p>
+                    <p className="text-gray-700 text-center min-[500px]:text-start dark:text-gray-400 mt-2  mb-2 flex-grow">{event.description_short}</p>
                   </div>
                   <div className="flex  gap-2 items-center justify-between w-full">
-                    <p className="text-sm text-gray-500 ">Inscrit le {new Date(event.registered_at).toLocaleString('fr-FR', {
+                    <p className="text-sm text-gray-500 ">Inscrit le <span className="text-xs">{new Date(event.registered_at).toLocaleString('fr-FR', {
                       day: '2-digit',
                       month: '2-digit',
                       year: 'numeric',
                       hour: '2-digit',
                       minute: '2-digit'
-                    })}</p>
+                    })}</span></p>
                     <div className="flex gap-2">
-                    <button
-                      onClick={() => handleUnregister(event.id)}
-                      className="text-red-600 hover:text-red-900 p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors"
-                      title="Se désinscrire"
-                    >
-                      <TrashIcon className="w-6 h-6" />
-                    </button>
-
-                    <Link href={`/event/${event.id}`}
-                    className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors flex items-center justify-center"
-                    title="En savoir plus"
-                    >
-                      <svg className="w-6 h-6 text-gray-800 transition-transform duration-300"
-                      xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                      <button
+                        onClick={() => handleUnregister(event.id)}
+                        className="text-red-600 hover:text-red-900 p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors"
+                        title="Se désinscrire"
                       >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-                      </svg>
-                    </Link>
+                        <TrashIcon className="w-6 h-6" />
+                      </button>
+
+                      <Link href={`/event/${event.id}`}
+                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors flex items-center justify-center"
+                      title="En savoir plus"
+                      >
+                        <ChevronDownIcon className="w-6 h-6 text-gray-900"/>
+                      </Link>
                     </div>
                   </div>
 

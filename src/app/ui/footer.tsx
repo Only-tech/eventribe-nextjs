@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useSession } from 'next-auth/react'; 
 import { useState } from 'react';
 import ContactModal from './contact-modal';  
+import { ChevronUpIcon } from '@heroicons/react/24/solid';
 
 export default function Footer() {
   const { data: session } = useSession(); 
@@ -12,21 +13,21 @@ export default function Footer() {
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
   return (
-    <footer className="bg-[#f5f5dc] dark:bg-[#1E1E1E] text-gray-700 dark:text-gray-400 pt-10 pb-2 w-full rounded-t-2xl shadow-2xl">
+    <footer className="bg-[#f5f5dc] dark:bg-[#1E1E1E] text-[15px] text-gray-700 dark:text-gray-400 pt-10 pb-2 w-full rounded-t-2xl shadow-2xl">
       <div className="flex flex-wrap gap-20 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
         {/* About us */}
         <div className="max-w-lg @md:max-w-[300px] text-justify max-[849px]:order-3 max-[849px]:justify-center mx-auto">
-          <h3 className="text-2xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-6">À propos de nous</h3>
+          <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-6">À propos de nous</h3>
           <p>
             eventribe connecte organisateurs et passionnés à travers des rencontres humaines et projets culturels.
             Que vous soyez artiste, pro ou curieux, la plateforme vous accompagne : création d’événements, inscriptions, suivi et bien plus encore.
-            Notre mantra : accessibilité, créativité, fluidité. <br />Rejoignez la tribu et donnez vie à vos idées !
+            Notre mantra : accessibilité, créativité, fluidité. <br /><br />Rejoignez la tribu et donnez vie à vos idées !
           </p>
         </div>
 
         {/* Navigation */}
         <div className="max-[849px]:order-1 max-[849px]:justify-center mx-auto">
-          <h3 className="text-2xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-6">Navigation</h3>
+          <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-6">Navigation</h3>
           <ul className="flex flex-col space-y-2 font-medium">
             <li><Link href="/" className="hover:text-[#ff952aff] transition duration-300">Accueil</Link></li>
             {session ? (
@@ -51,7 +52,7 @@ export default function Footer() {
         {/* Partners */}
         <div className="max-[849px]:order-2 max-[849px]:justify-center mx-auto">
           <div className="mb-6">
-            <h3 className="text-2xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-4">Nos partenaires</h3>
+            <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] border-b-1 font-bold pb-1 mb-4">Nos partenaires</h3>
             <div className="flex flex-col gap-2">
               <figure className="flex flex-row h-14 gap-4">
                 <Image
@@ -104,9 +105,11 @@ export default function Footer() {
           {/* Contact button */}
           <button
             onClick={() => setIsContactModalOpen(true)}
-            className="fixed z-1000 bottom-0 left-10 bg-[#ff952aff] text-xl font-semibold px-8 py-2 rounded-t-full text-gray-900 hover:text-[#ff952aff] transition-all group border-0 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] hover:bg-gray-900 cursor-pointer duration-300 ease-in-out"
+            // className="fixed bg-gradient-to-t from-[#08263aff] to-[#4baae6ff] z-1000 bottom-0 left-10 text-lg font-semibold px-5 py-1 rounded-t-2xl hover:text-[#ff952aff] transition-all group border-0 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] hover:bg-gray-900 cursor-pointer duration-300 ease-in-out"
+                    className="fixed inline-flex items-center justify-center z-1000 bottom-0 left-10 pl-5 p-2 rounded-t-2xl text-base text-gray-200 hover:text-gray-800 dark:hover:text-gray-200 dark:text-gray-800 font-medium transition-all border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 dark:hover:bg-gray-800 dark:bg-amber-50 dark:border-gray-800 cursor-pointer duration-300 ease-in-out group"
           >
-            Contactez-nous
+            <span>Contactez-nous</span>
+            <ChevronUpIcon className="inline-block size-5 ml-2 rotate-90 animate-bounce group-hover:animate-none"/>
           </button>
           <Link href="/" className="w-25 h-18 flex mx-auto" title="eventribe, plus proches des événements à venir">
             <svg width="100" height="72" viewBox="0 0 1334 811" className='group' xmlns="http://www.w3.org/2000/svg">

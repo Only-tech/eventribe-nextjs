@@ -163,7 +163,7 @@ export default function Carousel({ imageUrls }: CarouselProps) {
                   {(isMobile || (isActive && isHovered)) && (
                     <button
                       onClick={() => router.push(`/event/${image.eventId}`)}
-                      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] text-shadow-white hover:text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-black/65 hover:bg-[#E8E5D8] hover:border-transparent"
+                      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 h-9 inline-flex items-center justify-center pl-2 pr-4 py-2 rounded-full text-sm font-medium transition-colors group border-[0.5px] text-gray-400 hover:text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-black/65 hover:bg-[#E8E5D8] hover:border-transparent"
                     >
                       <EyeIcon className="w-6 h-6 mr-2" />
                       <span className="whitespace-nowrap">Voir l&apos;événement</span>

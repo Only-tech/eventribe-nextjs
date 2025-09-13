@@ -15,7 +15,7 @@ export default function MainLayout({
         <Suspense fallback={<div className="text-center py-4">Chargement du menu...</div>}>
           <Header />
         </Suspense>
-        <main className="flex-grow max-w-[95%] w-full py-20 mx-auto mt-15">
+        <main className="flex-grow max-w-[95%] w-full py-20 mx-auto mt-6">
           {children}
         </main>
         <OnTopButton /> 

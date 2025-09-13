@@ -474,10 +474,10 @@ export default function UserAccountManageEventsPage() {
                         onClick={() => setIsEditingInfo(true)}
                         className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group border-[0.5px] dark:text-zinc-600  shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] dark:bg-[#1F1F1F] hover:bg-[#E8E5D8] hover:dark:bg-[#1E1E1E] group-hover:dark:bg-[#1E1E1E] group-hover:bg-[#E8E5D8] hover:border-transparent mx-auto transition-all duration-300 ease-in-out">
                         
-                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-3xl sm:text-4xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white mr-6 sm:mr-12 bg-[#F0EEE5] dark:bg-[#1F1F1F] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] border-t-[0.2px] group transition-all duration-300 ease-in-out">
+                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-2xl sm:text-3xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white mr-6 sm:mr-12 bg-[#F0EEE5] dark:bg-[#1F1F1F] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] border-t-[0.2px] group transition-all duration-300 ease-in-out">
                             Mon Compte
                         </h2>
-                        <h3 className="md:col-span-2 inline-flex items-center text-2xl font-bold mb-3"><FingerPrintIcon className="inline-block w-10 h-10 mr-2" />Mes identifiants</h3>
+                        <h3 className="md:col-span-2 inline-flex items-center text-xl font-bold mb-3"><FingerPrintIcon className="inline-block w-8 h-8 mr-2" />Mes identifiants</h3>
                         <div className="relative">
                             <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-[#1F1F1F] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Nom d&apos;utilisateur</p>
                             {session && (<p className="block w-full h-12 px-3 pb-2 pt-3 border border-gray-300 text-lg text-start rounded-md shadow-sm"> {session.user.username} </p>)}
@@ -502,7 +502,7 @@ export default function UserAccountManageEventsPage() {
                     </div>
                 ) : (
                     <div className="relative max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8 rounded-lg shadow-lg transition-all duration-300 ease-in-out">
-                        <h2 className="absolute z-10 px-3 py-1 rounded-t-2xl text-xl right-0 top-0 -translate-y-1/2 font-bold text-gray-500 mr-8 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-400">
+                        <h2 className="absolute z-10 px-3 py-1 rounded-t-2xl text-2xl right-0 top-0 -translate-y-1/2 font-bold text-gray-500 mr-8 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-400">
                             Mon Compte
                         </h2>
                         <button
@@ -514,8 +514,8 @@ export default function UserAccountManageEventsPage() {
                         >
                             &times;
                         </button>
-                        <h3 className="flex max-[450px]:flex-col items-center justify-center text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                            <FingerPrintIcon className="w-8 h-8 mr-2 max-[450px]:mb-3" />
+                        <h3 className="flex max-[450px]:flex-col items-center justify-center text-xl font-bold text-gray-900 dark:text-white mb-6">
+                            <FingerPrintIcon className="w-6 h-6 mr-2 max-[450px]:mb-3" />
                             <span className="text-center">Modifier mes identifiants</span>
                         </h3>
                         <form className="space-y-6" onSubmit={handleUpdateAccount}>
@@ -557,7 +557,7 @@ export default function UserAccountManageEventsPage() {
             </div>
             
             <div className="flex flex-col sm:flex-row justify-evenly gap-5 items-center mb-6 mt-8">
-                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff]">Mes événements</h2>
+                <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff]">Mes événements</h2>
                 <button
                     onClick={() => {
                         setAction('create');
@@ -574,8 +574,8 @@ export default function UserAccountManageEventsPage() {
                         setMessage('');
                     }}
                     className="h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-all border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 cursor-pointer duration-300 ease-in-out group">
-              <PlusIcon className="inline-block w-4 h-4 mr-2 group-hover:animate-bounce" />
-              <span>Créer un événement</span>
+                    <PlusIcon className="inline-block w-4 h-4 mr-2 group-hover:animate-bounce" />
+                    <span>Créer un événement</span>
                 </button>
             </div>
 

@@ -1,10 +1,10 @@
 import EventCard from '@/app/ui/EventCard';
 import { fetchEvents } from '@/app/lib/data';
 import { Event } from '@/app/lib/definitions';
+import BannerCarousel from '@/app/ui/BannerCarousel'; 
 import Carousel from '@/app/ui/Carousel';
 
 
-// The home page is an asynchronous component that retrieves and displays events.
 export default async function Page({
   searchParams,
 }: {
@@ -21,11 +21,11 @@ export default async function Page({
       alt: `Image de l'événement ${event.title}`,
   }));
 
- 
-
   return (
     <div>
-      <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-15 text-center">
+      <BannerCarousel  />
+    
+      <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-15 text-center">
         {query ? `Résultats de recherche pour "${query}"` : 'Découvrez les événements à venir'}
       </h1>
 
@@ -34,15 +34,16 @@ export default async function Page({
           Aucun événement n&apos;est disponible pour le moment. Revenez plus tard !
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(360px,1fr))] gap-8 xl:gap-12 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-8 xl:gap-12 w-full">
           {events.map((event: Event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>
       )}
 
+      {/* Votre ancien carousel "Les intemporels", que vous pouvez garder si vous le souhaitez */}
       <div className="mt-20">
-        <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2 sm:mr-[40%]">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2 sm:mr-[40%]">
           Les intemporels
         </h1>
         <Carousel imageUrls={imageUrls} />

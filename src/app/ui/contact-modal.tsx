@@ -136,8 +136,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         >
           &times;
         </button>
-        <h1 className="flex items-center justify-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-8">
-          <EnvelopeIcon className="w-8 h-8 mr-2" />
+        <h1 className="flex flex-col items-center justify-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-8">
+          <EnvelopeIcon className="size-12 sm:size-16 mb-2" />
           <span>Contactez-nous</span>
         </h1>
         

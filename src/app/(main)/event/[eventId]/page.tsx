@@ -49,10 +49,10 @@ export default async function EventDetailPage({
       </div>
 
       <div className="flex flex-col md:flex-row lg:flex-col lg:justify-center lg:pl-6 gap-6 mb-6">
-        <div className="min-w-[330px]">
-          <h1 className="hidden lg:flex text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4">{event.title}</h1>
-          <p className="text-gray-700 dark:text-gray-400 text-lg mb-2">
-            <CalendarIcon className="inline-block w-5 h-5 mr-1" />{' '}
+        <div className="min-w-[330px] flex flex-col text-sm">
+          <h1 className="hidden lg:flex text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-300 mb-4">{event.title}</h1>
+          <p className="inline-flex items-center text-gray-700 dark:text-gray-400 mb-2">
+            <CalendarIcon className="inline-block w-5 h-5 mr-2" />{' '}
             {new Date(event.event_date).toLocaleString('fr-FR', {
               day: '2-digit',
               month: '2-digit',
@@ -62,12 +62,12 @@ export default async function EventDetailPage({
             })}{' '}
             GMT+2
           </p>
-          <p className="text-gray-700 dark:text-gray-400 text-lg mb-2">
-            <MapPinIcon className="inline-block w-5 h-5 mr-1" /> {event.location}
+          <p className="inline-flex items-center text-gray-700 dark:text-gray-400 mb-2">
+            <MapPinIcon className="inline-block w-5 h-5 mr-2" /> {event.location}
           </p>
-          <p className="text-gray-700 dark:text-gray-400 text-lg mb-2">
+          <p className="inline-flex items-center text-gray-700 dark:text-gray-400 mb-2">
             <UsersIcon className="inline-block w-6 h-6 mr-2" />
-            <strong className="text-gray-800 dark:text-white">Places disponibles :</strong> {remainingSeats}
+            <strong className="text-gray-800 dark:text-gray-300">Places disponibles &nbsp;: </strong>&nbsp; {remainingSeats}
           </p>
         </div>
         <div>

@@ -109,7 +109,7 @@ export default function Header() {
             </div>
 
             <nav className="flex flex-row gap-6 items-center">
-                <ul className={`mobile-menu flex items-start min-[1025px]:items-center gap-3 min-[1025px]:gap-6 text-lg font-medium max-[1025px]:flex-col max-[1025px]:absolute max-[1025px]:top-full max-[1025px]:left-0 max-[1025px]:w-full bg-[#f5f5dc] dark:bg-[#222222] max-[1025px]:shadow-lg max-[1025px]:py-4 max-[1025px]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-[1025px]:flex rounded-b-2xl`}>
+                <ul className={`mobile-menu flex items-start min-[1025px]:items-center gap-3 min-[1025px]:gap-6 text-base xl:text-lg font-medium max-[1025px]:flex-col max-[1025px]:absolute max-[1025px]:top-full max-[1025px]:left-0 max-[1025px]:w-full bg-[#f5f5dc] dark:bg-[#222222] max-[1025px]:shadow-lg max-[1025px]:py-4 max-[1025px]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-[1025px]:flex rounded-b-2xl`}>
                 <li>
                     <Link href="/events" 
                         className={`inline-flex whitespace-nowrap items-center gap-1 transition-colors duration-300  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
@@ -208,7 +208,7 @@ export default function Header() {
                 </ul>
                 <button
                 id="burgerBtn"
-                className="flex text-4xl min-[1025px]:hidden cursor-pointer"
+                className="flex min-[1025px]:hidden cursor-pointer"
                 title="Menu"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 >

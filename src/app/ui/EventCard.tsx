@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { CalendarIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline'; 
+import { CalendarIcon, ChevronUpIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline'; 
 
 // Define the Event type if not already globally available or imported
 interface Event {
@@ -40,20 +40,20 @@ export default function EventCard({ event }: EventCardProps) {
     const finalImageSrc = (event.image_url && isValidUrl(event.image_url)) ? event.image_url : fallbackImageSrc;
     
     return (
-        <div className="max-w-md bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] rounded-lg shadow-lg overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl dark:hover:shadow-[0px_2px_5px_rgba(255,_149,_42,_1)] dark:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] group mx-auto" data-aos="fade-up">
-        <div className="relative w-full h-56 overflow-hidden">
+        <div className="max-w-75 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] rounded-3xl shadow-lg overflow-hidden flex flex-col transform transition-all duration-300 hover:shadow-2xl dark:hover:shadow-[0px_2px_5px_rgba(255,_149,_42,_1)] dark:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] group mx-auto" data-aos="fade-up">
+        <div className="relative w-full h-40 overflow-hidden">
             <Image
             src={finalImageSrc}
             alt={`Image de l'événement ${event.title}`}
             fill
             style={{ objectFit: 'cover' }}
-            className="w-full h-48 xl:h-80 object-cover rounded-t-lg group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1"
+            className="w-full h-42 object-cover rounded-t-lg group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1"
             />
 
         </div>
-        <div className="p-3 sm:p-4 md:p-6 flex-grow flex flex-col">
-            <h2 className="text-center text-lg md:text-xl font-bold text-gray-900 dark:text-[#ff952aff] mb-2">{event.title}</h2>
-            <p className="text-gray-700 dark:text-gray-500 text-sm mb-2">
+        <div className="py-3 px-3.5 text-sm flex-grow flex flex-col">
+            <h2 className="text-center md:text-base font-bold text-gray-900 dark:text-[#ff952aff] mb-2">{event.title}</h2>
+            <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-xs mb-1">
             <CalendarIcon className="inline-block w-4 h-4 mr-1" /> {new Date(event.event_date).toLocaleString('fr-FR', {
                 day: '2-digit',
                 month: '2-digit',
@@ -62,20 +62,18 @@ export default function EventCard({ event }: EventCardProps) {
                 minute: '2-digit'
             })} GMT+2
             </p>
-            <p className="text-gray-700 dark:text-gray-500 text-sm mb-4">
+            <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-sm mb-3">
             <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
             </p>
-            <p className="text-center sm:text-justify text-gray-700 dark:text-gray-400 mb-4 flex-grow">{event.description_short}</p>
+            <p className="text-gray-700 dark:text-gray-400 mb-3 flex-grow">{event.description_short}</p>
             <div className="mt-auto flex flex-row   justify-between items-center gap-3">
-                <p className="text-sm inline-flex items-center text-gray-500 whitespace-nowrap">
-                <UsersIcon className="inline-block w-6 h-6 mr-1" /> {remainingSeats}
+                <p className="text-sm inline-flex items-center text-[#08568a] whitespace-nowrap">
+                <UsersIcon className="inline-block size-5 mr-1" /> {remainingSeats}
                 </p>
                 
-                <Link href={`/event/${event.id}`} className=" h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:bg-[#1E1E1E] dark:text-gray-300 dark:hover:text-gray-700 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent">
+                <Link href={`/event/${event.id}`} className=" h-8 inline-flex items-center justify-center pl-4 p-1 rounded-full font-medium transition-colors group border-[0.5px] dark:bg-[#1E1E1E] dark:text-gray-300 dark:hover:text-gray-700 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent">
                     <span className="whitespace-nowrap">En savoir plus</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 256 256" className="inline-block w-4 h-4  group-hover:animate-bounce ml-2">
-                        <path d="M205.66,149.66l-72,72a8,8,0,0,1-11.32,0l-72-72a8,8,0,0,1,11.32-11.32L120,196.69V40a8,8,0,0,1,16,0V196.69l58.34-58.35a8,8,0,0,1,11.32,11.32Z"></path>
-                    </svg>
+                    <ChevronUpIcon className="inline-block w-4 h-4 ml-2 rotate-90 group-hover:animate-bounce"/>
                 </Link>
             </div>
         </div>

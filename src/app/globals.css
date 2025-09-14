@@ -262,7 +262,7 @@ button:active {
   width: 30px;
   height: 9px;
   border-radius: 9999px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.4);
   position: relative;
   overflow: hidden;
   margin: 0 15px;
@@ -284,13 +284,8 @@ button:active {
 
 /* === Navigation pop-in === */
 .carousel-nav {
-  position: absolute;
-  bottom: 5px;
   left: 50%;
   transform: translateX(-50%) scale(0);
-  display: flex;
-  align-items: center;
-  gap: 15px;
   opacity: 0;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
@@ -310,31 +305,8 @@ button:active {
   transform: scale(1);
 }
 
-/* === Backdrop filter précis === */
-#play-pause-btn,
-.progress-bar-container {
-  background-color: rgba(29, 29, 31, 0.35);
-  backdrop-filter: blur(8px);
-}
-
-#play-pause-btn:hover {
-  background-color: rgba(29, 29, 31, 0.95);
-}
-
 /* === Slides transition === */
 .slides {
   transition: transform 0.5s ease-in-out;
   -webkit-overflow-scrolling: touch;
-}
-
-.image-credit {
-  position: absolute;
-  bottom: 12px;
-  right: 12px;
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  z-index: 10;
 }

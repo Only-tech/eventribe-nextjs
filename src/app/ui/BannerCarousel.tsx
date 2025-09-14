@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 import Image from 'next/image';
 import '@/app/globals.css'; 
 
@@ -11,6 +11,7 @@ const AUTOPLAY_DURATION = 6000;
 
 const slidesData = [
   {
+    id: 1,
     src: "https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/bannerImage/adore_soire.png",
     alt: "Pour les habitués des soirées festives",
     title: "Pour les habitués des soirées festives",
@@ -18,6 +19,7 @@ const slidesData = [
     desc: "Trouvez l'endroit parfait pour faire la fête et danser jusqu'au bout de la nuit !"
   },
   {
+    id: 2,
     src: "https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/bannerImage/aime_apprendre.png",
     alt: "Pour les curieux qui aiment apprendre",
     title: "Pour les curieux qui aiment apprendre",
@@ -25,6 +27,7 @@ const slidesData = [
     desc: "Élargissez vos horizons en rencontrant des experts et des passionnés."
   },
   {
+    id: 3,
     src: "https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/bannerImage/passionne.png",
     alt: "Pour les passionnés qui vibrent au stade",
     title: "Pour les passionnés qui vibrent au stade",
@@ -32,6 +35,7 @@ const slidesData = [
     desc: "Vivez l'adrénaline des matchs et des compétitions"
   },
   {
+    id: 4,
     src: "https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/bannerImage/jeune-creer.png",
     alt: "Pour les jeunes qui veulent créer",
     title: "Pour les jeunes qui veulent créer",
@@ -62,13 +66,11 @@ export default function Carousel() {
   };
 
   // Start autoplay with fresh interval and restart dot animation
-  const startAutoplay = () => {
-    setUserPaused(false); 
+  const startAutoplay = useCallback(() => {
+    setUserPaused(false);
     if (isComplete) setIsComplete(false);
     setIsPaused(false);
     clearAutoplay();
-
-    // Restart dot animation 
     setProgressKey((k) => k + 1);
 
     intervalRef.current = setInterval(() => {
@@ -82,7 +84,8 @@ export default function Carousel() {
         return next;
       });
     }, AUTOPLAY_DURATION);
-  };
+  }, [isComplete, TOTAL]);
+
 
   const pauseAutoplay = () => {
     setUserPaused(true);
@@ -114,16 +117,6 @@ export default function Carousel() {
     }
   };
 
-  const nextSlide = () => {
-    const next = (currentIndex + 1) % TOTAL;
-    if (next === 0 && TOTAL > 1) {
-      setIsComplete(true);
-      setIsPaused(true);
-      clearAutoplay();
-    }
-    setCurrentIndex(next);
-  };
-
   // IntersectionObserver: start autoplay on visibility
   useEffect(() => {
     const el = containerRef.current;
@@ -149,19 +142,18 @@ export default function Carousel() {
 
     observer.observe(el);
     return () => observer.disconnect();
-    // We only depend on state that alters decision: isPaused, isComplete
-  }, [isPaused, isComplete, userPaused]);
+  }, [isPaused, isComplete, userPaused, startAutoplay]);
 
   // On mount: small fallback to start autoplay and ensure first dot anim,
   // in case observer doesn’t trigger 
-useEffect(() => {
-  const t = setTimeout(() => {
-    if (!isComplete && isPaused && !userPaused) {
-      startAutoplay();
-    }
-  }, 50);
-  return () => clearTimeout(t);
-}, [isComplete, isPaused, userPaused]);
+  useEffect(() => {
+    const t = setTimeout(() => {
+      if (!isComplete && isPaused && !userPaused) {
+        startAutoplay();
+      }
+    }, 50);
+    return () => clearTimeout(t);
+  }, [isComplete, isPaused, userPaused, startAutoplay]);
 
 
   // When currentIndex changes while playing, restart dot animation
@@ -180,11 +172,11 @@ useEffect(() => {
   return (
     <div
       ref={containerRef}
-      className="carousel-container relative w-full mx-auto mb-12 rounded-2xl shadow-lg bg-[#111] overflow-hidden"
+      className="carousel-container relative w-full mb-12 -mt-8 rounded-lg shadow-lg bg-gradient-to-b from-[#111] to-[#1E1E1E] border border-[rgba(255,255,255,0.08)] overflow-hidden"
     >
       {/* Slides track */}
       <div
-        className="slides flex transition-transform duration-500 ease-in-out"
+        className="slides relative flex transition-transform duration-500 ease-in-out"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
         {slidesData.map((slide, index) => (
@@ -196,26 +188,26 @@ useEffect(() => {
                 : "opacity-50 pointer-events-none"
             }`}
           >
-            <div className="flex flex-col md:flex-row items-center justify-center min-h-[380px] md:min-h-[420px]">
-              <div className="flex-1 p-8 md:p-10 flex flex-col justify-center items-start text-left max-w-md">
-                <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">
+            <div className="flex flex-col sm:flex-row sm:items-center max-h-60 sm:max-h-50 lg:max-h-55">
+              <div className="flex-1 p-4 md:p-6 lg:p-10 max-w-full sm:max-w-[35%]">
+                <h2 className="text-sm sm:text-base md:text-xl lg:text-2xl font-bold text-gray-300 mb-3 md:mb-4">
                   {slide.title}
                 </h2>
-                <p className="text-base md:text-base text-gray-300">
+                <p className="text-xs md:text-base text-gray-400">
                   {slide.desc}
                 </p>
               </div>
 
-              <div className="flex-1 w-full h-50 overflow-hidden flex justify-center items-center">
+              <div className="flex-1 relative w-full h-40 md:h-55 overflow-hidden flex justify-center items-center">
                 <Image
                   src={slide.src}
                   alt={slide.alt}
                   width={640}
                   height={200}
-                  className="rounded-lg object-cover bg-contain w-full h-auto max-w-4xl"
+                  className="relative object-cover bg-contain w-full h-auto max-w-[65%]]"
                 />
-                <span className="image-credit">
-                    {slidesData[currentIndex].credit}
+                <span className="absolute z-10 bottom-3 right-3 bg-black/60 px-2 py-1 rounded-md text-xs text-gray-400">
+                    {slide.credit}
                 </span>
               </div>
             </div>
@@ -226,26 +218,25 @@ useEffect(() => {
       {/* Navigation */}
       <div
         ref={navRef}
-        className="carousel-nav absolute bottom-2 left-1/2 -translate-x-1/2 flex items-center gap-4"
+        className="carousel-nav absolute bottom-2  flex items-center gap-4 group"
       >
         <button
           id="play-pause-btn"
           aria-label={isComplete ? "Rejouer" : isPaused ? "Lire" : "Mettre en pause"}
-  onClick={() => {
-  if (isComplete) {
-    setIsComplete(false);
-    setCurrentIndex(0);
-    setUserPaused(false);
-    startAutoplay();
-  } else if (isPaused) {
-    setUserPaused(false);
-    startAutoplay();
-  } else {
-    pauseAutoplay(); // met userPaused = true
-  }
-}}
-
-          className="flex items-center justify-center text-white rounded-full h-[45px] w-[45px]"
+          onClick={() => {
+          if (isComplete) {
+            setIsComplete(false);
+            setCurrentIndex(0);
+            setUserPaused(false);
+            startAutoplay();
+          } else if (isPaused) {
+            setUserPaused(false);
+            startAutoplay();
+          } else {
+            pauseAutoplay(); // met userPaused = true
+          }
+          }}
+          className="flex items-center justify-center text-white rounded-full h-[45px] w-[45px] bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl"
         >
           {isComplete ? (
             <svg
@@ -284,7 +275,7 @@ useEffect(() => {
         </button>
 
         {/* Dots with morphing + progress */}
-        <div className="progress-bar-container relative w-[180px] h-[45px] rounded-full flex items-center justify-center">
+        <div className="progress-bar-container relative w-[180px] h-[45px] rounded-full flex items-center justify-center bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
           <div className="dots-container absolute inset-0 flex px-1">
             {slidesData.map((_, idx) => {
               const active = idx === currentIndex && !isPaused && !isComplete;
@@ -300,7 +291,7 @@ useEffect(() => {
                     style={
                       active
                         ? ({
-                            ["--progress-duration" as any]: `${AUTOPLAY_DURATION}ms`
+                            ["--progress-duration" as string]: `${AUTOPLAY_DURATION}ms`
                           } as React.CSSProperties)
                         : undefined
                     }

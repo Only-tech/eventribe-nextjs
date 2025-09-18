@@ -501,10 +501,7 @@ export default function UserAccountManageEventsPage() {
 
                     </div>
                 ) : (
-                    <div className="relative max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8 rounded-lg shadow-lg transition-all duration-300 ease-in-out">
-                        <h2 className="absolute z-10 px-3 py-1 rounded-t-2xl text-2xl right-0 top-0 -translate-y-1/2 font-bold text-gray-500 mr-8 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-400">
-                            Mon Compte
-                        </h2>
+                    <div className="relative z-1 max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8 rounded-lg shadow-lg transition-all duration-300 ease-in-out" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
                         <button
                         type="button"
                         onClick={() => setIsEditingInfo(false)}
@@ -514,9 +511,9 @@ export default function UserAccountManageEventsPage() {
                         >
                             &times;
                         </button>
-                        <h3 className="flex max-[450px]:flex-col items-center justify-center text-xl font-bold text-gray-900 dark:text-white mb-6">
-                            <FingerPrintIcon className="w-6 h-6 mr-2 max-[450px]:mb-3" />
-                            <span className="text-center">Modifier mes identifiants</span>
+                        <h3 className="flex flex-col items-center justify-center text-xl min-[400px]:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">
+                            <FingerPrintIcon className="w-auto h-14  mb-4" />
+                            <span>Modifier mes identifiants</span>
                         </h3>
                         <form className="space-y-6" onSubmit={handleUpdateAccount}>
                             <FloatingLabelInput
@@ -590,14 +587,14 @@ export default function UserAccountManageEventsPage() {
     // ------- EVENTS ------------
             <div className="grid grid-cols-1 min-[1600px]:grid-cols-2 gap-10">
             {events.map((event) => (
-                <div key={event.id} className="max-w-5xl w-full bg-white/95 dark:bg-[#1E1E1E] dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
-                
-                
+                <div key={event.id} className="max-w-5xl w-full bg-gray-300 dark:bg-white/15 p-[0.5px] hover:bg-gray-600 dark:hover:bg-white/70 shadow-2xl transition-all duration-300 ease-in-out mx-auto group" data-aos="fade-up" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+                <div key={event.id} className=" w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl p-4 overflow-hidden group" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+                                
                 <div
                     className="flex  items-center cursor-pointer"
                     onClick={() => toggleEventExpansion(event.id)}
                 >
-                    <div className="hidden md:block relative w-80 h-50 overflow-hidden rounded-lg mr-6">
+                    <div className="hidden sm:block relative w-100 h-50 overflow-hidden rounded-[2.5rem] mr-6">
                         <Image
                             src={normalizeImagePath(event.image_url)}
                             alt={`Image de l'événement ${event.title}`}
@@ -608,7 +605,7 @@ export default function UserAccountManageEventsPage() {
                     </div>
 
                     <div className="flex flex-row justify-between items-center max-w-2xl w-full">
-                        <div>
+                        <div className="max-sm:pl-3">
                             <h2 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
                             <p className="text-gray-700 dark:text-gray-500 text-sm mt-1">
                                 <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
@@ -662,7 +659,7 @@ export default function UserAccountManageEventsPage() {
                     <p className="text-center text-gray-700 dark:text-gray-500">Aucun participant inscrit pour cet événement.</p>
                   ) : (
                     <div className="overflow-x-auto">
-                      <table className="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden">
+                      <table className="min-w-full divide-y divide-gray-200 rounded-t-3xl rounded-b-4xl overflow-hidden">
                         <thead className="bg-gray-50 dark:bg-zinc-800">
                           <tr>
                             <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
@@ -702,6 +699,7 @@ export default function UserAccountManageEventsPage() {
                   )}
                 </div>
               )}
+            </div>
             </div>
           ))}
         </div>

@@ -152,8 +152,9 @@ export default function MyEventsPage() {
 
 
             return (
-              <div key={event.id} className="flex items-center text-sm max-w-2xl w-full bg-white/95 dark:bg-[#1E1E1E] dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)] rounded-2xl shadow-lg p-4 mx-auto overflow-hidden group" data-aos="fade-up">
-                <div className="hidden md:block relative w-70 h-45 overflow-hidden rounded-lg mr-6">
+              <div key={event.id} className="max-w-2xl w-full bg-gray-300 dark:bg-white/15 p-[0.5px] hover:bg-gray-600 dark:hover:bg-white/70 shadow-2xl transition-colors duration-500 ease-in-out mx-auto group" data-aos="fade-up" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+              <div key={event.id} className="flex items-center text-sm w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl shadow-lg p-4 overflow-hidden" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+                <div className="hidden sm:block relative w-70 h-45 overflow-hidden rounded-4xl mr-6">
                   <Image
                     src={imageSrc}
                     alt={`Image de l'événement ${event.title}`}
@@ -166,7 +167,7 @@ export default function MyEventsPage() {
                   />        
                 </div>
 
-                <div className="flex flex-col  items-center max-w-sm w-full">
+                <div className="flex flex-col items-center max-w-sm w-full max-sm:pl-3">
                   <div className="w-full flex flex-col">
                     <h2 className="text-base text-center min-[500px]:text-start font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
                     <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-xs mt-1">
@@ -205,6 +206,7 @@ export default function MyEventsPage() {
                   </div>
 
                 </div>
+              </div>
               </div>
             );
           })}

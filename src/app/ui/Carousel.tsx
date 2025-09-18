@@ -146,10 +146,11 @@ export default function Carousel({ imageUrls }: CarouselProps) {
                 className={`mx-4 w-72 h-60 xl:w-96 xl:h-72 flex-shrink-0 rounded-4xl bg-white/80 shadow-inner transition-transform duration-500 ${
                   isActive ? 'scale-105 z-10 shadow-[0_0_16px_rgba(7,2,52,0.7)]' : 'scale-90 opacity-70'
                 }`}
+                 style={{ clipPath: "var(--clip-path-squircle-60)" }}
               >
                 <div
                   className="relative w-full h-full rounded-4xl overflow-hidden group"
-                  style={{ transform: parallaxOffset, transition: 'transform 0.5s ease' }}
+                  style={{ clipPath: 'var(--clip-path-squircle-60)', transform: parallaxOffset, transition: 'transform 0.5s ease' }}
                 >
                   <Image
                     src={image.url}

@@ -126,7 +126,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     >
       <div
         className="bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white rounded-lg shadow-lg p-6 w-full max-w-md relative group transition-all"
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}  style={{ clipPath: "var(--clip-path-squircle-60)" }}
       >
         <button
           onClick={onClose}

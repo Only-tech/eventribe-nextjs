@@ -96,8 +96,8 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
                 </div>
             </div>
 
-            <div className="relative z-10 text-center bg-white/45 bg-contain bg-fixed backdrop-blur-md rounded-4xl p-6 lg:p-12 border-8 border-[#f5f5dc] ring ring-[#ff952aff] shadow-lg"
-            style={{ backgroundImage: "url('/images/SplashPaintBreak.svg')" }}>
+            <div className="relative z-10 bg-white/65 p-2 shadow-2xl overflow-hidden rounded-4xl" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+            <div className=" relative text-center bg-white/45 bg-contain bg-fixed backdrop-blur-md p-6 lg:p-12" style={{ backgroundImage: "url('/images/SplashPaintBreak.svg')", clipPath: "var(--clip-path-squircle-60)" }}>
                 <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight drop-shadow-lg mb-10">
                     Bienvenue sur eventribe
                 </h1>
@@ -112,6 +112,7 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
                     <div className="animate-dot-bounce-2 w-2 h-2 rounded-full bg-gray-900"></div>
                     <div className="animate-dot-bounce-3 w-2 h-2 rounded-full bg-gray-900"></div>
                 </div>
+            </div>
             </div>
         </div>
     );

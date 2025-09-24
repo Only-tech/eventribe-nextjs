@@ -53,7 +53,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-gray-300 dark:bg-white/15 p-[0.5px] hover:bg-gray-600 dark:hover:bg-white/70 rounded-lg shadow-2xl transition-all duration-300 ease-in-out" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+    <div className="drop-shadow-lg max-w-md mx-auto transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
     <div className="bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8 rounded-lg" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
       <h1 className="flex flex-col items-center justify-center text-3xl font-bold text-gray-900 dark:text-white mb-8">
           <FingerPrintIcon className="w-auto h-16  mb-4" />

@@ -384,7 +384,7 @@ export default function UserAccountManageEventsPage() {
 
     // Form to create and edit an event
     const renderForm = () => (
-        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-2xl shadow-xl mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white sm:mb-15 transition-all dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
+        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-4xl drop-shadow-xl hover:drop-shadow-2xl mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white sm:mb-15 transition-all dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
             <h2 className="text-3xl font-bold mb-6 sm:mb-10 text-gray-800 dark:text-[#ff952aff] text-center">{action === 'create' ? 'Créer un événement' : 'Modifier l\'événement'}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
@@ -424,7 +424,7 @@ export default function UserAccountManageEventsPage() {
                         disabled={uploadingImage}
                     />
                     {(previewImage || imageUrl) && (
-                        <div className="mt-4 flex justify-center sm:absolute bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white sm:shadow-[0px_20px_15px_rgba(0,_0,_0,_0.1)] rounded-xl px-2 pb-2">
+                        <div className="mt-4 flex justify-center sm:absolute bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white rounded-xl px-2 pb-2">
                             <Image
                                 src={previewImage || normalizeImagePath(imageUrl)}
                                 alt="Aperçu de l'image"
@@ -468,13 +468,13 @@ export default function UserAccountManageEventsPage() {
     // -------------- Account and user events owner
     const renderList = () => (
         <>
-            <div className="relative mt-6 mb-12 max-w-3xl mx-auto group">
+            <div className="relative mt-6 mb-12 max-w-3xl drop-shadow-lg mx-auto transition-all duration-300 ease-in-out hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
                 {!isEditingInfo ? (
                     <div
                         onClick={() => setIsEditingInfo(true)}
-                        className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group border-[0.5px] dark:text-zinc-600  shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] dark:bg-[#1F1F1F] hover:bg-[#E8E5D8] hover:dark:bg-[#1E1E1E] group-hover:dark:bg-[#1E1E1E] group-hover:bg-[#E8E5D8] hover:border-transparent mx-auto transition-all duration-300 ease-in-out">
+                        className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group dark:text-zinc-600  bg-[#F0EEE5] dark:bg-[#1F1F1F] hover:bg-[#E8E5D8] hover:dark:bg-[#1E1E1E] group-hover:dark:bg-[#1E1E1E] group-hover:bg-[#E8E5D8] transition-all duration-300 ease-in-out">
                         
-                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-2xl sm:text-3xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white mr-6 sm:mr-12 bg-[#F0EEE5] dark:bg-[#1F1F1F] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] border-t-[0.2px] group transition-all duration-300 ease-in-out">
+                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-2xl sm:text-3xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white mr-6 sm:mr-12 bg-[#F0EEE5] dark:bg-[#1F1F1F] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] group transition-all duration-300 ease-in-out">
                             Mon Compte
                         </h2>
                         <h3 className="md:col-span-2 inline-flex items-center text-xl font-bold mb-3"><FingerPrintIcon className="inline-block w-8 h-8 mr-2" />Mes identifiants</h3>
@@ -501,7 +501,7 @@ export default function UserAccountManageEventsPage() {
 
                     </div>
                 ) : (
-                    <div className="relative z-1 max-w-md mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8 rounded-lg shadow-lg transition-all duration-300 ease-in-out" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+                    <div className="relative z-1 max-w-md mx-auto transition-all ease-in-out duration-300 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-8" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
                         <button
                         type="button"
                         onClick={() => setIsEditingInfo(false)}
@@ -587,8 +587,8 @@ export default function UserAccountManageEventsPage() {
     // ------- EVENTS ------------
             <div className="grid grid-cols-1 min-[1600px]:grid-cols-2 gap-10">
             {events.map((event) => (
-                <div key={event.id} className="max-w-5xl w-full bg-gray-300 dark:bg-white/15 p-[0.5px] hover:bg-gray-600 dark:hover:bg-white/70 shadow-2xl transition-all duration-300 ease-in-out mx-auto group" data-aos="fade-up" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
-                <div key={event.id} className=" w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl p-4 overflow-hidden group" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+                <div key={event.id} className="drop-shadow-lg max-w-5xl w-full mx-auto transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]" data-aos="fade-up">
+                <div className=" w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl p-4 overflow-hidden group" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
                                 
                 <div
                     className="flex  items-center cursor-pointer"

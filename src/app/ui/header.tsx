@@ -82,7 +82,7 @@ export default function Header() {
             {/*search Bar */}
             <div className="relative flex-grow mx-6 max-xl:max-w-sm max-w-lg">
                 <form onSubmit={handleSearchSubmit} className="group flex items-center">
-                <div className="group w-full flex flex-row rounded-full border border-gray-300 transition duration-300 hover:border-[#ff952aff] focus-within:border-[#ff952aff] overflow-hidden">
+                <div className="group w-full flex flex-row rounded-full border-[0.1px] border-gray-300 transition duration-300 hover:border-[#ff952aff] focus-within:border-[#ff952aff] overflow-hidden">
                     <input
                     type="text"
                     name="search"

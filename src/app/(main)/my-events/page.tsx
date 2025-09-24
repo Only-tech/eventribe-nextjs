@@ -125,7 +125,7 @@ export default function MyEventsPage() {
   }
 
   return (
-    <div className="p-3">
+    <div >
       <h1 className="text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-8 text-center">Mes Inscriptions</h1>
 
       {message && (
@@ -152,8 +152,8 @@ export default function MyEventsPage() {
 
 
             return (
-              <div key={event.id} className="max-w-2xl w-full bg-gray-300 dark:bg-white/15 p-[0.5px] hover:bg-gray-600 dark:hover:bg-white/70 shadow-2xl transition-colors duration-500 ease-in-out mx-auto group" data-aos="fade-up" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
-              <div key={event.id} className="flex items-center text-sm w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl shadow-lg p-4 overflow-hidden" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+              <div key={event.id} className="drop-shadow-lg max-w-2xl mx-auto transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]" data-aos="fade-up">
+              <div className="flex items-center text-sm w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl shadow-lg p-4 overflow-hidden" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
                 <div className="hidden sm:block relative w-70 h-45 overflow-hidden rounded-4xl mr-6">
                   <Image
                     src={imageSrc}

@@ -71,7 +71,7 @@ export default function EventCard({ event }: EventCardProps) {
                 <UsersIcon className="inline-block size-5 mr-1" /> {remainingSeats}
                 </p>
                 
-                <Link href={`/event/${event.id}`} className=" h-8 inline-flex items-center justify-center pl-4 p-1 rounded-full font-medium transition-colors group border-[0.5px] dark:bg-[#1E1E1E] dark:text-gray-300 dark:hover:text-gray-700 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent">
+                <Link href={`/event/${event.id}`} className=" h-8 inline-flex items-center justify-center pl-4 p-1 rounded-full font-medium transition-colors group border-[0.1px] dark:bg-[#1E1E1E] dark:text-gray-300 dark:hover:text-gray-700 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent">
                     <span className="whitespace-nowrap">En savoir plus</span>
                     <ChevronUpIcon className="inline-block w-4 h-4 ml-2 rotate-90 group-hover:animate-bounce"/>
                 </Link>

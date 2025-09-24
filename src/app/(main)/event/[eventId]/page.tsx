@@ -34,11 +34,12 @@ export default async function EventDetailPage({
   const isRegistered = isLoggedIn && userId ? await isUserRegisteredForEvent(userId, id) : false;
 
   return (
-    <div className=" px-3 py-8 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/95 rounded-lg lg:rounded-2xl shadow-lg md:p-8 max-w-7xl mx-auto items-center transform transition-transform duration-300 hover:shadow-2xl group dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
+    <div className="drop-shadow-lg max-w-7xl xl:max-w-400 mx-auto transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
+    <div className=" px-3 py-8 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/95 rounded-lg lg:rounded-2xl shadow-lg md:p-8 items-center" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
     <div className="lg:flex">  
       <h1 className="lg:hidden text-3xl md:text-4xl text-center lg:text-start font-extrabold text-gray-900 dark:text-white mb-4">{event.title}</h1>
 
-      <div className="relative w-full lg:min-w-sm lg:max-w-md h-55 sm:h-96 mb-6 rounded-lg overflow-hidden">
+      <div className="relative w-full lg:min-w-sm lg:max-w-md xl:max-w-xl h-55 sm:h-96 mb-6 rounded-4xl shadow-2xl overflow-hidden">
         <Image
           src={imageUrl.startsWith('/https://') ? imageUrl.slice(1) : imageUrl}
           alt={`${event.title}`}
@@ -112,13 +113,16 @@ export default async function EventDetailPage({
         )}
       </div>
 
+    </div>
+    <div className="relative">
       <Link
         href="/events"
-        className="absolute h-11 inline-flex items-center justify-center mt-3 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out"
+        className="absolute h-11 inline-flex items-center justify-center -mt-6 ml-10 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out"
       >
         <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" />
         <span>Page d&apos;accueil</span>
       </Link>
+    </div>
     </div>
   );
 }

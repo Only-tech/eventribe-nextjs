@@ -243,8 +243,8 @@ button:active {
 
 /* === Dots === */
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 0.5rem;
+  height: 0.5rem;
   border-radius: 50%;
   background-color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
@@ -259,13 +259,20 @@ button:active {
 }
 
 .dot.transforming {
-  width: 30px;
-  height: 9px;
+  width: 2rem;
+  height: 0.45rem;
   border-radius: 9999px;
   background-color: rgba(255, 255, 255, 0.4);
   position: relative;
   overflow: hidden;
-  margin: 0 15px;
+}
+
+.dot:first-child.transforming {
+  margin-left: 0.5rem;
+}
+
+.dot:last-child.transforming {
+  margin-right: 0.5rem;
 }
 
 .dot.transforming::after {
@@ -297,7 +304,7 @@ button:active {
 
 .carousel-nav.below {
   position: static;
-  margin-top: 15px;
+  margin-top: 1rem;
   transform: scale(0);
 }
 

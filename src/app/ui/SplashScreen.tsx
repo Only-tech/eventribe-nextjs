@@ -64,6 +64,23 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
         };
     }, [router, imageUrls]);
 
+  // Text H1 typeWriter
+  const [displayedH1, setDisplayedH1] = useState("");
+  const fullH1Text = "Bienvenue sur eventribe";
+  
+  useEffect(() => {
+    setDisplayedH1("");
+    let index = 0;
+    const interval = setInterval(() => {
+      setDisplayedH1(fullH1Text.slice(0, index + 1));
+      index++;
+      if (index === fullH1Text.length) {
+        clearInterval(interval);
+      }
+    }, 50); 
+    return () => clearInterval(interval);
+  }, [fullH1Text]);
+
     return (
         <div
             className={`relative p-2 flex min-h-screen items-center justify-center transition-opacity duration-500 ease-in-out overflow-hidden ${
@@ -96,12 +113,14 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
                 </div>
             </div>
 
-            <div className="relative z-10 bg-white/65 p-2 shadow-2xl overflow-hidden rounded-4xl" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
-            <div className=" relative text-center bg-white/45 bg-contain bg-fixed backdrop-blur-md p-6 lg:p-12" style={{ backgroundImage: "url('/images/SplashPaintBreak.svg')", clipPath: "var(--clip-path-squircle-60)" }}>
-                <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight drop-shadow-lg mb-10">
-                    Bienvenue sur eventribe
+            <div className="relative z-10 w-xs sm:w-xl md:w-2xl lg:w-210 drop-shadow-[3px_15px_5px_rgba(0,0,0,0.65)]">
+            <div className="bg-white/25 p-2" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+            <div className="text-center bg-[url('/images/SplashPaintBreak.svg')] bg-contain bg-fixed p-6 lg:p-12" id="bgBlur" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+                <h1 className="text-4xl lg:text-6xl items-center font-extrabold text-gray-900 tracking-tight drop-shadow-lg mb-10">
+                    {displayedH1}
+                    <span className="animate-pulse text-3xl lg:text-5xl font-light">|</span>
                 </h1>
-                <div className="w-64 h-2 bg-gray-200 rounded-full overflow-hidden mx-auto mb-6">
+                <div className="w-64 h-2 bg-gray-300 rounded-full overflow-hidden mx-auto mb-6">
                     <div
                         className="h-full bg-gray-900 rounded-full transition-all duration-100 ease-linear"
                         style={{ width: `${progress}%` }}
@@ -112,6 +131,7 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
                     <div className="animate-dot-bounce-2 w-2 h-2 rounded-full bg-gray-900"></div>
                     <div className="animate-dot-bounce-3 w-2 h-2 rounded-full bg-gray-900"></div>
                 </div>
+            </div>
             </div>
             </div>
         </div>

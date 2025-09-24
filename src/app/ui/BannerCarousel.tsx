@@ -236,7 +236,7 @@ export default function Carousel() {
             pauseAutoplay(); // met userPaused = true
           }
           }}
-          className="flex items-center justify-center text-white rounded-full h-[45px] w-[45px] bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl"
+          className="flex items-center justify-center text-white rounded-full h-10 w-10 bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl cursor-pointer"
         >
           {isComplete ? (
             <svg
@@ -244,8 +244,8 @@ export default function Carousel() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
             >
               <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
             </svg>
@@ -255,8 +255,8 @@ export default function Carousel() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
             >
               <path d="M8 5v14l11-7z" />
             </svg>
@@ -266,8 +266,8 @@ export default function Carousel() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="currentColor"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
             >
               <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
             </svg>
@@ -275,8 +275,8 @@ export default function Carousel() {
         </button>
 
         {/* Dots with morphing + progress */}
-        <div className="progress-bar-container relative w-[180px] h-[45px] rounded-full flex items-center justify-center bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
-          <div className="dots-container absolute inset-0 flex px-1">
+        <div className="progress-bar-container relative w-35 h-11 rounded-full flex items-center justify-center bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
+          <div className="dots-container absolute inset-0 flex px-3">
             {slidesData.map((_, idx) => {
               const active = idx === currentIndex && !isPaused && !isComplete;
               return (

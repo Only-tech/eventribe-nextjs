@@ -19,6 +19,7 @@ export default async function Page({
       url: event.image_url as string,
       eventId: Number(event.id), 
       alt: `Image de l'événement ${event.title}`,
+      title: `${event.title}`,
   }));
 
   return (

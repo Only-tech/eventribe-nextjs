@@ -8,6 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon, EyeIcon } from '@heroicons/react/16/
 interface CarouselImage {
   url: string;
   alt: string;
+  title: string;
   eventId: number;
 }
 
@@ -126,7 +127,7 @@ export default function Carousel({ imageUrls }: CarouselProps) {
 
   return (
     <div
-      className="relative w-full overflow-hidden py-10"
+      className="relative w-full overflow-hidden pt-10 pb-18"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -140,36 +141,49 @@ export default function Carousel({ imageUrls }: CarouselProps) {
             const isActive = index === currentIndex;
             const parallaxOffset = isActive ? 'translateY(0px)' : 'translateY(20px)';
             return (
-              <div
+              <div className='drop-shadow-lg transform transition-transform duration-700 hover:drop-shadow-2xl dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]'
                 key={index}
                 ref={index === numClones ? cardRef : null}
-                className={`mx-4 w-72 h-60 xl:w-96 xl:h-72 flex-shrink-0 rounded-4xl bg-white/80 shadow-inner transition-transform duration-500 ${
-                  isActive ? 'scale-105 z-10 shadow-[0_0_16px_rgba(7,2,52,0.7)]' : 'scale-90 opacity-70'
-                }`}
-                 style={{ clipPath: "var(--clip-path-squircle-60)" }}
               >
                 <div
-                  className="relative w-full h-full rounded-4xl overflow-hidden group"
-                  style={{ clipPath: 'var(--clip-path-squircle-60)', transform: parallaxOffset, transition: 'transform 0.5s ease' }}
+                  className={`mx-4 w-78 sm:w-82 h-60 xl:w-96 xl:h-72 flex-shrink-0 bg-white/80 shadow-inner transition-transform duration-700 ${
+                    isActive ? 'scale-105 z-10 shadow-[0_0_16px_rgba(7,2,52,0.7)] -translate-y-4' : 'translate-y-0 scale-90 opacity-70'
+                  }`}
+                  style={{ clipPath: "var(--clip-path-squircle-60)" }}
                 >
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="rounded-4xl group-hover:scale-110 transition-transform duration-700 ease-in-out"
-                  />
-                  <div className="absolute inset-0 bg-black opacity-30 rounded-4xl"></div>
+                  <div
+                    onClick={() => router.push(`/event/${image.eventId}`)}
+                    className="relative w-full h-full overflow-hidden group cursor-pointer"
+                    style={{ clipPath: 'var(--clip-path-squircle-60)', transform: parallaxOffset, transition: 'transform 0.5s ease' }}
+                  >
+                    <Image
+                      src={image.url}
+                      alt={image.alt}
+                      title={image.title}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      className="group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    />
+                    <div className={`absolute inset-0 bg-black opacity-30 ${ isActive ? 'hidden' : ''}`}></div>
 
-                  {(isMobile || (isActive && isHovered)) && (
-                    <button
-                      onClick={() => router.push(`/event/${image.eventId}`)}
-                      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 h-9 inline-flex items-center justify-center pl-2 pr-4 py-2 rounded-full text-sm font-medium transition-colors group border-[0.5px] text-gray-400 hover:text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-black/65 hover:bg-[#E8E5D8] hover:border-transparent"
-                    >
-                      <EyeIcon className="w-6 h-6 mr-2" />
-                      <span className="whitespace-nowrap">Voir l&apos;événement</span>
-                    </button>
-                  )}
+                    {(isMobile || (isActive && isHovered)) && (
+                      <button
+                        onClick={() => router.push(`/event/${image.eventId}`)}
+                        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 h-9 inline-flex items-center justify-center pl-2 pr-4 py-2 rounded-full text-sm font-medium transition-all ease-in-out duration-500 group border-[0.5px] text-gray-400 group-hover:text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-black/65 group-hover:bg-[#E8E5D8] group-hover:border-transparent"
+                      >
+                        <EyeIcon className="w-6 h-6 mr-2" />
+                        <span className="whitespace-nowrap">Voir l&apos;événement</span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="w-full flex justify-center ">
+                  <p
+                    className={`absolute w-[80%] text-center transform transition-all duration-1500 ease-out p-2 rounded-full text-base font-medium text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#E8E5D8] ${
+                    isActive ? "opacity-100 translate-y-4 scale-100" : "opacity-0 -translate-y-12 scale-50 pointer-events-none" }`}
+                  >
+                    {image.title}
+                  </p>
                 </div>
               </div>
             );

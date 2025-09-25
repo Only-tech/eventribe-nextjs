@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { CalendarIcon, MapPinIcon, PlusIcon, ArrowUpIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth';
-import { registerAction, unregisterAction } from '@/app/lib/actions';
+import RegisterButton from '@/app/ui/RegisterButton';
+import UnregisterButton from '@/app/ui/UnregisterButton';
 import { Event } from '@/app/lib/definitions';
 
 
@@ -82,24 +83,9 @@ export default async function EventDetailPage({
       <div className="mt-8 lg:mt-2 mb-2 lg:mb-0 flex justify-center">
         {isLoggedIn && userId ? (
           isRegistered ? (
-            <form action={unregisterAction.bind(null, userId, id)}>
-              <button
-                type="submit"
-                className="px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out"
-              >
-                Se désinscrire
-              </button>
-            </form>
+            <UnregisterButton userId={userId} eventId={id} />
           ) : remainingSeats > 0 ? (
-            <form action={registerAction.bind(null, userId, id)}>
-              <button
-                type="submit"
-                className="h-11 inline-flex items-center justify-center px-5 py-2 mb-8 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out cursor-pointer"
-              >
-                <span>S&apos;inscrire</span>
-                <PlusIcon className="inline-block w-4 h-4 group-hover:animate-bounce ml-2" />
-              </button>
-            </form>
+            <RegisterButton userId={userId} eventId={id} />
           ) : (
             <p className="text-red-600 font-bold text-lg rounded-lg p-3 bg-red-100">Complet !</p>
           )

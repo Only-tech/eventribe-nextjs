@@ -54,7 +54,7 @@ export default function Carousel({ imageUrls }: CarouselProps) {
     updateSizes();
     window.addEventListener('resize', updateSizes);
     return () => window.removeEventListener('resize', updateSizes);
-  }, []);
+  }, [currentIndex]);
 
   // Auto-scroll
   useEffect(() => {
@@ -169,7 +169,7 @@ export default function Carousel({ imageUrls }: CarouselProps) {
                     {(isMobile || (isActive && isHovered)) && (
                       <button
                         onClick={() => router.push(`/event/${image.eventId}`)}
-                        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 h-9 inline-flex items-center justify-center pl-2 pr-4 py-2 rounded-full text-sm font-medium transition-all ease-in-out duration-500 group border-[0.5px] text-gray-400 group-hover:text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-black/65 group-hover:bg-[#E8E5D8] group-hover:border-transparent"
+                        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 h-9 inline-flex items-center justify-center pl-2 pr-4 py-2 rounded-full text-sm font-medium transition-all ease-in-out duration-500 group border-[0.5px] text-gray-400 group-hover:text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-black/65 group-hover:bg-[#E8E5D8] group-hover:border-transparent cursor-pointer"
                       >
                         <EyeIcon className="w-6 h-6 mr-2" />
                         <span className="whitespace-nowrap">Voir l&apos;événement</span>
@@ -179,7 +179,7 @@ export default function Carousel({ imageUrls }: CarouselProps) {
                 </div>
                 <div className="w-full flex justify-center ">
                   <p
-                    className={`absolute w-[80%] text-center transform transition-all duration-1500 ease-out p-2 rounded-full text-base font-medium text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#E8E5D8] ${
+                    className={`absolute w-[80%] text-center transform transition-all duration-1500 ease-out p-2 rounded-full text-base font-medium text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#E8E5D8] dark:bg-black/65 dark:text-white/85 ${
                     isActive ? "opacity-100 translate-y-4 scale-100" : "opacity-0 -translate-y-12 scale-50 pointer-events-none" }`}
                   >
                     {image.title}
@@ -193,13 +193,13 @@ export default function Carousel({ imageUrls }: CarouselProps) {
         {/* Navigation buttons */}
         <button
           onClick={() => setCurrentIndex((prev) => prev - 1)}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/60 text-white p-3 rounded-full hover:bg-black/90"
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/60 text-white p-3 rounded-full hover:bg-black/90 cursor-pointer"
         >
           <ChevronLeftIcon className="w-6 h-6" />
         </button>
         <button
           onClick={() => setCurrentIndex((prev) => prev + 1)}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/60 text-white p-3 rounded-full hover:bg-black/90"
+          className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/60 text-white p-3 rounded-full hover:bg-black/90 cursor-pointer"
         >
           <ChevronRightIcon className="w-6 h-6" />
         </button>

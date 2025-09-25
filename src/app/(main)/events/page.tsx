@@ -24,7 +24,7 @@ export default async function Page({
 
   return (
     <div>
-      <BannerCarousel  />
+      {!query && <BannerCarousel />}
     
       <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-15 text-center">
         {query ? `Résultats de recherche pour "${query}"` : 'Découvrez les événements à venir'}
@@ -42,13 +42,14 @@ export default async function Page({
         </div>
       )}
 
-      {/* Votre ancien carousel "Les intemporels", que vous pouvez garder si vous le souhaitez */}
-      <div className="mt-20">
-        <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2 sm:mr-[40%]">
-          Les intemporels
-        </h1>
-        <Carousel imageUrls={imageUrls} />
-      </div>
+      {!query && (
+        <div className="mt-20">
+          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2 sm:mr-[40%]">
+            Les intemporels
+          </h1>
+          <Carousel imageUrls={imageUrls} />
+        </div>
+      )}
     </div>
   );
 }

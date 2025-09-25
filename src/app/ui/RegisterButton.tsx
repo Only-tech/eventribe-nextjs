@@ -50,7 +50,7 @@ export default function RegisterButton({ userId, eventId }: { userId: string; ev
           </>
         ) : (
           <>
-            <span>S'inscrire</span>
+            <span>S&apos;inscrire</span>
             <PlusIcon className="inline-block w-4 h-4 group-hover:animate-bounce ml-2" />
           </>
         )}

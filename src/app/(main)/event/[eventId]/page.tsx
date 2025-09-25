@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { fetchEventById, isUserRegisteredForEvent } from '@/app/lib/data';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CalendarIcon, MapPinIcon, PlusIcon, ArrowUpIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, MapPinIcon, ArrowUpIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth';
 import RegisterButton from '@/app/ui/RegisterButton';

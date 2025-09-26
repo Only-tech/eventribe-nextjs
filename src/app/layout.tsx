@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Providers } from './providers';
+import { ScrollManager } from '@/app/ui/ScrollManager';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,6 +22,7 @@ export default function RootLayout({
         <Providers> {/* The SessionProvider cover entire apps */}
           {children}
         </Providers>
+        <ScrollManager />
       </body>
     </html>
   );

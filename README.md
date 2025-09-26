@@ -82,12 +82,12 @@ eventribe-nextjs/
 │   │   ├── definitions.ts
 │   │   └── utils.ts
 │   ├── ui/
-│   │   ├── confirmation-modal.tsx
+│   │   ├── ConfirmationModal.tsx
 │   │   ├── contact-modal.tsx
 │   │   ├── EventCard.tsx
 │   │   ├── footer.tsx
 │   │   ├── header.tsx
-│   │   └── on-top-button.tsx
+│   │   └── OnTopButton.tsx
 │   ├── globals.css
 │   ├── icon.svg
 │   ├── layout.tsx
@@ -259,12 +259,12 @@ eventribe-nextjs/
 │   │   ├── definitions.ts             # Définitions des types ou constantes
 │   │   └── utils.ts                   # Fonctions diverses
 │   ├── ui/                   # Composants d’interface utilisateur réutilisables
-│   |   ├── confirmation-modal.tsx     # Fenêtre modale de confirmation
+│   |   ├── ConfirmationModal.tsx     # Fenêtre modale de confirmation
 │   |   ├── contact-modal.tsx          # Fenêtre modale pour contact
 │   |   ├── EventCard.tsx              # Carte affichant un événement
 │   |   ├── footer.tsx                 # Pied de page
 │   |   ├── header.tsx                 # En-tête
-│   |   └── on-top-button.tsx          # Bouton de remontée en haut de page
+│   |   └── OnTopButton.tsx          # Bouton de remontée en haut de page
 |   ├── globals.css                # Styles globaux de l'application
 |   ├── icon.svg                   # Icône du site pour navigateurs
 |   ├── layout.tsx                 # Mise en page globale

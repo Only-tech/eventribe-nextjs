@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { normalizeImagePath } from '@/app/lib/utils';
 import Image from 'next/image';
 import { TrashIcon, CalendarDaysIcon, MapPinIcon, ArrowUpIcon, ArrowDownIcon, ChevronDownIcon } from '@heroicons/react/24/outline'; 
-import ConfirmationModal from '@/app/ui/confirmation-modal'; 
+import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 
 // Define the type for registered events, extending the base Event type
 interface RegisteredEvent {
@@ -125,7 +125,7 @@ export default function MyEventsPage() {
   }
 
   return (
-    <div >
+    <div className="max-w-[95%] mx-auto">
       <h1 className="text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-8 text-center">Mes Inscriptions</h1>
 
       {message && (

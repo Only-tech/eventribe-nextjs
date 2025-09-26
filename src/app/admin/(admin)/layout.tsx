@@ -2,7 +2,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth';
 import { redirect } from 'next/navigation';
 // Providers is in the global layout
-import OnTopButton from '@/app/ui/on-top-button';
+import OnTopButton from '@/app/ui/OnTopButton';
 import AdminHeader from '@/app/admin/(admin)/ui/admin-header'; 
 import AdminFooter from '@/app/admin/(admin)/ui/admin-footer'; 
 

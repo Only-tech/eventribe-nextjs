@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { normalizeImagePath } from '@/app/lib/utils';
 import Link from 'next/link';
 import { Event } from '@/app/lib/definitions'; 
-import ConfirmationModal from '@/app/ui/confirmation-modal'; 
+import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 
 
@@ -717,7 +717,7 @@ export default function UserAccountManageEventsPage() {
     );
 
     return (
-        <div className="w-full mx-auto">
+        <div className="max-w-[95%] mx-auto">
 
             {authStatus === 'loading' && (
                 <p className="text-center text-xl text-gray-700 dark:text-gray-400 py-10">Chargement de la session...</p>

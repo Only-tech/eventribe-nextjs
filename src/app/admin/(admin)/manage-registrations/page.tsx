@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Event } from '@/app/lib/definitions'; // Assuming Event type is defined
 import { TrashIcon, CalendarDaysIcon, MapPinIcon } from '@heroicons/react/24/outline'; 
-import ConfirmationModal from '@/app/ui/confirmation-modal'; 
+import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 
 // Define a type for participants if not already in definitions.ts
 interface Participant {

@@ -23,33 +23,32 @@ export default async function Page({
   }));
 
   return (
-    <div>
+    <>
       {!query && <BannerCarousel />}
-    
-      <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-15 text-center">
-        {query ? `Résultats de recherche pour "${query}"` : 'Découvrez les événements à venir'}
-      </h1>
+      
+      <div className=" max-w-[95%] mx-auto">
+        <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-15 text-center">
+          {query ? `Résultats de recherche pour "${query}"` : 'Découvrez les événements à venir'}
+        </h1>
 
-      {events.length === 0 ? (
-        <p className="text-center text-gray-700 dark:text-gray-500 text-lg">
-          Aucun événement n&apos;est disponible pour le moment. Revenez plus tard !
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-8 xl:gap-12 w-full">
-          {events.map((event: Event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
-        </div>
-      )}
+        {events.length === 0 ? (
+          <p className="text-center text-gray-700 dark:text-gray-500 text-lg">
+            Aucun événement n&apos;est disponible pour le moment. Revenez plus tard !
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-8 xl:gap-12 w-full">
+            {events.map((event: Event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+          </div>
+        )}
 
-      {!query && (
-        <div className="mt-20">
-          <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2 sm:mr-[40%]">
-            Les intemporels
-          </h1>
-          <Carousel imageUrls={imageUrls} />
-        </div>
-      )}
-    </div>
+        {!query && <h1 className="mt-20 text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2 sm:mr-[40%]">
+              Les intemporels
+            </h1>}
+      </div>
+      
+      {!query && <Carousel imageUrls={imageUrls} />}
+    </>
   );
 }

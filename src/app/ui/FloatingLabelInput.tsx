@@ -34,7 +34,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
   };
 
   // Class fusion
-  const baseClasses = "peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]";
+  const baseClasses = "peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff] transition-all ease-in-out duration-400";
   const finalClassName = `${baseClasses} ${className || ''}`.trim();
 
   return (
@@ -49,7 +49,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
       />
       <label
         htmlFor={id}
-        className={`absolute pointer-events-none transition-all duration-200 ease-in-out px-3 ${
+        className={`absolute pointer-events-none transition-all ease-in-out duration-400 px-3 ${
           isLabelActive
             ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-400 rounded-full'
             : 'top-1/2 -translate-y-1/2 text-base text-gray-500'

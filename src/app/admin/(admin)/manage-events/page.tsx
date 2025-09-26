@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { normalizeImagePath } from '@/app/lib/utils';
 import { Event } from '@/app/lib/definitions'; 
 import { PlusIcon, PencilIcon, TrashIcon, ArrowUpIcon } from '@heroicons/react/24/outline'; 
-import ConfirmationModal from '@/app/ui/confirmation-modal'; 
+import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 
 export default function ManageEventsPage() { 
   const [events, setEvents] = useState<Event[]>([]);

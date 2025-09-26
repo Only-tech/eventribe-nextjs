@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { User } from '@/app/lib/definitions'; // Assuming User type is defined
 import { TrashIcon } from '@heroicons/react/24/outline';
 import { useSession } from 'next-auth/react'; // Import useSession for current user ID
-import ConfirmationModal from '@/app/ui/confirmation-modal';
+import ConfirmationModal from '@/app/ui/ConfirmationModal';
 
 export default function ManageUsersPage() {
   const { data: session } = useSession(); // Get current session

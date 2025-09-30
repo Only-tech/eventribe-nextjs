@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, FormEvent, useRef, useEffect } from 'react';
-import emailjs from '@emailjs/browser';
+import React, { useState, FormEvent, useEffect } from 'react';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput'; 
 import { EnvelopeIcon } from '@heroicons/react/16/solid';
 
@@ -25,7 +24,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [isMessageFocused, setIsMessageFocused] = useState(false);
 
   const [isClosing, setIsClosing] = useState(false);
-  const form = useRef<HTMLFormElement>(null);
 
   // Clean status
   useEffect(() => {
@@ -44,7 +42,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   };
 
   // --- FORM SUBMISSION HANDLER ---
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();    
     setFormStatus('');
     setNameError('');
@@ -73,36 +71,37 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
     setLoading(true);
 
-    if (!form.current) {
-      setLoading(false);
-      setFormStatus("Erreur : Le formulaire n'a pas pu être trouvé.");
-      setIsSuccess(false);
-      return;
-    }
+    try {
+        // Send e-mail
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
 
-    // --- EMAILJS SEND LOGIC ---
-    emailjs.sendForm(
-      'service_r7k5fdk',   // Service ID
-      'template_1qncn8e',  // Template ID
-      form.current,        // The form element ref
-      'mSiePQQEQ-83LNBaf'   // Public Key
-    ).then(
-      (result) => {
-        console.log('SUCCESS!', result.text);
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log('SUCCESS!', data.message);
         setFormStatus('Votre message a été envoyé avec succès !');
         setIsSuccess(true);
         setName('');
         setEmail('');
         setMessage('');
-      },
-      (error) => {
-        console.error('FAILED...', error.text);
-        setFormStatus("Échec de l'envoi du message. Veuillez réessayer.");
+      } else {
+        console.error('FAILED...', data.error);
+        setFormStatus(data.error || "Échec de l'envoi du message. Veuillez réessayer.");
         setIsSuccess(false);
       }
-    ).finally(() => {
+    } catch (error) {
+      console.error('SUBMISSION ERROR', error);
+      setFormStatus("Une erreur est survenue. Veuillez vérifier votre connexion.");
+      setIsSuccess(false);
+    } finally {
       setLoading(false);
-    });
+    }
   };
 
   const handleClose = () => {
@@ -113,6 +112,22 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     }, 500);
   };
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        handleClose();
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, handleClose]); 
+
   // Logic textarea label animation
   const isMessageLabelActive = isMessageFocused || message.length > 0;
 
@@ -121,13 +136,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   return (
     <div
       id="contactModal"
-      className={`fixed inset-0 bg-[#f5f5dc]/65 dark:bg-[#222222]/65 backdrop-blur-sm flex items-center justify-center z-10000 transition-opacity duration-500 ease-in-out ${
+      className={`fixed inset-0 bg-[rgb(248,248,236)] min-[450px]:bg-[#f5f5dc]/65 dark:bg-[#1E1E1E] min-[450px]:dark:bg-[#222222]/65 backdrop-blur-md min-h-screen overflow-y-auto p-2 min-[450px]:p-0 flex min-[450px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out ${
       isOpen && !isClosing ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}      onClick={handleClose}
     >
-      <div className="drop-shadow-[0px_1px_5px_rgba(0,0,0,0.4)] max-w-[95%] mx-auto w-md lg:w-xl relative transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(255,_255,_255,_0.3)]">
-      <div className={`bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white p-6 pt-1 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500
+      <div className=" max-w-[95%] mx-auto w-md lg:w-xl relative transform transition-transform duration-300 min-[450px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[450px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
+      <div className={`bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/70 p-1 pb-6 min-[450px]:px-6 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[450px]:[clip-path:var(--clip-path-squircle-60)]
         ${isClosing ? 'translate-y-20 opacity-0 animate-slide-down' : 'translate-y-0 opacity-100 animate-slide-up'}`}        
-        onClick={(e) => e.stopPropagation()}  style={{ clipPath: "var(--clip-path-squircle-60)" }}
+        onClick={(e) => e.stopPropagation()} 
       >
         <button
           onClick={handleClose}
@@ -142,7 +157,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           <span>Contactez-nous</span>
         </h1>
         
-        <form ref={form} id="contact-form" className="grid gap-6" onSubmit={handleSubmit} noValidate>
+        <form id="contact-form" className="grid gap-6" onSubmit={handleSubmit} noValidate>
           {/* Name Field */}
           <div>
             <FloatingLabelInput
@@ -164,7 +179,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 id="message"
                 name="message"
                 rows={4}
-                className={`peer block w-full p-3 pt-3 border resize-none rounded-md shadow-sm focus:outline-none transition-all ease-in-out duration-400 ${messageError ? 'border-red-500' : 'border-gray-300 focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]'}`}
+                className={`peer block w-full p-3 pt-3 border resize-none rounded-md shadow-sm focus:outline-none transition-all ease-in-out duration-400 ${messageError ? 'border-red-500' : 'border-gray-300 dark:border-white/20 focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]'}`}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onFocus={() => setIsMessageFocused(true)}
@@ -174,7 +189,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 htmlFor="message"
                 className={`absolute pointer-events-none transition-all ease-in-out duration-400 px-3 ${
                   isMessageLabelActive
-                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-400'
+                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/70'
                     : 'top-1/12 -translate-y-1/12 text-base text-gray-500'
                 }`}
               >
@@ -226,7 +241,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
           {/* Global Form Status */}
           {formStatus && (
-              <p className={`w-full text-center p-3 rounded-lg ${isSuccess ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+              <p className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
                 {formStatus}
               </p>
           )}

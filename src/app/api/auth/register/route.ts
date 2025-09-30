@@ -1,13 +1,13 @@
 import { NextResponse } from 'next/server';
-import { registerUser } from '@/app/lib/auth';
+import { finalRegisterUser } from '@/app/lib/auth';
 
 
 export async function POST(request: Request) {
   try {
-    const { username, email, password, confirm_password } = await request.json();
+    const { email, firstName, lastName, password, confirm_password } = await request.json();
 
     // Basic validation
-    if (!username || !email || !password || !confirm_password) {
+    if (!email || !firstName || !lastName || !password || !confirm_password) {
       return NextResponse.json({ message: 'Veuillez remplir tous les champs.' }, { status: 400 });
     }
 
@@ -23,20 +23,20 @@ export async function POST(request: Request) {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasDigit = /\d/.test(password);
-    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+    const hasSpecialChar = /[!@#$%^&*()_+\-=\[\];':"\\|,.\/?]/.test(password);
 
     if (!hasUpperCase || !hasLowerCase || !hasDigit || !hasSpecialChar) {
       return NextResponse.json({ message: 'Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial.' }, { status: 400 });
     }
 
     // Attempt to register the user
-    const success = await registerUser(username, email, password);
+    const success = await finalRegisterUser(email, firstName, lastName, password);
 
     if (success) {
       return NextResponse.json({ message: 'Inscription réussie ! Vous pouvez maintenant vous connecter.' }, { status: 201 });
     } else {
-      // The registerUser function already logs specific errors,
-      return NextResponse.json({ message: "Le nom d'utilisateur ou l'email existe déjà." }, { status: 409 });
+      // Errors for expired verification or already registered email,
+      return NextResponse.json({ message: "Échec de l'inscription. L'email est peut-être déjà utilisé ou la vérification a échoué." }, { status: 409 });
     }
   } catch (error) {
     console.error('Error during registration API:', error);

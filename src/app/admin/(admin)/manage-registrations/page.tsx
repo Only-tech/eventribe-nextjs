@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Event } from '@/app/lib/definitions'; // Assuming Event type is defined
+import { Event } from '@/app/lib/definitions';
 import { TrashIcon, CalendarDaysIcon, MapPinIcon } from '@heroicons/react/24/outline'; 
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 
-// Define a type for participants if not already in definitions.ts
 interface Participant {
   user_id: string;
-  username: string;
+  first_name: string;
   email: string;
   registered_at: string;
 }
@@ -86,23 +85,21 @@ export default function ManageRegistrationsPage() {
     }
   };
 
-  // Function to open the confirmation modal
+  // ==== Function to open/close the confirmation modal ====
   const openConfirmationModal = (msg: string, actionFn: () => void) => {
     setModalMessage(msg);
     setConfirmAction(() => actionFn); // Use a functional update for confirmAction
     setIsModalOpen(true);
   };
 
-  // Function to close the confirmation modal
   const closeConfirmationModal = () => {
     setIsModalOpen(false);
     setModalMessage('');
     setConfirmAction(null);
   };
 
-  // This function will be called when the modal confirms
   const executeUnregister = async (userId: string, eventId: string) => {
-    closeConfirmationModal(); // Close the modal first
+    closeConfirmationModal();
     setMessage('');
     setIsSuccess(false);
 
@@ -138,7 +135,6 @@ export default function ManageRegistrationsPage() {
     }
   };
 
-  // Modified handleUnregisterParticipant to open the modal
   const handleUnregisterParticipant = (userId: string, eventId: string, username: string) => {
     openConfirmationModal(
       `Êtes-vous sûr de vouloir désinscrire ${username} de cet événement ?`,
@@ -213,7 +209,7 @@ export default function ManageRegistrationsPage() {
                       <table className="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden">
                         <thead className="bg-gray-50">
                           <tr>
-                            <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                            <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Abonné(e)</th>
                             <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
                             <th className="px-6 py-3 text-left text-xs hidden sm:table-cell font-medium text-gray-500 uppercase tracking-wider">Inscrit le</th>
                             <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
@@ -222,7 +218,7 @@ export default function ManageRegistrationsPage() {
                         <tbody className="bg-white divide-y divide-gray-200">
                           {participants[event.id]?.map((participant) => (
                             <tr key={participant.user_id}>
-                              <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{participant.username}</td>
+                              <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{participant.first_name}</td>
                               <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{participant.email}</td>
                               <td className="px-6 py-4 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500">
                                 {new Date(participant.registered_at).toLocaleString('fr-FR', {
@@ -235,7 +231,7 @@ export default function ManageRegistrationsPage() {
                               </td>
                               <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <button
-                                  onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.username)}
+                                  onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.first_name)}
                                   className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 md:w-30 shadow-lg  flex items-center justify-center"
                                   title="Désinscrire"
                                 >

@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { User } from '@/app/lib/definitions'; // Assuming User type is defined
+import { User } from '@/app/lib/definitions';
 import { TrashIcon } from '@heroicons/react/24/outline';
-import { useSession } from 'next-auth/react'; // Import useSession for current user ID
+import { useSession } from 'next-auth/react';
 import ConfirmationModal from '@/app/ui/ConfirmationModal';
 
 export default function ManageUsersPage() {
-  const { data: session } = useSession(); // Get current session
+  const { data: session } = useSession(); 
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
@@ -18,6 +18,16 @@ export default function ManageUsersPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+
+  // Clean status
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage('');
+      }, 5000); 
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   // Fetch users on component mount
   useEffect(() => {
@@ -44,14 +54,13 @@ export default function ManageUsersPage() {
     fetchUsers();
   }, []);
 
-  // Function to open the confirmation modal
+  // ==== Function to open/close the confirmation modal ====
   const openConfirmationModal = (msg: string, actionFn: () => void) => {
     setModalMessage(msg);
     setConfirmAction(() => actionFn); // Use a functional update for confirmAction
     setIsModalOpen(true);
   };
 
-  // Function to close the confirmation modal
   const closeConfirmationModal = () => {
     setIsModalOpen(false);
     setModalMessage('');
@@ -59,7 +68,7 @@ export default function ManageUsersPage() {
   };
 
   const executeToggleAdminStatus = async (userId: string, currentStatus: boolean) => {
-    closeConfirmationModal(); // Close the modal first
+    closeConfirmationModal(); 
     setMessage('');
     setIsSuccess(false);
 
@@ -105,7 +114,7 @@ export default function ManageUsersPage() {
   };
 
   const executeDeleteUser = async (userId: string) => {
-    closeConfirmationModal(); // Close the modal first
+    closeConfirmationModal(); 
     setMessage('');
     setIsSuccess(false);
 
@@ -132,7 +141,7 @@ export default function ManageUsersPage() {
     }
   };
 
-  const handleDeleteUser = (userId: string, username: string) => {
+  const handleDeleteUser = (userId: string, first_name: string) => {
     // Prevent admin from deleting themselves
     if (session?.user?.id === userId) {
       setMessage("Vous ne pouvez pas supprimer votre propre compte.");
@@ -141,7 +150,7 @@ export default function ManageUsersPage() {
     }
 
     openConfirmationModal(
-      `Êtes-vous sûr de vouloir supprimer l'utilisateur ${username} ?`,
+      `Êtes-vous sûr de vouloir supprimer l'utilisateur ${first_name} ?`,
       () => executeDeleteUser(userId)
     );
   };
@@ -155,7 +164,7 @@ export default function ManageUsersPage() {
       <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Gestion des Utilisateurs</h1>
 
       {message && (
-        <div className={`mb-4 text-center font-semibold rounded-lg p-3  ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+        <div className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-sm rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
           {message}
         </div>
       )}
@@ -177,15 +186,15 @@ export default function ManageUsersPage() {
             <tbody className="bg-white divide-y divide-gray-200">
               {users.map((user) => (
                 <tr key={user.id}>
-                  <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.username}</td>
+                  <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.first_name}</td>
                   <td className="px-1 sm:px-6 py-4 sm:whitespace-nowrap text-sm text-gray-500">{user.email}</td>
                   <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <button
-                      onClick={() => handleToggleAdminStatus(user.id, user.is_admin, user.username)}
+                      onClick={() => handleToggleAdminStatus(user.id, user.is_admin, user.first_name)}
                       className={`px-3 py-1 rounded-full text-xs font-semibold cursor-pointer ${
                         user.is_admin ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                       } hover:opacity-80 transition-opacity duration-200`}
-                      disabled={session?.user?.id === user.id} // Disable if it's the current user
+                      disabled={session?.user?.id === user.id}
                     >
                       {user.is_admin ? 'Oui' : 'Non'}
                     </button>
@@ -201,9 +210,9 @@ export default function ManageUsersPage() {
                   </td>
                   <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
-                      onClick={() => handleDeleteUser(user.id, user.username)}
+                      onClick={() => handleDeleteUser(user.id, user.first_name)}
                       className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 md:w-30 shadow-lg  flex items-center justify-center"
-                      disabled={session?.user?.id === user.id} // Disable if it's the current user
+                      disabled={session?.user?.id === user.id} 
                     >
                       <TrashIcon className="w-4 h-4" /><span className="hidden md:inline-flex ml-1">Supprimer</span>
                     </button>

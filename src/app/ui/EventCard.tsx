@@ -21,7 +21,7 @@ interface EventCardProps {
 }
 
 export default function EventCard({ event }: EventCardProps) {
-    // Calculate remaining seats
+
     const remainingSeats = event.available_seats;
 
     function isValidUrl(url: string): boolean {
@@ -36,7 +36,7 @@ export default function EventCard({ event }: EventCardProps) {
 
     const fallbackImageSrc = 'https://placehold.co/600x400.png?text=Image+non+disponible';
 
-    // Use a more robust check for a valid image source
+    // Check for a valid image source
     const finalImageSrc = (event.image_url && isValidUrl(event.image_url)) ? event.image_url : fallbackImageSrc;
     
     return (
@@ -54,7 +54,7 @@ export default function EventCard({ event }: EventCardProps) {
             </div>
             <div className="py-3 px-3.5 text-sm flex-grow flex flex-col">
                 <h2 className="text-center md:text-base font-bold text-gray-900 dark:text-[#ff952aff] mb-2">{event.title}</h2>
-                <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-xs mb-1">
+                <p className="inline-flex items-center text-gray-700 dark:text-white/45 text-xs mb-1">
                 <CalendarIcon className="inline-block w-4 h-4 mr-1" /> {new Date(event.event_date).toLocaleString('fr-FR', {
                     day: '2-digit',
                     month: '2-digit',
@@ -63,16 +63,16 @@ export default function EventCard({ event }: EventCardProps) {
                     minute: '2-digit'
                 })} GMT+2
                 </p>
-                <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-sm mb-3">
+                <p className="inline-flex items-center text-gray-700 dark:text-white/45 text-sm mb-3">
                 <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
                 </p>
-                <p className="text-gray-700 dark:text-gray-400 mb-3 flex-grow">{event.description_short}</p>
+                <p className="text-gray-700 dark:text-white/65 mb-3 flex-grow">{event.description_short}</p>
                 <div className="mt-auto flex flex-row   justify-between items-center gap-3">
                     <p className="text-sm inline-flex items-center text-[#08568a] whitespace-nowrap">
                     <UsersIcon className="inline-block size-5 mr-1" /> {remainingSeats}
                     </p>
                     
-                    <p className=" h-8 inline-flex items-center justify-center pl-4 p-1 rounded-full font-medium transition-colors group border-[0.1px] dark:bg-[#1E1E1E] dark:text-gray-300 dark:group-hover:text-gray-700 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] group-hover:bg-[#E8E5D8] group-hover:border-transparent">
+                    <p className=" h-8 inline-flex items-center justify-center pl-4 p-1 rounded-full font-medium transition-colors group border-[0.1px] dark:border-white/30 dark:bg-[#1E1E1E] dark:text-white/65 dark:group-hover:text-gray-700 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] group-hover:bg-[#E8E5D8] group-hover:border-transparent">
                         <span className="whitespace-nowrap">En savoir plus</span>
                         <ChevronUpIcon className="inline-block w-4 h-4 ml-2 rotate-90 group-hover:animate-bounce"/>
                     </p>

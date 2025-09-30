@@ -10,7 +10,7 @@ async function checkUserSession() {
   if (!session || !session.user) {
     return NextResponse.json({ message: 'Accès non autorisé. Vous devez être connecté.' }, { status: 403 });
   }
-  return null; // Return null if authorized
+  return null;
 }
 
 export async function GET(request: Request) {

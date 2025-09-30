@@ -106,17 +106,17 @@ export default function SplashScreen({ imageUrls }: SplashScreenProps) {
                                 alt="Événement"
                                 width={200}
                                 height={200}
-                                className="rounded-3xl border-4 ring ring-gray-300 shadow-xl"
+                                className="rounded-2xl sm:rounded-3xl border-4 ring ring-gray-300 shadow-xl"
                             />
                         </div>
                     ))}
                 </div>
             </div>
 
-            <div className="relative z-10 w-xs sm:w-xl md:w-2xl lg:w-210 drop-shadow-[3px_15px_5px_rgba(0,0,0,0.65)]">
-            <div className="bg-white/25 p-2" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
-            <div className="text-center bg-[url('/images/SplashPaintBreak.svg')] bg-contain bg-fixed p-6 lg:p-12" id="bgBlur" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
-                <h1 className="text-4xl lg:text-6xl items-center font-extrabold text-gray-900 tracking-tight drop-shadow-lg mb-10">
+            <div className="relative z-10 w-xs min-[400px]:w-[400px] sm:w-xl md:w-2xl lg:w-210 drop-shadow-[3px_15px_5px_rgba(0,0,0,0.65)]">
+            <div className="bg-white/25 p-2 rounded-3xl min-[500px]:[clip-path:var(--clip-path-squircle-60)] ">
+            <div className="min-h-60 flex flex-col justify-center items-center bg-[url('/images/SplashPaintBreak.svg')] bg-contain bg-fixed p-6 lg:p-12 rounded-2xl min-[500px]:[clip-path:var(--clip-path-squircle-60)]">
+                <h1 className="text-center text-4xl lg:text-6xl font-extrabold text-gray-900 tracking-tight drop-shadow-lg mb-10">
                     {displayedH1}
                     <span className="animate-pulse text-3xl lg:text-5xl font-light">|</span>
                 </h1>

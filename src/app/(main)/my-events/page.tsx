@@ -1,4 +1,4 @@
-'use client'; // Client Component because it uses useSession
+'use client';
 
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
@@ -16,7 +16,7 @@ interface RegisteredEvent {
   location: string;
   description_short: string;
   image_url: string | null;
-  registered_at: string; // Specific to registered events
+  registered_at: string;
   registered_count: number;
 }
 
@@ -65,14 +65,13 @@ export default function MyEventsPage() {
     }
   }, [session, status]); // Re-run when session or status changes
 
-  // Function to open the confirmation modal
+  // Function to open/close the confirmation modal
   const openConfirmationModal = (msg: string, actionFn: () => void) => {
     setModalMessage(msg);
     setConfirmAction(() => actionFn); // Use a functional update for confirmAction
     setIsModalOpen(true);
   };
 
-  // Function to close the confirmation modal
   const closeConfirmationModal = () => {
     setIsModalOpen(false);
     setModalMessage('');
@@ -121,7 +120,7 @@ export default function MyEventsPage() {
   };
 
   if (loading) {
-    return <p className="text-center text-gray-700 dark:text-gray-500 text-lg">Chargement de vos inscriptions...</p>;
+    return <p className="text-center text-gray-700 dark:text-white/70 text-lg">Chargement de vos inscriptions...</p>;
   }
 
   return (
@@ -136,7 +135,7 @@ export default function MyEventsPage() {
 
       {myEvents.length === 0 ? (
         <>
-          <p className="text-center text-gray-700 dark:text-gray-500 text-lg">Vous n&apos;êtes inscrit à aucun événement pour le moment.</p>
+          <p className="text-center text-gray-700 dark:text-white/70 text-lg">Vous n&apos;êtes inscrit à aucun événement pour le moment.</p>
           <div className="text-center mt-4">
             <Link href="/" className="inline-flex justify-center items-center px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out">
               Découvrir des événements
@@ -152,8 +151,8 @@ export default function MyEventsPage() {
 
 
             return (
-              <div key={event.id} className="drop-shadow-lg max-w-2xl mx-auto transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]" data-aos="fade-up">
-              <div className="flex items-center text-sm w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl shadow-lg p-4 overflow-hidden" style={{ clipPath: "var(--clip-path-squircle-60)" }}>
+              <div key={event.id} className="drop-shadow-lg max-w-2xl mx-auto transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]" data-aos="fade-up">
+              <div className="flex items-center text-sm w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl shadow-lg p-4 overflow-hidden min-[639px]:[clip-path:var(--clip-path-squircle-60)]">
                 <div className="hidden sm:block relative w-70 h-45 overflow-hidden rounded-4xl mr-6">
                   <Image
                     src={imageSrc}
@@ -177,7 +176,7 @@ export default function MyEventsPage() {
                     <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-sm mt-1">
                         <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
                     </p>
-                    <p className="text-gray-700 text-center min-[500px]:text-start dark:text-gray-400 mt-2  mb-2 flex-grow">{event.description_short}</p>
+                    <p className="text-gray-700 text-center min-[500px]:text-start dark:text-white/70 mt-2  mb-2 flex-grow">{event.description_short}</p>
                   </div>
                   <div className="flex  gap-2 items-center justify-between w-full">
                     <p className="text-sm text-gray-500 ">Inscrit le <span className="text-xs">{new Date(event.registered_at).toLocaleString('fr-FR', {
@@ -213,7 +212,7 @@ export default function MyEventsPage() {
         </div>
       )}
 
-      <Link href="/events" className="absolute  h-11 inline-flex items-center justify-center mt-10 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out">
+      <Link href="/events" className=" h-11 inline-flex items-center justify-center mt-10 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out">
         <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" />
         <span>Page d&apos;accueil</span>
       </Link>

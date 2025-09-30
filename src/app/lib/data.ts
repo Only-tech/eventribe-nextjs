@@ -480,7 +480,8 @@ export async function getParticipantsForEvent(eventId: number): Promise<Particip
     const queryText = `
       SELECT
         u.id AS user_id,
-        u.username,
+        u.first_name,
+        u.last_name,
         u.email,
         r.registered_at
       FROM

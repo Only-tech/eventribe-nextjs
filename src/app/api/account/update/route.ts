@@ -11,14 +11,13 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: 'Non authentifié' }, { status: 401 });
     }
 
-    const { email, username } = await request.json();
+    const { email, firstName, lastName } = await request.json(); 
 
-    if (!email || !username) {
-      return NextResponse.json({ message: 'Email et nom d\'utilisateur requis.' }, { status: 400 });
+    if (!email || !firstName || !lastName) {
+      return NextResponse.json({ message: 'L\'email, le prénom et le nom sont requis.' }, { status: 400 });
     }
 
-  
-    const success = await updateUser(session.user.id, { email, username });
+    const success = await updateUser(session.user.id, { email, firstName, lastName });
 
     if (success) {
       return NextResponse.json({ message: 'Profil mis à jour avec succès.' }, { status: 200 });

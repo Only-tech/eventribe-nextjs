@@ -10,11 +10,19 @@ async function checkAdminSession() {
   if (!session || !session.user || !session.user.isAdmin) {
     return NextResponse.json({ message: 'Accès non autorisé. Vous devez être administrateur.' }, { status: 403 });
   }
-  return null; // Return null if authorized
+  return null;
 }
 
 export async function POST(request: Request) {
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ message: 'Non authentifié' }, { status: 401 });
+  }
+
   const authError = await checkAdminSession();
+  
   if (authError) return authError;
 
   try {
@@ -35,7 +43,7 @@ export async function POST(request: Request) {
         location,
         available_seats: Number(available_seats),
         image_url: image_url || null,
-        created_by: ''
+        created_by: session.user.id
       });
 
       if (success) {
@@ -53,7 +61,15 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ message: 'Non authentifié' }, { status: 401 });
+  }
+
   const authError = await checkAdminSession();
+  
   if (authError) return authError;
 
   try {
@@ -77,7 +93,7 @@ export async function PUT(request: Request) {
       location,
       available_seats: Number(available_seats),
       image_url: image_url || null,
-      created_by: ''
+      created_by: session.user.id,
     });
 
     if (success) {

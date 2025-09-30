@@ -3,50 +3,203 @@ import { pool } from '@/app/lib/data';
 import { User } from './definitions'; 
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { AuthOptions } from 'next-auth';
+import nodemailer from 'nodemailer';
 
+
+const transporter = nodemailer.createTransport({
+  host: process.env.SMTP_HOST,                // "smtp.gmail.com"
+  port: Number(process.env.SMTP_PORT) || 587, // 465 si secure
+  secure: process.env.SMTP_SECURE === "true", // true -> port 465
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,              // App Password pour Gmail
+  },
+});
 
 
 /**
- * Registers a new user.
- * @param username
- * @param email 
- * @param password 
+ * Generate a OTP code and save it in DB before sending email.
+ * @param email
  * @returns Successful, false otherwise.
  */
-export async function registerUser(username: string, email: string, password_plain: string): Promise<boolean> {
-  let client;
-  try {
-    client = await pool.connect(); // Get a client from the shared pool
+export async function generateAndSendCode(email: string): Promise<boolean> {
+    let client;
+    try {
+        client = await pool.connect();
+        
+        // Check if the email is registered in users table
+        const existingUser = await client.query<User>( 
+            `SELECT id FROM users WHERE email = $1`,
+            [email]
+        );
+        if (existingUser.rows.length > 0) {
+            console.error("L'email est déjà utilisé pour un compte existant.");
+            return false;
+        }
 
-    // Check if username or email already exists
-    const existingUser = await client.query<User>( 
-      `SELECT id FROM users WHERE username = $1 OR email = $2`,
-      [username, email]
-    );
-    if (existingUser.rows.length > 0) {
-      console.error("Le nom d'utilisateur ou l'email existe déjà.");
-      return false;
+        const code = Math.floor(100000 + Math.random() * 900000).toString();
+        const expiry = new Date(Date.now() + 10 * 60 * 1000); // Expire in 10 minutes
+
+        // Save code in email_verifications
+        await client.query(
+            `INSERT INTO email_verifications (email, verification_code, expires_at)
+             VALUES ($1, $2, $3)
+             ON CONFLICT (email) 
+             DO UPDATE SET verification_code = $2, expires_at = $3`,
+            [email, code, expiry]
+        );
+        
+        await transporter.sendMail({
+            from: `"eventribe" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: "Votre code de vérification eventribe",
+            html: `
+                <div style="font-family: Inter, sans-serif; max-width: 480px; margin: auto;">
+                  <div style="text-align: center; background-color: #f8f8ec; color: #222; padding:14px 24px 10px 24px; border-radius: 12px; border: 1px solid #ddd;">
+                    <img src="https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/SplashPaintEventribeLogo.svg" alt="Eventribe" style="height: 60px; margin-bottom: 10px;" />
+                    <h2 style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">Code de vérification</h2>
+                    <p style="margin: 0 0 16px;">Veuillez utiliser le code ci-dessous pour vérifier votre adresse e-mail.</p>
+                    <p style="font-size: 28px; font-weight: bold; background-color: white; padding: 12px 24px; border: 1px solid #ddd; border-radius: 8px; display: inline-block;">${code}</p>
+                    <p style="margin-top: 16px;">Ce code est valable pendant <strong>10 minutes</strong>.</p>
+                  </div>
+                  <div style="color: #666; margin-top: 24px; background-color: #f8f8ec; color: #222; padding: 10px 24px 5px 24px; border-radius: 12px; border: 1px solid #ddd;">
+                    <p style="font-size: 13px;">Si vous n'avez pas demandé ce code, vous pouvez ignorer cet e-mail.</p>
+                    <p style="font-size: 13px; margin-top: 14px; color: #ff952a; text-align: right;">eventribe.vercel.app</p>
+                  </div>
+                </div>
+            `,
+        });
+
+        console.log(`Code de vérification envoyé et enregistré pour ${email}.`);
+        return true;
+    } catch (error) {
+        console.error("Erreur lors de l'envoi/enregistrement du code:", error);
+        return false;
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
+}
 
-    // Hash the password before storing it
-    const password_hash = await hash(password_plain, 10); // 10 is the salt rounds
+/**
+ * Check the code validity for the email.
+ * @param email 
+ * @param code 
+ * @returns True if the code is valid and unexpired.
+ */
+export async function verifyCode(email: string, code: string): Promise<boolean> {
+    let client;
+    try {
+        client = await pool.connect();
 
-    // Insert the new user into the database
-    await client.query( 
-      `INSERT INTO users (username, email, password_hash, is_admin, created_at)
-       VALUES ($1, $2, $3, FALSE, NOW())`,
-      [username, email, password_hash]
-    );
-    console.log("Inscription réussie !"); 
-    return true;
-  } catch (error) {
-    console.error("Erreur lors de l'inscription :", error);
-    return false;
-  } finally {
-    if (client) {
-      client.release(); // Ensure client is released back to the pool
+        const result = await client.query(
+            `SELECT verification_code, expires_at FROM email_verifications WHERE email = $1`,
+            [email]
+        );
+
+        if (result.rows.length === 0) {
+            console.error(`Aucun code trouvé pour l'email: ${email}`);
+            return false;
+        }
+
+        const verificationData = result.rows[0];
+        const now = new Date();
+        
+        if (verificationData.verification_code !== code) {
+            console.error(`Code incorrect pour l'email: ${email}`);
+            return false;
+        }
+        
+        if (verificationData.expires_at < now) {
+            console.error(`Code expiré pour l'email: ${email}`);
+            await client.query(`DELETE FROM email_verifications WHERE email = $1`, [email]); // clean
+            return false;
+        }
+
+        console.log(`Code vérifié avec succès pour l'email: ${email}`);
+        return true;
+
+    } catch (error) {
+        console.error("Erreur lors de la vérification du code:", error);
+        return false;
+    } finally {
+        if (client) {
+            client.release();
+        }
     }
-  }
+}
+
+
+/**
+ * Creates user and delete verification code.
+ * @param email 
+ * @param firstName 
+ * @param lastName 
+ * @param password_plain 
+ * @returns Successful, false otherwise.
+ */
+export async function finalRegisterUser(
+    email: string, 
+    firstName: string, 
+    lastName: string, 
+    password_plain: string
+): Promise<boolean> {
+    let client;
+    try {
+        client = await pool.connect();
+        
+        // Check if email is verified in email_verifications
+        const verificationCheck = await client.query(
+            `SELECT email FROM email_verifications WHERE email = $1`,
+            [email]
+        );
+        if (verificationCheck.rows.length === 0) {
+            console.error("L'email n'a pas été vérifié ou la session a expiré.");
+            return false;
+        }
+
+        const existingUser = await client.query<User>(
+            `SELECT id FROM users WHERE email = $1`,
+            [email]
+        );
+        if (existingUser.rows.length > 0) {
+            console.error("L'email existe déjà dans la table des utilisateurs.");
+            return false;
+        }
+
+        const password_hash = await hash(password_plain, 10);
+
+
+        // Start Query
+        await client.query('BEGIN');
+
+        await client.query(
+            `INSERT INTO users (email, password_hash, is_admin, created_at, first_name, last_name)
+             VALUES ($1, $2, FALSE, NOW(), $3, $4)`,
+            [email, password_hash, firstName, lastName]
+        );
+        
+        // Delete verification (email verified = registration is finished)
+        await client.query(`DELETE FROM email_verifications WHERE email = $1`, [email]);
+
+        // Validate query
+        await client.query('COMMIT');
+        
+        console.log("Inscription finale réussie !");
+        return true;
+        
+    } catch (error) {
+        if (client) {
+            await client.query('ROLLBACK'); // rollback if error
+        }
+        console.error("Erreur lors de l'inscription finale :", error);
+        return false;
+    } finally {
+        if (client) {
+            client.release();
+        }
+    }
 }
 
 /**
@@ -60,9 +213,9 @@ export async function loginUser(email: string, password_plain: string): Promise<
   try {
     client = await pool.connect(); 
 
-    // Retrieve the user by email
+    // Retrieves the user by email
     const result = await client.query<User>( 
-      `SELECT id, username, password_hash, is_admin FROM users WHERE email = $1`,
+      `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name FROM users WHERE email = $1`,
       [email]
     );
     const user = result.rows[0];
@@ -73,7 +226,7 @@ export async function loginUser(email: string, password_plain: string): Promise<
       return null;
     }
 
-    console.log("Connexion réussie. Bienvenue, " + user.username + "!");
+    console.log("Connexion réussie. Bienvenue, " + user.first_name + "!");
     return user;
   } catch (error) {
     console.error("Erreur de connexion :", error);
@@ -95,7 +248,7 @@ export async function getUserById(userId: number): Promise<User | null> {
   try {
     client = await pool.connect(); 
     const result = await client.query<User>( 
-      `SELECT id, username, email, is_admin, created_at FROM users WHERE id = $1`,
+      `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name FROM users WHERE id = $1`,
       [userId]
     );
     return result.rows[0] || null;
@@ -118,7 +271,7 @@ export async function getAllUsers(): Promise<User[]> {
   try {
     client = await pool.connect(); 
     const result = await client.query<User>( 
-      `SELECT id, username, email, is_admin, created_at FROM users ORDER BY created_at DESC`
+      `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name FROM users ORDER BY created_at DESC`
     );
     return result.rows;
   } catch (error) {
@@ -166,17 +319,18 @@ export async function deleteUser(userId: number, currentUserId: number): Promise
  * @param data The new user data.
  * @returns True if the update is successful, false otherwise.
  */
-export async function updateUser(id: string, data: { username: string; email: string; }): Promise<boolean> {
+export async function updateUser(id: string, data: { email: string; firstName: string; lastName: string }): Promise<boolean> {
   let client;
   try {
     client = await pool.connect();
     await client.query(
       `UPDATE users
        SET
-         username = $1,
-         email = $2
-       WHERE id = $3`,
-      [data.username, data.email, id]
+         first_name = $1,
+         last_name = $2,
+         email = $3
+       WHERE id = $4`,
+      [data.firstName, data.lastName, data.email, id]
     );
     console.log("Informations de l'utilisateur mises à jour avec succès !");
     return true;
@@ -256,7 +410,9 @@ export const authOptions: AuthOptions = {
         if (user) {
           return {
             id: user.id.toString(),
-            username: user.username,
+            name: `${user.first_name} ${user.last_name}`,
+            firstName: user.first_name,
+            lastName: user.last_name,
             email: user.email,
             isAdmin: user.is_admin,
           };
@@ -272,7 +428,9 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.username = user.username;
+        token.name = user.name;
+        token.firstName = user.firstName;
+        token.lastName = user.lastName;
         token.email = user.email;
         token.isAdmin = user.isAdmin;
       }
@@ -281,9 +439,11 @@ export const authOptions: AuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user.id = token.id;
-        session.user.username = token.username;
+        session.user.name = token.name;
+        session.user.firstName = token.firstName;
+        session.user.lastName = token.lastName;
         session.user.email = token.email;
-        session.user.isAdmin = token.isAdmin;
+        session.user.isAdmin = token.isAdmin as boolean;
       }
       return session;
     },

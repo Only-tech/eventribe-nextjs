@@ -4,25 +4,34 @@ import { useEffect } from 'react';
 
 export function ScrollManager() {
   useEffect(() => {
-    let scrollTimeout: NodeJS.Timeout;
+    let activityTimeout: NodeJS.Timeout;
 
-    const handleScroll = () => {
-      document.body.classList.add('is-scrolling');
+    const handleActivity = () => {
+      document.body.classList.add('is-active');
 
-      clearTimeout(scrollTimeout);
+      clearTimeout(activityTimeout);
 
-      scrollTimeout = setTimeout(() => {
-        document.body.classList.remove('is-scrolling');
-      }, 1500); 
+      activityTimeout = setTimeout(() => {
+        document.body.classList.remove('is-active');
+      }, 1500);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    const events: (keyof WindowEventMap)[] = [
+      'scroll',
+      'mousemove',
+      'keydown',
+      // 'touchstart'
+    ];
+
+    events.forEach(e =>
+      window.addEventListener(e, handleActivity, { passive: true })
+    );
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimeout);
+      events.forEach(e => window.removeEventListener(e, handleActivity));
+      clearTimeout(activityTimeout);
     };
-  }, []); 
+  }, []);
 
-  return null; 
+  return null;
 }

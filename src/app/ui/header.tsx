@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect, useRef, FormEvent } from 'react';
 import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, XCircleIcon,  } from '@heroicons/react/24/outline';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
-import { FingerPrintIcon, CalendarDateRangeIcon, HomeIcon, UserCircleIcon} from '@heroicons/react/24/solid';
+import { FingerPrintIcon, CalendarDateRangeIcon, UserCircleIcon} from '@heroicons/react/24/solid';
 
 export default function Header() {
     const { data: session, status } = useSession();
@@ -42,9 +42,9 @@ export default function Header() {
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, []); // runs once on mount
 
-    // Update search query state if URL search param changes (e.g., from external navigation)
+    // Update search query state if URL search param changes 
     useEffect(() => {
         setSearchQuery(searchParams.get('query') || ''); 
     }, [searchParams]);
@@ -68,7 +68,7 @@ export default function Header() {
     return (
         <header
             ref={headerRef} // Attach the ref to the header
-            className={`fixed top-0 z-10000 w-full bg-[#f5f5dc] dark:bg-[#222222] text-gray-800 dark:text-gray-400 shadow-lg transition-all ease-in-out duration-800 py-1 px-3 min-[425px]:px-[5%] flex flex-row justify-between items-center ${
+            className={`fixed top-0 z-10000 w-full bg-[#f5f5dc] dark:bg-[#222222] text-gray-800 dark:text-white/70 shadow-lg transition-all ease-in-out duration-800 py-1 px-3 min-[425px]:px-[5%] flex flex-row justify-between items-center ${
                 scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
             }`}
             >
@@ -82,12 +82,12 @@ export default function Header() {
             {/*search Bar */}
             <div className="relative flex-grow mx-4 min-[425px]:mx-6 max-xl:max-w-sm max-w-lg">
                 <form onSubmit={handleSearchSubmit} className="group flex items-center">
-                <div className="group w-full flex flex-row rounded-full border-[0.1px] border-gray-300 transition-all ease-in-out duration-600 hover:border-[#ff952aff] focus-within:border-[#ff952aff] overflow-hidden">
+                <div className="group w-full flex flex-row rounded-full border-[0.1px] border-gray-300 dark:border-white/20 transition-all ease-in-out duration-600 hover:border-[#ff952aff] focus-within:border-[#ff952aff] overflow-hidden">
                     <input
                     type="text"
                     name="search"
                     placeholder="Rechercher un événement..."
-                    className={`w-full ${searchQuery ? 'max-[425px]:pl-3 max-[425px]:pr-0' : 'px-4'}  py-2 border-none border-transparent outline-none text-sm bg-transparent transition-all ease-in-out duration-600`}
+                    className={`w-full ${searchQuery ? 'max-[425px]:pl-3 max-[425px]:pr-0' : ''} px-4 py-2 border-none border-transparent outline-none text-sm bg-transparent transition-all ease-in-out duration-600`}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -95,7 +95,7 @@ export default function Header() {
                     <button
                         type="button"
                         onClick={handleClearSearch}
-                        className="p-1 flex items-center justify-center text-gray-500 hover:text-gray-700 dark:text-gray-400 transition-all ease-in-out duration-600 cursor-pointer"
+                        className="p-1 flex items-center justify-center text-gray-500 hover:text-gray-700 dark:text-white/70 transition-all ease-in-out duration-600 cursor-pointer"
                         title="Effacer la recherche"
                     >
                         <XCircleIcon className="w-5 h-5 animate-pulse" /> 
@@ -112,11 +112,14 @@ export default function Header() {
                 <ul className={`mobile-menu flex items-start min-[1025px]:items-center gap-3 min-[1025px]:gap-6 text-base xl:text-lg font-medium max-[1025px]:flex-col max-[1025px]:absolute max-[1025px]:top-full max-[1025px]:left-0 max-[1025px]:w-full bg-[#f5f5dc] dark:bg-[#222222] max-[1025px]:shadow-lg max-[1025px]:py-4 max-[1025px]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-[1025px]:flex rounded-b-2xl`}>
                 <li>
                     <Link href="/events" 
-                        className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
+                        className={`inline-flex whitespace-nowrap items-center gap-2 transition-all ease-in-out duration-600  hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] group ${ 
                         pathname === '/events' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                         onClick={() => setIsMobileMenuOpen(false)}
                     >
-                        < HomeIcon  className="inline-block w-6 h-6 -translate-y-0.5"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-5 -translate-y-0.5">
+                            <path fill="currentColor" d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+                            <path fill="#0088aa" className="group-hover:[fill:currentColor]" d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+                        </svg>
                         <span>Accueil</span>
                     </Link>
                 </li>
@@ -130,7 +133,7 @@ export default function Header() {
                             pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <CalendarDateRangeIcon className="inline-block w-6 h-6 -translate-y-0.5" />
+                            <CalendarDateRangeIcon className="inline-block size-5 -translate-y-0.5" />
                             <span>Mes Inscriptions</span>
                         </Link>
                     </li>
@@ -140,7 +143,7 @@ export default function Header() {
                             pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <UserCircleIcon className="inline-block h-6 w-6" />
+                            <UserCircleIcon className="inline-block size-5" />
                             <span>Compte</span>
                         </Link>
                     </li>
@@ -163,7 +166,7 @@ export default function Header() {
                         onClick={handleSignOut}
                         className="inline-flex items-center gap-2 whitespace-nowrap transition-all ease-in-out duration-600 hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] "
                         title="Se déconnecter">
-                            <span>Hi {session.user.username} !</span>
+                            <span>Hi {session.user.firstName} !</span>
                             <svg width="30" height="30" viewBox="0 0 448 417" xmlns="http://www.w3.org/2000/svg">
                                 <defs>
                                     <linearGradient id="swatch14">
@@ -189,8 +192,8 @@ export default function Header() {
                             pathname === '/login' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <FingerPrintIcon  className="inline-block h-6 w-6"/>
-                            <span>Connexion</span>
+                            <FingerPrintIcon  className="inline-block size-5"/>
+                            <span>Se Connecter</span>
                         </Link>
                     </li>
                     <li>
@@ -199,8 +202,8 @@ export default function Header() {
                             pathname === '/register' ? ' shadow-[inset_0px_2px_1px_#ff952aff]' : '' }`}
                             onClick={() => setIsMobileMenuOpen(false)}
                         >
-                            <FingerPrintIcon  className="inline-block h-6 w-6"/>
-                            <span>Inscription</span>
+                            <FingerPrintIcon  className="inline-block size-5"/>
+                            <span>S&apos;Inscrire</span>
                         </Link>
                     </li>
                     </>

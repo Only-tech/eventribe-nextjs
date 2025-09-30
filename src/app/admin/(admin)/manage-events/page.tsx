@@ -36,6 +36,16 @@ export default function ManageEventsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  // Clean status
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage('');
+      }, 5000); 
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   // Fetch events on component mount or when action changes
   useEffect(() => {
     const fetchEvents = async () => {
@@ -203,21 +213,20 @@ export default function ManageEventsPage() {
       setMessage(data.message);
       setIsSuccess(true);
       resetForm();
-      router.push('/admin/manage-events'); // Redirect to list view after success
+      router.push('/admin/manage-events'); 
     } else {
       setMessage(data.message || 'Erreur lors de l\'opération.');
       setIsSuccess(false);
     }
   };
 
-  // Function to open the confirmation modal
+  // ==== Function to open/close the confirmation modal====
   const openConfirmationModal = (msg: string, actionFn: () => void) => {
     setModalMessage(msg);
     setConfirmAction(() => actionFn); 
     setIsModalOpen(true);
   };
 
-  // Function to close the confirmation modal
   const closeConfirmationModal = () => {
     setIsModalOpen(false);
     setModalMessage('');
@@ -252,7 +261,6 @@ export default function ManageEventsPage() {
     }
   };
 
-  // Modified handleDelete to open the modal
   const handleDelete = (eventId: string) => {
     openConfirmationModal(
       'Êtes-vous sûr de vouloir supprimer cet événement ? Toutes les inscriptions associées seront également supprimées.',
@@ -268,10 +276,12 @@ export default function ManageEventsPage() {
     <div className="p-3">
 
       {message && (
-        <div className={`mb-4 text-center font-semibold p-3 rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+        <div className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
           {message}
         </div>
       )}
+
+      {/* ===== Create / Edit an event ===== */}
 
       {(action === 'create' || action === 'edit') && (
         <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:pb-10 xl:pb-12 rounded-2xl shadow-xl mx-auto bg-white sm:mb-15">
@@ -280,7 +290,7 @@ export default function ManageEventsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
                 <div className="relative group">
                     <input type="text" id="title" name="title" value={title} onChange={(e) => setTitle(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
-                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Titre</label>
+                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Évènement</label>
                 </div>
                 <div className="relative group">
                     <input type="datetime-local" id="event_date" name="event_date" value={eventDate} onChange={(e) => setEventDate(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
@@ -308,7 +318,7 @@ export default function ManageEventsPage() {
                         id="image"
                         name="image"
                         accept="image/*"
-                        className="peer mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]"
+                        className="peer mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]"
                         onChange={handleImageChange}
                         disabled={uploadingImage}
                     />
@@ -352,6 +362,7 @@ export default function ManageEventsPage() {
         </form> 
       )}
 
+      {/* ========= Events list ================= */}
       {action === 'list' && (
         <>
           <div className="mb-6 text-center flex justify-end">

@@ -13,11 +13,12 @@ export type Event = {
 
 export type User = {
   id: string;
-  username: string;
   email: string;
   password_hash: string;
   is_admin: boolean;
   created_at: string;
+  first_name: string;
+  last_name: string;
 };
 
 export type Registration = {
@@ -29,7 +30,7 @@ export type Registration = {
 
 export type Participant = {
   user_id: number;
-  username: string;
+  first_name: string;
   email: string;
   registered_at: string;
 };

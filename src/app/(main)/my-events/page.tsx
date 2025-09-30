@@ -2,11 +2,15 @@
 
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { TrashIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
+import { CalendarDaysIcon, MapPinIcon, ArrowDownIcon, UsersIcon, } from '@heroicons/react/24/outline'; 
 import { normalizeImagePath } from '@/app/lib/utils';
 import Image from 'next/image';
-import { TrashIcon, CalendarDaysIcon, MapPinIcon, ArrowUpIcon, ArrowDownIcon, ChevronDownIcon } from '@heroicons/react/24/outline'; 
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
+import ActionButton from '@/app/ui/buttons/ActionButton';
+import IconButton from '@/app/ui/buttons/IconButton';
 
 // Define the type for registered events, extending the base Event type
 interface RegisteredEvent {
@@ -15,22 +19,39 @@ interface RegisteredEvent {
   event_date: string;
   location: string;
   description_short: string;
+  description_long: string;
   image_url: string | null;
   registered_at: string;
   registered_count: number;
 }
 
 export default function MyEventsPage() {
+
+  const router = useRouter();
+
   const { data: session, status } = useSession();
   const [myEvents, setMyEvents] = useState<RegisteredEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
+  const [UnregisteringEventId, setUnregisteringEventId] = useState<string | null>(null);
+
   // State for the confirmation modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+
+  // Clean status
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage('');
+      }, 5000); 
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   useEffect(() => {
     // Only fetch data if the user is authenticated
@@ -65,6 +86,15 @@ export default function MyEventsPage() {
     }
   }, [session, status]); // Re-run when session or status changes
 
+  const toggleEventExpansion = (eventId: string) => {
+    if (expandedEventId === eventId) {
+      setExpandedEventId(null); 
+    } else {
+      setExpandedEventId(eventId); 
+    }
+  };
+
+
   // Function to open/close the confirmation modal
   const openConfirmationModal = (msg: string, actionFn: () => void) => {
     setModalMessage(msg);
@@ -83,9 +113,10 @@ export default function MyEventsPage() {
     closeConfirmationModal(); // Close the modal first
     setMessage('');
     setIsSuccess(false);
+    setUnregisteringEventId(eventId);
 
     try {
-      const response = await fetch('/api/unregister-event', { // Create this API route
+      const response = await fetch('/api/unregister-event', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -108,10 +139,11 @@ export default function MyEventsPage() {
       console.error("Failed to unregister from event:", error);
       setMessage("Une erreur est survenue lors de la désinscription.");
       setIsSuccess(false);
+    }finally {
+      setUnregisteringEventId(null); 
     }
   };
 
-  // Modified handleUnregister to open the modal
   const handleUnregister = (eventId: string) => {
     openConfirmationModal(
       'Êtes-vous sûr de vouloir annuler votre inscription à cet événement ?',
@@ -128,94 +160,103 @@ export default function MyEventsPage() {
       <h1 className="text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-8 text-center">Mes Inscriptions</h1>
 
       {message && (
-        <div className={`mb-4 text-center font-semibold p-3 rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-          {message}
-        </div>
+          <div className={`fixed z-10000 w-full max-w-[85%] top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+              {message}
+          </div>
       )}
 
       {myEvents.length === 0 ? (
         <>
           <p className="text-center text-gray-700 dark:text-white/70 text-lg">Vous n&apos;êtes inscrit à aucun événement pour le moment.</p>
           <div className="text-center mt-4">
-            <Link href="/" className="inline-flex justify-center items-center px-5 py-2 rounded-full text-base font-medium transition-colors group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent duration-300 ease-in-out">
-              Découvrir des événements
-              <ArrowDownIcon className="inline-block ml-1 w-4 h-4 -translate-y-0.5 group-hover:animate-bounce" />
-            </Link>
+            <ActionButton variant="secondary" onClick={() => router.push(`/events`)} className="mt-10 translate-x-1/2" >                    
+              <span>Découvrir des événements</span>
+              <ChevronDownIcon className="inline-block size-6 mr-2 group-hover:animate-bounce" />
+            </ActionButton>
           </div>
         </>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-[repeat(auto-fit,minmax(660px,1fr))] gap-10">
-          {myEvents.map((event) => {
+        <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10">
 
-            const imageSrc = normalizeImagePath(event.image_url);
-
-
-            return (
-              <div key={event.id} className="drop-shadow-lg max-w-2xl mx-auto transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]" data-aos="fade-up">
-              <div className="flex items-center text-sm w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl shadow-lg p-4 overflow-hidden min-[639px]:[clip-path:var(--clip-path-squircle-60)]">
-                <div className="hidden sm:block relative w-70 h-45 overflow-hidden rounded-4xl mr-6">
-                  <Image
-                    src={imageSrc}
-                    alt={`Image de l'événement ${event.title}`}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="w-full h-45 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1"
-                    onError={(e) => {
-                      e.currentTarget.src = 'https://placehold.co/600x400.png?text=Image+non+disponible';
-                    }}
-                  />        
+        {myEvents.map((event) => {
+          return (
+          <div key={event.id} className="drop-shadow-lg max-w-4xl min-[1460px]:max-w-200 w-full mx-auto transform transition-transform duration-600 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]" data-aos="fade-up">
+            <div className=" w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl p-4 overflow-hidden group min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
+              <div className="flex items-center cursor-pointer" onClick={() => toggleEventExpansion(event.id)}>
+                <div className="hidden sm:block relative w-100 h-50 overflow-hidden rounded-[2.5rem] mr-6" onClick={() => toggleEventExpansion(event.id)}>
+                    <Image src={normalizeImagePath(event.image_url)} alt={`Image de l'événement ${event.title}`} fill style={{ objectFit: 'cover' }} className="w-full h-50 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1" />        
                 </div>
-
-                <div className="flex flex-col items-center max-w-sm w-full max-sm:pl-3">
-                  <div className="w-full flex flex-col">
-                    <h2 className="text-base text-center min-[500px]:text-start font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
-                    <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-xs mt-1">
+                <div className="flex flex-col sm:flex-row xl:flex-col justify-between items-center max-w-2xl w-full">
+                  <div className="max-sm:pl-3">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
+                    <p className="text-gray-700 dark:text-white/60 text-sm mt-1">
                         <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
-                        {new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})} GMT+1
+                        {new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
                     </p>
-                    <p className="inline-flex items-center text-gray-700 dark:text-gray-500 text-sm mt-1">
-                        <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
-                    </p>
+                    <p className="text-gray-700 dark:text-white/60 text-sm mt-1"><MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}</p>
                     <p className="text-gray-700 text-center min-[500px]:text-start dark:text-white/70 mt-2  mb-2 flex-grow">{event.description_short}</p>
+                    <p className="hidden text-sm text-gray-500 sm:flex xl:hidden justify-between gap-2 whitespace-nowrap">
+                      <span className="text-sm inline-flex items-center text-[#08568a] whitespace-nowrap">
+                        <UsersIcon className="inline-block size-5 mr-1" /> {event.registered_count}
+                      </span>
+                      <span className="text-sm">
+                        Inscrit le {new Date(event.registered_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      </span> 
+                    </p>
                   </div>
-                  <div className="flex  gap-2 items-center justify-between w-full">
-                    <p className="text-sm text-gray-500 ">Inscrit le <span className="text-xs">{new Date(event.registered_at).toLocaleString('fr-FR', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}</span></p>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleUnregister(event.id)}
-                        className="text-red-600 hover:text-red-900 p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors"
-                        title="Se désinscrire"
-                      >
-                        <TrashIcon className="w-6 h-6" />
-                      </button>
+                  <div className="hidden sm:flex xl:hidden flex-col gap-2 border-l-[0.2px] border-gray-300 dark:border-white/20 pl-2 ml-1 sm:ml-3">
+                    <IconButton onClick={() => handleUnregister(event.id)} isLoading={UnregisteringEventId === event.id} className="text-red-600 hover:text-red-900" title="Se désinscrire">
+                      <TrashIcon className="w-6 h-6" />
+                    </IconButton>
 
-                      <Link href={`/event/${event.id}`}
-                      className="p-2 rounded-full bg-gray-100 hover:bg-gray-200 cursor-pointer transition-colors flex items-center justify-center"
+                    <IconButton
+                      onClick={() => toggleEventExpansion(event.id)}
+                      aria-expanded={expandedEventId === event.id}
                       title="En savoir plus"
+                    >
+                      <ChevronDownIcon className={`w-6 h-6 text-gray-800 transition-transform duration-300 ${expandedEventId === event.id ? 'rotate-180' : ''}`}/>
+                    </IconButton>
+                  </div>
+                  <div className="flex gap-2 items-center justify-between sm:hidden xl:flex w-full">
+                    <p className="hidden text-sm text-gray-500  xl:flex justify-between gap-2 whitespace-nowrap">
+                      <span className="text-sm inline-flex items-center text-[#08568a] whitespace-nowrap">
+                        <UsersIcon className="inline-block size-5 mr-1" /> {event.registered_count}
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-500">Inscrit le {new Date(event.registered_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</p>
+                    <div className="flex  gap-2">
+                      <IconButton onClick={() => handleUnregister(event.id)} isLoading={UnregisteringEventId === event.id} className="text-red-600 hover:text-red-900" title="Se désinscrire">
+                        <TrashIcon className="w-6 h-6" />
+                      </IconButton>
+
+                      <IconButton
+                        onClick={() => toggleEventExpansion(event.id)}
+                        aria-expanded={expandedEventId === event.id}
+                        title="En savoir plus"
                       >
-                        <ChevronDownIcon className="w-6 h-6 text-gray-900"/>
-                      </Link>
+                        <ChevronDownIcon className={`w-6 h-6 text-gray-800 transition-transform duration-300 ${expandedEventId === event.id ? 'rotate-180' : ''}`}/>
+                      </IconButton>
                     </div>
                   </div>
+              </div>
+            </div>
 
-                </div>
-              </div>
-              </div>
-            );
-          })}
+            {expandedEventId === event.id && (
+              <p className="text-gray-700 dark:text-white/85 min-w-full mt-4 p-3 bg-white dark:bg-[#222222] shadow-[0px_0px_2px_rgba(0,0,0,_0.6)] rounded-xl sm:rounded-3xl transition-all ease-in-out duration-700">
+                {event.description_long}
+              </p>
+            )}
+          </div>
         </div>
+      );
+    })}
+    </div>
       )}
 
-      <Link href="/events" className=" h-11 inline-flex items-center justify-center mt-10 px-5 py-2 rounded-full text-base text-[#FFF] hover:text-[#ff952aff] font-medium transition-colors group border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-[#ff952aff] cursor-pointer duration-300 ease-in-out">
-        <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" />
+      <ActionButton variant="primary" onClick={() => router.push(`/events`)} className="mt-10 translate-x-1/2" >                    
+        <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
         <span>Page d&apos;accueil</span>
-      </Link>
+      </ActionButton>
 
       {/* Confirmation Modal */}
       <ConfirmationModal

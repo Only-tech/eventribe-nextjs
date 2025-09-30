@@ -318,7 +318,7 @@ export default function ManageEventsPage() {
                         id="image"
                         name="image"
                         accept="image/*"
-                        className="peer mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]"
+                        className="peer mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]"
                         onChange={handleImageChange}
                         disabled={uploadingImage}
                     />

@@ -2,7 +2,10 @@
 
 import React, { useState, FormEvent, useEffect } from 'react';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput'; 
-import { EnvelopeIcon } from '@heroicons/react/16/solid';
+import { EnvelopeIcon, XMarkIcon } from '@heroicons/react/16/solid';
+import PlaneLogo from '@/app/ui/logo/PlaneLogo';
+import ActionButton from '@/app/ui/buttons/ActionButton';
+import IconButton from '@/app/ui/buttons/IconButton';
 
 interface ContactModalProps {
   isOpen: boolean;
@@ -144,14 +147,15 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         ${isClosing ? 'translate-y-20 opacity-0 animate-slide-down' : 'translate-y-0 opacity-100 animate-slide-up'}`}        
         onClick={(e) => e.stopPropagation()} 
       >
-        <button
-          onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-[#ff952aff] text-2xl font-bold"
-          aria-label="Quitter"
-          title="Quitter"
+        <IconButton
+            type="button"
+            onClick={handleClose}
+            className="absolute z-0 top-3 right-3 text-gray-500 hover:text-[#ff952aff] text-2xl font-bold bg-transparent hover:bg-gray-200"
+            aria-label="Quitter"
+            title="Quitter"
         >
-          &times;
-        </button>
+            <XMarkIcon className="size-6"/>
+        </IconButton>
         <h1 className="flex flex-col items-center justify-center text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-8">
           <EnvelopeIcon className="size-12 sm:size-16 mb-2" />
           <span>Contactez-nous</span>
@@ -213,31 +217,23 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               />
               {emailError && <p className="text-red-600 text-sm mt-1 ml-2">{emailError}</p>}
             </div>
-            {/* Submit Button */}
-            <button
-              type="submit"
-              className="w-full lg:w-50 pl-5 pr-3 py-2 min-[449px]:w-32 min-w-35 h-11 inline-flex items-center justify-center rounded-full text-base font-medium transition-all ease-in-out duration-600 group border-[0.5px] dark:text-zinc-600 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] hover:bg-[#E8E5D8] hover:border-transparent cursor-pointer"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <span>Envoi</span>
-                  <svg viewBox="0 0 50 50" className="inline-block size-6 ml-4">
-                    <circle cx="25" cy="25" r="20" stroke="#ff952aff" strokeWidth="5" fill="none" strokeLinecap="round" strokeDasharray="30 70">
-                      <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" from="0 25 25" to="360 25 25" />
-                    </circle>
-                  </svg>
-                </>
-              ) : (
-                <>
-                  <span>Envoyer</span>
-                  <svg viewBox="0 0 324 324" className="size-6 group-hover:animate-bounce rotate-45 ml-4" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                    <path d="m 30.038955,294.81144 c -3.815099,-4.09503 -2.797128,-8.46969 6.67839,-28.69991 12.018644,-25.6598 77.606235,-156.71889 91.867745,-183.572857 22.47567,-42.321005 29.5685,-51.045649 39.91963,-49.103766 5.2074,0.976915 9.81857,5.609074 18.44063,18.524569 22.20532,33.262663 86.74477,141.229994 93.83104,156.968894 1.71298,3.80461 2.66252,8.02626 2.99398,13.31138 l -0.32411,7.26543 -3.06837,4.33118 c -6.00559,8.47723 -14.64698,8.76904 -72.87789,14.61618 -45.40293,4.55905 -47.11753,4.67256 -52.00162,3.44273 -2.85517,-0.71893 -5.44415,-2.23054 -7.01234,-4.09422 C 146.24823,245.14156 146,243.96376 146,236.00548 c 0,-4.86259 2.05072,-26.76556 4.55715,-48.67327 5.33563,-46.63652 6.56528,-67.15579 4.14478,-69.16462 -2.57215,-2.1347 -5.32793,0.21701 -7.7086,6.57832 -2.30045,6.14697 -12.33937,39.97566 -23.96438,80.75409 -14.51047,50.90015 -17.31283,57.75038 -26.442195,64.63681 -13.407624,10.1136 -52.494093,26.69093 -63.2978,26.84583 -0.666075,0.01 -2.128575,-0.96749 -3.25,-2.1712 z"/>
-                  </svg>
-                </>
-              )}
-            </button>
-          </div>
+              {/* Submit Button */}
+              <ActionButton
+                type="submit"
+                variant="secondary"
+                isLoading={loading}
+                className="w-full lg:w-50 pl-5 pr-3 py-2 min-[449px]:w-32 min-w-35 h-11" 
+              >
+                {loading ? (
+                    <span className="ml-3">Envoi</span>
+                ) : (
+                    <>
+                        <span>Envoyer</span>
+                        <PlaneLogo className="group-hover:animate-bounce"/>
+                    </>
+                )}
+              </ActionButton>
+            </div>
 
           {/* Global Form Status */}
           {formStatus && (

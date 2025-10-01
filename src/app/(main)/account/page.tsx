@@ -598,7 +598,7 @@ export default function UserAccountManageEventsPage() {
                     Vous n&apos;avez pas encore créé d&apos;événements.
                 </p>
             ) : (
-                <div className="grid grid-cols-1 min-[1600px]:grid-cols-2 gap-10">
+                <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10">
                 {events.map((event) => (
                     <div key={event.id} className="drop-shadow-lg max-w-4xl w-full mx-auto transform transition-transform duration-300 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]" data-aos="fade-up">
                         <div className=" w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl p-4 overflow-hidden group min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >

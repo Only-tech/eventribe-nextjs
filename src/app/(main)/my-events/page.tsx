@@ -3,9 +3,8 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
 import { TrashIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
-import { CalendarDaysIcon, MapPinIcon, ArrowDownIcon, UsersIcon, } from '@heroicons/react/24/outline'; 
+import { CalendarDaysIcon, MapPinIcon, UsersIcon, } from '@heroicons/react/24/outline'; 
 import { normalizeImagePath } from '@/app/lib/utils';
 import Image from 'next/image';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
@@ -38,7 +37,6 @@ export default function MyEventsPage() {
   const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
   const [UnregisteringEventId, setUnregisteringEventId] = useState<string | null>(null);
 
-  // State for the confirmation modal
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -80,9 +78,11 @@ export default function MyEventsPage() {
       fetchEvents();
     } else if (status === 'unauthenticated') {
       setLoading(false);
-      // Optionally, redirect to login or show a message
       setMessage("Vous devez être connecté pour voir vos inscriptions.");
       setIsSuccess(false);
+      setTimeout(() => {
+        router.push('/login');
+      }, 1500);
     }
   }, [session, status]); // Re-run when session or status changes
 
@@ -110,7 +110,7 @@ export default function MyEventsPage() {
 
   // This function will be called when the modal confirms
   const executeUnregister = async (eventId: string) => {
-    closeConfirmationModal(); // Close the modal first
+    closeConfirmationModal(); 
     setMessage('');
     setIsSuccess(false);
     setUnregisteringEventId(eventId);
@@ -169,9 +169,9 @@ export default function MyEventsPage() {
         <>
           <p className="text-center text-gray-700 dark:text-white/70 text-lg">Vous n&apos;êtes inscrit à aucun événement pour le moment.</p>
           <div className="text-center mt-4">
-            <ActionButton variant="secondary" onClick={() => router.push(`/events`)} className="mt-10 translate-x-1/2" >                    
+            <ActionButton variant="secondary" onClick={() => router.push(`/events`)} >                    
               <span>Découvrir des événements</span>
-              <ChevronDownIcon className="inline-block size-6 mr-2 group-hover:animate-bounce" />
+              <ChevronDownIcon className="inline-block size-6 ml-2 group-hover:animate-bounce" />
             </ActionButton>
           </div>
         </>
@@ -241,11 +241,13 @@ export default function MyEventsPage() {
               </div>
             </div>
 
+            <div className={`w-full transform transition-all ease-in-out duration-700 ${expandedEventId === event.id ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-full pointer-events-none'}`}>
             {expandedEventId === event.id && (
               <p className="text-gray-700 dark:text-white/85 min-w-full mt-4 p-3 bg-white dark:bg-[#222222] shadow-[0px_0px_2px_rgba(0,0,0,_0.6)] rounded-xl sm:rounded-3xl transition-all ease-in-out duration-700">
                 {event.description_long}
               </p>
             )}
+            </div>
           </div>
         </div>
       );

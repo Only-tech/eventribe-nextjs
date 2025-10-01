@@ -1,8 +1,11 @@
 'use client'; 
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { CalendarIcon, ChevronUpIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline'; 
+import { CalendarIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline'; 
+import { ChevronUpIcon } from '@heroicons/react/16/solid'; 
+import ActionButton from '@/app/ui/buttons/ActionButton';
 
 // Define the Event type if not already globally available or imported
 interface Event {
@@ -21,6 +24,8 @@ interface EventCardProps {
 }
 
 export default function EventCard({ event }: EventCardProps) {
+
+    const router = useRouter();
 
     const remainingSeats = event.available_seats;
 
@@ -72,10 +77,10 @@ export default function EventCard({ event }: EventCardProps) {
                     <UsersIcon className="inline-block size-5 mr-1" /> {remainingSeats}
                     </p>
                     
-                    <p className=" h-8 inline-flex items-center justify-center pl-4 p-1 rounded-full font-medium transition-colors group border-[0.1px] dark:border-white/30 dark:bg-[#1E1E1E] dark:text-white/65 dark:group-hover:text-gray-700 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-[#F0EEE5] group-hover:bg-[#E8E5D8] group-hover:border-transparent">
-                        <span className="whitespace-nowrap">En savoir plus</span>
-                        <ChevronUpIcon className="inline-block w-4 h-4 ml-2 rotate-90 group-hover:animate-bounce"/>
-                    </p>
+                    <ActionButton variant="secondary" onClick={() => router.push(`/event/${event.id}`)} className=" h-8 pl-4 pr-[4px!important] dark:bg-transparent dark:text-white/65 dark:hover:text-gray-800 dark:border-white/30 group-hover:border-transparent group-hover:text-gray-800 group-hover:bg-[#E8E5D8]">                    
+                        <span className="text-sm whitespace-nowrap">En savoir plus</span>
+                        <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 group-hover:animate-bounce"/>
+                    </ActionButton>
                 </div>
             </div>
         </Link>

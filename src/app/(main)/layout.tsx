@@ -22,7 +22,7 @@ export default function MainLayout({
         <Suspense fallback={<div className="text-center py-4">Chargement du menu...</div>}>
           {!hideLayout && <Header />}
         </Suspense>
-        <main className=" w-full pt-20 pb-10 mx-auto my-6">
+        <main className="flex-grow w-full pt-20 pb-10 mx-auto my-6">
           {children}
         </main>
         <OnTopButton /> 

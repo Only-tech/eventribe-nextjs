@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ChevronLeftIcon, ChevronRightIcon, EyeIcon } from '@heroicons/react/16/solid';
+import ActionButton from '@/app/ui/buttons/ActionButton';
 
 interface CarouselImage {
   url: string;
@@ -164,13 +165,10 @@ export default function Carousel({ imageUrls }: CarouselProps) {
                   <div className={`absolute inset-0 bg-black opacity-30 ${ isActive ? 'hidden' : ''}`}></div>
 
                   {(isMobile || (isActive && isHovered)) && (
-                    <button
-                      onClick={() => router.push(`/event/${image.eventId}`)}
-                      className="absolute bottom-4 left-1/2 transform -translate-x-1/2 h-9 inline-flex items-center justify-center pl-2 pr-4 py-2 rounded-full text-sm font-medium transition-all ease-in-out duration-500 group border-[0.5px] text-gray-400 group-hover:text-gray-800 shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-black/65 group-hover:bg-[#E8E5D8] group-hover:border-transparent cursor-pointer"
-                    >
+                    <ActionButton variant="secondary" onClick={() => router.push(`/event/${image.eventId}`)} className="absolute pl-2 pr-4 py-2 bottom-4 left-1/2 transform -translate-x-1/2 h-9 text-sm text-white/70 group-hover:text-gray-800 border-white/40 bg-black/65 group-hover:bg-[#E8E5D8]">
                       <EyeIcon className="w-6 h-6 mr-2" />
                       <span className="whitespace-nowrap">Voir l&apos;événement</span>
-                    </button>
+                    </ActionButton>
                   )}
                 </div>
                 <div className="w-full flex justify-center ">

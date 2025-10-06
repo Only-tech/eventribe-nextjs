@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
-import { Event, Participant, Registration } from './definitions';
+import { Event, Participant, Registration, User } from './definitions';
 import { unstable_noStore as noStore } from 'next/cache';
+import { sendNotificationEmail } from './auth';
 
 // // Configures the DB connection
 // export const pool = new Pool({ // EXPORT THE POOL
@@ -348,7 +349,7 @@ export async function registerForEvent(userId: number, eventId: number): Promise
 
     // Check if seats are available
     const eventResult = await client.query<Event>(
-      `SELECT available_seats FROM events WHERE id = $1`,
+      `SELECT title, available_seats FROM events WHERE id = $1`,
       [eventId]
     );
     const event = eventResult.rows[0];
@@ -372,10 +373,30 @@ export async function registerForEvent(userId: number, eventId: number): Promise
 
     await client.query('COMMIT'); 
     console.log("Registration successful!");
+    // Send confirmation mail
+    try {
+        const userResult = await client.query<User>(`SELECT email, first_name FROM users WHERE id = $1`, [userId]);
+        const user = userResult.rows[0];
+
+        if (user && event) {
+            const subject = `Confirmation d'inscription à l'événement : ${event.title}`;
+            const html = `
+                <div style="font-family: Inter, sans-serif; max-width: 480px; margin: auto;">
+                    <p>Bonjour ${user.first_name},</p>
+                    <p>Votre inscription à l'événement <strong>${event.title}</strong> a bien été enregistrée.</p>
+                    <p>Nous sommes ravis de vous compter parmi nous !</p>
+                    <p style="margin-top: 24px; color: #666; font-size: 13px;">L'équipe eventribe</p>
+                </div>
+            `;
+            await sendNotificationEmail(user.email, subject, html);
+        }
+    } catch (emailError) {
+        console.error("L'inscription a réussi, mais l'envoi de l'e-mail a échoué :", emailError);
+    }
     return true;
   } catch (error) {
-    if (client) { // Only rollback if client exists
-      await client.query('ROLLBACK'); // Rollback on error
+    if (client) { 
+      await client.query('ROLLBACK');
     }
     console.error("Error during event registration:", error);
     return false;
@@ -409,6 +430,12 @@ export async function unregisterFromEvent(userId: number, eventId: number): Prom
       return false; 
     }
 
+    // Catch informations before deleting
+    const userResult = await client.query<User>(`SELECT email, first_name FROM users WHERE id = $1`, [userId]);
+    const eventResult = await client.query<Event>(`SELECT title FROM events WHERE id = $1`, [eventId]);
+    const user = userResult.rows[0];
+    const event = eventResult.rows[0];
+
     await client.query('BEGIN');
 
     const deleteResult = await client.query(
@@ -425,6 +452,24 @@ export async function unregisterFromEvent(userId: number, eventId: number): Prom
 
     await client.query('COMMIT'); 
     console.log("Unregistration successful!");
+
+    // Send unregister confirmation
+    try {
+        if (user && event) {
+            const subject = `Notification de désinscription de l'événement : ${event.title}`;
+            const html = `
+                <div style="font-family: Inter, sans-serif; max-width: 480px; margin: auto;">
+                    <p>Bonjour ${user.first_name},</p>
+                    <p>Ceci est une confirmation que vous avez été désinscrit(e) de l'événement <strong>${event.title}</strong>.</p>
+                    <p>Cette action a peut-être été réalisée par vous-même ou par un administrateur.</p>
+                    <p style="margin-top: 24px; color: #666; font-size: 13px;">L'équipe eventribe</p>
+                </div>
+            `;
+            await sendNotificationEmail(user.email, subject, html);
+        }
+    } catch (emailError) {
+        console.error("La désinscription a réussi, mais l'envoi de l'e-mail a échoué :", emailError);
+    }
     return true;
   } catch (error) {
     if (client) {

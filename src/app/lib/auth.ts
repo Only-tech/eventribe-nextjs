@@ -6,7 +6,7 @@ import { AuthOptions } from 'next-auth';
 import nodemailer from 'nodemailer';
 
 
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,                // "smtp.gmail.com"
   port: Number(process.env.SMTP_PORT) || 587, // 465 si secure
   secure: process.env.SMTP_SECURE === "true", // true -> port 465
@@ -15,6 +15,26 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASS,              // App Password pour Gmail
   },
 });
+
+/**
+ * Notification e-mails.
+ * @param to 
+ * @param subject 
+ * @param html 
+ */
+export async function sendNotificationEmail(to: string, subject: string, html: string): Promise<void> {
+    try {
+        await transporter.sendMail({
+            from: `"eventribe" <${process.env.EMAIL_USER}>`,
+            to,
+            subject,
+            html,
+        });
+        console.log(`E-mail de notification envoyé à ${to}`);
+    } catch (error) {
+        console.error(`Erreur lors de l'envoi de l'e-mail de notification à ${to}:`, error);
+    }
+}
 
 
 /**

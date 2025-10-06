@@ -401,27 +401,27 @@ export default function UserAccountManageEventsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
                 <div className="relative">
                     <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Évènement</label>
-                    <input type="text" id="title" name="title" value={title ?? ''} onChange={(e) => setTitle(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
+                    <input type="text" id="title" name="title" value={title ?? ''} onChange={(e) => setTitle(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
                     <label htmlFor="eventDate" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Date et heure</label>
-                    <input type="datetime-local" id="eventDate" name="event_date" value={eventDate ?? ''} onChange={(e) => setEventDate(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
+                    <input type="datetime-local" id="eventDate" name="event_date" value={eventDate ?? ''} onChange={(e) => setEventDate(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
                     <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Lieu</label>
-                    <input type="text" id="location" value={location ?? ''} onChange={(e) => setLocation(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
+                    <input type="text" id="location" value={location ?? ''} onChange={(e) => setLocation(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
                     <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Places disponibles</label>
-                    <input type="number" id="availableSeats" value={availableSeats ?? ''} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
+                    <input type="number" id="availableSeats" value={availableSeats ?? ''} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative md:col-span-2">
                     <label htmlFor="descriptionShort" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Description courte</label>
-                    <textarea id="descriptionShort" name="description_short" value={descriptionShort ?? ''} onChange={(e) => setDescriptionShort(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" rows={2}></textarea>
+                    <textarea id="descriptionShort" name="description_short" value={descriptionShort ?? ''} onChange={(e) => setDescriptionShort(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" rows={2}></textarea>
                 </div>
                 <div className="relative md:col-span-2">
                     <label htmlFor="descriptionLong" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Description longue</label>
-                    <textarea id="descriptionLong" name="description_long" value={descriptionLong ?? ''} onChange={(e) => setDescriptionLong(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" rows={4}></textarea>
+                    <textarea id="descriptionLong" name="description_long" value={descriptionLong ?? ''} onChange={(e) => setDescriptionLong(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" rows={4}></textarea>
                 </div>
                 <div className="relative ">
                     <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Image de l&apos;événement</label>
@@ -430,7 +430,7 @@ export default function UserAccountManageEventsPage() {
                         id="image"
                         name="image"
                         accept="image/*"
-                        className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FCFFF7] file:text-gray-700 dark:text-white/70 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]"
+                        className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FCFFF7] file:text-gray-700 dark:text-white/70 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]"
                         onChange={handleImageChange}
                         disabled={uploadingImage || isSubmittingEvent}
                     />
@@ -531,7 +531,7 @@ export default function UserAccountManageEventsPage() {
                         <IconButton
                             type="button"
                             onClick={() => setIsEditingInfo(false)}
-                            className="absolute z-0 top-3 right-3 text-gray-500 hover:text-[#ff952aff] text-2xl font-bold bg-transparent hover:bg-gray-200"
+                            className="absolute z-0 top-3 right-3 text-gray-500 hover:text-[#0088aa] dark:hover:text-[#ff952aff] text-2xl font-bold bg-transparent hover:bg-gray-200"
                             aria-label="Quitter"
                             title="Quitter"
                         >

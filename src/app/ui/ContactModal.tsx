@@ -145,7 +145,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         <IconButton
             type="button"
             onClick={handleClose}
-            className="absolute z-0 top-3 right-3 text-gray-500 hover:text-[#ff952aff] text-2xl font-bold bg-transparent hover:bg-gray-200"
+            className="absolute z-0 top-3 right-3 text-gray-500 hover:text-[#0088aa] dark:hover:text-[#ff952aff] text-2xl font-bold bg-transparent hover:bg-gray-200"
             aria-label="Quitter"
             title="Quitter"
         >
@@ -178,7 +178,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 id="message"
                 name="message"
                 rows={4}
-                className={`peer block w-full p-3 pt-3 border resize-none rounded-md shadow-sm focus:outline-none transition-all ease-in-out duration-400 ${messageError ? 'border-red-500' : 'border-gray-300 dark:border-white/20 focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]'}`}
+                className={`peer block w-full p-3 pt-3 border resize-none rounded-md shadow-sm focus:outline-none transition-all ease-in-out duration-400 ${messageError ? 'border-red-500' : 'border-gray-300 dark:border-white/20 focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]'}`}
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 onFocus={() => setIsMessageFocused(true)}
@@ -188,7 +188,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 htmlFor="message"
                 className={`absolute pointer-events-none transition-all ease-in-out duration-400 px-3 ${
                   isMessageLabelActive
-                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70'
+                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#0088aa] group-hover:text-[#0088aa] dark:peer-focus:text-[#ff952aff] dark:group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70'
                     : 'top-1/12 -translate-y-1/12 text-base text-gray-500'
                 }`}
               >

@@ -43,12 +43,13 @@ export default async function Page({
           </div>
         )}
 
-        {!query && <h1 className="mt-20 text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 border-b-1 pb-2 sm:mr-[40%]">
+        {!query && <h1 className="mt-20 text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 relative inline-block after:content-[''] after:block after:h-1 after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-2">
               Les intemporels
             </h1>}
       </div>
       
       {!query && <Carousel imageUrls={imageUrls} />}
+      
     </>
   );
 }

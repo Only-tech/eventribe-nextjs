@@ -69,7 +69,7 @@ export async function PUT(request: Request) {
 
     try {
         // const { id, ...data } = await request.json();
-        const { id, created_by: _unused, ...safeData } = await request.json();
+        const { id, ...safeData } = await request.json();
         // if (created_by !== session.user.id) {
         //     return NextResponse.json({ message: 'Utilisateur non autorisé à modifier cet événement.' }, { status: 403 });
         // }

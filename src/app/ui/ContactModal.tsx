@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, FormEvent, useEffect } from 'react';
+import React, { useState, FormEvent, useEffect, useCallback } from 'react';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput'; 
 import { EnvelopeIcon, XMarkIcon } from '@heroicons/react/16/solid';
 import PlaneLogo from '@/app/ui/logo/PlaneLogo';
@@ -28,6 +28,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
   const [isClosing, setIsClosing] = useState(false);
 
+  const handleClose = useCallback(() => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsClosing(false);
+      onClose();
+    }, 500);
+  }, [onClose]);
+
   // Clean status
   useEffect(() => {
     if (formStatus) {
@@ -37,6 +45,17 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
       return () => clearTimeout(timer);
     }
   }, [formStatus]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        handleClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, handleClose]); 
 
   // --- EMAIL VALIDATION FUNCTION ---
   const validateEmail = (email: string): boolean => {
@@ -107,30 +126,6 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     }
   };
 
-  const handleClose = () => {
-    setIsClosing(true);
-    setTimeout(() => {
-      setIsClosing(false);
-      onClose();
-    }, 500);
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        handleClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-    }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isOpen, handleClose]); 
-
   // Logic textarea label animation
   const isMessageLabelActive = isMessageFocused || message.length > 0;
 
@@ -139,12 +134,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   return (
     <div
       id="contactModal"
-      className={`fixed inset-0 bg-[rgb(248,248,236)] min-[450px]:bg-[#f5f5dc]/65 dark:bg-[#1E1E1E] min-[450px]:dark:bg-[#222222]/65 backdrop-blur-md min-h-screen overflow-y-auto p-2 min-[450px]:p-0 flex min-[450px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out ${
+      className={`fixed inset-0 bg-[#FCFFF7] min-[450px]:bg-[#FCFFF7]/65 dark:bg-[#1E1E1E] min-[450px]:dark:bg-[#222222]/65 backdrop-blur-md min-h-screen overflow-y-auto p-2 min-[450px]:p-0 flex min-[450px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out overflow-hidden ${
       isOpen && !isClosing ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}      onClick={handleClose}
     >
       <div className=" max-w-[95%] mx-auto w-md lg:w-xl relative transform transition-transform duration-300 min-[450px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[450px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
-      <div className={`bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/70 p-1 pb-6 min-[450px]:px-6 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[450px]:[clip-path:var(--clip-path-squircle-60)]
-        ${isClosing ? 'translate-y-20 opacity-0 animate-slide-down' : 'translate-y-0 opacity-100 animate-slide-up'}`}        
+      <div className={`bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-1 pb-6 min-[450px]:px-6 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[450px]:[clip-path:var(--clip-path-squircle-60)]
+        ${isClosing ? 'translate-x-5 opacity-0 animate-slide-down' : 'translate-x-0 opacity-100 animate-slide-up'}`}        
         onClick={(e) => e.stopPropagation()} 
       >
         <IconButton
@@ -193,7 +188,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 htmlFor="message"
                 className={`absolute pointer-events-none transition-all ease-in-out duration-400 px-3 ${
                   isMessageLabelActive
-                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/70'
+                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#ff952aff] group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70'
                     : 'top-1/12 -translate-y-1/12 text-base text-gray-500'
                 }`}
               >
@@ -227,19 +222,19 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                 {loading ? (
                     <span className="ml-3">Envoi</span>
                 ) : (
-                    <>
-                        <span>Envoyer</span>
-                        <PlaneLogo className="group-hover:animate-bounce"/>
-                    </>
+                  <>
+                    <span>Envoyer</span>
+                    <PlaneLogo className="group-hover:animate-bounce"/>
+                  </>
                 )}
               </ActionButton>
             </div>
 
           {/* Global Form Status */}
           {formStatus && (
-              <p className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-                {formStatus}
-              </p>
+            <p className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+              {formStatus}
+            </p>
           )}
         </form>
       </div>

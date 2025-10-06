@@ -8,19 +8,12 @@ import { PencilIcon } from '@heroicons/react/24/solid';
 import { TrashIcon, PlusIcon, ChevronUpIcon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import Image from 'next/image';
 import { normalizeImagePath } from '@/app/lib/utils';
-import { Event } from '@/app/lib/definitions'; 
+import { Event, Participant } from '@/app/lib/definitions'; 
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
 
-interface Participant {
-  user_id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  registered_at: string;
-}
 
 export default function UserAccountManageEventsPage() {
 
@@ -42,9 +35,9 @@ export default function UserAccountManageEventsPage() {
     const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
     const [isEditingInfo, setIsEditingInfo] = useState(false);
 
-    const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
-    const [participants, setParticipants] = useState<{ [eventId: string]: Participant[] }>({});
-    const [loadingParticipants, setLoadingParticipants] = useState<string | null>(null);
+    const [expandedEventId, setExpandedEventId] = useState<number | null>(null);
+    const [participants, setParticipants] = useState<{ [eventId: number]: Participant[] }>({});
+    const [loadingParticipants, setLoadingParticipants] = useState<number | null>(null);
 
     const [title, setTitle] = useState('');
     const [descriptionShort, setDescriptionShort] = useState('');
@@ -58,8 +51,8 @@ export default function UserAccountManageEventsPage() {
     const [uploadingImage, setUploadingImage] = useState(false);
 
     const [isSubmittingEvent, setIsSubmittingEvent] = useState(false);
-    const [deletingEventId, setDeletingEventId] = useState<string | null>(null);
-    const [unregisteringInfo, setUnregisteringInfo] = useState<{ userId: string; eventId: string } | null>(null);
+    const [deletingEventId, setDeletingEventId] = useState<number | null>(null);
+    const [unregisteringInfo, setUnregisteringInfo] = useState<{ userId: number; eventId: number } | null>(null);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
@@ -161,6 +154,7 @@ export default function UserAccountManageEventsPage() {
                 setIsSuccess(false);
             }
         } catch (error) {
+            console.error("Erreur lors du chargement des événements", error);
             setMessage('Une erreur est survenue lors du chargement des événements.');
             setEvents([]);
             setIsSuccess(false);
@@ -170,19 +164,16 @@ export default function UserAccountManageEventsPage() {
     };
 
 
-    const toggleEventExpansion = async (eventId: string) => {
+    const toggleEventExpansion = async (eventId: number) => {
         setMessage(''); 
         setIsSuccess(false);
 
         if (expandedEventId === eventId) {
-            setExpandedEventId(null);
-            setParticipants(prev => {
-                const newParticipants = { ...prev };
-                delete newParticipants[eventId]; 
-                return newParticipants;
-            });
+            setExpandedEventId(null); // Collapse if already expanded
         } else {
             setExpandedEventId(eventId);
+        // Fetch participants only if they haven't been fetched yet
+        if (!participants[eventId]) {
             setLoadingParticipants(eventId);
             try {
                 const response = await fetch(`/api/account/registrations?eventId=${eventId}`);
@@ -201,6 +192,7 @@ export default function UserAccountManageEventsPage() {
                 setLoadingParticipants(null);
             }
         }
+    }
     };
 
     // ===== Upload Image, Create, update Event ======
@@ -284,6 +276,7 @@ export default function UserAccountManageEventsPage() {
                 setIsSuccess(false);
             }
         } catch (error) {
+            console.error(`Erreur lors de ${action === 'create' ? 'la création' : 'la mise à jour'}`, error);
             setMessage(`Une erreur est survenue lors de ${action === 'create' ? 'la création' : 'la mise à jour'}.`);
             setIsSuccess(false);
         } finally {
@@ -303,7 +296,7 @@ export default function UserAccountManageEventsPage() {
         setConfirmAction(null);
     };
 
-    const executeUnregister = async (userId: string, eventId: string) => {
+    const executeUnregister = async (userId: number, eventId: number) => {
         closeConfirmationModal();
         setMessage('');
         setIsSuccess(false);
@@ -341,14 +334,14 @@ export default function UserAccountManageEventsPage() {
         }
     };
 
-    const handleUnregisterParticipant = (userId: string, eventId: string, firstName: string) => {
+    const handleUnregisterParticipant = (userId: number, eventId: number, firstName: string) => {
         openConfirmationModal(
             `Êtes-vous sûr de vouloir désinscrire ${firstName} de cet événement ?`,
             () => executeUnregister(userId, eventId)
         );
     };
     
-    const executeDelete = async (eventId: string) => {
+    const executeDelete = async (eventId: number) => {
         closeConfirmationModal(); 
         setMessage('');
         setIsSuccess(false);
@@ -378,7 +371,7 @@ export default function UserAccountManageEventsPage() {
         }
     };
 
-    const handleDelete = (eventId: string) => {
+    const handleDelete = (eventId: number) => {
         openConfirmationModal(
             'Êtes-vous sûr de vouloir supprimer cet événement ? \n\n Toutes les inscriptions associées seront également supprimées.',
             () => executeDelete(eventId)
@@ -402,47 +395,47 @@ export default function UserAccountManageEventsPage() {
     };
 
     const renderForm = () => (
-        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-4xl drop-shadow-xl hover:drop-shadow-2xl mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/85 sm:mb-15 transition-all dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]">
+        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-4xl drop-shadow-xl hover:drop-shadow-2xl mx-auto bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/85 sm:mb-15 transition-all dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]">
             <h2 className="text-3xl font-bold mb-6 sm:mb-10 text-gray-800 dark:text-[#ff952aff] text-center">{action === 'create' ? 'Créer un événement' : 'Modifier l\'événement'}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
                 <div className="relative">
-                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Évènement</label>
+                    <label htmlFor="title" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Évènement</label>
                     <input type="text" id="title" name="title" value={title ?? ''} onChange={(e) => setTitle(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="eventDate" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Date et heure</label>
+                    <label htmlFor="eventDate" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Date et heure</label>
                     <input type="datetime-local" id="eventDate" name="event_date" value={eventDate ?? ''} onChange={(e) => setEventDate(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Lieu</label>
+                    <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Lieu</label>
                     <input type="text" id="location" value={location ?? ''} onChange={(e) => setLocation(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative">
-                    <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Places disponibles</label>
+                    <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Places disponibles</label>
                     <input type="number" id="availableSeats" value={availableSeats ?? ''} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" />
                 </div>
                 <div className="relative md:col-span-2">
-                    <label htmlFor="descriptionShort" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Description courte</label>
+                    <label htmlFor="descriptionShort" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Description courte</label>
                     <textarea id="descriptionShort" name="description_short" value={descriptionShort ?? ''} onChange={(e) => setDescriptionShort(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" rows={2}></textarea>
                 </div>
                 <div className="relative md:col-span-2">
-                    <label htmlFor="descriptionLong" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Description longue</label>
+                    <label htmlFor="descriptionLong" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Description longue</label>
                     <textarea id="descriptionLong" name="description_long" value={descriptionLong ?? ''} onChange={(e) => setDescriptionLong(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]" rows={4}></textarea>
                 </div>
                 <div className="relative ">
-                    <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E]">Image de l&apos;événement</label>
+                    <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Image de l&apos;événement</label>
                     <input
                         type="file"
                         id="image"
                         name="image"
                         accept="image/*"
-                        className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 dark:text-white/70 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]"
+                        className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FCFFF7] file:text-gray-700 dark:text-white/70 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#ff952aff] hover:border-[#ff952aff] focus:border-[#ff952aff]"
                         onChange={handleImageChange}
                         disabled={uploadingImage || isSubmittingEvent}
                     />
                     {(previewImage || imageUrl) && (
-                        <div className="mt-4 flex justify-center sm:absolute bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white rounded-xl px-2 pb-2">
+                        <div className="mt-4 flex justify-center sm:absolute bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white rounded-xl px-2 pb-2">
                             <Image
                                 src={previewImage || normalizeImagePath(imageUrl)}
                                 alt="Aperçu de l'image"
@@ -478,7 +471,7 @@ export default function UserAccountManageEventsPage() {
                         className="min-w-32"
                     >
                         {isSubmittingEvent ? (
-                            <span>
+                            <span className="ml-3">
                                 {action === 'create' ? 'Création' : 'Mise à jour'}
                             </span>
                         ) : (
@@ -501,22 +494,22 @@ export default function UserAccountManageEventsPage() {
                 {!isEditingInfo ? (
                      <div
                         onClick={() => setIsEditingInfo(true)}
-                        className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group dark:text-zinc-600  bg-[#F0EEE5] dark:bg-[#161616] hover:bg-[#E8E5D8] hover:dark:bg-[#1E1E1E] group-hover:dark:bg-[#1E1E1E] group-hover:bg-[#E8E5D8] transition-all duration-300 ease-in-out">
+                        className="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 items-center gap-6 px-6 pt-6 sm:pt-1 rounded-2xl text-base font-medium group dark:text-zinc-600  bg-[#FCFFF7] dark:bg-[#161616] hover:bg-[#E8E5D8] hover:dark:bg-[#1E1E1E] group-hover:dark:bg-[#1E1E1E] group-hover:bg-[#E8E5D8] transition-all duration-300 ease-in-out">
                         
-                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-2xl sm:text-3xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white/70 mr-6 sm:mr-12 bg-[#F0EEE5] dark:bg-[#161616] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] group transition-all duration-300 ease-in-out">
+                        <h2 className="absolute z-10 px-3 py-2 rounded-3xl text-2xl sm:text-3xl right-0 top-0 -translate-y-1/2 font-extrabold text-gray-900 dark:text-white/70 mr-6 sm:mr-12 bg-[#FCFFF7] dark:bg-[#161616] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] group transition-all duration-300 ease-in-out">
                             Mon Compte
                         </h2>
                         <h3 className="md:col-span-2 text-xl dark:text-white/45 font-bold mb-3">Mes identifiants</h3>
                         <div className="relative">
-                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 dark:text-white/45  px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-[#161616] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Prénom</p>
+                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 dark:text-white/45  px-1 py-0 mr-6 bg-[#FCFFF7] dark:bg-[#161616] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Prénom</p>
                             {session && (<p className="block w-full h-12 px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 text-lg text-start rounded-md shadow-sm"> {session.user.firstName} </p>)}
                         </div>
                         <div className="relative">
-                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 dark:text-white/45 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-[#161616] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Nom</p>
+                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 dark:text-white/45 px-1 py-0 mr-6 bg-[#FCFFF7] dark:bg-[#161616] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Nom</p>
                             {session && (<p className="block w-full h-12 px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 text-lg text-start rounded-md shadow-sm"> {session.user.lastName} </p>)}
                         </div>
                         <div className="relative md:col-span-2">
-                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 dark:text-white/45 px-1 py-0 mr-6 bg-[#F0EEE5] dark:bg-[#161616] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Adresse e-mail</p>
+                            <p className="absolute right-0 top-0 -translate-y-1/2 text-gray-500 dark:text-white/45 px-1 py-0 mr-6 bg-[#FCFFF7] dark:bg-[#161616] group-hover:bg-[#E8E5D8] group-hover:dark:bg-[#1E1E1E] transition-colors duration-300">Adresse e-mail</p>
                             {session && (<p className="block w-full h-12 px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 text-lg text-start rounded-md shadow-sm"> {session.user.email} </p>)}
                         </div>
                         <div className="md:col-span-2 h-full mx-auto w-full max-w-[90%] border-t-[0.2px] group-hover:border-gray-400"></div>
@@ -534,7 +527,7 @@ export default function UserAccountManageEventsPage() {
 
                     </div>
                 ) : (
-                    <div className="relative z-1 max-w-md mx-auto transition-all ease-in-out duration-300 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/70 rounded-2xl p-4 sm:p-8 min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
+                    <div className="relative z-1 max-w-md mx-auto transition-all ease-in-out duration-300 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 rounded-2xl p-4 sm:p-8 min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
                         <IconButton
                             type="button"
                             onClick={() => setIsEditingInfo(false)}
@@ -659,8 +652,7 @@ export default function UserAccountManageEventsPage() {
                                                             isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
                                                             className="max-md:px-2.5 text-sm"
                                                             title="Désinscrire"    
-                                                        >
-                                                            
+                                                        >                                                            
                                                             {!unregisteringInfo && ( <TrashIcon className="w-4 h-4" /> )}
                                                             <span className="hidden md:inline-flex md:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
                                                             
@@ -679,7 +671,7 @@ export default function UserAccountManageEventsPage() {
                 ))}
                 </div>
             )}
-            <ActionButton variant="primary" onClick={() => router.push(`/events`)} className="mt-10 translate-x-1/2" >                    
+            <ActionButton variant="secondary" onClick={() => router.push(`/events`)} className="mt-10 translate-x-1/2" >                    
                 <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
                 <span>Page d&apos;accueil</span>
             </ActionButton>

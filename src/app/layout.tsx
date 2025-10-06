@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import OnTopButton from '@/app/ui/buttons/OnTopButton';
 import { Providers } from './providers';
-import { ScrollManager } from '@/app/ui/ScrollManager';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -17,12 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr">
+    <html lang="fr" suppressHydrationWarning>
       <body className={inter.className}>
-        <Providers> {/* The SessionProvider cover entire apps */}
-          {children}
+        <Providers>
+            {children}
+          <OnTopButton /> 
         </Providers>
-        <ScrollManager />
       </body>
     </html>
   );

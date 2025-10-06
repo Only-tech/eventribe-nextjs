@@ -56,9 +56,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="absolute inset-0 bg-[rgb(248,248,236)] min-[500px]:bg-[#f5f5dc]/65 dark:bg-[#222222]/65 max-[500px]:dark:bg-[#1E1E1E] backdrop-blur-sm min-h-screen overflow-y-auto max-[500px]:pt-0 max-[1025px]:py-10 flex items-start min-[1025px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out">
+    <div className="absolute inset-0 bg-[#FCFFF7] min-[500px]:bg-[#FCFFF7]/65 dark:bg-[#222222]/65 max-[500px]:dark:bg-[#1E1E1E] backdrop-blur-sm min-h-screen overflow-y-auto max-[500px]:pt-0 max-[1025px]:py-10 flex items-start min-[1025px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out">
       <div className="relative min-[500px]:drop-shadow-lg max-w-[95%] max-[769px]:w-md w-5xl mx-auto transform transition-transform duration-500 min-[500px]:hover:drop-shadow-2xl group min-[500px]:dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] min-[500px]:dark:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
-        <div className="flex flex-col min-[769px]:flex-row items-center min-h-120  justify-evenly gap-6 min-[800px]:gap-10 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-white/75 p-2 max-[500]:pt-4 min-[500px]:p-6 lg:p-10 xl:p-12 min-[500px]:[clip-path:var(--clip-path-squircle-60)]" >      
+        <div className="flex flex-col min-[769px]:flex-row items-center min-h-120  justify-evenly gap-6 min-[800px]:gap-10 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/75 p-2 max-[500]:pt-4 min-[500px]:p-6 lg:p-10 xl:p-12 min-[500px]:[clip-path:var(--clip-path-squircle-60)]" >      
           <div className="relative max-w-sm flex-1 w-full flex flex-col items-center justify-center">
             <IconHomeButton onClick={() => router.push(`/events`)} className="fixed top-4 right-4 cursor-pointer" title="Page d'accueil"/>
             <LogoButton onClick={() => router.push(`/`)} className='max-md:w-25 max-md:h-16 max-[820px]:w-40 max-[820px]:h-32 w-55 h-38'/>

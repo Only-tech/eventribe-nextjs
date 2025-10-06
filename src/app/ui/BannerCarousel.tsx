@@ -218,7 +218,7 @@ export default function Carousel() {
       {/* Navigation */}
       <div
         ref={navRef}
-        className="carousel-nav absolute bottom-2  flex items-center gap-4 group"
+        className="carousel-nav absolute bottom-1  flex items-center gap-4 group"
       >
         <button
           id="play-pause-btn"
@@ -236,7 +236,7 @@ export default function Carousel() {
             pauseAutoplay(); // met userPaused = true
           }
           }}
-          className="flex items-center justify-center text-white rounded-full h-10 w-10 bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl cursor-pointer"
+          className="flex items-center justify-center text-white rounded-full size-7 bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl cursor-pointer"
         >
           {isComplete ? (
             <svg
@@ -275,7 +275,7 @@ export default function Carousel() {
         </button>
 
         {/* Dots with morphing + progress */}
-        <div className="progress-bar-container relative w-35 h-11 rounded-full flex items-center justify-center bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
+        <div className="progress-bar-container relative w-35 h-9 rounded-full flex items-center justify-center bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
           <div className="dots-container absolute inset-0 flex px-3">
             {slidesData.map((_, idx) => {
               const active = idx === currentIndex && !isPaused && !isComplete;

@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { RegisteredEvent } from '@/app/lib/definitions';
 import { TrashIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import { CalendarDaysIcon, MapPinIcon, UsersIcon, } from '@heroicons/react/24/outline'; 
 import { normalizeImagePath } from '@/app/lib/utils';
@@ -11,18 +12,6 @@ import ConfirmationModal from '@/app/ui/ConfirmationModal';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
 
-// Define the type for registered events, extending the base Event type
-interface RegisteredEvent {
-  id: string;
-  title: string;
-  event_date: string;
-  location: string;
-  description_short: string;
-  description_long: string;
-  image_url: string | null;
-  registered_at: string;
-  registered_count: number;
-}
 
 export default function MyEventsPage() {
 
@@ -34,8 +23,8 @@ export default function MyEventsPage() {
   const [message, setMessage] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
-  const [UnregisteringEventId, setUnregisteringEventId] = useState<string | null>(null);
+  const [expandedEventId, setExpandedEventId] = useState<number | null>(null);
+  const [UnregisteringEventId, setUnregisteringEventId] = useState<number | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
@@ -84,16 +73,11 @@ export default function MyEventsPage() {
         router.push('/login');
       }, 1500);
     }
-  }, [session, status]); // Re-run when session or status changes
+  }, [session, status, router]); // Re-run when session or status changes
 
-  const toggleEventExpansion = (eventId: string) => {
-    if (expandedEventId === eventId) {
-      setExpandedEventId(null); 
-    } else {
-      setExpandedEventId(eventId); 
-    }
+  const toggleEventExpansion = (eventId: number) => {
+    setExpandedEventId(prevId => (prevId === eventId ? null : eventId));
   };
-
 
   // Function to open/close the confirmation modal
   const openConfirmationModal = (msg: string, actionFn: () => void) => {
@@ -109,7 +93,7 @@ export default function MyEventsPage() {
   };
 
   // This function will be called when the modal confirms
-  const executeUnregister = async (eventId: string) => {
+  const executeUnregister = async (eventId: number) => {
     closeConfirmationModal(); 
     setMessage('');
     setIsSuccess(false);
@@ -144,7 +128,7 @@ export default function MyEventsPage() {
     }
   };
 
-  const handleUnregister = (eventId: string) => {
+  const handleUnregister = (eventId: number) => {
     openConfirmationModal(
       'Êtes-vous sûr de vouloir annuler votre inscription à cet événement ?',
       () => executeUnregister(eventId)
@@ -182,12 +166,12 @@ export default function MyEventsPage() {
           return (
           <div key={event.id} className="drop-shadow-lg max-w-4xl min-[1460px]:max-w-200 w-full mx-auto transform transition-transform duration-600 hover:drop-shadow-2xl group dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]" data-aos="fade-up">
             <div className=" w-full bg-white/95 dark:bg-[#1E1E1E] rounded-2xl p-4 overflow-hidden group min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
-              <div className="flex items-center cursor-pointer" onClick={() => toggleEventExpansion(event.id)}>
+              <div className="flex items-center cursor-pointer">
                 <div className="hidden sm:block relative w-100 h-50 overflow-hidden rounded-[2.5rem] mr-6" onClick={() => toggleEventExpansion(event.id)}>
                     <Image src={normalizeImagePath(event.image_url)} alt={`Image de l'événement ${event.title}`} fill style={{ objectFit: 'cover' }} className="w-full h-50 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1" />        
                 </div>
                 <div className="flex flex-col sm:flex-row xl:flex-col justify-between items-center max-w-2xl w-full">
-                  <div className="max-sm:pl-3">
+                  <div className="max-sm:pl-3" onClick={() => toggleEventExpansion(event.id)}>
                     <h2 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
                     <p className="text-gray-700 dark:text-white/60 text-sm mt-1">
                         <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
@@ -255,7 +239,7 @@ export default function MyEventsPage() {
     </div>
       )}
 
-      <ActionButton variant="primary" onClick={() => router.push(`/events`)} className="mt-10 translate-x-1/2" >                    
+      <ActionButton variant="secondary" onClick={() => router.push(`/events`)} className="mt-10 translate-x-1/2" >                    
         <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
         <span>Page d&apos;accueil</span>
       </ActionButton>

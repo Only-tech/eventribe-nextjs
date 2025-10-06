@@ -16,7 +16,7 @@ export default function LegalMentionsPage() {
 
   return (
     <>
-      <section className="max-w-4xl mx-auto -mt-15 bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-300 p-8 rounded-lg shadow-lg dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
+      <section className="max-w-4xl mx-auto -mt-15 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-gray-300 p-8 rounded-lg shadow-lg dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
         <h1 className="text-4xl font-extrabrabold text-gray-900 dark:text-white mb-6 text-center">Mentions Légales</h1>
 
         <div className="mb-8">
@@ -91,7 +91,7 @@ export default function LegalMentionsPage() {
       </section>
 
 
-      <section id="politique-confidentialite" className="max-w-4xl mx-auto bg-[rgb(248,248,236)] dark:bg-[#1E1E1E] dark:text-gray-300 p-20 px-8 mt-200 rounded-lg shadow-lg dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
+      <section id="politique-confidentialite" className="max-w-4xl mx-auto bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-gray-300 p-20 px-8 mt-200 rounded-lg shadow-lg dark:hover:shadow-[0px_1px_5px_rgba(255,_255,_255,_0.4)] dark:shadow-[0px_1px_1px_rgba(255,_255,_255,_0.2)]">
         <h1 className="text-4xl font-extrabrabold text-gray-900 dark:text-white mb-8 text-center">Politique de Confidentialité</h1>
 
         <p className="mb-4">Dernière mise à jour : {lastUpdateDate}</p>
@@ -178,7 +178,7 @@ export default function LegalMentionsPage() {
       </section>
       <div className="flex place-content-center">
         <Link href="/events" className="fixed bottom-2 z-100">
-          <ActionButton variant="primary"  >                    
+          <ActionButton variant="primary" className="dark:bg-[#FCFFF7] dark:text-gray-800 dark:hover:bg-gray-800 dark:hover:text-white">                    
             <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
             <span>Page d&apos;accueil</span>
           </ActionButton>

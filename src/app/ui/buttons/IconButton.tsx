@@ -12,7 +12,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   className = '',
   ...props
 }) => {
-  const baseStyles = 'p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'p-2 rounded-full cursor-pointer bg-gray-100 hover:bg-gray-200 shadow-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
 
   return (
     <button

@@ -7,6 +7,7 @@ import { Bars3Icon, XMarkIcon, UserGroupIcon, Cog6ToothIcon } from '@heroicons/r
 import { usePathname } from 'next/navigation';
 import LogoutLogo from '@/app/ui/logo/LogoutLogo';
 import AdminLogo from '@/app/ui/logo/AdminLogo';
+import { useScrollContainer } from '@/app/providers';
 
 export default function AdminHeader() {
   const { data: session, status } = useSession(); 
@@ -17,28 +18,31 @@ export default function AdminHeader() {
 
   const pathname = usePathname()
 
-  const handleSignOut = async () => {
-    await signOut({ callbackUrl: '/' }); 
-  };
+  const { scrollElement } = useScrollContainer();
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+    const el = scrollElement;
+    if (!el) return;
 
+    const handleScroll = () => {
+      const currentScrollY = el.scrollTop; 
       if (currentScrollY < lastScrollY.current) {
         setScrollingUp(true);
-      } else if (currentScrollY > lastScrollY.current && currentScrollY > 80) { 
+      } else if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
         setScrollingUp(false);
       }
       lastScrollY.current = currentScrollY;
     };
 
-    window.addEventListener('scroll', handleScroll);
+    el.addEventListener('scroll', handleScroll);
+    
+    return () => el.removeEventListener('scroll', handleScroll);
+    
+  }, [scrollElement]);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []); 
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: '/' }); 
+  }; 
 
   return (
     <header

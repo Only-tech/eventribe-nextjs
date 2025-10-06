@@ -330,7 +330,7 @@ export async function fetchRegisteredEventsForUser(userId: string): Promise<(Eve
  * @param eventId 
  * @returns Successful, false otherwise.
  */
-export async function registerForEvent(userId: string, eventId: number): Promise<boolean> {
+export async function registerForEvent(userId: number, eventId: number): Promise<boolean> {
   noStore();
   let client;
   try {
@@ -352,27 +352,25 @@ export async function registerForEvent(userId: string, eventId: number): Promise
       [eventId]
     );
     const event = eventResult.rows[0];
-    if (!event || event.available_seats <= 0) {
+    const registeredCountResult = await client.query(
+      `SELECT COUNT(*) FROM registrations WHERE event_id = $1`,
+      [eventId]
+    );
+    const registeredCount = parseInt(registeredCountResult.rows[0].count, 10);
+
+    if (!event || registeredCount >= event.available_seats) {
       console.warn("No seats available or event not found.");
       return false;
     }
 
-    // Start a transaction
     await client.query('BEGIN');
 
-    // Insert registration
     await client.query(
       `INSERT INTO registrations (user_id, event_id, registered_at) VALUES ($1, $2, NOW())`,
       [userId, eventId]
     );
 
-    // Decrement available seats
-    await client.query(
-      `UPDATE events SET available_seats = available_seats - 1 WHERE id = $1`,
-      [eventId]
-    );
-
-    await client.query('COMMIT'); // Commit the transaction
+    await client.query('COMMIT'); 
     console.log("Registration successful!");
     return true;
   } catch (error) {
@@ -383,7 +381,7 @@ export async function registerForEvent(userId: string, eventId: number): Promise
     return false;
   } finally {
     if (client) {
-      client.release(); // Ensure client is released
+      client.release();
     }
   }
 }
@@ -394,42 +392,42 @@ export async function registerForEvent(userId: string, eventId: number): Promise
  * @param eventId 
  * @returns Successful, false otherwise.
  */
-export async function unregisterFromEvent(userId: string, eventId: number): Promise<boolean> {
+export async function unregisterFromEvent(userId: number, eventId: number): Promise<boolean> {
   noStore();
   let client; 
   try {
     client = await pool.connect();
 
     // Check if user is actually registered
-    const existingRegistration = await client.query<Registration>(
+    const existingRegistrationResult = await client.query<Registration>(
       `SELECT id FROM registrations WHERE user_id = $1 AND event_id = $2`,
       [userId, eventId]
     );
-    if (existingRegistration.rows.length === 0) {
-      console.warn("User is not registered for this event.");
-      return false;
+
+    if (existingRegistrationResult.rows.length === 0) {
+      console.warn("User is not registered for this event, cannot unregister.");
+      return false; 
     }
 
-    // Start a transaction
     await client.query('BEGIN');
 
-    // Delete registration
-    await client.query(
+    const deleteResult = await client.query(
       `DELETE FROM registrations WHERE user_id = $1 AND event_id = $2`,
       [userId, eventId]
     );
 
-    // Increment available seats
-    await client.query(
-      `UPDATE events SET available_seats = available_seats + 1 WHERE id = $1`,
-      [eventId]
-    );
+    // Only proceed if a row was actually deleted
+    if (deleteResult.rowCount === 0) {
+      await client.query('ROLLBACK');
+      console.warn("Unregistration failed, user was not registered.");
+      return false;
+    }
 
-    await client.query('COMMIT'); // Commit the transaction
+    await client.query('COMMIT'); 
     console.log("Unregistration successful!");
     return true;
   } catch (error) {
-    if (client) { // Only rollback if client exists
+    if (client) {
       await client.query('ROLLBACK'); // Rollback on error
     }
     console.error("Error during event unregistration:", error);
@@ -447,7 +445,7 @@ export async function unregisterFromEvent(userId: string, eventId: number): Prom
  * @param eventId 
  * @returns True if registered, false otherwise.
  */
-export async function isUserRegisteredForEvent(userId: string, eventId: number): Promise<boolean> {
+export async function isUserRegisteredForEvent(userId: number, eventId: number): Promise<boolean> {
   noStore();
   let client; 
   try {

@@ -2,12 +2,14 @@
 
 import { useState, useEffect, FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
 import Image from 'next/image';
 import { normalizeImagePath } from '@/app/lib/utils';
 import { Event } from '@/app/lib/definitions'; 
-import { PlusIcon, PencilIcon, TrashIcon, ArrowUpIcon } from '@heroicons/react/24/outline'; 
+import { PencilIcon } from '@heroicons/react/24/solid'; 
+import { PlusIcon, TrashIcon, ChevronUpIcon } from '@heroicons/react/16/solid'; 
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
+import ActionButton from '@/app/ui/buttons/ActionButton';
+import IconButton from '@/app/ui/buttons/IconButton';
 
 export default function ManageEventsPage() { 
   const [events, setEvents] = useState<Event[]>([]);
@@ -27,6 +29,9 @@ export default function ManageEventsPage() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [uploadingImage, setUploadingImage] = useState(false);
+
+  const [isSubmittingEvent, setIsSubmittingEvent] = useState(false);
+  const [deletingEventId, setDeletingEventId] = useState<number | null>(null);
 
   // confirmation modal
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -139,6 +144,7 @@ export default function ManageEventsPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    setIsSubmittingEvent(true);
     setMessage('');
     setIsSuccess(false);
 
@@ -166,6 +172,7 @@ export default function ManageEventsPage() {
           setMessage(uploadData.message || 'Erreur lors de l\'upload de l\'image.');
           setIsSuccess(false);
           setUploadingImage(false);
+          setIsSubmittingEvent(false);
           return; // Stop if image upload fails
         }
       } catch (uploadError) {
@@ -173,6 +180,7 @@ export default function ManageEventsPage() {
         setMessage('Une erreur est survenue lors de l\'upload de l\'image.');
         setIsSuccess(false);
         setUploadingImage(false);
+        setIsSubmittingEvent(false);
         return; // Stop if image upload fails
       } finally {
         setUploadingImage(false);
@@ -205,15 +213,18 @@ export default function ManageEventsPage() {
     } else {
       setMessage('Action non valide.');
       setIsSuccess(false);
+      setIsSubmittingEvent(false);
       return;
     }
 
     const data = await response.json();
+    setIsSubmittingEvent(false);
     if (response.ok) {
       setMessage(data.message);
       setIsSuccess(true);
       resetForm();
-      router.push('/admin/manage-events'); 
+      ; 
+      setTimeout(() => router.push('/admin/manage-events'), 2000);
     } else {
       setMessage(data.message || 'Erreur lors de l\'opération.');
       setIsSuccess(false);
@@ -234,10 +245,11 @@ export default function ManageEventsPage() {
   };
 
   // This function will be called when the modal confirms
-  const executeDelete = async (eventId: string) => {
+  const executeDelete = async (eventId: number) => {
     closeConfirmationModal(); 
     setMessage('');
     setIsSuccess(false);
+    setDeletingEventId(eventId); 
 
     try {
       const response = await fetch('/api/admin/events', {
@@ -258,10 +270,12 @@ export default function ManageEventsPage() {
       console.error('Erreur lors de la suppression de l\'événement:', error);
       setMessage('Une erreur est survenue lors de la suppression.');
       setIsSuccess(false);
+    } finally {
+      setDeletingEventId(null);
     }
   };
 
-  const handleDelete = (eventId: string) => {
+  const handleDelete = (eventId: number) => {
     openConfirmationModal(
       'Êtes-vous sûr de vouloir supprimer cet événement ? Toutes les inscriptions associées seront également supprimées.',
       () => executeDelete(eventId)
@@ -318,7 +332,7 @@ export default function ManageEventsPage() {
                         id="image"
                         name="image"
                         accept="image/*"
-                        className="peer mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#F0EEE5] file:text-gray-700 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]"
+                        className="peer mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FCFFF7] file:text-gray-700 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]"
                         onChange={handleImageChange}
                         disabled={uploadingImage}
                     />
@@ -340,23 +354,35 @@ export default function ManageEventsPage() {
                         <p className="text-center text-sm text-gray-500 mt-2">Chargement de l&apos;image...</p>
                     )}
                 </div>
-                <div className="flex flex-col sm:flex-row sm:justify-end gap-4 mt-4">
-                    <button
+                <div className="flex flex-col sm:flex-row sm:justify-end gap-4 mt-4 md:col-start-2">
+                    <ActionButton
                         type="button"
-                        onClick={() => router.push('/admin/manage-events')} 
-                        className=" h-11 min-w-32 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-600 hover:bg-[#FFF] hover:border-gray-800 cursor-pointer duration-300 ease-in-out group"
+                        variant="destructive"
+                        onClick={() => router.push('/admin/manage-events')}
+                        className="min-w-32"
                     >
-                        <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" /> 
+                        <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" /> 
                         <span>Annuler</span>
-                    </button>
-                    <button
+                    </ActionButton>
+                    <ActionButton
                         type="submit"
-                        className="h-11 min-w-32 px-5 py-2 rounded-full text-base text-[#FFF] whitespace-nowrap hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 cursor-pointer duration-300 ease-in-out group"
-                        disabled={uploadingImage}
+                        variant="primary"
+                        isLoading={isSubmittingEvent}
+                        className="min-w-32"
                     >
-                        <PlusIcon className="inline-block w-4 h-4 mr-2 group-hover:animate-bounce" />
-                        {action === 'create' ? 'Créer' : 'Mettre à jour'}
-                    </button>
+                        {isSubmittingEvent ? (
+                            <span className="ml-3">
+                                {action === 'create' ? 'Création' : 'Mise à jour'}
+                            </span>
+                        ) : (
+                            <>
+                                <PlusIcon className="inline-block size-5 mr-2 group-hover:animate-bounce" />
+                                <span>
+                                    {action === 'create' ? 'Créer' : 'Mettre à jour'}
+                                </span>
+                            </>
+                        )}
+                    </ActionButton>
                 </div>
             </div>
         </form> 
@@ -366,10 +392,10 @@ export default function ManageEventsPage() {
       {action === 'list' && (
         <>
           <div className="mb-6 text-center flex justify-end">
-            <Link href="/admin/manage-events?action=create" className=" h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-amber-50 hover:border-gray-800 cursor-pointer duration-300 ease-in-out group">
-              <PlusIcon className="inline-block w-4 h-4 mr-2 group-hover:animate-bounce" />
+            <ActionButton variant="primary" onClick={() => router.push(`/admin/manage-events?action=create`)} className="group" >                    
+              <PlusIcon className="inline-block size-5 mr-2 group-hover:animate-bounce" />
               <span>Créer un événement</span>
-            </Link>
+            </ActionButton>
           </div>
 
           {events.length === 0 ? (
@@ -404,15 +430,12 @@ export default function ManageEventsPage() {
                       <td className="px-6 py-4 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500">{event.available_seats}</td>
                       <td className="px-6 py-4 hidden min-[900px]:table-cell whitespace-nowrap text-sm text-gray-500">{event.registered_count}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-between gap-2">
-                        <Link href={`/admin/manage-events?action=edit&id=${event.id}`} title="Modifier" className="text-[#4A90E2] hover:text-indigo-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 xl:w-27 shadow-lg  flex items-center justify-center">
-                          <PencilIcon className="w-4 h-4" /><span className="hidden xl:inline-flex ml-1">Modifier</span>
-                        </Link>
-                        <button
-                          onClick={() => handleDelete(event.id)} title="Supprimer"
-                          className="text-red-600 hover:text-red-900 border-1 rounded-full bg-white hover:bg-amber-50 p-2 xl:w-27 shadow-lg  flex items-center justify-center"
-                        >
-                          <TrashIcon className="w-4 h-4" /><span className="hidden xl:inline-flex ml-1">Supprimer</span>
-                        </button>
+                        <IconButton onClick={() => router.push(`/admin/manage-events?action=edit&id=${event.id}`)} className="text-indigo-600 hover:text-indigo-900" title="Modifier">
+                          <PencilIcon className="w-6 h-6" />
+                        </IconButton>
+                        <IconButton onClick={() => handleDelete(event.id)} isLoading={deletingEventId === event.id} className="text-red-600 hover:text-red-900" title="Supprimer">
+                          <TrashIcon className="size-5" />
+                        </IconButton>
                       </td>
                     </tr>
                   ))}
@@ -424,10 +447,10 @@ export default function ManageEventsPage() {
       )}
 
       <div className="mt-10 text-center">
-        <Link href="/admin" className="h-11 inline-flex items-center justify-center px-5 py-2 rounded-full text-base text-[#FFF] hover:text-gray-800 font-medium transition-colors border-[0.5px] border-transparent shadow-sm shadow-[hsl(var(--always-black)/5.1%)] bg-gray-800 hover:bg-[#FFF] hover:border-gray-800 cursor-pointer duration-300 ease-in-out group">
-          <ArrowUpIcon className="inline-block w-4 h-4 mr-2 rotate-270 group-hover:animate-bounce" />
+        <ActionButton variant="primary" onClick={() => router.push(`/admin`)} className="group" >                    
+          <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
           <span>Tableau de bord</span>
-        </Link>
+        </ActionButton>
       </div>
 
       {/* Confirmation Modal */}

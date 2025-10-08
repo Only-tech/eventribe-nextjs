@@ -395,7 +395,7 @@ export default function UserAccountManageEventsPage() {
     };
 
     const renderForm = () => (
-        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-4xl drop-shadow-xl hover:drop-shadow-2xl mx-auto bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/85 sm:mb-15 transition-all dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_1px_3px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]">
+        <form onSubmit={handleSubmit} className="max-w-5xl p-6 md:px-8 md:py-10 xl:py-12 rounded-4xl mx-auto bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/85 sm:mb-15 transition-all drop-shadow-2xl hover:drop-shadow-xl group dark:hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] dark:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)] shadow-[hsl(var(--always-black)/5.1%)]">
             <h2 className="text-3xl font-bold mb-6 sm:mb-10 text-gray-800 dark:text-[#ff952aff] text-center">{action === 'create' ? 'Créer un événement' : 'Modifier l\'événement'}</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
@@ -430,7 +430,7 @@ export default function UserAccountManageEventsPage() {
                         id="image"
                         name="image"
                         accept="image/*"
-                        className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#FCFFF7] file:text-gray-700 dark:text-white/70 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]"
+                        className="mt-1 block w-full text-sm text-gray-500 rounded-full file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-[#e2e4e0] file:text-gray-700 dark:text-white/70 hover:file:bg-[#E8E5D8] px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]"
                         onChange={handleImageChange}
                         disabled={uploadingImage || isSubmittingEvent}
                     />

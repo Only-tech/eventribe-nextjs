@@ -56,7 +56,7 @@ console.log('[OnTopButton] Reçu scrollElement:', scrollElement);
           strokeWidth="4"
           fill="none"
           strokeLinecap="round"
-          className="transition-colors duration-300 group-hover:stroke-[#fff]"
+          className="transition-colors duration-300 dark:[stroke:#03527780] group-hover:stroke-[#fff]"
           style={{ strokeDasharray: circumference, strokeDashoffset: offset }}
         />
       </svg>
@@ -66,12 +66,12 @@ console.log('[OnTopButton] Reçu scrollElement:', scrollElement);
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          className="group-hover:fill-[#fff]"
+          className="group-hover:fill-[#fff] dark:[fill:#03527780]"
           d="M 38 24 L 38 36 L 74 15 L 110 36 L 110 24 L 74 2 L 38 24 Z"
           fill="#E8E5D8"
         />
         <path
-          className="group-hover:fill-[#E8E5D8]"
+          className="group-hover:fill-[#E8E5D8] dark:[fill:white]/55"
           d="M 46 53 L 46 63 L 74 45 L 102 63 L 102 53 L 74 33 L 46 53 Z"
           fill="#fff"
         />

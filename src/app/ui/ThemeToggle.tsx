@@ -29,7 +29,7 @@ export function ThemeToggle() {
       />
       {/* Track */}
       <div
-        className={`w-14 h-8.5 rounded-full relative transition-colors duration-300 border
+        className={`w-14 h-8.5 rounded-full relative transition-colors duration-300 border dark:border-white/45
           ${isDark ? 'bg-black/20' : 'bg-black/50 hover:bg-black/90'}`}
       >
         {/* Pastille */}
@@ -38,8 +38,8 @@ export function ThemeToggle() {
             transition-all duration-600
             ease-[cubic-bezier(0.68,-0.55,0.27,1.55)]
             ${isDark
-              ? 'translate-x-6 bg-black border'
-              : 'translate-x-0 bg-white border-gray-200'}`}
+              ? 'translate-x-6 bg-black border-white/45'
+              : 'translate-x-0 bg-white border-black'}`}
         />
         <span
           className={`absolute inset-0 flex items-center justify-between px-1 font-semibold transition-colors duration-600

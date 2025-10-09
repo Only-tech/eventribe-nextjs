@@ -26,7 +26,7 @@ export default async function Page({
     <>
       {!query && <BannerCarousel />}
       
-      <div className=" max-w-[95%] mx-auto">
+      <div className=" max-w-[96%] mx-auto">
         <h1 className="text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-15 text-center">
           {query ? `Résultats de recherche pour "${query}"` : 'Découvrez les événements à venir'}
         </h1>
@@ -36,7 +36,7 @@ export default async function Page({
             Aucun événement n&apos;est disponible pour le moment. Revenez plus tard !
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-8 xl:gap-12 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(275px,1fr))] gap-8 xl:gap-12 w-full">
             {events.map((event: Event) => (
               <EventCard key={event.id} event={event} />
             ))}

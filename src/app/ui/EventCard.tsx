@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Event } from '@/app/lib/definitions';
-import { CalendarIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline'; 
+import { UsersIcon } from '@heroicons/react/24/outline'; 
+import { MapPinIcon, CalendarDaysIcon } from '@heroicons/react/24/solid';
 import { ChevronUpIcon, UserPlusIcon } from '@heroicons/react/16/solid'; 
 import ActionButton from '@/app/ui/buttons/ActionButton';
 
@@ -47,7 +48,7 @@ export default function EventCard({ event }: { event: Event; }) {
                 <h2 className="text-center md:text-base font-bold text-gray-900 dark:text-[#ff952aff] mb-2">{event.title}</h2>
 
                 <p className="inline-flex items-center text-gray-700 dark:text-white/45 text-xs mb-1">
-                    <CalendarIcon className="inline-block w-4 h-4 mr-1" />
+                    <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
                     {new Date(event.event_date).toLocaleString('fr-FR', {
                         day: '2-digit',
                         month: '2-digit',

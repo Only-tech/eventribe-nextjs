@@ -1,9 +1,9 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
+import { authOptions } from '@/app/lib/auth/options';
 
 import { redirect } from 'next/navigation';
-import { countUsers } from '@/app/lib/auth'; 
-import { getAllEventsWithRegistrationCount, countRegistrations } from '@/app/lib/data';
+import { countUsers } from '@/app/lib/data-access/users'; 
+import { getAllEventsWithRegistrationCount, countRegistrations } from '@/app/lib/data-access/events';
 import Link from 'next/link';
 import { UsersIcon, CalendarDaysIcon, TicketIcon, PencilIcon, TrashIcon, PlusIcon, Cog6ToothIcon, EyeIcon } from '@heroicons/react/24/outline';
 

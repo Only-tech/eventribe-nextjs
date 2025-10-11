@@ -49,7 +49,6 @@ const SearchResults = forwardRef<OverlayScrollbarsComponentRef, SearchResultsPro
                                 alt={`Affiche de ${event.title}`}
                                 fill
                                 className="object-cover object-center transition-transform duration-300 group-hover:scale-110"
-                                // sizes="(max-width: 768px) 100vw, 50vw, 33vw"
                             />
 
                             <div className="absolute inset-0 flex flex-col justify-end group-hover:bg-gradient-to-t from-black/80 via-black/50 to-transparent

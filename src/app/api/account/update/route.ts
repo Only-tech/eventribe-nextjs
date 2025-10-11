@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
-import { updateUser } from '@/app/lib/auth';
+import { authOptions } from '@/app/lib/auth/options';
+import { updateUser } from '@/app/lib/data-access/users';
 
 export async function PUT(request: Request) {
   try {

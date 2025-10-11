@@ -1,7 +1,7 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { registerForEvent, unregisterFromEvent } from './data';
+import { registerForEvent, unregisterFromEvent } from '@/app/lib/data-access/events';
 
 /**
  * Action to register a user to an event.

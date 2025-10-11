@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
-import { createEvent, updateEvent, deleteEvent, fetchEventsByUserId, fetchUserEventById } from '@/app/lib/data';
+import { authOptions } from '@/app/lib/auth/options';
+import { createEvent, updateEvent, deleteEvent, fetchEventsByUserId, fetchUserEventById } from '@/app/lib/data-access/events';
 
 // Handles GET requests to fetch events created by the logged-in user
 export async function GET() {

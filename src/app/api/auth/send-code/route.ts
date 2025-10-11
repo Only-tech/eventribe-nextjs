@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { generateAndSendCode } from '@/app/lib/auth';
+import { generateAndSendCode } from '@/app/lib/services/email';
 
 export async function POST(request: Request) {
   try {

@@ -20,9 +20,9 @@ export default function Footer() {
 
   return (
     <footer className="bg-[#FCFFF7] dark:bg-[#1E1E1E] text-[15px] text-gray-700 dark:text-white/70 pt-10 pb-2 w-full rounded-t-2xl shadow-2xl">
-      <div className="flex flex-wrap gap-20 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
+      <div className="flex flex-wrap gap-12 lg:gap-20 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
         {/* About us */}
-        <div className="max-w-lg @md:max-w-[300px] text-justify max-[849px]:order-3 max-[849px]:justify-center mx-auto">
+        <div className="max-w-lg min-[920px]:w-3xs min-lg:w-xs min-[1200px]:[width:520px!important]  text-justify max-[849px]:order-3 max-[849px]:justify-center mx-auto">
           <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">À propos de nous</h3>
           <p>
             eventribe connecte organisateurs et passionnés à travers des rencontres humaines et projets culturels.

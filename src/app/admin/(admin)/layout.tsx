@@ -1,5 +1,5 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
+import { authOptions } from '@/app/lib/auth/options';
 import { redirect } from 'next/navigation';
 // Providers is in the global layout
 import AdminHeader from '@/app/admin/(admin)/ui/admin-header'; 

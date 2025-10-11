@@ -1,19 +1,17 @@
 import { notFound } from 'next/navigation';
-import { fetchEventById, isUserRegisteredForEvent } from '@/app/lib/data';
+import { fetchEventById, isUserRegisteredForEvent } from '@/app/lib/data-access/events';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CalendarIcon, MapPinIcon, UsersIcon } from '@heroicons/react/24/outline';
+import { UsersIcon } from '@heroicons/react/24/outline';
+import { MapPinIcon, CalendarDaysIcon } from '@heroicons/react/24/solid';
+import { ChevronUpIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
+import { authOptions } from '@/app/lib/auth/options';
 import { Event } from '@/app/lib/definitions';
 import EventDetailsClient from './EventDetailsClient';
-import { ChevronUpIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import { Suspense } from 'react';
 
-// type PageProps = {
-//   params: { eventId: number };
-// };
 
 async function EventDetails({ eventId }: { eventId: number }) {
   const event: Event | null = await fetchEventById(eventId);
@@ -56,7 +54,7 @@ async function EventDetails({ eventId }: { eventId: number }) {
             <div className="min-w-[330px] flex flex-col text-sm">
               <h1 className="hidden lg:flex text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-300 mb-4">{event.title}</h1>
               <p className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2">
-                <CalendarIcon className="inline-block w-5 h-5 mr-2" />{' '}
+                <CalendarDaysIcon className="inline-block w-5 h-5 mr-2" />{' '}
                 {new Date(event.event_date).toLocaleString('fr-FR', {
                   day: '2-digit',
                   month: '2-digit',

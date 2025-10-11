@@ -252,8 +252,8 @@ export default function Header() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <FingerPrintIcon className="inline-block size-5" />
-                  {/* Authantication container */}
-                  <span className="w-25 text-left">
+                  {/* Authantication text type writer */}
+                  <span className="w-25 xl:w-28 text-left">
                     {animatedAuthText}
                     <span className="animate-pulse">|</span>
                   </span>

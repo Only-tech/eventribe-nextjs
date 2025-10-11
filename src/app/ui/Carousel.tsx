@@ -143,8 +143,8 @@ export default function Carousel({ imageUrls }: CarouselProps) {
             const parallaxOffset = isActive ? 'translateY(0px)' : 'translateY(20px)';
             return (
               <div
-                className={`w-78 sm:w-82 h-55 xl:w-96 xl:h-65 flex-shrink-0 bg-white/80 shadow-inner rounded-xl  transform transition-transform duration-700 hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)] ${
-                  isActive ? 'scale-105 z-10 shadow-[0_0_16px_rgba(7,2,52,0.7)] border border-white/70 -translate-y-4' : 'translate-y-0 scale-90 opacity-70'
+                className={`w-78 sm:w-82 h-55 xl:w-96 xl:h-65 flex-shrink-0 bg-white/90 shadow-inner rounded-xl  transform transition-transform duration-700 hover:drop-shadow-[0px_1px_1px_rgba(255,_255,_255,_0.4)] drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)] ${
+                  isActive ? 'scale-105 z-10 shadow-[0_0_16px_rgba(7,2,52,0.7)] border border-white/70 -translate-y-4' : 'translate-y-0 scale-90 opacity-85'
                 }`}
                 key={index}
                 ref={index === numClones ? cardRef : null}

@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth/options';
 
-import { createEvent, updateEvent, deleteEvent } from '@/app/lib/data';
+import { createEvent, updateEvent, deleteEvent } from '@/app/lib/data-access/events';
 
 // Helper function to check admin status
 async function checkAdminSession() {
@@ -137,7 +137,7 @@ export async function GET() {
   if (authError) return authError;
 
   try {
-    const { getAllEventsWithRegistrationCount } = await import('@/app/lib/data'); // Lazy import for GET only
+    const { getAllEventsWithRegistrationCount } = await import('@/app/lib/data-access/events'); // Lazy import for GET only
     const events = await getAllEventsWithRegistrationCount();
     return NextResponse.json({ events }, { status: 200 });
   } catch (error) {

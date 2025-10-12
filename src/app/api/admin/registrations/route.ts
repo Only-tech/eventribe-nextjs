@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/lib/auth/options';
 
-import { getParticipantsForEvent, unregisterFromEvent, getAllEventsWithRegistrationCount } from '@/app/lib/data';
+import { getParticipantsForEvent, unregisterFromEvent, getAllEventsWithRegistrationCount } from '@/app/lib/data-access/events';
 
 // Helper function to check admin status
 async function checkAdminSession() {

@@ -56,8 +56,8 @@ export default function AdminHeader() {
       </Link>
 
       <nav className="flex flex-row gap-8 items-center">
-        <Link href="/admin" className={`text-lg transition-all duration-300 hover:opacity-65 whitespace-nowrap rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
-          pathname === '/admin' ? ' shadow-[inset_0px_2px_1px_white]' : '' }`}>
+        <Link href="/admin/dashboard" className={`text-lg transition-all duration-300 hover:opacity-65 whitespace-nowrap rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 
+          pathname === '/admin/dashboard' ? ' shadow-[inset_0px_2px_1px_white]' : '' }`}>
           Tableau de bord
         </Link>
         <ul className={`mobile-menu flex items-start min-[1025px]:items-center gap-3 min-[1025px]:gap-8 text-lg font-medium max-[1025px]:flex-col max-[1025px]:absolute max-[1025px]:top-full max-[1025px]:left-0 max-[1025px]:w-full bg-gray-900 max-[1025px]:shadow-lg max-[1025px]:py-4 max-[1025px]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-[1025px]:flex rounded-b-2xl`}>

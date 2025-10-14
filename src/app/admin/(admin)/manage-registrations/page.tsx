@@ -8,6 +8,7 @@ import ConfirmationModal from '@/app/ui/ConfirmationModal';
 import { TrashIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid';
 import IconButton from '@/app/ui/buttons/IconButton';
 import ActionButton from '@/app/ui/buttons/ActionButton';
+import Loader from '@/app/ui/Loader'
 
 export default function ManageRegistrationsPage() {
 
@@ -156,7 +157,10 @@ export default function ManageRegistrationsPage() {
   };
 
   if (loading) {
-    return <p className="text-center text-gray-700 text-lg">Chargement des inscriptions...</p>;
+    return <>
+      <p className="text-center text-gray-700 text-lg mb-4">Chargement des inscriptions</p>
+      <Loader variant="dots" />;
+    </>
   }
   
   return (
@@ -265,7 +269,7 @@ export default function ManageRegistrationsPage() {
       )}
 
       <div className="mt-10 text-center">
-        <ActionButton variant="primary" onClick={() => router.push(`/admin`)} className="group" >                    
+        <ActionButton variant="primary" onClick={() => router.push(`/admin/dashboard`)} className="group" >                    
           <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
           <span>Tableau de bord</span>
         </ActionButton>

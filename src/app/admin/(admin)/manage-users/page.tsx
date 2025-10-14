@@ -8,6 +8,7 @@ import { useSession } from 'next-auth/react';
 import ConfirmationModal from '@/app/ui/ConfirmationModal';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
+import Loader from '@/app/ui/Loader'
 
 export default function ManageUsersPage() {
 
@@ -157,7 +158,10 @@ export default function ManageUsersPage() {
   };
 
   if (loading) {
-    return <p className="text-center text-gray-700 text-lg">Chargement des utilisateurs...</p>;
+    return <>
+      <p className="text-center text-gray-700 text-lg mb-4">Chargement des utilisateurs</p>
+      <Loader variant="dots" />;
+    </>
   }
 
   return (
@@ -228,7 +232,7 @@ export default function ManageUsersPage() {
       )}
 
       <div className="mt-10 text-center">
-        <ActionButton variant="primary" onClick={() => router.push(`/admin`)} className="group" >                    
+        <ActionButton variant="primary" onClick={() => router.push(`/admin/dashboard`)} className="group" >                    
           <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
           <span>Tableau de bord</span>
         </ActionButton>

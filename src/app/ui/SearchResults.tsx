@@ -9,6 +9,7 @@ import { XMarkIcon } from '@heroicons/react/16/solid';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-react';
 import 'overlayscrollbars/styles/overlayscrollbars.css';
+import Loader from '@/app/ui/Loader'
 
 interface SearchResultsProps {
     results: Event[];
@@ -34,7 +35,10 @@ const SearchResults = forwardRef<OverlayScrollbarsComponentRef, SearchResultsPro
 
                 <>
                 {isLoading ? (
-                    <p className="text-center text-gray-700 dark:text-gray-300 py-8">Recherche en cours <span className="animate-pulse">...</span></p>
+                    <>
+                        <p className="text-center text-gray-700 dark:text-gray-300 py-6">Recherche en cours</p>
+                        <Loader variant="dots" />
+                    </>
                 ) : results.length > 0 ? (
                     // Search Results Container
                     <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-8 xl:gap-12 w-full justify-items-center">

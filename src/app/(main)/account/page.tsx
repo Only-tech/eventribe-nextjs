@@ -13,6 +13,7 @@ import ConfirmationModal from '@/app/ui/ConfirmationModal';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
+import Loader from '@/app/ui/Loader'
 
 
 export default function UserAccountManageEventsPage() {
@@ -585,7 +586,10 @@ export default function UserAccountManageEventsPage() {
             </div>
 
             {loading ? (
-                <p className="text-center text-xl text-gray-700 dark:text-gray-300">Chargement des événements...</p>
+                <>
+                    <p className="text-center text-xl text-gray-700 dark:text-gray-300 mb-4">Chargement des événements</p>
+                    <Loader variant="dots" />
+                </>
             ) : events.length === 0 ? (
                 <p className="text-center text-gray-700 dark:text-gray-300 text-lg">
                     Vous n&apos;avez pas encore créé d&apos;événements.
@@ -631,7 +635,10 @@ export default function UserAccountManageEventsPage() {
                             {expandedEventId === event.id && (
                                 <div id={`participants-table-${event.id}`} className="mt-6">
                                 {loadingParticipants === event.id ? (
-                                    <p className="text-center text-gray-700 dark:text-gray-500">Chargement des participants...</p>
+                                    <>
+                                        <p className="text-center text-gray-700 dark:text-gray-500 mb-2">Chargement des participants</p>
+                                        <Loader variant="dots" />
+                                    </>
                                 ) : participants[event.id]?.length === 0 ? (
                                     <p className="text-center text-gray-700 dark:text-gray-500">Aucun participant inscrit pour cet événement.</p>
                                 ) : (
@@ -681,7 +688,10 @@ export default function UserAccountManageEventsPage() {
     return (
         <div className="max-w-[95%] mx-auto">
             {authStatus === 'loading' && (
-                <p className="text-center text-xl text-gray-700 dark:text-white/70 py-10">Chargement de la session...</p>
+                <>
+                    <p className="text-center text-xl text-gray-700 dark:text-white/70 py-6">Chargement de la session</p>
+                    <Loader variant="dots" />
+                </>
             )}
 
             {message && (

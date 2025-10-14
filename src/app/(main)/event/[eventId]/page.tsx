@@ -11,6 +11,7 @@ import { Event } from '@/app/lib/definitions';
 import EventDetailsClient from './EventDetailsClient';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import { Suspense } from 'react';
+import Loader from '@/app/ui/Loader'
 
 
 async function EventDetails({ eventId }: { eventId: number }) {
@@ -105,7 +106,15 @@ export default async function EventDetailPage({ params }: {
   const id = Number(eventId);
 
   return (
-    <Suspense fallback={<div className="text-center p-8">Chargement des détails de l&apos;événement...</div>}>
+    <Suspense 
+      fallback={
+        <>
+          <div className="text-center p-6">Chargement des détails de l&apos;événement</div>
+          <Loader variant="dots" />
+        </>
+      }
+    >
+
       <EventDetails eventId={id} />
     </Suspense>
   );

@@ -10,6 +10,8 @@ import { PlusIcon, TrashIcon, ChevronUpIcon } from '@heroicons/react/16/solid';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
+import Loader from '@/app/ui/Loader'
+
 
 export default function ManageEventsPage() { 
   const [events, setEvents] = useState<Event[]>([]);
@@ -283,7 +285,10 @@ export default function ManageEventsPage() {
   };
 
   if (loading && action === 'list') {
-    return <p className="text-center text-gray-700 text-lg">Chargement des événements...</p>;
+    return <>
+      <p className="text-center text-gray-700 text-lg mb-4">Chargement des événements</p>
+      <Loader variant="dots" />;
+    </>
   }
 
   return (
@@ -447,7 +452,7 @@ export default function ManageEventsPage() {
       )}
 
       <div className="mt-10 text-center">
-        <ActionButton variant="primary" onClick={() => router.push(`/admin`)} className="group" >                    
+        <ActionButton variant="primary" onClick={() => router.push(`/admin/dashboard`)} className="group" >                    
           <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
           <span>Tableau de bord</span>
         </ActionButton>

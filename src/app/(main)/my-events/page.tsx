@@ -11,6 +11,7 @@ import Image from 'next/image';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
+import Loader from '@/app/ui/Loader'
 
 
 export default function MyEventsPage() {
@@ -136,7 +137,10 @@ export default function MyEventsPage() {
   };
 
   if (loading) {
-    return <p className="text-center text-gray-700 dark:text-white/70 text-lg">Chargement de vos inscriptions...</p>;
+    return <>
+      <p className="text-center text-gray-700 dark:text-white/70 text-lg mb-4">Chargement de vos inscriptions</p>
+      <Loader variant="dots" />;
+    </>
   }
 
   return (

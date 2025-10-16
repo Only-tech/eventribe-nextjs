@@ -5,18 +5,16 @@ import React from 'react';
 type LoaderVariant = 'bar' | 'dots' | 'both';
 
 interface LoaderProps {
-    variant?: LoaderVariant;   // loader type
+    variant?: LoaderVariant; 
     progress?: number; 
-    barColor?: string; 
-    bgColor?: string; 
     className?: string;
+    Light?: boolean;
 }
 
 export default function Loader({
     variant = 'both',
     progress = 0,
-    barColor = 'bg-gray-900',
-    bgColor = 'bg-gray-300',
+    Light = false,
 }: LoaderProps) {
     return (
         <>
@@ -27,10 +25,10 @@ export default function Loader({
                     aria-valuenow={Math.round(progress)}
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    className={`${bgColor} w-64 h-2 rounded-full overflow-hidden mx-auto mb-6`}
+                    className={`w-64 h-1 bg-gray-300 ${!Light && 'dark:bg-gray-700'} rounded-full overflow-hidden mx-auto mb-6`}
                 >
                     <div
-                        className={`${barColor} h-full rounded-full transition-all duration-100 ease-linear`}
+                        className={`h-full bg-gray-900 ${!Light && 'dark:bg-gray-300'} rounded-full transition-all duration-100 ease-linear`}
                         style={{ width: `${progress}%`, backgroundColor: undefined }}
                     />
                 </div>
@@ -43,9 +41,9 @@ export default function Loader({
                     aria-live="polite" 
                     className="flex justify-center items-center space-x-2"
                 >
-                    <div className="animate-dot-bounce-1 w-2 h-2 rounded-full bg-gray-900"></div>
-                    <div className="animate-dot-bounce-2 w-2 h-2 rounded-full bg-gray-900"></div>
-                    <div className="animate-dot-bounce-3 w-2 h-2 rounded-full bg-gray-900"></div>
+                    <div className={`animate-dot-bounce-1 w-2 h-2 rounded-full bg-gray-900 ${!Light && 'dark:bg-gray-300'}`}></div>
+                    <div className={`animate-dot-bounce-2 w-2 h-2 rounded-full bg-gray-900 ${!Light && 'dark:bg-gray-300'}`}></div>
+                    <div className={`animate-dot-bounce-3 w-2 h-2 rounded-full bg-gray-900 ${!Light && 'dark:bg-gray-300'}`}></div>
                 </div>
             )}
         </>

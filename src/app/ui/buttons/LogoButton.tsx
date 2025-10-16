@@ -20,8 +20,8 @@ const LogoButton: React.FC<LogoButtonProps> = ({
             title={title}
         >
             <svg
-                width="auto"
-                height="auto"
+                // width="auto"
+                // height="auto"
                 viewBox="0 0 1334 811"
                 className=" group"
                 xmlns="http://www.w3.org/2000/svg"

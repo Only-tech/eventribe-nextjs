@@ -139,7 +139,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     >
       <div className=" max-w-[95%] mx-auto w-md lg:w-xl relative transform transition-transform duration-300 min-[450px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[450px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
       <div className={`bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-1 pb-6 min-[450px]:px-6 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[450px]:[clip-path:var(--clip-path-squircle-60)]
-        ${isClosing ? 'translate-x-5 opacity-0 animate-slide-down' : 'translate-x-0 opacity-100 animate-slide-up'}`}        
+        ${isClosing ? 'translate-x-5 opacity-0 animate-slide-right' : 'translate-x-0 opacity-100 animate-slide-left'}`}        
         onClick={(e) => e.stopPropagation()} 
       >
         <IconButton

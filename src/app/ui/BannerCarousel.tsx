@@ -3,6 +3,7 @@
 import { useCallback, useState, useEffect, useRef } from "react";
 import Image from 'next/image';
 import '@/app/globals.css'; 
+import { PauseIcon, PlayIcon } from "@heroicons/react/16/solid";
 
 
 type TimeoutId = ReturnType<typeof setInterval> | null;
@@ -49,7 +50,7 @@ export default function Carousel() {
   const [isPaused, setIsPaused] = useState(true);
   const [userPaused, setUserPaused] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
-  const [progressKey, setProgressKey] = useState(0); // force dot animation reset
+  const [progressKey, setProgressKey] = useState(0);
 
   const intervalRef = useRef<TimeoutId>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -233,70 +234,45 @@ export default function Carousel() {
             setUserPaused(false);
             startAutoplay();
           } else {
-            pauseAutoplay(); // met userPaused = true
+            pauseAutoplay(); // put userPaused = true
           }
           }}
           className="flex items-center justify-center text-white rounded-full size-7 bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl cursor-pointer"
         >
           {isComplete ? (
-            <svg
-              className="replay-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              width="20"
-              height="20"
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20"
             >
               <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
             </svg>
           ) : isPaused ? (
-            <svg
-              className="play-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              width="20"
-              height="20"
-            >
-              <path d="M8 5v14l11-7z" />
-            </svg>
+            <PlayIcon className="size-4" />
           ) : (
-            <svg
-              className="pause-icon"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              width="20"
-              height="20"
-            >
-              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-            </svg>
+            <PauseIcon className="size-4" />
+
           )}
         </button>
 
         {/* Dots with morphing + progress */}
-        <div className="progress-bar-container relative w-35 h-9 rounded-full flex items-center justify-center bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
-          <div className="dots-container absolute inset-0 flex px-3">
+        <div className="relative w-35 h-9 rounded-full flex items-center justify-center bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
+          <div className="absolute inset-0 flex px-3">
             {slidesData.map((_, idx) => {
               const active = idx === currentIndex && !isPaused && !isComplete;
+              
+              const dotClasses = `mx-auto cursor-pointer flex-shrink-0 w-2 h-2 rounded-full bg-white/50 hover:bg-white transform hover:scale-110 transition-all duration-500 ease-in-out relative overflow-hidden ${active ? 'w-8 h-[0.4rem] first:ml-2 last:mr-2' : ''}`;
+
+              const afterClasses = `content-[''] absolute inset-0 w-0 h-full rounded-full bg-white ${active ? 'animate-[fillProgress_var(--progress-duration)_linear_forwards]' : ''}`;
+
               return (
-                <div key={idx} className="dot-item flex-1 flex items-center">
+                <div key={idx} className="flex-1 flex items-center">
                   <div
-                    // key includes progressKey so animation restarts each time we (re)start or advance
-                    key={`${idx}-${active ? progressKey : "idle"}`}
+                    key={`${idx}-${active ? progressKey : "idle"}`} // key includes progressKey so animation restarts each time we (re)start or advance
                     onClick={() => goToSlide(idx)}
-                    className={`dot mx-auto cursor-pointer ${
-                      active ? "transforming progressing" : ""
-                    }`}
-                    style={
-                      active
-                        ? ({
-                            ["--progress-duration" as string]: `${AUTOPLAY_DURATION}ms`
-                          } as React.CSSProperties)
-                        : undefined
-                    }
+                    className={dotClasses}
+                    style={ active ? ({["--progress-duration" as string]: `${AUTOPLAY_DURATION}ms`} as React.CSSProperties) : undefined}
                     title={`Aller à la slide ${idx + 1}`}
-                  />
+                  >
+                    <div className={afterClasses}></div>
+                  </div>
                 </div>
               );
             })}

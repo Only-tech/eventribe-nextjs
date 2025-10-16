@@ -40,7 +40,7 @@ export default function SplashScreenBase({ imageUrls, title, redirectTo, backgro
 
         // Progress bar animation
         const totalDuration = 4000;
-        const intervalTime = 10;
+        const intervalTime = 20;
         const increment = (100 / (totalDuration / intervalTime));
 
         const progressInterval = setInterval(() => {
@@ -94,14 +94,14 @@ export default function SplashScreenBase({ imageUrls, title, redirectTo, backgro
                     
                     {images.map((img, index) => (
                         <div
-                        key={index}
-                        className="absolute animate-float"
-                        style={{
-                            top: img.top,
-                            left: img.left,
-                            animationDelay: img.delay,
-                            animationDuration: img.duration,
-                        }}
+                            key={index}
+                            className="absolute animate-float"
+                            style={{
+                                top: img.top,
+                                left: img.left,
+                                animationDelay: img.delay,
+                                animationDuration: img.duration,
+                            }}
                         >
                             <Image
                                 src={img.url}
@@ -122,7 +122,7 @@ export default function SplashScreenBase({ imageUrls, title, redirectTo, backgro
                     {displayedH1}
                     <span className="animate-pulse text-3xl lg:text-5xl font-light">|</span>
                 </h1>
-                <Loader variant="both" progress={progress} />
+                <Loader variant="both" progress={progress} Light />
 
             </div>
             </div>

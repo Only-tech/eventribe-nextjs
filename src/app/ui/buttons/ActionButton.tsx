@@ -14,7 +14,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({
     className = '',
     ...props
 }) => {
-    const baseStyles = 'inline-flex items-center justify-center py-2.5 px-5 rounded-full text-base font-medium transition-all border-[0.5px] shadow-2xl drop-shadow-[0px_5px_5px_rgba(0,0,0,_0.2)] shadow-[hsl(var(--always-black)/5.1%)] duration-500 ease-in-out group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer';
+    const baseStyles = 'inline-flex items-center justify-center py-2.5 px-5 rounded-full text-base font-medium border-[0.5px] shadow-[0px_5px_5px_rgba(0,0,0,0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)] transition-all duration-500 ease-in-out group disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer';
 
     const variantStyles = {
         primary: 'bg-gray-800 text-white hover:bg-amber-50 hover:text-gray-800 border-transparent hover:border-gray-800',

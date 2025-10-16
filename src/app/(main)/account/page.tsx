@@ -516,14 +516,14 @@ export default function UserAccountManageEventsPage() {
                         <div className="md:col-span-2 h-full mx-auto w-full max-w-[90%] border-t-[0.2px] group-hover:border-gray-400"></div>
                         <p className="group-hover:bg-black/15 bg-black/10 rounded-full p-2 md:col-span-2 text-center dark:text-white/45 transition-colors duration-300"><FingerPrintIcon className="inline-block w-4 h-4 mr-1 group-hover:animate-bounce" />Modifier mes identifiants</p>
                         <div className="relative md:col-span-2 w-full">
-                        <div className="absolute bottom-0 w-full overflow-hidden whitespace-nowrap">
-                            {session && (
-                            <p className="animate-banner inline-flex items-center text-center text-sm text-gray-500 dark:text-white/65 w-full">
-                                <InformationCircleIcon className="w-5 h-5 inline-block mr-2"/>
-                                <span>Bonjour {session.user.firstName} ! Gérez vos informations personnelles et vos événements !</span>
+                            <p className="absolute bottom-0 w-full overflow-hidden whitespace-nowrap">
+                                {session && (
+                                <span className="animate-banner inline-flex items-center text-center text-sm text-gray-500 dark:text-white/65 w-full">
+                                    <InformationCircleIcon className="w-5 h-5 inline-block mr-2"/>
+                                    Bonjour {session.user.firstName} ! Gérez vos informations personnelles et vos événements !
+                                </span>
+                                )}
                             </p>
-                            )}
-                        </div>
                         </div>
 
                     </div>
@@ -644,7 +644,7 @@ export default function UserAccountManageEventsPage() {
                                 ) : (
                                     <div className="overflow-x-auto">
                                         <table className="min-w-full divide-y divide-gray-200 dark:divide-white/20 rounded-xl sm:rounded-3xl overflow-hidden">
-                                            <tbody className="bg-white dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-white/20">
+                                            <tbody className="bg-gray-100 dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-white/20">
                                             {participants[event.id]?.map((participant) => (
                                                 <tr key={participant.user_id}>
                                                     <td className="px-1.5 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.first_name}</td>

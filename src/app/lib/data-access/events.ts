@@ -3,7 +3,7 @@
 import { pool } from '@/app/lib/data-access/db';
 import { Event, Participant, Registration, User } from '@/app/lib/definitions';
 import { unstable_noStore as noStore } from 'next/cache';
-import { sendNotificationEmail } from '@/app/lib/services/email'; // Import corrigé
+import { sendNotificationEmail } from '@/app/lib/services/email';
 
 /**
  * Fetch Images Url from DB with random option.

@@ -28,7 +28,6 @@ const ActionButton: React.FC<ActionButtonProps> = ({
             disabled={isLoading || props.disabled}
             {...props}
         >
-        {/* {isLoading ? <Spinner /> : children} */}
             {isLoading && <Spinner className="w-5 h-5" />}
             {children}
         </button>

@@ -10,7 +10,7 @@ export const transporter = nodemailer.createTransport({
   secure: process.env.SMTP_SECURE === "true", // true -> port 465
   auth: {
     user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,              // App Password for Gmail
+    pass: process.env.SMTP_PASS,              // App Password from Gmail
   },
 });
 

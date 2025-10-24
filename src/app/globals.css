@@ -152,7 +152,7 @@ body.is-active::-webkit-scrollbar-thumb {
 /* === ContactModal === */
 @keyframes slideLeft {
   from {
-    transform: translateX(100%);
+    transform: translateX(-100%);
     opacity: 0;
   }
 

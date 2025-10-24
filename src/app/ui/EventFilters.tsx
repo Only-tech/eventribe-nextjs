@@ -49,7 +49,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
                 </h3>
                 <button 
                     onClick={onResetFilters} 
-                    className="text-sm w-full pt-1 pb-1.5 px-3 rounded-full border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,_0.3)] focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 cursor-pointer"
+                    className="text-sm w-full pt-1 pb-1.5 px-3 rounded-full border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,0.3)] focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 cursor-pointer"
                 >
                     Réinitialiser
                 </button>

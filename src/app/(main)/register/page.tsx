@@ -54,7 +54,7 @@ export default function RegisterPage() {
   // ------------------------------------
   const handleEmailSubmit = async (event?: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
     if (event && 'preventDefault' in event) {
-        event.preventDefault();
+      event.preventDefault();
     }
     setMessage('');
     setLoading(true);
@@ -71,14 +71,20 @@ export default function RegisterPage() {
       if (response.ok) {
         setMessage(`Code de vérification envoyé à ${email}.`);
         setIsSuccess(true);
-        setStep('verification'); 
+        setStep('verification');
+      } else if (response.status === 409) {
+        setMessage(data.message);
+        setIsSuccess(false);
+        setTimeout(() => {
+          router.push('/login');
+        }, 1500);
       } else {
         setMessage(data.message || "Erreur lors de l'envoi du code. Veuillez vérifier l'email.");
         setIsSuccess(false);
       }
     } catch (error) {
       console.error("Erreur lors de l'envoi du code:", error);
-      setMessage('Une erreur est survenue lors de l\'envoi du code.');
+      setMessage("Une erreur est survenue lors de l'envoi du code.");
       setIsSuccess(false);
     } finally {
       setLoading(false);

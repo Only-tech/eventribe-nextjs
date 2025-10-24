@@ -17,7 +17,7 @@ export default function MainLayout({
 
   return (
     <> {/* Using a fragment because <html> and <body> are in the global root layout */}
-      <div className="min-h-screen w-full flex flex-col text-[#333] dark:text-white/40  bg-cover bg-fixed bg-center font-sans bg-[url('/images/SplashPaintBreak.svg')] dark:bg-none">
+      <div className="min-h-screen w-full flex flex-col text-[#333] dark:text-white/85  bg-cover bg-fixed bg-center font-sans bg-[url('/images/SplashPaintBreak.svg')] dark:bg-none">
         <Suspense fallback={<div className="text-center py-4">Chargement du menu...</div>}>
           {!hideLayout && <Header />}
         </Suspense>

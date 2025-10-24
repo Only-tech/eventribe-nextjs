@@ -267,3 +267,66 @@ export async function countUsers(): Promise<number> {
     }
   }
 }
+
+
+/**
+ * Deletes a user's own account and all their registrations.
+ * @param userId 
+ * @returns True if deletion is successful, false otherwise.
+ */
+export async function deleteUserAccount(userId: number): Promise<boolean> {
+  let client;
+  try {
+    client = await pool.connect();
+    await client.query('BEGIN');
+
+    await client.query(`DELETE FROM registrations WHERE user_id = $1`, [userId]);
+    
+    // If i intend to delete or hide user's events too
+    // await client.query(`DELETE FROM events WHERE created_by = $1`, [userId]);
+    
+    const deleteResult = await client.query(`DELETE FROM users WHERE id = $1`, [userId]);
+
+    if (deleteResult.rowCount === 0) {
+      throw new Error("L'utilisateur n'a pas été trouvé.");
+    }
+
+    await client.query('COMMIT');
+    console.log("Utilisateur et inscriptions associées supprimés avec succès !");
+    return true;
+  } catch (error) {
+    if (client) {
+      await client.query('ROLLBACK');
+    }
+    console.error("Erreur lors de la suppression du compte de l'utilisateur :", error);
+    return false;
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+}
+
+/**
+ * Verify if email is registed on users table.
+ * @param email
+ * @returns true if email exits, false otherwise
+ */
+export async function isEmailAlreadyRegistered(email: string): Promise<boolean> {
+  let client;
+  try {
+    client = await pool.connect();
+    const result = await client.query(
+      `SELECT 1 FROM users WHERE email = $1 LIMIT 1`,
+      [email]
+    );
+    return result.rows.length > 0;
+  } catch (error) {
+    console.error("Erreur lors de la vérification de l'email :", error);
+    return false; 
+  } finally {
+    if (client) {
+      client.release();
+    }
+  }
+}

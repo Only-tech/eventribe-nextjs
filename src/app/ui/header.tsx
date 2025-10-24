@@ -4,16 +4,17 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
 import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
-import { useRouter, usePathname } from 'next/navigation';
-import { FingerPrintIcon, CalendarDateRangeIcon, UserCircleIcon } from '@heroicons/react/24/solid';
+import { FingerPrintIcon, CalendarDaysIcon as CalendarDateRangeIcon,  UserCircleIcon, CogIcon } from '@heroicons/react/24/solid';
+import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import LogoButton from '@/app/ui/buttons/LogoButton';
 import IconHomeButton from '@/app/ui/buttons/IconHomeButton';
 import LogoutLogo from '@/app/ui/logo/LogoutLogo';
 import AdminLogo from '@/app/ui/logo/AdminLogo';
 import { useScrollContainer } from '@/app/providers';
 import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-react';
-import SearchResults from '@/app/ui/SearchResults'; 
+import SearchResults from '@/app/ui/SearchResults';
 import { Event } from '@/app/lib/definitions';
+import { usePathname, useRouter } from 'next/navigation';
 
 export default function Header() {
   const { data: session, status } = useSession();
@@ -41,34 +42,31 @@ export default function Header() {
   const [wordIndex, setWordIndex] = useState(0);
   const [isTyping, setIsTyping] = useState(true);
 
-  // ===== Type writing authantication =====
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLLIElement>(null);
+
+    // ===== Type writing authantication =====
   useEffect(() => {
     if (status !== 'unauthenticated') {
       return;
     }
-
     const words = ['Se Connecter', 'S\'Inscrire'];
     const currentWord = words[wordIndex];
     const typingSpeed = 120;
     const erasingSpeed = 80;
     const pauseDuration = 1500;
-
     let timeoutId: NodeJS.Timeout;
-
     if (isTyping) {
-      // Writing the word
       if (animatedAuthText.length < currentWord.length) {
         timeoutId = setTimeout(() => {
           setAnimatedAuthText(currentWord.slice(0, animatedAuthText.length + 1));
         }, typingSpeed);
       } else {
-        // Paused
         timeoutId = setTimeout(() => {
           setIsTyping(false);
         }, pauseDuration);
       }
     } else {
-      // Deleting the word
       if (animatedAuthText.length > 0) {
         timeoutId = setTimeout(() => {
           setAnimatedAuthText(animatedAuthText.slice(0, animatedAuthText.length - 1));
@@ -78,21 +76,18 @@ export default function Header() {
         setWordIndex((prevIndex) => (prevIndex + 1) % words.length);
       }
     }
-
     return () => clearTimeout(timeoutId);
   }, [animatedAuthText, isTyping, wordIndex, status]);
 
 
-  // ===== instant Search ======
+    // ===== instant Search ======
   useEffect(() => {
     if (searchQuery.trim().length > 1) {
       setShowResults(true);
       setIsSearching(true);
-      
       if (searchTimeout.current) {
         clearTimeout(searchTimeout.current);
       }
-
       searchTimeout.current = setTimeout(async () => {
         try {
           const response = await fetch(`/api/search?query=${encodeURIComponent(searchQuery.trim())}`);
@@ -106,12 +101,10 @@ export default function Header() {
           setIsSearching(false);
         }
       }, 300);
-
     } else {
       setShowResults(false);
       setResults([]);
     }
-
     return () => {
       if (searchTimeout.current) {
         clearTimeout(searchTimeout.current);
@@ -119,10 +112,11 @@ export default function Header() {
     };
   }, [searchQuery]);
 
+
+  // ====== handleClickOutside, userMenuRef) ======
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       const searchResultsElement = searchResultsRef.current?.getElement();
-
       if (
         searchContainerRef.current &&
         !searchContainerRef.current.contains(event.target as Node) &&
@@ -131,12 +125,18 @@ export default function Header() {
       ) {
         setShowResults(false);
       }
+      if (
+        userMenuRef.current &&
+        !userMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsUserMenuOpen(false);
+      }
     }
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [searchContainerRef, searchResultsRef]);
+  }, [searchContainerRef, searchResultsRef, userMenuRef]);
   
   useEffect(() => {
     if (showResults) {
@@ -155,11 +155,10 @@ export default function Header() {
     setShowResults(false);
   };
 
-  // ====== hide/unhide header on scroll
+  // ====== hide/unhide header on scroll ======
   useEffect(() => {
     const el = scrollElement;
     if (!el) return;
-
     const handleScroll = () => {
       const currentScrollY = el.scrollTop; 
       if (currentScrollY < lastScrollY.current) {
@@ -169,12 +168,10 @@ export default function Header() {
       }
       lastScrollY.current = currentScrollY;
     };
-
     el.addEventListener('scroll', handleScroll);
-    
     return () => el.removeEventListener('scroll', handleScroll);
-    
   }, [scrollElement]);
+
 
   useEffect(() => {
     setIsMounted(true);
@@ -234,15 +231,93 @@ export default function Header() {
             <li>Chargement...</li>
           ) : session ? (
             <>
-              <li><Link href="/my-events" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`} onClick={() => setIsMobileMenuOpen(false)}><CalendarDateRangeIcon className="inline-block size-5" /><span>Mes Inscriptions</span></Link></li>
-              <li><Link href="/account" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`} onClick={() => setIsMobileMenuOpen(false)}><UserCircleIcon className="inline-block size-5" /><span>Compte</span></Link></li>
+              {/* --- Navigation Mobile links hidden on desktop display --- */}
+              <li className="min-[1025px]:hidden"><Link href="/my-events" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`} onClick={() => setIsMobileMenuOpen(false)}><CalendarDateRangeIcon className="inline-block size-5" /><span>Mes Inscriptions</span></Link></li>
+              <li className="min-[1025px]:hidden"><Link href="/account" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`} onClick={() => setIsMobileMenuOpen(false)}><UserCircleIcon className="inline-block size-5" /><span>Compte</span></Link></li>
               {session.user.isAdmin && (
-                <li><Link href="/admin" className="inline-flex items-center gap-2 whitespace-nowrap transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] group" title="Aller à l'administration" onClick={() => setIsMobileMenuOpen(false)}><AdminLogo className="size-6 animate-bounce group-hover:animate-none" /><span>Admin</span></Link></li>
+                <li className="min-[1025px]:hidden"><Link href="/admin" className="inline-flex items-center gap-2 whitespace-nowrap transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] group" title="Aller à l'administration" onClick={() => setIsMobileMenuOpen(false)}><AdminLogo className="size-6 animate-bounce group-hover:animate-none" /><span>Admin</span></Link></li>
               )}
-              <li><button onClick={handleSignOut} className="inline-flex items-center gap-2 whitespace-nowrap transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray]" title="Se déconnecter"><span>Hi {session.user.firstName} !</span><LogoutLogo /></button></li>
+              <li className="min-[1025px]:hidden"><button onClick={handleSignOut} className="inline-flex items-center gap-2 whitespace-nowrap transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray]" title="Se déconnecter"><span>Hi {session.user.firstName} !</span><LogoutLogo /></button></li>
+              
+              {/* --- Navigation Desktop links hidden on mobile display --- */}
+              <li className="max-[1025px]:hidden"><Link href="/my-events" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`}><CalendarDateRangeIcon className="inline-block size-5" /><span>Mes Inscriptions</span></Link></li>
+              
+              {/* --- NavCollapsed --- */}
+              <li className="relative max-[1025px]:hidden" ref={userMenuRef}>
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${
+                    pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''
+                  }`}
+                >
+                  <UserCircleIcon className="inline-block size-5" />
+                  <span>{session.user.firstName}</span>
+                  <ChevronDownIcon className={`size-6 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 top-full mt-2 w-56 bg-[#FCFFF7] dark:bg-[#222222] rounded-lg shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)] py-2 z-20 border border-gray-300 dark:border-white/20">
+                    <div className="px-4 py-2 border-b border-gray-300 dark:border-white/20">
+                      <p className="text-sm font-medium text-gray-900 dark:text-white/95 truncate">
+                        {session.user.name}
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-white/70 truncate">
+                        {session.user.email}
+                      </p>
+                    </div>
+                    <ul className="py-1">
+                      <li>
+                        <Link
+                          href="/account"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-gray-500"
+                          onClick={() => setIsUserMenuOpen(false)}
+                        >
+                          <CogIcon className="size-5" />
+                          <span>Mon Compte</span>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          href="/my-events"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-gray-500"
+                          onClick={() => {
+                            setIsUserMenuOpen(false);
+                            setIsMobileMenuOpen(false);
+                          }}
+                        >
+                          <CalendarDateRangeIcon className="size-5" />
+                          <span>Mes Inscriptions</span>
+                        </Link>
+                      </li>                      
+                      {session.user.isAdmin && (
+                        <li>
+                          <Link
+                            href="/admin"
+                            className="flex items-center gap-3 px-4 py-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-gray-500"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <AdminLogo className="size-5" />
+                            <span>Admin</span>
+                          </Link>
+                        </li>
+                      )}
+                      <li className="border-t border-gray-300 dark:border-white/20 mt-1 pt-1">
+                        <button
+                          onClick={handleSignOut}
+                          className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-500"
+                        >
+                          <LogoutLogo />
+                          <span>Déconnexion</span>
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </li>
             </>
           ) : (
             <>
+              {/* --- login/register --- */}
               <li>
                 <Link 
                   href={wordIndex === 0 ? '/login' : '/register'} 
@@ -252,7 +327,6 @@ export default function Header() {
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <FingerPrintIcon className="inline-block size-5" />
-                  {/* Authantication text type writer */}
                   <span className="w-25 xl:w-28 text-left">
                     {animatedAuthText}
                     <span className="animate-pulse">|</span>

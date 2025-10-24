@@ -26,7 +26,7 @@ export default function EventCard({ event }: { event: Event; }) {
     const finalImageSrc = (event.image_url && isValidUrl(event.image_url)) ? event.image_url : fallbackImageSrc;
     
     return (
-        <Link href={`/event/${event.id}`} className="max-w-75 bg-[#FCFFF7] hover:bg-white dark:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] rounded-3xl shadow-[0_10px_15px_rgb(0,0,0,0.2)] overflow-hidden flex flex-col hover:scale-104 xl:hover:scale-106 transition-transform duration-2000 ease-in-out group mx-auto relative hover:-translate-y-1.5 hover:z-10 hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]" data-aos="fade-up">
+        <Link href={`/event/${event.id}`} className="max-w-75 bg-[#FCFFF7] hover:bg-white dark:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] rounded-3xl overflow-hidden flex flex-col translate-y-0 scale-100 hover:-translate-y-1.5 hover:z-10 hover:scale-104 xl:hover:scale-106 transform transition-transform duration-700 ease group mx-auto relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]" data-aos="fade-up">
             <div className="relative w-full h-40 overflow-hidden">
                 <Image
                     src={finalImageSrc}

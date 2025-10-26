@@ -1,8 +1,9 @@
-// 'use server'; 
+// 'use server';
 
-import nodemailer from 'nodemailer';
 import { pool } from '@/app/lib/data-access/db';
 import { User } from '@/app/lib/definitions';
+import nodemailer from 'nodemailer';
+import { VerificationCodeEmail } from '@/app/lib/email-templates/VerificationCodeEmail';
 
 export const transporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST,                // "smtp.gmail.com"
@@ -28,9 +29,9 @@ export async function sendNotificationEmail(to: string, subject: string, html: s
             subject,
             html,
         });
-        console.log(`E-mail de notification envoyé à ${to}`);
+        console.log(`E-mail envoyé à ${to}`);
     } catch (error) {
-        console.error(`Erreur lors de l'envoi de l'e-mail de notification à ${to}:`, error);
+        console.error(`Erreur d'envoi à ${to}:`, error);
     }
 }
 
@@ -43,59 +44,34 @@ export async function generateAndSendCode(email: string): Promise<boolean> {
     let client;
     try {
         client = await pool.connect();
-        
-        // Check if the email is registered in users table
-        const existingUser = await client.query<User>( 
+
+        const existingUser = await client.query<User>(
             `SELECT id FROM users WHERE email = $1`,
             [email]
         );
         if (existingUser.rows.length > 0) {
-            console.error("L'email est déjà utilisé pour un compte existant.");
+            console.error("Email déjà utilisé.");
             return false;
         }
 
         const code = Math.floor(100000 + Math.random() * 900000).toString();
-        const expiry = new Date(Date.now() + 10 * 60 * 1000); // Expire in 10 minutes
+        const expiry = new Date(Date.now() + 10 * 60 * 1000);
 
-        // Save code in email_verifications
         await client.query(
             `INSERT INTO email_verifications (email, verification_code, expires_at)
-             VALUES ($1, $2, $3)
-             ON CONFLICT (email) 
-             DO UPDATE SET verification_code = $2, expires_at = $3`,
+            VALUES ($1, $2, $3)
+            ON CONFLICT (email) DO UPDATE SET verification_code = $2, expires_at = $3`,
             [email, code, expiry]
         );
-        
-        await transporter.sendMail({
-            from: `"eventribe" <${process.env.EMAIL_USER}>`,
-            to: email,
-            subject: "Votre code de vérification eventribe",
-            html: `
-                <div style="font-family: Inter, sans-serif; max-width: 480px; margin: auto;">
-                  <div style="text-align: center; background-color: #f8f8ec; color: #222; padding:14px 24px 10px 24px; border-radius: 12px; border: 1px solid #ddd;">
-                    <img src="https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/SplashPaintEventribeLogo.svg" alt="Eventribe" style="height: 60px; margin-bottom: 10px;" />
-                    <h2 style="margin: 0 0 20px; padding-bottom: 20px; border-bottom: 1px solid #ddd;">Code de vérification</h2>
-                    <p style="margin: 0 0 16px;">Veuillez utiliser le code ci-dessous pour vérifier votre adresse e-mail.</p>
-                    <p style="font-size: 28px; font-weight: bold; background-color: white; padding: 12px 24px; border: 1px solid #ddd; border-radius: 8px; display: inline-block;">${code}</p>
-                    <p style="margin-top: 16px;">Ce code est valable pendant <strong>10 minutes</strong>.</p>
-                  </div>
-                  <div style="color: #666; margin-top: 24px; background-color: #f8f8ec; color: #222; padding: 10px 24px 5px 24px; border-radius: 12px; border: 1px solid #ddd;">
-                    <p style="font-size: 13px;">Si vous n'avez pas demandé ce code, vous pouvez ignorer cet e-mail.</p>
-                    <p style="font-size: 13px; margin-top: 14px; color: #ff952a; text-align: right;">eventribe.vercel.app</p>
-                  </div>
-                </div>
-            `,
-        });
 
-        console.log(`Code de vérification envoyé et enregistré pour ${email}.`);
+        const html = VerificationCodeEmail(code, email);
+        await sendNotificationEmail(email, "Votre code de vérification eventribe", html);
         return true;
     } catch (error) {
-        console.error("Erreur lors de l'envoi/enregistrement du code:", error);
+        console.error("Erreur lors de l'envoi du code :", error);
         return false;
     } finally {
-        if (client) {
-            client.release();
-        }
+        if (client) client.release();
     }
 }
 

@@ -396,8 +396,8 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
             ) : (
                 <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10">
                     {events.map((event) => (
-                        <div key={event.id} className=" max-w-4xl w-full mx-auto translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease group drop-shadow-lg hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] shadow-[hsl(var(--always-black)/5.1%)]" data-aos="fade-up">
-                            <div className=" w-full sm:bg-gray-300 dark:sm:bg-white/10 sm:p-[0.5px] min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
+                        <div key={event.id} className=" max-w-4xl w-full mx-auto translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease group drop-shadow-lg hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] shadow-[hsl(var(--always-black)/5.1%)]">
+                            <div className=" w-full sm:bg-gray-300 dark:sm:bg-white/10 sm:p-[0.5px] min-[639px]:[clip-path:var(--clip-path-squircle-60)]"  data-aos="fade-up">
                             <div className=" w-full bg-[#FCFFF7] dark:bg-[#222222] rounded-xl p-2 sm:p-4 max-sm:border border-gray-300 dark:border-white/10 overflow-hidden group min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
                                 <div className="flex items-center cursor-pointer" onClick={() => toggleEventExpansion(event.id)}>
                                     <div className="hidden sm:block relative w-100 h-50 overflow-hidden rounded-[2.5rem] mr-6">

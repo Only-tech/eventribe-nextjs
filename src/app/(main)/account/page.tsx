@@ -199,7 +199,7 @@ export default function UserAccountManageEventsPage() {
 
     // ========== Side Bar Nav ============
     const renderSidebarNav = () => (
-        <aside className={`space-y-6  dark:text-white/65 ${isNavCollapsed ? 'lg:w-20 h-fit bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]' : 'lg:w-full'}`}>
+        <aside className={`space-y-6  dark:text-white/65 ${isNavCollapsed ? 'lg:space-y-0 lg:w-20 h-fit bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]' : 'lg:w-full'}`}>
 
             {/* --- Account Info Card ---- */}
             <section className={`bg-white dark:bg-[#1E1E1E] rounded-xl ${isNavCollapsed ? 'p-2' : ' p-1 sm:p-8 lg:p-6  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]'}`}>
@@ -416,7 +416,7 @@ export default function UserAccountManageEventsPage() {
             )}
 
             {message && (
-                <div className={`fixed z-10000 w-full max-w-[85%] top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+                <div className={`fixed z-10000 w-full max-w-[85%] top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg border shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.8)] ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
                     {message}
                 </div>
             )}

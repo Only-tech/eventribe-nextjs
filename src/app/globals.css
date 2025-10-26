@@ -27,6 +27,11 @@ html.dark {
   color-scheme: dark;
 }
 
+html,
+body {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
@@ -301,6 +306,75 @@ body.is-active::-webkit-scrollbar-thumb {
   -webkit-overflow-scrolling: touch;
 }
 
+/* ========= Animate fate in Scale EventFilter ======== */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeInScale {
+  animation: fadeInScale 0.4s ease-out;
+}
+
+/* ======= Animate fade in Scale EventFilter ========= */
+@keyframes fadeInScaleFilter {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutScaleFilter {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+.fadeInScaleFilter {
+  animation: fadeInScaleFilter 0.4s ease-out forwards;
+}
+
+.fadeOutScaleFilter {
+  animation: fadeOutScaleFilter 0.3s ease-in forwards;
+}
+
+.fadeDelayFilter-1 {
+  animation-delay: 0.1s;
+}
+
+.fadeDelayFilter-2 {
+  animation-delay: 0.2s;
+}
+
+.fadeDelayFilter-3 {
+  animation-delay: 0.3s;
+}
+
+.fadeDelayFilter-4 {
+  animation-delay: 0.4s;
+}
+
+
+
+/* ====== Squircle clip-path ======== */
 :root {
   --clip-path-squircle-60: polygon(
     0px 120px,

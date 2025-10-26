@@ -7,16 +7,16 @@ import { registerForEvent, unregisterFromEvent } from '@/app/lib/data-access/eve
  * Action to register a user to an event.
  */
 export async function registerAction(userId: number, eventId: number): Promise<{ success: boolean }> {
-  
-  if (!userId) return { success: false };
+    
+    if (!userId) return { success: false };
 
-  const success = await registerForEvent(userId, eventId);
+    const success = await registerForEvent(userId, eventId);
 
-  if (success) {
-    revalidatePath(`/event/${eventId}`);
-    revalidatePath('/my-events');
-  }
-  return { success };
+    if (success) {
+        revalidatePath(`/event/${eventId}`);
+        revalidatePath('/my-events');
+    }
+    return { success };
 }
 
 
@@ -24,14 +24,14 @@ export async function registerAction(userId: number, eventId: number): Promise<{
  * Action to unregister a user to an event.
  */
 export async function unregisterAction(userId: number, eventId: number): Promise<{ success: boolean }> {
-  
-  if (!userId) return { success: false };
+    
+    if (!userId) return { success: false };
 
-  const success = await unregisterFromEvent(userId, eventId);
-  
-  if (success) {
-    revalidatePath(`/event/${eventId}`);
-    revalidatePath('/my-events');
-  }
-  return { success };
+    const success = await unregisterFromEvent(userId, eventId);
+    
+    if (success) {
+        revalidatePath(`/event/${eventId}`);
+        revalidatePath('/my-events');
+    }
+    return { success };
 }

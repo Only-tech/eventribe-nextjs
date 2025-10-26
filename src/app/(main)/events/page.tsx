@@ -13,7 +13,6 @@ import Loader from '@/app/ui/Loader'
 
 const ROWS_TO_SHOW = 2;
 
-// ... (la fonction getColumnsCount reste la même)
 const getColumnsCount = (width: number): number => {
     if (width >= 2080) return 6;
     if (width >= 1600) return 5;
@@ -23,7 +22,6 @@ const getColumnsCount = (width: number): number => {
     return 1;
 };
 
-// État initial pour les filtres
 const initialFiltersState: EventFiltersState = {
     keyword: '',
     location: '',
@@ -150,7 +148,7 @@ export default function EventsPage() {
                             </p>
                         ) : (
                             <div className='w-full'>
-                                <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-8 md:gap-10 xl:gap-12 w-full">
+                                <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-8 md:gap-10 2xl:gap-12 w-full">
                                     {eventsToDisplay.map((event: EventWithType) => (
                                         <EventCard key={event.id} event={event} />
                                     ))}

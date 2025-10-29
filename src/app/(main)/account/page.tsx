@@ -325,9 +325,9 @@ export default function UserAccountManageEventsPage() {
                 <FloatingLabelInput id="lastName" label="Nom" type="text" value={lastName ?? ''} onChange={(e) => setLastName(e.target.value)} required />
                 <FloatingLabelInput id="email" label="Adresse email" type="email" value={email ?? ''} onChange={(e) => setEmail(e.target.value)} required />
                 
-                <div className="flex justify-end gap-4">
+                <div className="flex justify-end">
                     <ActionButton type="submit" variant="primary" isLoading={isAccountUpdating} className="flex-1 sm:flex-none sm:w-48">
-                        {isAccountUpdating ? 'Mise à jour' : 'Enregistrer'}
+                        <span className="ml-2.5">{isAccountUpdating ? 'Mise à jour' : 'Enregistrer'}</span>
                         {!isAccountUpdating && ( <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 group-hover:animate-bounce" /> )}
                     </ActionButton>
                 </div>

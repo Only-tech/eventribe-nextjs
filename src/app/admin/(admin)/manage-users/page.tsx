@@ -12,238 +12,238 @@ import Loader from '@/app/ui/Loader'
 
 export default function ManageUsersPage() {
 
-  const router = useRouter();
+    const router = useRouter();
 
-  const { data: session } = useSession(); 
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState('');
-  const [isSuccess, setIsSuccess] = useState(false);
+    const { data: session } = useSession(); 
+    const [users, setUsers] = useState<User[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [message, setMessage] = useState('');
+    const [isSuccess, setIsSuccess] = useState(false);
 
-  const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
+    const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMessage, setModalMessage] = useState('');
-  const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
-  useEffect(() => {
-    if (message) {
-      const timer = setTimeout(() => {
+    useEffect(() => {
+        if (message) {
+        const timer = setTimeout(() => {
+            setMessage('');
+        }, 5000); 
+        return () => clearTimeout(timer);
+        }
+    }, [message]);
+
+    useEffect(() => {
+        const fetchUsers = async () => {
+        setLoading(true);
+        try {
+            const response = await fetch('/api/admin/users');
+            const data = await response.json();
+            if (response.ok) {
+                setUsers(data.users);
+            } else {
+                setMessage(data.message || 'Erreur lors du chargement des utilisateurs.');
+                setIsSuccess(false);
+            }
+        } catch (error) {
+            console.error('Failed to fetch users:', error);
+            setMessage('Une erreur est survenue lors du chargement des utilisateurs.');
+            setIsSuccess(false);
+        } finally {
+            setLoading(false);
+        }
+        };
+        fetchUsers();
+    }, []);
+
+    const openConfirmationModal = (msg: string, actionFn: () => void) => {
+        setModalMessage(msg);
+        setConfirmAction(() => actionFn);
+        setIsModalOpen(true);
+    };
+
+    const closeConfirmationModal = () => {
+        setIsModalOpen(false);
+        setModalMessage('');
+        setConfirmAction(null);
+    };
+
+    const executeToggleAdminStatus = async (userId: number, currentStatus: boolean) => {
+        closeConfirmationModal(); 
         setMessage('');
-      }, 5000); 
-      return () => clearTimeout(timer);
-    }
-  }, [message]);
+        setIsSuccess(false);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('/api/admin/users');
+        try {
+            const response = await fetch('/api/admin/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'toggle_admin_status', userId, isAdmin: !currentStatus }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                setMessage(data.message);
+                setIsSuccess(true);
+                setUsers(prevUsers =>
+                prevUsers.map(user =>
+                    user.id === userId ? { ...user, is_admin: !currentStatus } : user
+                )
+                );
+            } else {
+                setMessage(data.message || 'Erreur lors de la mise à jour du statut.');
+                setIsSuccess(false);
+            }
+        } catch (error) {
+            console.error('Erreur lors de la mise à jour du statut admin:', error);
+            setMessage('Une erreur est survenue lors de la mise à jour du statut.');
+            setIsSuccess(false);
+        }
+    };
+
+    const handleToggleAdminStatus = (userId: number, currentStatus: boolean, username: string) => {
+        if (session?.user?.id === String(userId) && currentStatus === true) {
+            setMessage("Vous ne pouvez pas retirer votre propre statut d'administrateur.");
+            setIsSuccess(false);
+            return;
+        }
+
+        openConfirmationModal(
+            `Êtes-vous sûr de vouloir ${currentStatus ? 'retirer le statut admin de' : 'accorder le statut admin à'} ${username} ?`,
+            () => executeToggleAdminStatus(userId, currentStatus)
+        );
+    };
+
+    const executeDeleteUser = async (userId: number) => {
+        closeConfirmationModal(); 
+        setMessage('');
+        setIsSuccess(false);
+        setDeletingUserId(userId);
+
+        try {
+        const response = await fetch('/api/admin/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete_user', userId }),
+        });
         const data = await response.json();
         if (response.ok) {
-          setUsers(data.users);
+            setMessage(data.message);
+            setIsSuccess(true);
+            setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
         } else {
-          setMessage(data.message || 'Erreur lors du chargement des utilisateurs.');
-          setIsSuccess(false);
+            setMessage(data.message || 'Erreur lors de la suppression de l\'utilisateur.');
+            setIsSuccess(false);
         }
-      } catch (error) {
-        console.error('Failed to fetch users:', error);
-        setMessage('Une erreur est survenue lors du chargement des utilisateurs.');
-        setIsSuccess(false);
-      } finally {
-        setLoading(false);
-      }
+        } catch (error) {
+            console.error('Erreur lors de la suppression de l\'utilisateur:', error);
+            setMessage('Une erreur est survenue lors de la suppression.');
+            setIsSuccess(false);
+        } finally {
+        setDeletingUserId(null);
+        }
     };
-    fetchUsers();
-  }, []);
 
-  const openConfirmationModal = (msg: string, actionFn: () => void) => {
-    setModalMessage(msg);
-    setConfirmAction(() => actionFn);
-    setIsModalOpen(true);
-  };
+    const handleDeleteUser = (userId: number, first_name: string) => {
+        if (session?.user?.id === String(userId)) {
+            setMessage("Vous ne pouvez pas supprimer votre propre compte.");
+            setIsSuccess(false);
+            return;
+        }
 
-  const closeConfirmationModal = () => {
-    setIsModalOpen(false);
-    setModalMessage('');
-    setConfirmAction(null);
-  };
-
-  const executeToggleAdminStatus = async (userId: number, currentStatus: boolean) => {
-    closeConfirmationModal(); 
-    setMessage('');
-    setIsSuccess(false);
-
-    try {
-      const response = await fetch('/api/admin/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'toggle_admin_status', userId, isAdmin: !currentStatus }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setMessage(data.message);
-        setIsSuccess(true);
-        setUsers(prevUsers =>
-          prevUsers.map(user =>
-            user.id === userId ? { ...user, is_admin: !currentStatus } : user
-          )
+        openConfirmationModal(
+            `Êtes-vous sûr de vouloir supprimer l'utilisateur ${first_name} ?`,
+            () => executeDeleteUser(userId)
         );
-      } else {
-        setMessage(data.message || 'Erreur lors de la mise à jour du statut.');
-        setIsSuccess(false);
-      }
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du statut admin:', error);
-      setMessage('Une erreur est survenue lors de la mise à jour du statut.');
-      setIsSuccess(false);
-    }
-  };
+    };
 
-  const handleToggleAdminStatus = (userId: number, currentStatus: boolean, username: string) => {
-    if (session?.user?.id === String(userId) && currentStatus === true) {
-      setMessage("Vous ne pouvez pas retirer votre propre statut d'administrateur.");
-      setIsSuccess(false);
-      return;
+    if (loading) {
+        return <>
+        <p className="text-center text-gray-700 text-lg mb-4">Chargement des utilisateurs</p>
+        <Loader variant="dots" />;
+        </>
     }
 
-    openConfirmationModal(
-      `Êtes-vous sûr de vouloir ${currentStatus ? 'retirer le statut admin de' : 'accorder le statut admin à'} ${username} ?`,
-      () => executeToggleAdminStatus(userId, currentStatus)
-    );
-  };
+    return (
+        <div className="p-3">
+            <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Gestion des Utilisateurs</h1>
 
-  const executeDeleteUser = async (userId: number) => {
-    closeConfirmationModal(); 
-    setMessage('');
-    setIsSuccess(false);
-    setDeletingUserId(userId);
+            {message && (
+                <div className={`fixed z-50 w-full max-w-[85%] top-6 md:top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-sm rounded-lg border ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+                {message}
+                </div>
+            )}
 
-    try {
-      const response = await fetch('/api/admin/users', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete_user', userId }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setMessage(data.message);
-        setIsSuccess(true);
-        setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
-      } else {
-        setMessage(data.message || 'Erreur lors de la suppression de l\'utilisateur.');
-        setIsSuccess(false);
-      }
-    } catch (error) {
-      console.error('Erreur lors de la suppression de l\'utilisateur:', error);
-      setMessage('Une erreur est survenue lors de la suppression.');
-      setIsSuccess(false);
-    } finally {
-      setDeletingUserId(null);
-    }
-  };
+            {users.length === 0 ? (
+                <p className="text-center text-gray-700 text-lg">Aucun utilisateur enregistré pour le moment.</p>
+            ) : (
+                <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
+                    <table className="min-w-full divide-y divide-gray-200">
+                        <thead className="bg-gray-50">
+                            <tr>
+                                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
+                                <th className="px-6 py-3 hidden md:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date d&apos;inscription</th>
+                                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="bg-white divide-y divide-gray-200">
+                            {users.map((user) => (
+                                <tr key={user.id}>
+                                <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.first_name} {user.last_name}</td>
+                                <td className="px-1 sm:px-6 py-4 sm:whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                                <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <IconButton
+                                        onClick={() => handleToggleAdminStatus(user.id, user.is_admin, user.first_name)}
+                                        className={`px-3 py-1 text-xs font-semibold hover:before:[display:none] ${
+                                            user.is_admin ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                        } hover:opacity-80 transition-opacity duration-200`}
+                                        disabled={session?.user?.id === String(user.id)}
+                                    >
+                                        {user.is_admin ? 'Oui' : 'Non'}
+                                    </IconButton>
+                                </td>
+                                <td className="px-6 py-4 hidden md:table-cell whitespace-nowrap text-sm text-gray-500">
+                                    {new Date(user.created_at).toLocaleString('fr-FR', {
+                                    day: '2-digit',
+                                    month: '2-digit',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                    })}
+                                </td>
+                                <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    <IconButton
+                                    onClick={() => handleDeleteUser(user.id, user.first_name)}
+                                    className="text-red-600 hover:text-red-900"
+                                    isLoading={deletingUserId === user.id}
+                                    disabled={session?.user?.id === String(user.id)}
+                                    title="Supprimer l'utilisateur"
+                                    >
+                                    <TrashIcon className="w-5 h-5" />
+                                    </IconButton>
+                                </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
 
-  const handleDeleteUser = (userId: number, first_name: string) => {
-    if (session?.user?.id === String(userId)) {
-      setMessage("Vous ne pouvez pas supprimer votre propre compte.");
-      setIsSuccess(false);
-      return;
-    }
+            <div className="mt-10 text-center">
+                <ActionButton variant="primary" onClick={() => router.push(`/admin/dashboard`)} className="group" >                    
+                <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
+                <span>Tableau de bord</span>
+                </ActionButton>
+            </div>
 
-    openConfirmationModal(
-      `Êtes-vous sûr de vouloir supprimer l'utilisateur ${first_name} ?`,
-      () => executeDeleteUser(userId)
-    );
-  };
-
-  if (loading) {
-    return <>
-      <p className="text-center text-gray-700 text-lg mb-4">Chargement des utilisateurs</p>
-      <Loader variant="dots" />;
-    </>
-  }
-
-  return (
-    <div className="p-3">
-      <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Gestion des Utilisateurs</h1>
-
-      {message && (
-        <div className={`fixed z-50 w-full max-w-[85%] top-6 md:top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-sm rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-          {message}
+            <ConfirmationModal
+                isOpen={isModalOpen}
+                message={modalMessage}
+                onConfirm={confirmAction || (() => {})}
+                onCancel={closeConfirmationModal}
+            />
         </div>
-      )}
-
-      {users.length === 0 ? (
-        <p className="text-center text-gray-700 text-lg">Aucun utilisateur enregistré pour le moment.</p>
-      ) : (
-        <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
-                <th className="px-6 py-3 hidden md:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date d&apos;inscription</th>
-                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {users.map((user) => (
-                <tr key={user.id}>
-                  <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.first_name} {user.last_name}</td>
-                  <td className="px-1 sm:px-6 py-4 sm:whitespace-nowrap text-sm text-gray-500">{user.email}</td>
-                  <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <IconButton
-                      onClick={() => handleToggleAdminStatus(user.id, user.is_admin, user.first_name)}
-                      className={`px-3 py-1 rounded-full text-xs font-semibold cursor-pointer ${
-                        user.is_admin ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                      } hover:opacity-80 transition-opacity duration-200`}
-                      disabled={session?.user?.id === String(user.id)}
-                    >
-                      {user.is_admin ? 'Oui' : 'Non'}
-                    </IconButton>
-                  </td>
-                  <td className="px-6 py-4 hidden md:table-cell whitespace-nowrap text-sm text-gray-500">
-                    {new Date(user.created_at).toLocaleString('fr-FR', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
-                    })}
-                  </td>
-                  <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <IconButton
-                      onClick={() => handleDeleteUser(user.id, user.first_name)}
-                      className="text-red-600 hover:text-red-900"
-                      isLoading={deletingUserId === user.id}
-                      disabled={session?.user?.id === String(user.id)}
-                      title="Supprimer l'utilisateur"
-                    >
-                      <TrashIcon className="w-5 h-5" />
-                    </IconButton>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      )}
-
-      <div className="mt-10 text-center">
-        <ActionButton variant="primary" onClick={() => router.push(`/admin/dashboard`)} className="group" >                    
-          <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
-          <span>Tableau de bord</span>
-        </ActionButton>
-      </div>
-
-      <ConfirmationModal
-        isOpen={isModalOpen}
-        message={modalMessage}
-        onConfirm={confirmAction || (() => {})}
-        onCancel={closeConfirmationModal}
-      />
-    </div>
-  );
+    );
 }

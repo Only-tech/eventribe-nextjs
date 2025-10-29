@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react';
+import { signIn, getSession } from 'next-auth/react';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import { EyeIcon, EyeSlashIcon, FingerPrintIcon } from '@heroicons/react/24/outline';
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
@@ -42,10 +42,17 @@ export default function LoginPage() {
                 setMessage('Email ou mot de passe incorrect.');
                 setIsSuccess(false);
             } else {
-                setMessage('Connexion réussie. Redirection...');
+                setMessage('Connexion réussie. Ravi de vous revoir, votre espace est prêt !');
                 setIsSuccess(true);
-                setTimeout(() => {
-                    router.push('/');
+                setTimeout(async () => {
+                    const session = await getSession();
+                    const isAdmin = session?.user?.isAdmin;
+
+                    if (isAdmin) {
+                        router.push('/admin');
+                    } else {
+                        router.push('/');
+                    }
                 }, 1500);
             }
         } catch (error) {
@@ -77,7 +84,7 @@ export default function LoginPage() {
                     
                     <section className="max-w-sm flex-1 w-full">
                         {message && (
-                            <div className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
+                            <div className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg border ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
                                 {message}
                             </div>
                         )}

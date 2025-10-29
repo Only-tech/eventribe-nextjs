@@ -60,11 +60,12 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
         >
             {/* Header avec bouton toggle */}
             <div
-                className="flex gap-3 items-center cursor-pointer p-2.5 bg-[#fcfff7] dark:bg-[#222222] rounded-full border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)]"
+                className={`relative overflow-hidden flex gap-3 text-gray-800 dark:text-[#ff952aff] items-center cursor-pointer p-2.5 bg-[#fcfff7] dark:bg-[#222222] rounded-full border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)] ${(isOpen || isClosing) ? '' : "group place-content-center before:content-[''] before:absolute before:w-1.5 before:h-1.5 before:-translate-y-3 before:rounded-full before:bg-[currentColor] before:left-[calc(50%-3px)] before:-bottom-6 before:transition-all before:duration-300 before:ease-in-out hover:before:-bottom-1 [&>svg]:transition-transform [&>svg]:duration-300 [&>svg]:ease-in-out hover:[&>svg]:-translate-y-1.5"}`}
                 onClick={toggleFilters}
+                title={(isOpen || isClosing) ? '' : 'Filtres'}
             >
                 <AdjustmentsHorizontalIcon
-                    className={`size-6 text-gray-800 dark:text-[#ff952aff] transform transition-transform duration-500 ease-in-out
+                    className={`size-6 transform transition-transform duration-500 ease-in-out
                         ${(isOpen || isClosing) ? 'rotate-90' : 'rotate-0'}`}
                 />
                 {(isOpen || isClosing) && !isClosing && (
@@ -75,7 +76,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
                                 e.stopPropagation();
                                 onResetFilters();
                             }}
-                            title="Filtres"
+                            title="Réinitialiser les Filtres"
                             className="text-sm w-full pt-1 p-1.5 rounded-full border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,0.3)] focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 cursor-pointer"
                         >
                             Réinitialiser

@@ -5,10 +5,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useSession } from 'next-auth/react'; 
 import { useState } from 'react';
-import ContactModal from './ContactModal';  
+import ContactModal from '@/app/ui/ContactModal';  
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
 import LogoButton from '@/app/ui/buttons/LogoButton';
-import ActionButton from './buttons/ActionButton';
+import ActionButton from '@/app/ui/buttons/ActionButton';
 import { ThemeToggle } from '@/app/ui/ThemeToggle';
 
 export default function Footer() {

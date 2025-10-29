@@ -306,21 +306,37 @@ body.is-active::-webkit-scrollbar-thumb {
   -webkit-overflow-scrolling: touch;
 }
 
-/* ========= Animate fate in Scale EventFilter ======== */
-@keyframes fadeInScale {
-  0% {
+/* ========= is Menu Open ======== */
+@keyframes slideTop {
+  from {
+    transform: translateY(-10px);
     opacity: 0;
-    transform: scale(0.95);
   }
 
-  100% {
+  to {
+    transform: translateY(0);
     opacity: 1;
-    transform: scale(1);
   }
 }
 
-.animate-fadeInScale {
-  animation: fadeInScale 0.4s ease-out;
+.animate-slide-top {
+  animation: slideTop 0.5s ease-out forwards;
+}
+
+@keyframes slideBottom {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  to {
+    transform: translateY(-15%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-bottom {
+  animation: slideBottom 0.5s ease-out forwards;
 }
 
 /* ======= Animate fade in Scale EventFilter ========= */

@@ -139,11 +139,11 @@ export default function EventsPage() {
 
                          {isLoading ? (
                             <>
-                                <p className="text-center text-gray-700 dark:text-gray-500 text-lg mb-5">Chargement des événements</p>
+                                <p className="text-center text-gray-700 dark:text-white/85 text-lg mb-5">Chargement des événements</p>
                                 <Loader variant="dots" /> 
                             </>
                         ) : filteredEvents.length === 0 ? (
-                            <p className="text-center text-gray-700 dark:text-gray-500 text-lg">
+                            <p className="text-center text-gray-700 dark:text-white/85 text-lg">
                                 Aucun événement ne correspond à vos critères. Essayez d&apos;autres filtres !
                             </p>
                         ) : (

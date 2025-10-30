@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import Loader from '@/app/ui/Loader'
+import Loader from '@/app/ui/animation/Loader'
 
 interface ImagePosition {
     url: string;

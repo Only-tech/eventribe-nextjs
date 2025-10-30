@@ -388,7 +388,32 @@ body.is-active::-webkit-scrollbar-thumb {
   animation-delay: 0.4s;
 }
 
+/* ========== Toast Animations ========== */
+@keyframes slideInOut {
+  0% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
 
+  10% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  90% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.animate-slide-in-out {
+  animation: slideInOut 5s ease-in-out forwards;
+}
 
 /* ====== Squircle clip-path ======== */
 :root {

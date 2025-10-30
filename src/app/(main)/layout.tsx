@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 import Header from '@/app/ui/header'
 import Footer from '@/app/ui/footer'
-import Loader from '@/app/ui/Loader'
+import Loader from '@/app/ui/animation/Loader'
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname()
@@ -59,36 +59,3 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         </div>
     )
 }
-
-
-// 'use client'
-
-// import { usePathname } from 'next/navigation'
-// import { Suspense } from 'react';
-// import Header from '@/app/ui/header'; 
-// import Footer from '@/app/ui/footer';
-
-
-// export default function MainLayout({
-//   children,
-// }: {
-//   children: React.ReactNode;
-// }) {
-
-//     const pathname = usePathname()
-//     const hideLayout = pathname === '/register' || pathname === '/login' || pathname === '/legal-mentions'
-
-//     return (
-//         <> 
-//             <div className="min-h-screen w-full flex flex-col text-[#333] dark:text-white/85  bg-cover bg-fixed bg-center font-sans bg-[url('/images/SplashPaintBreak.svg')] dark:bg-none">
-//                 <Suspense fallback={<div className="text-center py-4">Chargement du menu...</div>}>
-//                     {!hideLayout && <Header />}
-//                 </Suspense>
-//                 <main className="flex-grow w-full pt-20 pb-10 mx-auto my-6">
-//                     {children}
-//                 </main>
-//                 {!hideLayout && <Footer />} 
-//             </div>
-//         </>
-//     );
-// }

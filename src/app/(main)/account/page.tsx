@@ -9,9 +9,10 @@ import { ChevronUpIcon, CalendarDaysIcon } from '@heroicons/react/16/solid';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import ActionButton from '@/app/ui/buttons/ActionButton';
-import Loader from '@/app/ui/Loader';
+import Loader from '@/app/ui/animation/Loader';
 import EventManagement from '@/app/ui/account/EventManagement';
 import IconButton from '@/app/ui/buttons/IconButton';
+import { useToast } from '@/app/ui/status/ToastProvider';
 
 type ActiveView = 'info' | 'security' | 'events' | 'help' | null;
 
@@ -35,17 +36,12 @@ export default function UserAccountManageEventsPage() {
     const [eventCount, setEventCount] = useState(0);
     const [totalRegistered, setTotalRegistered] = useState(0);
     
-    const [message, setMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+    const { addToast } = useToast();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
     const [isDeletingAccount, setIsDeletingAccount] = useState(false);
-
-    const handleSetMessage = (msg: string, success: boolean) => {
-        setMessage(msg);
-        setIsSuccess(success);
-    };
 
     // ==== Manage Confirmation Modal bind to EventManagement ====
     const openConfirmationModal = (msg: string, actionFn: () => void) => {
@@ -59,15 +55,6 @@ export default function UserAccountManageEventsPage() {
         setModalMessage('');
         setConfirmAction(null);
     };
-
-    useEffect(() => {
-        if (message) {
-            const timer = setTimeout(() => {
-                setMessage('');
-            }, 5000); 
-            return () => clearTimeout(timer);
-        }
-    }, [message]);
 
     // ====== Fetch session on loading =======
     useEffect(() => {
@@ -125,7 +112,7 @@ export default function UserAccountManageEventsPage() {
     // ==== Update Account =====
     const handleUpdateAccount = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setMessage('');
+        addToast('');
         setIsAccountUpdating(true);
 
         try {
@@ -137,14 +124,14 @@ export default function UserAccountManageEventsPage() {
             const data = await response.json();
 
             if (response.ok) {
-                handleSetMessage('Informations de compte mises à jour avec succès.', true);
+                addToast('Informations de compte mises à jour avec succès.', 'success');
                 router.refresh(); 
             } else {
-                handleSetMessage(data.message || 'Échec de la mise à jour des informations.', false);
+                addToast(data.message || 'Échec de la mise à jour des informations.', 'error');
             }
         } catch (error) {
             console.error('Erreur lors de la mise à jour du compte:', error);
-            handleSetMessage('Une erreur est survenue. Veuillez réessayer plus tard.', false);
+            addToast('Une erreur est survenue. Veuillez réessayer plus tard.', 'error');
         } finally {
             setIsAccountUpdating(false);
         }
@@ -176,14 +163,14 @@ export default function UserAccountManageEventsPage() {
             const response = await fetch('/api/account/delete', { method: 'DELETE' });
             const data = await response.json();
             if (response.ok) {
-                handleSetMessage(data.message, true);
+                addToast(data.message);
                 await signOut({ callbackUrl: '/' });
             } else {
-                handleSetMessage(data.message || 'Erreur lors de la suppression du compte.', false);
+                addToast(data.message || 'Erreur lors de la suppression du compte.', 'error');
             }
         } catch (error) {
             console.error('Erreur lors de la suppression du compte:', error);
-            handleSetMessage('Une erreur est survenue lors de la suppression.', false);
+            addToast('Une erreur est survenue lors de la suppression.', 'error');
         } finally {
             setIsDeletingAccount(false);
         }
@@ -367,7 +354,7 @@ export default function UserAccountManageEventsPage() {
     const renderEventContent = () => (
         <EventManagement 
             session={session} 
-            onMessage={handleSetMessage} 
+            // onMessage={addToast} 
             openModal={openConfirmationModal} 
             closeModal={closeConfirmationModal}
         />
@@ -413,12 +400,6 @@ export default function UserAccountManageEventsPage() {
                     <p className="text-center text-xl text-gray-700 dark:text-white/70 py-6">Chargement de la session</p>
                     <Loader variant="dots" />
                 </>
-            )}
-
-            {message && (
-                <div className={`fixed z-10000 w-full max-w-[85%] top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg border shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.8)] ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-                    {message}
-                </div>
             )}
             
             {authStatus === 'authenticated' && session && (

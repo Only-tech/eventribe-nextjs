@@ -56,7 +56,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
     return (
         <div
             className={` 
-                ${(isOpen || isClosing) ? 'dark:text-white/60 flex flex-wrap gap-6 min-[1200px]:gap-2 justify-between items-center sm:px-1 py-3 -mt-10 mb-7 bg-[#fcfff7] dark:bg-[#222222] rounded-3xl xl:rounded-full h-fit w-full sticky top-1 backdrop-blur-2xl max-h-125 px-4 transition-all duration-500 ease-in-out overflow-hidden shadow-[0_0_32px_20px_#fcfff7] dark:shadow-[0_0_32px_20px_#222222]' : 'max-h-15 px-2 -mb-15 size-15 -translate-y-25'}`}
+                ${(isOpen || isClosing) ? 'dark:text-white/60 flex min-[1900px]:flex-col min-[1900px]:sticky min-[1900px]:top-20 min-[1900px]:w-xs min-[1900px]:mr-10 flex-wrap gap-6 min-[1200px]:gap-2 min-[1900px]:gap-6 justify-between items-center sm:px-1 py-3 -mt-10 mb-7 bg-[#fcfff7] dark:bg-[#222222] rounded-3xl h-fit w-full max-h-125 px-4 transition-all duration-500 ease-in-out shadow-[0_0_32px_20px_#fcfff7] dark:shadow-[0_0_32px_20px_#222222]' : 'max-h-15 px-2 -mb-15 size-15 -translate-y-25 min-[1900px]:absolute'}`}
         >
             {/* Header avec bouton toggle */}
             <div
@@ -86,7 +86,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
             </div>
 
             {(isOpen || isClosing) && (
-                <div className="flex flex-wrap gap-4">
+                <div className="flex flex-wrap min-[1900px]:justify-end gap-4 min-[1900px]:gap-6">
                     {/* Date Filter */}
                     <div className={`${isClosing ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-1 relative bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
                         <label className="absolute -top-2.5 left-4 text-xs font-medium bg-[#fcfff7] dark:bg-[#222222] px-1 rounded">
@@ -129,7 +129,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
                             id="eventType"
                             value={filters.eventType}
                             onChange={handleInputChange}
-                            className="pl-6 pr-2 py-1 rounded-full shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,_0.3)] border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 sm:text-sm"
+                            className="pl-6 pr-2 py-1 min-[1900px]:w-50 rounded-full shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,_0.3)] border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 sm:text-sm"
                         >
                             <option value="">Tous les types</option>
                             {uniqueEventTypes.map(type => (

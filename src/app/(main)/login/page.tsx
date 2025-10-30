@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn, getSession } from 'next-auth/react';
+import { useToast } from '@/app/ui/status/ToastProvider';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import { EyeIcon, EyeSlashIcon, FingerPrintIcon } from '@heroicons/react/24/outline';
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
@@ -16,9 +17,9 @@ import WellcomeLogo from '@/app/ui/logo/WellcomeLogo';
 export default function LoginPage() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
     const [loading, setLoading] = useState(false);
+    
+    const { addToast } = useToast();
 
     const router = useRouter();
 
@@ -26,7 +27,7 @@ export default function LoginPage() {
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        setMessage(''); 
+        addToast(''); 
 
         setLoading(true);
 
@@ -39,14 +40,13 @@ export default function LoginPage() {
 
             if (result?.error) {
                 setLoading(false);
-                setMessage('Email ou mot de passe incorrect.');
-                setIsSuccess(false);
+                addToast('Email ou mot de passe incorrect.');
             } else {
-                setMessage('Connexion réussie. Ravi de vous revoir, votre espace est prêt !');
-                setIsSuccess(true);
+                addToast('Connexion réussie.', 'success');
                 setTimeout(async () => {
                     const session = await getSession();
                     const isAdmin = session?.user?.isAdmin;
+                    addToast('Ravi de vous revoir, votre espace est prêt !');
 
                     if (isAdmin) {
                         router.push('/admin');
@@ -57,8 +57,7 @@ export default function LoginPage() {
             }
         } catch (error) {
             console.error('Erreur lors de la soumission du formulaire de connexion:', error);
-            setMessage('Une erreur est survenue. Veuillez réessayer plus tard.');
-            setIsSuccess(false);
+            addToast('Une erreur est survenue. Veuillez réessayer plus tard.');
         }
     };
 
@@ -83,11 +82,6 @@ export default function LoginPage() {
                     <div className="w-full max-w-[90%] min-[769px]:w-0 max-h-[95%] min-[769px]:h-70  border-t border-gray-300 dark:border-white/20 min-[769px]:border-r"></div>
                     
                     <section className="max-w-sm flex-1 w-full">
-                        {message && (
-                            <div className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg border ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-                                {message}
-                            </div>
-                        )}
 
                         <h1 className="flex flex-col items-center justify-center max-[920px]:text-2xl text-3xl font-bold text-gray-900 dark:text-white/85 mb-8">
                             <FingerPrintIcon className="w-auto h-16 mb-4 max-md:hidden"  />

@@ -7,11 +7,12 @@ import { RegisteredEvent } from '@/app/lib/definitions';
 import { TrashIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import { CalendarDaysIcon, MapPinIcon, UsersIcon, } from '@heroicons/react/24/outline'; 
 import { normalizeImagePath } from '@/app/lib/utils';
+import { useToast } from '@/app/ui/status/ToastProvider';
 import Image from 'next/image';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
-import Loader from '@/app/ui/Loader'
+import Loader from '@/app/ui/animation/Loader'
 
 
 export default function MyEventsPage() {
@@ -21,8 +22,8 @@ export default function MyEventsPage() {
     const { data: session, status } = useSession();
     const [myEvents, setMyEvents] = useState<RegisteredEvent[]>([]);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+
+    const { addToast } = useToast();
 
     const [expandedEventId, setExpandedEventId] = useState<number | null>(null);
     const [UnregisteringEventId, setUnregisteringEventId] = useState<number | null>(null);
@@ -30,16 +31,6 @@ export default function MyEventsPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
-
-    // Clean status
-    useEffect(() => {
-        if (message) {
-        const timer = setTimeout(() => {
-            setMessage('');
-        }, 5000); 
-        return () => clearTimeout(timer);
-        }
-    }, [message]);
 
     useEffect(() => {
         // Only fetch data if the user is authenticated
@@ -54,22 +45,19 @@ export default function MyEventsPage() {
                 if (response.ok) {
                     setMyEvents(data.events);
                 } else {
-                    setMessage(data.message || "Erreur lors du chargement de vos inscriptions.");
-                    setIsSuccess(false);
+                    addToast(data.message || "Erreur lors du chargement de vos inscriptions.");
                 }
                 } catch (error) {
-                console.error("Failed to fetch my events:", error);
-                setMessage("Une erreur est survenue lors du chargement de vos inscriptions.");
-                setIsSuccess(false);
+                    console.error("Failed to fetch my events:", error);
+                    addToast("Une erreur est survenue lors du chargement de vos inscriptions.");
                 } finally {
-                setLoading(false);
+                    setLoading(false);
                 }
             };
             fetchEvents();
         } else if (status === 'unauthenticated') {
             setLoading(false);
-            setMessage("Vous devez être connecté pour voir vos inscriptions.");
-            setIsSuccess(false);
+            addToast("Vous devez être connecté pour voir vos inscriptions.");
             setTimeout(() => {
                 router.push('/login');
             }, 1500);
@@ -96,8 +84,7 @@ export default function MyEventsPage() {
     // This function is called when the modal confirms
     const executeUnregister = async (eventId: number) => {
         closeConfirmationModal(); 
-        setMessage('');
-        setIsSuccess(false);
+        addToast('');
         setUnregisteringEventId(eventId);
 
         try {
@@ -112,18 +99,15 @@ export default function MyEventsPage() {
             const data = await response.json();
 
             if (response.ok) {
-                setMessage(data.message);
-                setIsSuccess(true);
+                addToast(data.message);
                 // Refresh the list of events after unregistration
                 setMyEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
             } else {
-                setMessage(data.message || "Erreur lors de la désinscription.");
-                setIsSuccess(false);
+                addToast(data.message || "Erreur lors de la désinscription.");
             }
         } catch (error) {
             console.error("Failed to unregister from event:", error);
-            setMessage("Une erreur est survenue lors de la désinscription.");
-            setIsSuccess(false);
+            addToast("Une erreur est survenue lors de la désinscription.");
         }finally {
             setUnregisteringEventId(null); 
         }
@@ -146,12 +130,6 @@ export default function MyEventsPage() {
     return (
         <div className="max-w-[95%] mx-auto">
             <h1 className="text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-8 text-center">Mes Inscriptions</h1>
-
-            {message && (
-                <div className={`fixed z-10000 w-full max-w-[85%] top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg border shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.8)] ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-                    {message}
-                </div>
-            )}
 
             {myEvents.length === 0 ? (
                 <>

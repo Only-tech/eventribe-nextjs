@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useToast } from '@/app/ui/status/ToastProvider';
 import { Event, Participant } from '@/app/lib/definitions';
 import { CalendarDaysIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import ConfirmationModal from '@/app/ui/ConfirmationModal';
 import { TrashIcon, ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/16/solid';
 import IconButton from '@/app/ui/buttons/IconButton';
 import ActionButton from '@/app/ui/buttons/ActionButton';
-import Loader from '@/app/ui/Loader'
+import Loader from '@/app/ui/animation/Loader'
 
 export default function ManageRegistrationsPage() {
 
@@ -16,8 +17,8 @@ export default function ManageRegistrationsPage() {
 
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+
+    const { addToast } = useToast();
 
     const [expandedEventId, setExpandedEventId] = useState<number | null>(null);
     const [participants, setParticipants] = useState<{ [eventId: number]: Participant[] }>({});
@@ -29,16 +30,6 @@ export default function ManageRegistrationsPage() {
     const [modalMessage, setModalMessage] = useState('');
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
 
-    // Clean status
-    useEffect(() => {
-        if (message) {
-            const timer = setTimeout(() => {
-                setMessage('');
-            }, 5000); 
-            return () => clearTimeout(timer);
-        }
-    }, [message]);
-
     // Fetch all events with registration counts on component mount
     useEffect(() => {
         const fetchEvents = async () => {
@@ -49,13 +40,11 @@ export default function ManageRegistrationsPage() {
                 if (response.ok) {
                     setEvents(data.events);
                 } else {
-                    setMessage(data.message || 'Erreur lors du chargement des événements.');
-                    setIsSuccess(false);
+                    addToast(data.message || 'Erreur lors du chargement des événements.', 'error');
                 }
             } catch (error) {
                 console.error('Failed to fetch events for registrations:', error);
-                setMessage('Une erreur est survenue lors du chargement des événements.');
-                setIsSuccess(false);
+                addToast('Une erreur est survenue lors du chargement des événements.', 'error');
             } finally {
                 setLoading(false);
             }
@@ -64,8 +53,7 @@ export default function ManageRegistrationsPage() {
     }, []);
 
     const toggleEventExpansion = async (eventId: number) => {
-        setMessage('');
-        setIsSuccess(false);
+        addToast('');
 
         if (expandedEventId === eventId) {
         setExpandedEventId(null); // Collapse if already expanded
@@ -75,20 +63,18 @@ export default function ManageRegistrationsPage() {
             if (!participants[eventId]) {
                 setLoadingParticipants(eventId);
                 try {
-                const response = await fetch(`/api/admin/registrations?eventId=${eventId}`);
-                const data = await response.json();
-                if (response.ok) {
-                    setParticipants(prev => ({ ...prev, [eventId]: data.participants }));
-                } else {
-                    setMessage(data.message || 'Erreur lors du chargement des participants.');
-                    setIsSuccess(false);
-                }
+                    const response = await fetch(`/api/admin/registrations?eventId=${eventId}`);
+                    const data = await response.json();
+                    if (response.ok) {
+                        setParticipants(prev => ({ ...prev, [eventId]: data.participants }));
+                    } else {
+                        addToast(data.message || 'Erreur lors du chargement des participants.', 'error');
+                    }
                 } catch (error) {
-                console.error('Failed to fetch participants:', error);
-                setMessage('Une erreur est survenue lors du chargement des participants.');
-                setIsSuccess(false);
+                    console.error('Failed to fetch participants:', error);
+                    addToast('Une erreur est survenue lors du chargement des participants.', 'error');
                 } finally {
-                setLoadingParticipants(null);
+                    setLoadingParticipants(null);
                 }
             }
         }
@@ -109,8 +95,7 @@ export default function ManageRegistrationsPage() {
 
     const executeUnregister = async (userId: number, eventId: number) => {
         closeConfirmationModal();
-        setMessage('');
-        setIsSuccess(false);
+        addToast('');
         setUnregisteringInfo({ userId, eventId });
 
         try {
@@ -121,29 +106,26 @@ export default function ManageRegistrationsPage() {
             });
             const data = await response.json();
             if (response.ok) {
-                setMessage(data.message);
-                setIsSuccess(true);
+                addToast(data.message);
                 // Update the participants list for the current event
                 setParticipants(prev => ({
-                ...prev,
-                [eventId]: prev[eventId]?.filter(p => p.user_id !== userId) || [],
+                    ...prev,
+                    [eventId]: prev[eventId]?.filter(p => p.user_id !== userId) || [],
                 }));
                 // Also update the registered_count for the event in the events list
                 setEvents(prevEvents =>
-                prevEvents.map(event =>
-                    event.id === eventId
-                    ? { ...event, registered_count: Math.max(0, event.registered_count - 1) }
-                    : event
-                )
+                    prevEvents.map(event =>
+                        event.id === eventId
+                        ? { ...event, registered_count: Math.max(0, event.registered_count - 1) }
+                        : event
+                    )
                 );
             } else {
-                setMessage(data.message || 'Erreur lors de la désinscription du participant.');
-                setIsSuccess(false);
+                addToast(data.message || 'Erreur lors de la désinscription du participant.', 'error');
             }
         } catch (error) {
             console.error('Erreur lors de la désinscription du participant:', error);
-            setMessage('Une erreur est survenue lors de la désinscription.');
-            setIsSuccess(false);
+            addToast('Une erreur est survenue lors de la désinscription.', 'error');
         } finally {
             setUnregisteringInfo(null); 
         }
@@ -166,12 +148,6 @@ export default function ManageRegistrationsPage() {
     return (
         <div className="p-3">
             <h1 className="text-4xl font-extrabold text-gray-900 mb-12 text-center">Gestion des Inscriptions</h1>
-
-            {message && (
-                <div className={`fixed z-10000 w-full max-w-[85%] top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-                {message}
-                </div>
-            )}
 
             {events.length === 0 ? (
                 <p className="text-center text-gray-700 text-lg">Aucun événement avec des inscriptions à gérer pour le moment.</p>

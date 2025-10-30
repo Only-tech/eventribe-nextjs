@@ -9,7 +9,7 @@ import { XMarkIcon } from '@heroicons/react/16/solid';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-react';
 import 'overlayscrollbars/styles/overlayscrollbars.css';
-import Loader from '@/app/ui/Loader';
+import Loader from '@/app/ui/animation/Loader';
 
 interface SearchResultsProps {
     results: Event[];

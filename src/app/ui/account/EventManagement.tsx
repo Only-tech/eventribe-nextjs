@@ -7,19 +7,19 @@ import { CalendarDaysIcon, MapPinIcon } from '@heroicons/react/24/outline';
 import { PencilIcon } from '@heroicons/react/24/solid'; 
 import { TrashIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import { normalizeImagePath } from '@/app/lib/utils';
-import { Event, Participant } from '@/app/lib/definitions'; 
+import { Event, Participant } from '@/app/lib/definitions';
+import { useToast } from '@/app/ui/status/ToastProvider'; 
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
-import Loader from '@/app/ui/Loader';
+import Loader from '@/app/ui/animation/Loader';
 
 type EventManagementProps = {
     session: Session | null;
-    onMessage: (msg: string, success: boolean) => void;
     openModal: (msg: string, actionFn: () => void) => void;
     closeModal: () => void;
 };
 
-export default function EventManagement({ session, onMessage, openModal, closeModal }: EventManagementProps) {
+export default function EventManagement({ session, openModal, closeModal }: EventManagementProps) {
 
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
@@ -29,6 +29,8 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
     const [participants, setParticipants] = useState<{ [eventId: number]: Participant[] }>({});
     const [loadingParticipants, setLoadingParticipants] = useState<number | null>(null);
     
+    const { addToast } = useToast();
+
     const [title, setTitle] = useState('');
     const [descriptionShort, setDescriptionShort] = useState('');
     const [descriptionLong, setDescriptionLong] = useState('');
@@ -59,12 +61,12 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
             if (res.ok) {
                 setEvents(data);
             } else {
-                onMessage(data.message || 'Erreur lors du chargement des événements.', false);
+                addToast(data.message || 'Erreur lors du chargement des événements.', 'error');
                 setEvents([]);
             }
         } catch (error) {
             console.error("Erreur lors du chargement des événements", error);
-            onMessage('Une erreur est survenue lors du chargement des événements.', false);
+            addToast('Une erreur est survenue lors du chargement des événements.', 'error');
             setEvents([]);
         } finally {
             setLoading(false);
@@ -84,11 +86,11 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
                     if (response.ok) {
                         setParticipants(prev => ({ ...prev, [eventId]: data.participants }));
                     } else {
-                        onMessage(data.message || 'Erreur lors du chargement des participants.', false);
+                        addToast(data.message || 'Erreur lors du chargement des participants.', 'error');
                     }
                 } catch (error) {
                     console.error('Failed to fetch participants:', error);
-                    onMessage('Une erreur est survenue lors du chargement des participants.', false);
+                    addToast('Une erreur est survenue lors du chargement des participants.', 'error');
                 } finally {
                     setLoadingParticipants(null);
                 }
@@ -126,14 +128,14 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
                 if (uploadResponse.ok) {
                     finalImageUrl = uploadData.imageUrl;
                 } else {
-                    onMessage(uploadData.message || 'Erreur lors de l\'upload de l\'image.', false);
+                    addToast(uploadData.message || 'Erreur lors de l\'upload de l\'image.', 'error');
                     setUploadingImage(false);
                     setIsSubmittingEvent(false); 
                     return;
                 }
             } catch (uploadError) {
                 console.error('Erreur lors de l\'upload de l\'image:', uploadError);
-                onMessage('Une erreur est survenue lors de l\'upload de l\'image.', false);
+                addToast('Une erreur est survenue lors de l\'upload de l\'image.', 'error');
                 setUploadingImage(false);
                 setIsSubmittingEvent(false); 
                 return;
@@ -163,15 +165,15 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
             });
             const data = await res.json();
             if (res.ok) {
-                onMessage(data.message, true);
+                addToast(data.message, 'success');
                 fetchUserEvents();
                 setTimeout(() => setAction('list'), 2000);
             } else {
-                onMessage(data.message || `Échec de ${action === 'create' ? 'la création' : 'la mise à jour'}.`, false);
+                addToast(data.message || `Échec de ${action === 'create' ? 'la création' : 'la mise à jour'}.`, 'error');
             }
         } catch (error) {
             console.error(`Erreur lors de ${action === 'create' ? 'la création' : 'la mise à jour'}`, error);
-            onMessage(`Une erreur est survenue lors de ${action === 'create' ? 'la création' : 'la mise à jour'}.`, false);
+            addToast(`Une erreur est survenue lors de ${action === 'create' ? 'la création' : 'la mise à jour'}.`, 'error');
         } finally {
             setIsSubmittingEvent(false); 
         }
@@ -188,7 +190,7 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
             });
             const data = await response.json();
             if (response.ok) {
-                onMessage(data.message, true);
+                addToast(data.message, 'success');
                 setParticipants(prev => ({
                     ...prev,
                     [eventId]: prev[eventId].filter(p => p.user_id !== userId)
@@ -199,11 +201,11 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
                     )
                 );
             } else {
-                onMessage(data.message || 'Erreur lors de la désinscription du participant.', false);
+                addToast(data.message || 'Erreur lors de la désinscription du participant.', 'error');
             }
         } catch (error) {
             console.error('Erreur lors de la désinscription du participant:', error);
-            onMessage('Une erreur est survenue lors de la désinscription.', false);
+            addToast('Une erreur est survenue lors de la désinscription.', 'error');
         } finally {
             setUnregisteringInfo(null); 
         }
@@ -227,14 +229,14 @@ export default function EventManagement({ session, onMessage, openModal, closeMo
             });
             const data = await response.json();
             if (response.ok) {
-                onMessage(data.message, true);
+                addToast(data.message, 'success');
                 setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
             } else {
-                onMessage(data.message || 'Erreur lors de la suppression de l\'événement.', false);
+                addToast(data.message || 'Erreur lors de la suppression de l\'événement.', 'error');
             }
         } catch (error) {
             console.error('Erreur lors de la suppression de l\'événement:', error);
-            onMessage('Une erreur est survenue lors de la suppression.', false);
+            addToast('Une erreur est survenue lors de la suppression.', 'error');
         } finally {
             setDeletingEventId(null);
         }

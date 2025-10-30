@@ -1,5 +1,5 @@
 import React from 'react';
-import Spinner from '@/app/ui/Spinner';
+import Spinner from '@/app/ui/animation/Spinner';
 
 interface ActionButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     isLoading?: boolean;

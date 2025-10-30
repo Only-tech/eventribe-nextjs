@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import { CheckCircleIcon, KeyIcon, UserCircleIcon } from "@heroicons/react/24/outline";
 import { ChevronUpIcon } from "@heroicons/react/16/solid";
 import FloatingLabelInput from "@/app/ui/FloatingLabelInput";
 import ActionButton from "@/app/ui/buttons/ActionButton";
-import Loader from "@/app/ui/Loader";
+import Loader from "@/app/ui/animation/Loader";
 import IconButton from "@/app/ui/buttons/IconButton";
 import PlaneLogo from '@/app/ui/logo/PlaneLogo';
 import IconHomeButton from '@/app/ui/buttons/IconHomeButton';
+import { useToast } from '@/app/ui/status/ToastProvider';
 
 import { VerificationCodeEmail } from "@/app/lib/email-templates/VerificationCodeEmail";
 import { ConfirmationEmail } from "@/app/lib/email-templates/ConfirmationEmail";
@@ -28,7 +29,8 @@ export default function PreviewEmailPage() {
     const [isNavCollapsed, setIsNavCollapsed] = useState(false);
     const [to, setTo] = useState("");
     const [isSending, setIsSending] = useState(false);
-    const [status, setStatus] = useState<{ msg: string; success: boolean } | null>(null);
+
+    const { addToast } = useToast();
 
     const router = useRouter();
 
@@ -84,24 +86,25 @@ export default function PreviewEmailPage() {
     const handleSend = async () => {
         setIsSending(true);
         const html = renderTemplateHTML();
-        const res = await fetch("/api/send-test-email", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ subject: `Test email: ${activeView}`, html, to }),
-        });
-        setIsSending(false);
-        setStatus({
-            msg: res.ok ? "Email envoyé avec succès" : "Erreur lors de l'envoi",
-            success: res.ok,
-        });
-    };
 
-    useEffect(() => {
-        if (status) {
-        const timer = setTimeout(() => setStatus(null), 5000);
-        return () => clearTimeout(timer);
+        try {
+            const res = await fetch("/api/send-test-email", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ subject: `Test email: ${activeView}`, html, to }),
+            });
+
+            if (res.ok) {
+                addToast("Email envoyé avec succès", "success");
+            } else {
+                addToast("Erreur lors de l'envoi", "error");
+            }
+        } catch {
+            addToast("Une erreur réseau est survenue", "error");
+        } finally {
+            setIsSending(false);
         }
-    }, [status]);
+    };
 
     const renderPreviewCard = () => (
         <section className="bg-white dark:bg-[#1E1E1E] rounded-xl p-1 sm:p-4 my-4 lg:my-0 border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
@@ -121,30 +124,20 @@ export default function PreviewEmailPage() {
 
     return (
         <>
-            {status && (
-                <div
-                    className={`fixed z-10000 w-full max-w-[85%] top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg border shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.8)] ${
-                        status.success ? "text-green-600 bg-green-100" : "text-red-600 bg-red-100"
-                    }`}
-                >
-                    {status.msg}
+            {/* --- Header --- */}
+            <div className="flex items-center space-x-4 w-[95%] mx-auto my-4 bg-white dark:bg-[#1E1E1E] rounded-xl px-4 py-3 md:py-2 md:px-6 border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
+                <EnvelopeIcon className="hidden min-[475px]:inline-block size-22 text-[#08568a]" />
+                <div>
+                    <h1 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">
+                        Prévisualisation des emails
+                    </h1>
+                    <p className="text-base text-gray-600 dark:text-gray-400 mt-1">
+                        Sélectionnez un template et testez son rendu
+                    </p>
                 </div>
-            )}
+                <IconHomeButton onClick={() => router.push(`/events`)} className="fixed top-6 right-4 cursor-pointer" title="Page d'accueil"/>
 
-                {/* --- Header --- */}
-                <div className="flex items-center space-x-4 w-[95%] mx-auto my-4 bg-white dark:bg-[#1E1E1E] rounded-xl px-4 py-3 md:py-2 md:px-6 border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
-                    <EnvelopeIcon className="hidden min-[475px]:inline-block size-22 text-[#08568a]" />
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">
-                            Prévisualisation des emails
-                        </h1>
-                        <p className="text-base text-gray-600 dark:text-gray-400 mt-1">
-                            Sélectionnez un template et testez son rendu
-                        </p>
-                    </div>
-                    <IconHomeButton onClick={() => router.push(`/events`)} className="fixed top-6 right-4 cursor-pointer" title="Page d'accueil"/>
-
-                </div>
+            </div>
         
 
             {/* --- Main container --- */}
@@ -155,11 +148,11 @@ export default function PreviewEmailPage() {
             >
                 {/* --- SidebarNav --- */}
                 <aside
-                className={`space-y-6 dark:text-white/65 ${
-                    isNavCollapsed
-                    ? "lg:space-y-0 lg:w-20 h-fit bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg"
-                    : "lg:w-full"
-                }`}
+                    className={`space-y-6 dark:text-white/65 ${
+                        isNavCollapsed
+                        ? "lg:space-y-0 lg:w-20 h-fit bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg"
+                        : "lg:w-full"
+                    }`}
                 >
                     <section
                         className={`bg-white dark:bg-[#1E1E1E] rounded-xl ${
@@ -232,42 +225,44 @@ export default function PreviewEmailPage() {
                             Envoi de test
                         </h3>
 
-                        {!isNavCollapsed && (
-                            <FloatingLabelInput
-                                id="to"
-                                label="Adresse email de test"
-                                type="email"
-                                value={to}
-                                onChange={(e) => setTo(e.target.value)}
-                                required
-                                className="flex"
-                            />
-                        )}
-
-                        <ActionButton
-                            onClick={handleSend}
-                            isLoading={isSending}
-                            variant="primary"
-                            className={`flex-1 w-full ${isNavCollapsed ? '!p-0 h-12 !rounded-lg' : ''}`}
-                        >
-                            {isSending ? (
-                                isNavCollapsed ? (
-                                    <></>
-                                ) : (
-                                    <span className="ml-3">Envoi en cours</span>
-                                )
-                            ) : (
-                                isNavCollapsed ? (
-                                    <PlaneLogo className="size-9  group-hover:animate-bounce" />
-                                ) : (
-                                    <>
-                                        <span className="mr-2">Envoyer le template</span>
-                                        <PlaneLogo className="group-hover:animate-bounce" />
-                                    </>
-                                )
+                        <form onSubmit={handleSend}>
+                            {!isNavCollapsed && (
+                                <FloatingLabelInput
+                                    id="to"
+                                    label="Adresse email de test"
+                                    type="email"
+                                    value={to}
+                                    onChange={(e) => setTo(e.target.value)}
+                                    required
+                                    className="flex mb-4"
+                                />
                             )}
-                        </ActionButton>
 
+                            <ActionButton
+                                type="submit"
+                                onClick={handleSend}
+                                isLoading={isSending}
+                                variant="primary"
+                                className={`flex-1 w-full ${isNavCollapsed ? '!p-0 h-12 !rounded-lg' : ''}`}
+                            >
+                                {isSending ? (
+                                    isNavCollapsed ? (
+                                        <></>
+                                    ) : (
+                                        <span className="ml-3">Envoi en cours</span>
+                                    )
+                                ) : (
+                                    isNavCollapsed ? (
+                                        <PlaneLogo className="size-9  group-hover:animate-bounce" />
+                                    ) : (
+                                        <>
+                                            <span className="mr-2">Envoyer le template</span>
+                                            <PlaneLogo className="group-hover:animate-bounce" />
+                                        </>
+                                    )
+                                )}
+                            </ActionButton>
+                        </form>
                     </section>
                 </aside>
 

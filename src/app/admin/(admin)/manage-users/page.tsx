@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useToast } from '@/app/ui/status/ToastProvider';
 import { useRouter } from 'next/navigation';
 import { User } from '@/app/lib/definitions';
 import { ChevronUpIcon, TrashIcon } from '@heroicons/react/16/solid';
@@ -8,7 +9,7 @@ import { useSession } from 'next-auth/react';
 import ConfirmationModal from '@/app/ui/ConfirmationModal';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
-import Loader from '@/app/ui/Loader'
+import Loader from '@/app/ui/animation/Loader'
 
 export default function ManageUsersPage() {
 
@@ -17,23 +18,14 @@ export default function ManageUsersPage() {
     const { data: session } = useSession(); 
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+
+    const { addToast } = useToast();
 
     const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
-
-    useEffect(() => {
-        if (message) {
-        const timer = setTimeout(() => {
-            setMessage('');
-        }, 5000); 
-        return () => clearTimeout(timer);
-        }
-    }, [message]);
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -44,13 +36,11 @@ export default function ManageUsersPage() {
             if (response.ok) {
                 setUsers(data.users);
             } else {
-                setMessage(data.message || 'Erreur lors du chargement des utilisateurs.');
-                setIsSuccess(false);
+                addToast(data.message || 'Erreur lors du chargement des utilisateurs.', 'error');
             }
         } catch (error) {
             console.error('Failed to fetch users:', error);
-            setMessage('Une erreur est survenue lors du chargement des utilisateurs.');
-            setIsSuccess(false);
+            addToast('Une erreur est survenue lors du chargement des utilisateurs.', 'error');
         } finally {
             setLoading(false);
         }
@@ -72,8 +62,7 @@ export default function ManageUsersPage() {
 
     const executeToggleAdminStatus = async (userId: number, currentStatus: boolean) => {
         closeConfirmationModal(); 
-        setMessage('');
-        setIsSuccess(false);
+        addToast('');
 
         try {
             const response = await fetch('/api/admin/users', {
@@ -83,28 +72,24 @@ export default function ManageUsersPage() {
             });
             const data = await response.json();
             if (response.ok) {
-                setMessage(data.message);
-                setIsSuccess(true);
+                addToast(data.message);
                 setUsers(prevUsers =>
                 prevUsers.map(user =>
                     user.id === userId ? { ...user, is_admin: !currentStatus } : user
                 )
                 );
             } else {
-                setMessage(data.message || 'Erreur lors de la mise à jour du statut.');
-                setIsSuccess(false);
+                addToast(data.message || 'Erreur lors de la mise à jour du statut.');
             }
         } catch (error) {
             console.error('Erreur lors de la mise à jour du statut admin:', error);
-            setMessage('Une erreur est survenue lors de la mise à jour du statut.');
-            setIsSuccess(false);
+            addToast('Une erreur est survenue lors de la mise à jour du statut.', 'error');
         }
     };
 
     const handleToggleAdminStatus = (userId: number, currentStatus: boolean, username: string) => {
         if (session?.user?.id === String(userId) && currentStatus === true) {
-            setMessage("Vous ne pouvez pas retirer votre propre statut d'administrateur.");
-            setIsSuccess(false);
+            addToast("Vous ne pouvez pas retirer votre propre statut d'administrateur.");
             return;
         }
 
@@ -116,8 +101,7 @@ export default function ManageUsersPage() {
 
     const executeDeleteUser = async (userId: number) => {
         closeConfirmationModal(); 
-        setMessage('');
-        setIsSuccess(false);
+        addToast('');
         setDeletingUserId(userId);
 
         try {
@@ -128,17 +112,14 @@ export default function ManageUsersPage() {
         });
         const data = await response.json();
         if (response.ok) {
-            setMessage(data.message);
-            setIsSuccess(true);
+            addToast(data.message);
             setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
         } else {
-            setMessage(data.message || 'Erreur lors de la suppression de l\'utilisateur.');
-            setIsSuccess(false);
+            addToast(data.message || 'Erreur lors de la suppression de l\'utilisateur.', 'error');
         }
         } catch (error) {
             console.error('Erreur lors de la suppression de l\'utilisateur:', error);
-            setMessage('Une erreur est survenue lors de la suppression.');
-            setIsSuccess(false);
+            addToast('Une erreur est survenue lors de la suppression.', 'error');
         } finally {
         setDeletingUserId(null);
         }
@@ -146,8 +127,7 @@ export default function ManageUsersPage() {
 
     const handleDeleteUser = (userId: number, first_name: string) => {
         if (session?.user?.id === String(userId)) {
-            setMessage("Vous ne pouvez pas supprimer votre propre compte.");
-            setIsSuccess(false);
+            addToast("Vous ne pouvez pas supprimer votre propre compte.");
             return;
         }
 
@@ -159,20 +139,14 @@ export default function ManageUsersPage() {
 
     if (loading) {
         return <>
-        <p className="text-center text-gray-700 text-lg mb-4">Chargement des utilisateurs</p>
-        <Loader variant="dots" />;
+            <p className="text-center text-gray-700 text-lg mb-4">Chargement des utilisateurs</p>
+            <Loader variant="dots" />;
         </>
     }
 
     return (
         <div className="p-3">
             <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">Gestion des Utilisateurs</h1>
-
-            {message && (
-                <div className={`fixed z-50 w-full max-w-[85%] top-6 md:top-20 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-sm rounded-lg border ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-                {message}
-                </div>
-            )}
 
             {users.length === 0 ? (
                 <p className="text-center text-gray-700 text-lg">Aucun utilisateur enregistré pour le moment.</p>
@@ -206,22 +180,22 @@ export default function ManageUsersPage() {
                                 </td>
                                 <td className="px-6 py-4 hidden md:table-cell whitespace-nowrap text-sm text-gray-500">
                                     {new Date(user.created_at).toLocaleString('fr-FR', {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
                                     })}
                                 </td>
                                 <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <IconButton
-                                    onClick={() => handleDeleteUser(user.id, user.first_name)}
-                                    className="text-red-600 hover:text-red-900"
-                                    isLoading={deletingUserId === user.id}
-                                    disabled={session?.user?.id === String(user.id)}
-                                    title="Supprimer l'utilisateur"
+                                        onClick={() => handleDeleteUser(user.id, user.first_name)}
+                                        className="text-red-600 hover:text-red-900"
+                                        isLoading={deletingUserId === user.id}
+                                        disabled={session?.user?.id === String(user.id)}
+                                        title="Supprimer l'utilisateur"
                                     >
-                                    <TrashIcon className="w-5 h-5" />
+                                        <TrashIcon className="w-5 h-5" />
                                     </IconButton>
                                 </td>
                                 </tr>
@@ -233,8 +207,8 @@ export default function ManageUsersPage() {
 
             <div className="mt-10 text-center">
                 <ActionButton variant="primary" onClick={() => router.push(`/admin/dashboard`)} className="group" >                    
-                <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
-                <span>Tableau de bord</span>
+                    <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
+                    <span>Tableau de bord</span>
                 </ActionButton>
             </div>
 

@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
+import { useToast } from '@/app/ui/status/ToastProvider';
 import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { FingerPrintIcon, CalendarDaysIcon as CalendarDateRangeIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
@@ -38,6 +39,8 @@ export default function Header() {
     const router = useRouter();
     const pathname = usePathname();
 
+    const { addToast } = useToast();
+
     const [animatedAuthText, setAnimatedAuthText] = useState('');
     const [wordIndex, setWordIndex] = useState(0);
     const [isTyping, setIsTyping] = useState(true);
@@ -54,13 +57,13 @@ export default function Header() {
     };
 
     useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') {
-            handleClearSearch();
-        }
-    };
-    window.addEventListener('keydown', handleEsc);
-    return () => window.removeEventListener('keydown', handleEsc);
+        const handleEsc = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                handleClearSearch();
+            }
+        };
+        window.addEventListener('keydown', handleEsc);
+        return () => window.removeEventListener('keydown', handleEsc);
     }, []);
 
 
@@ -165,7 +168,12 @@ export default function Header() {
     }, [pathname]);
     
     const handleSignOut = async () => {
-        await signOut({ callbackUrl: '/events' });
+        try {
+            await signOut({ callbackUrl: '/events' });
+            addToast('Vous avez été déconnecté avec succès.', 'success');
+        } catch {
+            addToast('Erreur lors de la déconnexion.', 'error');
+        }
     };
 
     // ====== hide/unhide header on scroll ======

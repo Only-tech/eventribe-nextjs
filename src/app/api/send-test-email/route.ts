@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     try {
         const { subject, html } = await req.json();
 
-        const to = process.env.TEST_EMAIL || "only.us@laposte.net";
+        const to = process.env.TEST_EMAIL || "";
 
         await sendNotificationEmail(to, subject, html);
         return NextResponse.json({ success: true });

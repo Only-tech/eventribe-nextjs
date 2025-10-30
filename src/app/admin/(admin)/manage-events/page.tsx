@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, FormEvent } from 'react';
+import { useToast } from '@/app/ui/status/ToastProvider';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 import { normalizeImagePath } from '@/app/lib/utils';
@@ -10,14 +11,15 @@ import { PlusIcon, TrashIcon, ChevronUpIcon } from '@heroicons/react/16/solid';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
-import Loader from '@/app/ui/Loader'
+import Loader from '@/app/ui/animation/Loader'
 
 
 export default function ManageEventsPage() { 
     const [events, setEvents] = useState<Event[]>([]);
     const [loading, setLoading] = useState(true);
-    const [message, setMessage] = useState('');
-    const [isSuccess, setIsSuccess] = useState(false);
+
+    const { addToast } = useToast();
+
     const [action, setAction] = useState<'list' | 'create' | 'edit'>('list');
     const [currentEvent, setCurrentEvent] = useState<Event | null>(null);
 
@@ -43,16 +45,6 @@ export default function ManageEventsPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    // Clean status
-    useEffect(() => {
-        if (message) {
-            const timer = setTimeout(() => {
-                setMessage('');
-            }, 5000); 
-            return () => clearTimeout(timer);
-        }
-    }, [message]);
-
     // Fetch events on component mount or when action changes
     useEffect(() => {
         const fetchEvents = async () => {
@@ -63,13 +55,11 @@ export default function ManageEventsPage() {
                 if (response.ok) {
                 setEvents(data.events);
                 } else {
-                    setMessage(data.message || 'Erreur lors du chargement des événements.');
-                    setIsSuccess(false);
+                    addToast(data.message || 'Erreur lors du chargement des événements.', 'error');
                 }
             } catch (error) {
                 console.error('Failed to fetch events:', error);
-                setMessage('Une erreur est survenue lors du chargement des événements.');
-                setIsSuccess(false);
+                addToast('Une erreur est survenue lors du chargement des événements.', 'error');
             } finally {
                 setLoading(false);
             }
@@ -87,7 +77,6 @@ export default function ManageEventsPage() {
 
         if (actionParam === 'edit' && idParam) {
             const eventToEdit = events.find(e => Number(e.id) === Number(idParam));
-            // const eventToEdit = events.find(e => e.id === Number(idParam));
             if (eventToEdit) {
                 setCurrentEvent(eventToEdit);
                 setTitle(eventToEdit.title);
@@ -103,8 +92,7 @@ export default function ManageEventsPage() {
                 setPreviewImage(eventToEdit.image_url);
                 setAction('edit');
             } else if (!loading) { // If not loading and event not found, redirect to list
-                setMessage('Événement non trouvé pour la modification.');
-                setIsSuccess(false);
+                addToast('Événement non trouvé pour la modification.');
                 router.push('/admin/manage-events');
                 setAction('list');
             }
@@ -128,8 +116,7 @@ export default function ManageEventsPage() {
         setImageFile(null);
         setPreviewImage(null);
         setCurrentEvent(null);
-        setMessage('');
-        setIsSuccess(false);
+        addToast('');
         setUploadingImage(false);
     };
 
@@ -147,8 +134,7 @@ export default function ManageEventsPage() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         setIsSubmittingEvent(true);
-        setMessage('');
-        setIsSuccess(false);
+        addToast('');
 
         let finalImageUrl = imageUrl; // Start with existing image URL
 
@@ -168,19 +154,16 @@ export default function ManageEventsPage() {
 
             if (uploadResponse.ok) {
                 finalImageUrl = uploadData.imageUrl; // Use the URL returned by the upload API
-                setMessage(uploadData.message);
-                setIsSuccess(true);
+                addToast(uploadData.message);
             } else {
-                setMessage(uploadData.message || 'Erreur lors de l\'upload de l\'image.');
-                setIsSuccess(false);
+                addToast(uploadData.message || 'Erreur lors de l\'upload de l\'image.', 'error');
                 setUploadingImage(false);
                 setIsSubmittingEvent(false);
                 return; // Stop if image upload fails
             }
         } catch (uploadError) {
             console.error('Erreur lors de l\'upload de l\'image:', uploadError);
-            setMessage('Une erreur est survenue lors de l\'upload de l\'image.');
-            setIsSuccess(false);
+            addToast('Une erreur est survenue lors de l\'upload de l\'image.', 'error');
             setUploadingImage(false);
             setIsSubmittingEvent(false);
             return;
@@ -213,8 +196,7 @@ export default function ManageEventsPage() {
                 body: JSON.stringify({ id: currentEvent.id, ...eventData }),
             });
         } else {
-            setMessage('Action non valide.');
-            setIsSuccess(false);
+            addToast('Action non valide.');
             setIsSubmittingEvent(false);
             return;
         }
@@ -222,14 +204,12 @@ export default function ManageEventsPage() {
         const data = await response.json();
         setIsSubmittingEvent(false);
         if (response.ok) {
-            setMessage(data.message);
-            setIsSuccess(true);
+            addToast(data.message);
             resetForm();
             ; 
             setTimeout(() => router.push('/admin/manage-events'), 2000);
         } else {
-            setMessage(data.message || 'Erreur lors de l\'opération.');
-            setIsSuccess(false);
+            addToast(data.message || 'Erreur lors de l\'opération.', 'error');
         }
     };
 
@@ -249,8 +229,7 @@ export default function ManageEventsPage() {
     // This function will be called when the modal confirms
     const executeDelete = async (eventId: number) => {
         closeConfirmationModal(); 
-        setMessage('');
-        setIsSuccess(false);
+        addToast('');
         setDeletingEventId(eventId); 
 
         try {
@@ -261,17 +240,14 @@ export default function ManageEventsPage() {
             });
             const data = await response.json();
             if (response.ok) {
-                setMessage(data.message);
-                setIsSuccess(true);
+                addToast(data.message);
                 setEvents(prevEvents => prevEvents.filter(event => event.id !== eventId));
             } else {
-                setMessage(data.message || 'Erreur lors de la suppression de l\'événement.');
-                setIsSuccess(false);
+                addToast(data.message || 'Erreur lors de la suppression de l\'événement.', 'error');
             }
         } catch (error) {
             console.error('Erreur lors de la suppression de l\'événement:', error);
-            setMessage('Une erreur est survenue lors de la suppression.');
-            setIsSuccess(false);
+            addToast('Une erreur est survenue lors de la suppression.', 'error');
         } finally {
             setDeletingEventId(null);
         }
@@ -286,19 +262,13 @@ export default function ManageEventsPage() {
 
     if (loading && action === 'list') {
         return <>
-        <p className="text-center text-gray-700 text-lg mb-4">Chargement des événements</p>
-        <Loader variant="dots" />;
+            <p className="text-center text-gray-700 text-lg mb-4">Chargement des événements</p>
+            <Loader variant="dots" />;
         </>
     }
 
     return (
         <div className="p-3">
-
-            {message && (
-                <div className={`fixed w-full max-w-[85%] top-6 [769px]:top-1 left-1/2 transform -translate-x-1/2 transition-all ease-out py-2 px-4 text-center text-base rounded-lg ${isSuccess ? 'text-green-600 bg-green-100' : 'text-red-600 bg-red-100'}`}>
-                {message}
-                </div>
-            )}
 
             {/* ===== Create / Edit an event ===== */}
 
@@ -453,8 +423,8 @@ export default function ManageEventsPage() {
 
             <div className="mt-10 text-center">
                 <ActionButton variant="primary" onClick={() => router.push(`/admin/dashboard`)} className="group" >                    
-                <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
-                <span>Tableau de bord</span>
+                    <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" />
+                    <span>Tableau de bord</span>
                 </ActionButton>
             </div>
 

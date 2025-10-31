@@ -1,6 +1,7 @@
 'use client';
 
 import { Event as EventBase } from '@/app/lib/definitions';
+import { ChevronUpIcon } from '@heroicons/react/16/solid';
 import { MapPinIcon, BookmarkIcon, AdjustmentsHorizontalIcon } from '@heroicons/react/24/solid';
 import { useState } from 'react';
 
@@ -56,19 +57,29 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
     return (
         <div
             className={` 
-                ${(isOpen || isClosing) ? 'dark:text-white/60 flex min-[1900px]:flex-col min-[1900px]:sticky min-[1900px]:top-20 min-[1900px]:w-xs min-[1900px]:mr-10 flex-wrap gap-6 min-[1200px]:gap-2 min-[1900px]:gap-6 justify-between items-center sm:px-1 py-3 -mt-10 mb-7 bg-[#fcfff7] dark:bg-[#222222] rounded-3xl h-fit w-full max-h-125 px-4 transition-all duration-500 ease-in-out shadow-[0_0_32px_20px_#fcfff7] dark:shadow-[0_0_32px_20px_#222222]' : 'max-h-15 px-2 -mb-15 size-15 -translate-y-25 min-[1900px]:absolute'}`}
+                ${(isOpen || isClosing) ?  'max-h-15 px-2 -mb-15 size-15 -translate-y-25 min-[1900px]:absolute' : 'dark:text-white/60 flex min-[1900px]:flex-col min-[1900px]:sticky min-[1900px]:top-20 min-[1900px]:w-xs min-[1900px]:mr-10 flex-wrap gap-6 min-[1200px]:gap-2 min-[1900px]:gap-6 justify-between items-center sm:px-1 py-3 -mt-10 mb-7 bg-[#fcfff7] dark:bg-[#222222] rounded-3xl h-fit w-full max-h-125 px-4 transition-all duration-500 ease-in-out shadow-[0_0_32px_20px_#fcfff7] dark:shadow-[0_0_32px_20px_#222222]'}`}
         >
-            {/* Header avec bouton toggle */}
+            {/* Header filter with toggle button, increase button */}
             <div
-                className={`relative overflow-hidden flex gap-3 text-gray-800 dark:text-[#ff952aff] items-center cursor-pointer p-2.5 bg-[#fcfff7] dark:bg-[#222222] rounded-full border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)] ${(isOpen || isClosing) ? '' : "group place-content-center before:content-[''] before:absolute before:w-1.5 before:h-1.5 before:-translate-y-3 before:rounded-full before:bg-[currentColor] before:left-[calc(50%-3px)] before:-bottom-6 before:transition-all before:duration-300 before:ease-in-out hover:before:-bottom-1 [&>svg]:transition-transform [&>svg]:duration-300 [&>svg]:ease-in-out hover:[&>svg]:-translate-y-1.5"}`}
+                className={`relative overflow-hidden group flex gap-3 text-gray-800 dark:text-[#ff952aff] items-center cursor-pointer p-2.5 bg-[#fcfff7] dark:bg-[#222222] rounded-full border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)] ${(isOpen || isClosing) ? "group place-content-center before:content-[''] before:absolute before:w-1.5 before:h-1.5 before:-translate-y-3 before:rounded-full before:bg-[currentColor] before:left-[calc(50%-3px)] before:-bottom-6 before:transition-all before:duration-300 before:ease-in-out hover:before:-bottom-1 [&>svg]:transition-transform [&>svg]:duration-300 [&>svg]:ease-in-out hover:[&>svg]:-translate-y-1.5" : '' }`}
                 onClick={toggleFilters}
-                title={(isOpen || isClosing) ? '' : 'Filtres'}
+                title={(isOpen || isClosing) ? 'Ouvrir les Filtres' : ''}
             >
-                <AdjustmentsHorizontalIcon
-                    className={`size-6 transform transition-transform duration-500 ease-in-out
-                        ${(isOpen || isClosing) ? 'rotate-90' : 'rotate-0'}`}
-                />
-                {(isOpen || isClosing) && !isClosing && (
+                {(isOpen || isClosing) ? (
+                    <AdjustmentsHorizontalIcon
+                        className="size-6 animate-pulse hover:animate-none transform transition-transform duration-500 ease-in-out"
+                    />
+                ) : (
+                    <div className="size-6">
+                        <ChevronUpIcon
+                            className={`!size-6 p-0.5 rounded-full border-none bg-[#E3E5DF] dark:bg-gray-800 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,0.3)] focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 transform transition-transform duration-500 ease-in-out
+                            ${(isOpen || isClosing) ? 'rotate-0' : 'rotate-270 animate-bounce group-hover:animate-none'}`}
+                            title="Fermer les Filtres"
+                        />
+                    </div>
+                )}
+
+                { !isOpen && (
                     <>
                         <h3 className="text-xl font-bold text-gray-900 dark:text-[#ff952aff]">Filtres</h3>
                         <button
@@ -85,10 +96,10 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
                 )}
             </div>
 
-            {(isOpen || isClosing) && (
+            { !isOpen && (
                 <div className="flex flex-wrap min-[1900px]:justify-end gap-4 min-[1900px]:gap-6">
                     {/* Date Filter */}
-                    <div className={`${isClosing ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-1 relative bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
+                    <div className={`${isOpen ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-1 relative bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
                         <label className="absolute -top-2.5 left-4 text-xs font-medium bg-[#fcfff7] dark:bg-[#222222] px-1 rounded">
                             Date
                         </label>
@@ -100,7 +111,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
                     </div>
 
                     {/* Location Filter */}
-                    <div className={`${isClosing ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-2 relative bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
+                    <div className={`${isOpen ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-2 relative bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
                         <label htmlFor="location" className="absolute -top-2.5 left-4 text-xs font-medium bg-[#fcfff7] dark:bg-[#222222] px-1 rounded">
                             Lieu
                         </label>
@@ -120,7 +131,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
                     </div>
 
                     {/* Event Type Filter */}
-                    <div className={`${isClosing ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-3 relative bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
+                    <div className={`${isOpen ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-3 relative bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
                         <label htmlFor="eventType" className="absolute -top-2.5 left-4 text-xs font-medium bg-[#fcfff7] dark:bg-[#222222] px-1 rounded">
                             Type d&apos;événement
                         </label>
@@ -140,7 +151,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
                     </div>
 
                     {/* Available seats */}
-                    <div className={`${isClosing ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-4 flex items-center bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
+                    <div className={`${isOpen ? 'fadeOutScaleFilter' : 'fadeInScaleFilter'} fadeDelayFilter-4 flex items-center bg-[#fcfff7] dark:bg-[#222222] rounded-full p-2 border border-gray-300 dark:border-white/20 transition-transform duration-500 ease-in-out shadow-[0px_3px_3px_rgba(0,0,0,_0.2)] dark:shadow-[0px_5px_5px_rgba(0,0,0,_0.4)] shadow-[hsl(var(--always-black)/5.1%)]`}>
                         <input
                             id="showOnlyAvailable"
                             name="showOnlyAvailable"

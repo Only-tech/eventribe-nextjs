@@ -120,7 +120,7 @@ export default function EventsPage() {
     return (
         <>
             <BannerCarousel />
-            <div className="max-w-[96%] mx-auto">
+            <section className="max-w-[96%] mx-auto">
                 <div className="text-center my-10 md:my-15">
                      <h1 className="max-sm:w-3xs text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] relative inline-block pb-2 after:content-[''] after:block after:h-1 after:bg-[#08568a] after:w-[60%] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2">
                         Découvrez les événements à venir
@@ -153,15 +153,17 @@ export default function EventsPage() {
                             </div>
 
                             {hasMoreEvents && (
-                                <div className="text-center mt-12">
+                                <div className="flex items-center justify-center mt-12 w-[70%] mx-auto">  
+                                    <div className="flex-grow border-t-3 dark:border-white/70 border-gray-500 rounded-full"></div>                            
                                     <ActionButton
                                         variant="primary"
                                         onClick={loadMoreEvents}
-                                        className="dark:hover:text-gray-200 dark:text-gray-800 dark:hover:bg-gray-800 dark:bg-amber-50"
+                                        className="mx-4 dark:hover:text-gray-200 dark:text-gray-800 dark:hover:bg-gray-800 dark:bg-amber-50"
                                     >
                                         Afficher {Math.min(eventsPerIncrement, filteredEvents.length - visibleCount)} événements de plus
                                         <ChevronDownIcon className="ml-2 size-6" />
                                     </ActionButton>
+                                    <div className="flex-grow border-t-3 dark:border-white/70 border-gray-500 rounded-full"></div>
                                 </div>
                             )}
                         </div>
@@ -171,7 +173,7 @@ export default function EventsPage() {
                 <h1 className="mt-20 text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-5 relative inline-block after:content-[''] after:block after:h-1 after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-2">
                     Les intemporels
                 </h1>
-            </div>
+            </section>
             <Carousel imageUrls={imageUrls} />
         </>
     );

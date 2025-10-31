@@ -186,12 +186,11 @@ export default function UserAccountManageEventsPage() {
 
     // ========== Side Bar Nav ============
     const renderSidebarNav = () => (
-        <aside className={`space-y-6  dark:text-white/65 ${isNavCollapsed ? 'lg:space-y-0 lg:w-20 h-fit bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]' : 'lg:w-full'}`}>
-
+        <>
             {/* --- Account Info Card ---- */}
-            <section className={`bg-white dark:bg-[#1E1E1E] rounded-xl ${isNavCollapsed ? 'p-2' : ' p-1 sm:p-8 lg:p-6  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]'}`}>
-                <div className="relative hidden lg:flex justify-end">
-                    <IconButton onClick={() => setIsNavCollapsed(!isNavCollapsed)} title={isNavCollapsed ? 'Agrandir' : 'Réduire'} className={`bg-transparent p-0 shadow-none hover:bg-transparent hover:shadow-[0_12px_15px_rgb(0,0,0,0.4)] overflow-hidden group ${isNavCollapsed ? '-mt-3 -mr-3' : 'absolute -top-6 -right-6'}`}>
+            <section className={`relative bg-white dark:bg-[#1E1E1E] rounded-xl ${isNavCollapsed ? 'p-2' : ' p-1 sm:p-8 lg:p-6  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]'}`}>
+                <div className={`hidden lg:flex  ${isNavCollapsed ? 'justify-end' : 'absolute z-0 top-0 right-0'}`}>
+                    <IconButton onClick={() => setIsNavCollapsed(!isNavCollapsed)} title={isNavCollapsed ? 'Agrandir' : 'Réduire'} className={`bg-transparent p-0 shadow-none hover:bg-transparent hover:shadow-[0_12px_15px_rgb(0,0,0,0.4)] overflow-hidden group ${isNavCollapsed ? '-mt-3 -mr-3' : ''}`}>
                         <ChevronUpIcon className={`size-6 dark:text-gray-300 transition-transform duration-900 animate-bounce group-hover:animate-none ${isNavCollapsed ? ' rotate-45' : 'rotate-225'}`} />
                     </IconButton>
                 </div>
@@ -233,7 +232,7 @@ export default function UserAccountManageEventsPage() {
             
             {/* --- Events Card --- */}
             <section className={`bg-white dark:bg-[#1E1E1E] rounded-xl ${isNavCollapsed ? 'p-2' : ' p-1 sm:p-8 lg:p-6  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]'}`}>
-                <h3 className={`text-lg font-bold text-gray-900 dark:text-[#ff952aff]  max-sm:mx-8 max-sm:mt-2 mb-4 ${isNavCollapsed ? 'lg:hidden' : ''}`}>Mes événements</h3>
+                <h3 className={`text-lg font-bold text-gray-900 dark:text-[#ff952aff]  max-lg:mx-8 max-sm:mt-2 mb-4 ${isNavCollapsed ? 'lg:hidden' : ''}`}>Mes événements</h3>
                 <nav className="space-y-2">
                     <button
                         onClick={() => handleViewChange('events')}
@@ -255,7 +254,7 @@ export default function UserAccountManageEventsPage() {
 
             {/* ---- Help Card --- */}
             <section className={`bg-white dark:bg-[#1E1E1E] rounded-xl ${isNavCollapsed ? 'p-2' : ' p-1 sm:p-8 lg:p-6  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]'}`}>                
-                <h3 className={`text-lg font-bold text-gray-900 dark:text-[#ff952aff] max-sm:mx-8 max-sm:mt-2 mb-4 ${isNavCollapsed ? 'lg:hidden' : ''}`}>Aide</h3>
+                <h3 className={`text-lg font-bold text-gray-900 dark:text-[#ff952aff] max-lg:mx-8 max-sm:mt-2 mb-4 ${isNavCollapsed ? 'lg:hidden' : ''}`}>Aide</h3>
                 <nav className="space-y-2">
                     <button
                         onClick={() => handleViewChange('help')}
@@ -274,7 +273,7 @@ export default function UserAccountManageEventsPage() {
                     </div>
                 </nav>
             </section>
-        </aside>
+        </>
     );
 
     // ========= Main containt diplayed on Desktop =========
@@ -354,7 +353,6 @@ export default function UserAccountManageEventsPage() {
     const renderEventContent = () => (
         <EventManagement 
             session={session} 
-            // onMessage={addToast} 
             openModal={openConfirmationModal} 
             closeModal={closeConfirmationModal}
         />
@@ -423,8 +421,10 @@ export default function UserAccountManageEventsPage() {
                     {/* --- Main container --- */}
                     <div className={`grid grid-cols-1 lg:gap-8 lg:grid ${ isNavCollapsed ? 'lg:grid-cols-[80px_1fr_288px]' : 'lg:grid-cols-[calc(25%)_1fr_calc(25%)]' } transition-all duration-300`}>
                         
-                        {renderSidebarNav()}
-
+                        <aside className={`relative space-y-6 lg:sticky lg:top-10 h-fit ${isNavCollapsed ? 'lg:space-y-0 lg:w-20 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]' : 'lg:w-full'}`}>
+                            {renderSidebarNav()}
+                        </aside>
+                        
                         <main className="hidden lg:block lg:col-span-2 space-y-6">
                             {renderMainContent()}
                         </main>

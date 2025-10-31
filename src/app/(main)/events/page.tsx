@@ -158,7 +158,7 @@ export default function EventsPage() {
                                     <ActionButton
                                         variant="primary"
                                         onClick={loadMoreEvents}
-                                        className="mx-4 dark:hover:text-gray-200 dark:text-gray-800 dark:hover:bg-gray-800 dark:bg-amber-50"
+                                        className="mx-4 dark:hover:text-gray-200 dark:text-gray-800 dark:hover:border-white/70 dark:hover:bg-gray-800 dark:bg-amber-50"
                                     >
                                         Afficher {Math.min(eventsPerIncrement, filteredEvents.length - visibleCount)} événements de plus
                                         <ChevronDownIcon className="ml-2 size-6" />

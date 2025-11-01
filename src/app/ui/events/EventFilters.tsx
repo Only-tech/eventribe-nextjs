@@ -57,7 +57,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
     return (
         <div
             className={` 
-                ${(isOpen || isClosing) ?  'max-h-15 px-2 -mb-15 size-15 -translate-y-25 min-[1900px]:absolute' : 'dark:text-white/60 flex min-[1900px]:flex-col min-[1900px]:sticky min-[1900px]:top-20 min-[1900px]:w-xs min-[1900px]:mr-10 flex-wrap gap-6 min-[1200px]:gap-2 min-[1900px]:gap-6 justify-between items-center sm:px-1 py-3 -mt-10 mb-7 bg-[#fcfff7] dark:bg-[#222222] rounded-3xl h-fit w-full max-h-125 px-4 transition-all duration-500 ease-in-out shadow-[0_0_32px_20px_#fcfff7] dark:shadow-[0_0_32px_20px_#222222]'}`}
+                ${(isOpen || isClosing) ?  'max-h-15 px-2 -mb-15 size-15 -translate-y-25 min-[1900px]:absolute' : 'dark:text-white/60 flex min-[1900px]:flex-col min-[1900px]:sticky min-[1900px]:top-20 min-[1900px]:w-xs min-[1900px]:mr-10 flex-wrap gap-6 min-[1200px]:gap-2 min-[1900px]:gap-6 justify-between items-center sm:px-2 py-3 -mt-10 mb-7 bg-[#fcfff7] dark:bg-[#222222] rounded-3xl h-fit w-full max-h-125 px-3 transition-all duration-500 ease-in-out shadow-[0_0_32px_20px_#fcfff7] dark:shadow-[0_0_32px_20px_#222222]'}`}
         >
             {/* Header filter with toggle button, increase button */}
             <div
@@ -104,9 +104,9 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
                             Date
                         </label>
                         <div className="flex space-x-1">
-                            <input type="date" name="startDate" value={filters.startDate} onChange={handleInputChange} className="rounded-full px-2 py-1 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,_0.3)] border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 sm:text-sm" />
+                            <input type="date" name="startDate" value={filters.startDate} onChange={handleInputChange} className="rounded-full w-35 px-1.5 py-1 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,_0.3)] border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 sm:text-sm" />
                             <span>à</span>
-                            <input type="date" name="endDate" value={filters.endDate} onChange={handleInputChange} className="rounded-full px-2 py-1 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,_0.3)] border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 sm:text-sm" />
+                            <input type="date" name="endDate" value={filters.endDate} onChange={handleInputChange} className="rounded-full w-35 px-1.5 py-1 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,_0.3)] border-none bg-[#E3E5DF] dark:bg-gray-800 transition-all ease-in-out duration-400 focus:outline-none focus:ring-1 focus:ring-[#0088aa] dark:focus:ring-[#ff952aff]/50 sm:text-sm" />
                         </div>
                     </div>
 

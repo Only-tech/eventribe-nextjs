@@ -160,7 +160,7 @@ export default function EventsPage() {
                                         onClick={loadMoreEvents}
                                         className="mx-4 dark:hover:text-gray-200 dark:text-gray-800 dark:hover:border-white/70 dark:hover:bg-gray-800 dark:bg-amber-50"
                                     >
-                                        Afficher {Math.min(eventsPerIncrement, filteredEvents.length - visibleCount)} événements de plus
+                                        Voir {Math.min(eventsPerIncrement, filteredEvents.length - visibleCount)} de plus
                                         <ChevronDownIcon className="ml-2 size-6" />
                                     </ActionButton>
                                     <div className="flex-grow border-t-3 dark:border-white/70 border-gray-500 rounded-full"></div>

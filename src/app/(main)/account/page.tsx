@@ -9,11 +9,13 @@ import { ChevronUpIcon, CalendarDaysIcon } from '@heroicons/react/16/solid';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import ActionButton from '@/app/ui/buttons/ActionButton';
+import PlaneLogo from '@/app/ui/logo/PlaneLogo';
 import Loader from '@/app/ui/animation/Loader';
 import EventManagement from '@/app/ui/account/EventManagement';
 import PaymentMethods from '@/app/ui/account/PaymentMethods';
 import IconButton from '@/app/ui/buttons/IconButton';
 import { useToast } from '@/app/ui/status/ToastProvider';
+import { TrashIcon } from '@heroicons/react/24/solid';
 
 type ActiveView = 'info' | 'security' | 'payments' | 'events' | 'help' | null;
 
@@ -363,13 +365,13 @@ export default function UserAccountManageEventsPage() {
                 <p className="text-red-700 dark:text-red-400 mt-2 text-sm">
                     La suppression de votre compte est définitive. Toutes vos données, y compris les événements que vous avez créés et vos inscriptions, seront supprimées et ne pourront pas être récupérées.
                 </p>
-                <div className="mt-4">
+                <div className="mt-4 flex justify-center sm:justify-end">
                     <ActionButton
                         variant="destructive"
                         onClick={handleDeleteAccount}
                         isLoading={isDeletingAccount}
                     >
-                        {isDeletingAccount ? 'Suppression...' : 'Supprimer mon compte'}
+                        {isDeletingAccount ? <span className="ml-4">Suppression</span> : <><TrashIcon className="size-6 mr-4" /><span> Supprimer mon compte</span></>}
                     </ActionButton>
                 </div>
             </div>
@@ -394,12 +396,15 @@ export default function UserAccountManageEventsPage() {
             <p className="text-gray-700 dark:text-gray-300 mb-4">
                 Pour toute question ou problème, veuillez contacter notre service client.
             </p>
-            <ActionButton
-                variant="primary"
-                onClick={() => window.location.href = 'mailto:support@eventribe.com'}
-            >
-                Contacter le support
-            </ActionButton>
+            <div className="flex justify-center sm:justify-end">
+                <ActionButton
+                    variant="primary"
+                    onClick={() => window.location.href = 'mailto:support@eventribe.com'}
+                >
+                    Contacter le support
+                    <PlaneLogo className="group-hover:animate-bounce"/>
+                </ActionButton>
+            </div>
         </section>
     );
 

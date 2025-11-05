@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import Image from 'next/image';
 import { PaymentMethod } from '@/app/lib/definitions';
 import ActionButton from '@/app/ui/buttons/ActionButton';
@@ -90,18 +91,19 @@ export default function PaymentModal({
                 ${isOpen ? 'translate-x-0 opacity-100 animate-slide-left' : 'translate-x-5 opacity-0 animate-slide-right'}`}
             >
                 <div className="relative w-full h-40 rounded-lg overflow-hidden">
-                <Image
-                    src={event.image_url || 'https://placehold.co/400x200'}
-                    alt={event.title}
-                    fill
-                    className="object-cover"
-                />
+                    <Image
+                        src={event.image_url || 'https://placehold.co/400x200'}
+                        alt={event.title}
+                        fill
+                        className="object-cover"
+                    />
                 </div>
 
                 {/* Details Content */}
                 <div className="p-3 lg:p-6">
                     <p className="font-semibold text-gray-800 dark:text-gray-200">{event.title}</p>
                     <p className="text-gray-600 dark:text-gray-400">
+                        <span className="font-medium mr-2">Pass</span>
                         {event.price > 0 ? `${event.price} €` : "Gratuit"}
                     </p>
 
@@ -110,8 +112,14 @@ export default function PaymentModal({
                         Paiement avec {paymentMethod.card_brand} **** **** **** {paymentMethod.card_last4}
                         </p>
                     ) : (
-                        <p className="mb-6 text-end text-red-600 font-medium">
-                        Aucun moyen de paiement enregistré
+                        <p className="text-red-600 text-end font-medium mb-4">
+                            Aucun moyen de paiement enregistré,{' '} 
+                            <Link 
+                                href="/account"                            
+                                className="text-indigo-600 hover:underline cursor-pointer"
+                            >
+                                Ajouter
+                            </Link>
                         </p>
                     )}
 

@@ -49,7 +49,7 @@ export default function EventCard({ event }: { event: Event; }) {
                 </div>
 
                 <div className="py-3 px-3.5 text-sm flex-grow flex flex-col">
-                    <h2 className="text-center md:text-base font-bold text-gray-900 dark:text-[#ff952aff] mb-2">{event.title}</h2>
+                    <h2 className="text-center text-base font-bold text-gray-900 dark:text-[#ff952aff] mb-2">{event.title}</h2>
 
                     <p className="inline-flex items-center text-gray-700 dark:text-white/45 text-xs mb-1">
                         <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />

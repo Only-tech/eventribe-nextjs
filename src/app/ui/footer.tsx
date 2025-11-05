@@ -17,7 +17,7 @@ export default function Footer() {
     const pathname = usePathname();
     const [isContactModalOpen, setIsContactModalOpen] = useState(false);
 
-    // --- Correction ici ---
+    // --- Display simple footer ---
     const simpleFooterPaths = ['/account', '/my-events', '/preview-email'];
     const isSimpleFooter =
         simpleFooterPaths.includes(pathname) || pathname.startsWith('/event/');

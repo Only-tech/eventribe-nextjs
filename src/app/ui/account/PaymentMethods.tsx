@@ -168,7 +168,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                         />
                     </div>
 
-                    <div className="flex justify-end gap-4">
+                    <div className="flex justify-center sm:justify-end gap-4">
                         {isAdding ? (
                             <div className="flex-1 flex justify-center py-2">
                                 <Loader variant="dots" />
@@ -179,7 +179,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                                     type="button" 
                                     variant="destructive" 
                                     onClick={() => setShowForm(false)}
-                                    className="w-40 sm:w-48 rounded-r"
+                                    className="w-40 max-sm:flex-1 sm:w-48 rounded-r"
                                 >
                                     <ChevronUpIcon className="inline-block size-6 -ml-3 mr-2 rotate-270 group-hover:animate-bounce" />
                                     Annuler
@@ -187,7 +187,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                                 <ActionButton 
                                     type="submit" 
                                     variant="primary"
-                                    className="w-40 sm:w-48 rounded-l"
+                                    className="w-40 max-sm:flex-1 sm:w-48 rounded-l"
                                 >
                                     Enregistrer
                                     <ChevronUpIcon className="inline-block size-6 ml-2 -mr-3 rotate-90 group-hover:animate-bounce" />

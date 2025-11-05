@@ -32,7 +32,7 @@ export default function CookieBanner() {
     return (
         <div
             className={clsx(
-                'fixed bottom-4 right-4 max-w-[520px] w-[90%] p-2 bg-white dark:bg-[#303134] dark:hover:bg-[#292929] border border-gray-300 dark:border-white/10 rounded-2xl md:rounded-3xl shadow-[0_12px_15px_rgb(0,0,0,0.5)] dark:shadow-[0_15px_18px_rgb(0,0,0,0.9)] shadow-[hsl(var(--always-black)/5.1%)] transform transition-all duration-900 ease-in-out',
+                'fixed z-1000000000 bottom-4 right-4 max-w-[520px] w-[90%] p-2 bg-white dark:bg-[#303134] dark:hover:bg-[#292929] border border-gray-300 dark:border-white/10 rounded-2xl md:rounded-3xl shadow-[0_8px_15px_rgb(0,0,0,0.8)] dark:shadow-[0_8px_18px_rgb(0,0,0)] shadow-[hsl(var(--always-black)/5.1%)] transform transition-all duration-900 ease-in-out',
                 {
                 '-translate-x-full opacity-0': !visible && !closing, // Initial state from left
                 'translate-x-0 opacity-100': visible && !closing,    // Visible when stand to right-4

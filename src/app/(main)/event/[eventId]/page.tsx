@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { fetchEventById, isUserRegisteredForEvent } from '@/app/lib/data-access/events';
 import Image from 'next/image';
 import Link from 'next/link';
-import { UsersIcon } from '@heroicons/react/24/outline';
+import { BanknotesIcon, UsersIcon } from '@heroicons/react/24/outline';
 import { MapPinIcon, CalendarDaysIcon } from '@heroicons/react/24/solid';
 import { ChevronUpIcon, UserGroupIcon } from '@heroicons/react/16/solid';
 import { getServerSession } from 'next-auth';
@@ -54,23 +54,29 @@ async function EventDetails({ eventId }: { eventId: number }) {
                     <div className="flex flex-col flex-1 md:flex-row lg:flex-col lg:justify-center lg:pl-6 gap-6 mb-6">
                         <div className="min-w-[330px] flex flex-col text-sm">
                             <h1 className="hidden lg:flex text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-300 mb-4">{event.title}</h1>
-                            <p className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2">
-                                <CalendarDaysIcon className="inline-block w-5 h-5 mr-2" />{' '}
-                                {new Date(event.event_date).toLocaleString('fr-FR', {
-                                day: '2-digit',
-                                month: '2-digit',
-                                year: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                                })}{' '}
-                                GMT+2
-                            </p>
-                            <p className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2">
-                                <MapPinIcon className="inline-block w-5 h-5 mr-2" /> {event.location}
+                            <p className="flex-wrap">
+                                <span className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2 mr-10">
+                                    <CalendarDaysIcon className="inline-block w-5 h-5 mr-2" />{' '}
+                                    {new Date(event.event_date).toLocaleString('fr-FR', {
+                                        day: '2-digit',
+                                        month: '2-digit',
+                                        year: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                    })}{' '}
+                                    GMT+2
+                                </span>
+                                <span className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2">
+                                    <MapPinIcon className="inline-block w-5 h-5 mr-2" /> {event.location}
+                                </span>
                             </p>
                             <p className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2">
                                 <UsersIcon className="inline-block w-6 h-6 mr-2" />{event.registered_count}
-                                <UserGroupIcon className="size-8 ml-8"/><strong className="text-gray-800 dark:text-gray-300 ml-2">Places disponibles &nbsp;: </strong>&nbsp;  {event.available_seats}
+                                <UserGroupIcon className="size-8 ml-8"/><strong className="text-gray-800 dark:text-gray-300 ml-2">Places disponibles &nbsp; </strong>&nbsp;  {event.available_seats}
+                            </p>
+                            <p className="inline-flex items-center text-gray-700 dark:text-white/70">
+                                <BanknotesIcon className="size-8 mr-3"/>
+                                <strong>Pass </strong> &nbsp;&nbsp; {event.price > 0 ? `${event.price} €` : "Gratuit"}
                             </p>
                         </div>
                         <div>

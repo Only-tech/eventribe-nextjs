@@ -39,6 +39,8 @@ export default function EventManagement({ session, openModal, closeModal }: Even
     const [availableSeats, setAvailableSeats] = useState<number | ''>('');
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [price, setPrice] = useState<number | ''>('');
+
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [uploadingImage, setUploadingImage] = useState(false);
     const [isSubmittingEvent, setIsSubmittingEvent] = useState(false);
@@ -154,6 +156,7 @@ export default function EventManagement({ session, openModal, closeModal }: Even
             location,
             available_seats: Number(availableSeats),
             image_url: finalImageUrl,
+            price: Number(price),
             ...(action === 'edit' && { id: currentEvent?.id }),
         };
         
@@ -259,6 +262,7 @@ export default function EventManagement({ session, openModal, closeModal }: Even
         setEventDate(formattedDate);
         setLocation(event.location);
         setAvailableSeats(event.available_seats);
+        setPrice(event.price);
         setImageUrl(event.image_url);
         setPreviewImage(event.image_url);
         setAction('edit');
@@ -266,7 +270,7 @@ export default function EventManagement({ session, openModal, closeModal }: Even
 
     // ======= Create/Update Events Form ===========
     const renderForm = () => (
-        <form onSubmit={handleSubmit} className="w-full p-4 sm:p-6 md:px-8 md:py-10 xl:py-12 rounded-2xl md:rounded-3xl mx-auto bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/85 sm:mb-15  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative drop-shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] group shadow-[hsl(var(--always-black)/5.1%)]">
+        <form onSubmit={handleSubmit} className="w-full p-4 sm:p-6 md:px-8 md:py-10 xl:py-12 rounded-2xl md:rounded-3xl mx-auto bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/85 sm:mb-15  border border-gray-300 dark:border-white/10 animate-slide-top translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative drop-shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] group shadow-[hsl(var(--always-black)/5.1%)]">
                 <h2 className="text-3xl font-bold mb-6 sm:mb-10 text-gray-800 dark:text-[#ff952aff] text-center">{action === 'create' ? 'Créer un événement' : 'Modifier l\'événement'}</h2>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
@@ -282,9 +286,15 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                         <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Lieu</label>
                         <input type="text" id="location" value={location ?? ''} onChange={(e) => setLocation(e.target.value)} required className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" />
                     </div>
-                    <div className="relative">
-                        <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Places disponibles</label>
-                        <input type="number" id="availableSeats" value={availableSeats ?? ''} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
+                        <div className="relative">
+                            <label htmlFor="availableSeats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Places</label>
+                            <input type="number" id="availableSeats" value={availableSeats ?? ''} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" />
+                        </div>
+                        <div className="relative">
+                            <label htmlFor="price" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Prix (€)</label>
+                            <input type="number" id="price" value={price ?? ''} onChange={(e) => setPrice(Number(e.target.value))} required min="0" step="0.01" className="block w-full px-3 pb-2 pt-3 border border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]" />
+                        </div>
                     </div>
                     <div className="relative md:col-span-2">
                         <label htmlFor="descriptionShort" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 dark:text-white/70 px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E]">Description courte</label>
@@ -377,6 +387,7 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                         setLocation('');
                         setAvailableSeats('');
                         setImageUrl(null);
+                        setPrice('');
                         setPreviewImage(null);
                         setImageFile(null);
                     }}

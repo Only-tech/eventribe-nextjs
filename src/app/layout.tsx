@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import '@/app/globals.css';
 import OnTopButton from '@/app/ui/buttons/OnTopButton';
 import { Providers } from '@/app/providers';
+import { cookies } from 'next/headers';
+import CookieBanner from '@/app/ui/CookieBanner';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,11 +13,10 @@ export const metadata: Metadata = {
     description: 'Gestion d\'événements et inscriptions',
 };
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+
+  const cookieStore = await cookies();
+  const consent = cookieStore.get('cookie-consent')?.value;
     return (
         <html lang="fr" suppressHydrationWarning>
             <head>
@@ -38,6 +39,7 @@ export default function RootLayout({
                 <Providers>
                     {children}
                     <OnTopButton /> 
+                    {!consent && <CookieBanner />}
                 </Providers>
             </body>
         </html>

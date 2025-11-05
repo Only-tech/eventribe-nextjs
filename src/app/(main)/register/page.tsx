@@ -1,6 +1,6 @@
 'use client'; 
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
@@ -88,25 +88,25 @@ export default function RegisterPage() {
         setLoading(true);
         
         try {
-        const response = await fetch('/api/auth/verify-code', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, code }),
-        });
+            const response = await fetch('/api/auth/verify-code', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, code }),
+            });
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (response.ok) {
-            addToast(data.message);
-            setStep('details_password');
-        } else {
-            addToast(data.message || "Code invalide ou expiré.");
-        }
+            if (response.ok) {
+                addToast(data.message);
+                setStep('details_password');
+            } else {
+                addToast(data.message || "Code invalide ou expiré.");
+            }
         } catch (error) {
             console.error("Erreur lors de la vérification du code:", error);
             addToast('Une erreur est survenue lors de la vérification.', 'error');
         } finally {
-        setLoading(false);
+            setLoading(false);
         }
     };
 
@@ -200,7 +200,7 @@ export default function RegisterPage() {
                 return (
                     <form className="space-y-6" onSubmit={handleCodeSubmit}>
                         <h1 className="text-center max-[920px]:text-xl text-2xl font-bold text-gray-900 dark:text-white/85 mb-8">
-                            <span>Consultez vos e-mails et saisissez le code reçu</span>
+                            Consultez vos e-mails et saisissez le code reçu
                         </h1>
                         <div className="mb-6 relative">
                             <FloatingLabelInput
@@ -357,31 +357,17 @@ export default function RegisterPage() {
                         </p>
 
                         {/* Password confirmation */}
-                        <div className="relative">
-                            <FloatingLabelInput
-                                label="Confirmer le mot de passe"
-                                type={showPassword ? 'text' : 'password'}
-                                id="confirm_password"
-                                name="confirm_password"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
-                                className="pr-10" 
-                            />
-                            <button
-                                type="button" 
-                                onClick={() => setShowPassword(!showPassword)} 
-                                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-white/70 cursor-pointer"
-                                aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
-                                title={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
-                            >
-                                {showPassword ? (
-                                    <EyeSlashIcon className="h-5 w-5" />
-                                ) : (
-                                    <EyeIcon className="h-5 w-5" />
-                                )}
-                            </button>
-                        </div>
+                        <FloatingLabelInput
+                            label="Confirmer le mot de passe"
+                            type={showPassword ? 'text' : 'password'}
+                            id="confirm_password"
+                            name="confirm_password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            required
+                            className="pr-10" 
+                        />
+
                         <ActionButton
                             type="submit"
                             variant="secondary"
@@ -409,7 +395,9 @@ export default function RegisterPage() {
         <div className="absolute inset-0 bg-[#FCFFF7] min-[500px]:bg-[#FCFFF7]/65 dark:bg-[#222222]/65 max-[500px]:dark:bg-[#1E1E1E] backdrop-blur-sm min-h-screen overflow-y-auto max-[500px]:pt-0 max-[1025px]:py-10 flex items-start min-[1025px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out">      
             <div className="relative min-[500px]:drop-shadow-[0_10px_15px_rgb(0,0,0,0.2)] max-w-[95%] max-[769px]:w-md w-5xl mx-auto transform transition-transform duration-500 min-[500px]:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] group min-[500px]:dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] min-[500px]:dark:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
                 <div className="flex flex-col min-[769px]:flex-row items-center min-h-120  justify-evenly gap-6 min-[800px]:gap-10 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-2 max-[500]:pt-4 min-[500px]:p-6 lg:p-10 xl:p-12 min-[500px]:[clip-path:var(--clip-path-squircle-60)]" >      
-                    <div className="relative max-w-sm flex-1 w-full flex flex-col items-center justify-center">
+                    
+                    {/* Branding column */}
+                    <section className="relative max-w-sm flex-1 w-full flex flex-col items-center justify-center">
                         <IconHomeButton onClick={() => router.push(`/events`)} className="fixed top-4 right-4 cursor-pointer" title="Page d'accueil"/>
                         <LogoButton onClick={() => router.push(`/`)} className='max-md:w-25 max-md:h-16 max-[820px]:w-40 max-[820px]:h-32 w-55 h-38'/>
                         <WellcomeLogo/>
@@ -421,11 +409,13 @@ export default function RegisterPage() {
                             </Link>
                             .
                         </p>
-                    </div>
+                    </section>
 
+                    {/* Separator */}
                     <div className="w-full min-[769px]:w-0 max-h-[95%] min-[769px]:h-70  border-t border-gray-300 dark:border-white/20 min-[769px]:border-r"></div>
                     
-                    <div className="max-w-sm flex-1 w-full">
+                    {/* Form column*/}
+                    <section className="max-w-sm flex-1 w-full">
                         <IdleHintBubble step={step} />
 
                         {renderStepContent()} 
@@ -437,7 +427,7 @@ export default function RegisterPage() {
                             </Link>
                             .
                         </p>
-                    </div>
+                    </section>
                 </div>
             </div>
         </div>

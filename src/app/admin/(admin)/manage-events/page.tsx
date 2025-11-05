@@ -31,6 +31,8 @@ export default function ManageEventsPage() {
     const [availableSeats, setAvailableSeats] = useState<number | ''>('');
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [imageFile, setImageFile] = useState<File | null>(null);
+    const [price, setPrice] = useState<number | ''>('');
+
     const [previewImage, setPreviewImage] = useState<string | null>(null);
     const [uploadingImage, setUploadingImage] = useState(false);
 
@@ -89,6 +91,8 @@ export default function ManageEventsPage() {
                 setLocation(eventToEdit.location);
                 setAvailableSeats(eventToEdit.available_seats);
                 setImageUrl(eventToEdit.image_url);
+                setPrice(eventToEdit.price);
+
                 setPreviewImage(eventToEdit.image_url);
                 setAction('edit');
             } else if (!loading) { // If not loading and event not found, redirect to list
@@ -103,7 +107,7 @@ export default function ManageEventsPage() {
             setAction('list');
             resetForm();
         }
-    }, [searchParams, events, loading, router]); // Added router to dependencies
+    }, [searchParams, events, loading, router]);
 
     const resetForm = () => {
         setTitle('');
@@ -113,6 +117,7 @@ export default function ManageEventsPage() {
         setLocation('');
         setAvailableSeats('');
         setImageUrl(null);
+        setPrice('');
         setImageFile(null);
         setPreviewImage(null);
         setCurrentEvent(null);
@@ -180,6 +185,7 @@ export default function ManageEventsPage() {
             location,
             available_seats: Number(availableSeats),
             image_url: finalImageUrl, // Use the uploaded URL or existing URL
+            price: Number(price),
         };
 
         let response;
@@ -289,9 +295,15 @@ export default function ManageEventsPage() {
                             <input type="text" id="location" name="location" value={location} onChange={(e) => setLocation(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
                             <label htmlFor="location" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Lieu</label>
                         </div>
-                        <div className="relative group">
-                            <input type="number" id="available_seats" name="available_seats" value={availableSeats} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
-                            <label htmlFor="available_seats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Places disponibles</label>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 xl:gap-8">
+                            <div className="relative group">
+                                <input type="number" id="available_seats" value={availableSeats} onChange={(e) => setAvailableSeats(Number(e.target.value))} required min="0" className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
+                                <label htmlFor="availableSeats_seats" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Places</label>
+                            </div>
+                            <div className="relative group">
+                                <input type="number" id="price" value={price} onChange={(e) => setPrice(Number(e.target.value))} required min="0" step="0.01" className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" />
+                                <label htmlFor="price" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Prix (€)</label>
+                            </div>
                         </div>
                         <div className="relative group md:col-span-2">
                             <textarea id="description_short" name="description_short" value={descriptionShort} onChange={(e) => setDescriptionShort(e.target.value)} required className="peer block w-full px-3 pb-2 pt-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0676bdff] hover:border-[#0676bdff] focus:border-[#0676bdff]" rows={2}></textarea>

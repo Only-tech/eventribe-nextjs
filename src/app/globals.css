@@ -65,6 +65,11 @@ button:active {
   --os-handle-border-radius: 10px !important;
 }
 
+.cookie .os-theme-dark,
+.cookie .os-theme-light {
+  --os-padding-axis: 20px !important;
+}
+
 .os-theme-dark {
   --os-handle-bg: rgba(3, 82, 119, 0.502) !important;
   --os-handle-bg-hover: rgba(0, 0, 0, 0.55);

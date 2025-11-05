@@ -4,17 +4,18 @@ import type { Session } from 'next-auth';
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
-import { UserCircleIcon, ShieldCheckIcon,  QuestionMarkCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'; 
+import { UserCircleIcon, ShieldCheckIcon,  QuestionMarkCircleIcon, ExclamationTriangleIcon, BanknotesIcon } from '@heroicons/react/24/outline'; 
 import { ChevronUpIcon, CalendarDaysIcon } from '@heroicons/react/16/solid';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import Loader from '@/app/ui/animation/Loader';
 import EventManagement from '@/app/ui/account/EventManagement';
+import PaymentMethods from '@/app/ui/account/PaymentMethods';
 import IconButton from '@/app/ui/buttons/IconButton';
 import { useToast } from '@/app/ui/status/ToastProvider';
 
-type ActiveView = 'info' | 'security' | 'events' | 'help' | null;
+type ActiveView = 'info' | 'security' | 'payments' | 'events' | 'help' | null;
 
 export default function UserAccountManageEventsPage() {
 
@@ -212,6 +213,25 @@ export default function UserAccountManageEventsPage() {
                         {activeView === 'info' && (isViewLoading ? <Loader variant="dots" /> : renderAccountInfo())}
                     </div>
 
+
+                    <button
+                        onClick={() => handleViewChange('payments')}
+                        className={`flex items-center w-full gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${
+                            activeView === 'payments'
+                            ? 'bg-[#d9dad9] dark:bg-gray-800 text-gray-800 dark:text-white/90 shadow-lg'
+                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                        }`}
+                    >
+                        <BanknotesIcon className={`${isNavCollapsed ? 'ml-1.5 size-7' : 'size-5'} flex-shrink-0`} />
+                        <span className={isNavCollapsed ? 'lg:hidden' : ''}>Moyens de paiement</span>
+                    </button>
+
+                    {/* ---- Payments Mobile Content --- */}
+                    <div className="lg:hidden">
+                        {activeView === 'payments' && (isViewLoading ? <Loader variant="dots" /> : renderPaymentMethods())}
+                    </div>
+
+
                     <button
                         onClick={() => handleViewChange('security')}
                         className={`flex items-center w-full gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${isNavCollapsed ? 'lg:justify-center' : ''} ${
@@ -291,6 +311,8 @@ export default function UserAccountManageEventsPage() {
                 return renderAccountInfo();
             case 'security':
                 return renderAccountSecurity();
+            case 'payments':
+                return renderPaymentMethods();
             case 'events':
                 return renderEventContent();
             case 'help':
@@ -319,6 +341,11 @@ export default function UserAccountManageEventsPage() {
                 </div>
             </form>
         </section>
+    );
+
+    // ========= Payment Methods =============
+    const renderPaymentMethods = () => (
+        session?.user?.id ? <PaymentMethods userId={Number(session.user.id)} /> : null
     );
 
     // ========= Delete Account =============

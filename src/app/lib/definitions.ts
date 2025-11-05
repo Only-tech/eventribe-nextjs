@@ -9,6 +9,7 @@ export type Event = {
     image_url: string | null;
     registered_count: number;
     created_by: string;
+    price: number;
 };
 
 export type RegisteredEvent = {
@@ -47,3 +48,19 @@ export type Participant = {
     email: string;
     registered_at: string;
 };
+
+export type PaymentMethod = {
+    id: number;
+    card_brand: string;
+    card_last4: string;
+    created_at: string;
+}
+
+export type Payment = {
+    id: number;
+    user_id: number;
+    event_id: number;
+    amount: number;
+    status: string;
+    created_at: string;
+}

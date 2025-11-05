@@ -56,6 +56,7 @@ export async function fetchEvents(query: string): Promise<Event[]> {
                 e.available_seats,
                 e.image_url,
                 e.created_by,
+                e.price,
                 CAST(COUNT(r.id) AS INTEGER) AS registered_count
             FROM
                 events e
@@ -118,6 +119,7 @@ export async function fetchEventsByUserId(userId: number): Promise<Event[]> {
                 e.available_seats,
                 e.image_url,
                 e.created_by,
+                e.price,
                 CAST(COUNT(r.id) AS INTEGER) AS registered_count
             FROM
                 events e
@@ -179,6 +181,7 @@ export async function getAllEventsWithRegistrationCount(): Promise<Event[]> {
                 e.available_seats,
                 e.image_url,
                 e.created_by,
+                e.price,
                 CAST(COUNT(r.id) AS INTEGER) AS registered_count
             FROM
                 events e
@@ -220,6 +223,7 @@ export async function fetchEventById(id: number): Promise<Event | null> {
                 e.available_seats,
                 e.image_url,
                 e.created_by,
+                e.price,
                 CAST(COUNT(r.id) AS INTEGER) AS registered_count
             FROM
                 events e
@@ -272,6 +276,7 @@ export async function fetchRegisteredEventsForUser(userId: string): Promise<(Eve
                 e.image_url,
                 r.registered_at,
                 e.created_by,
+                e.price,
                 CAST(COUNT(reg.id) AS INTEGER) AS registered_count
             FROM
                 events e
@@ -545,9 +550,9 @@ export async function createEvent(data: Omit<Event, 'id' | 'registered_count'>):
     try {
         client = await pool.connect();
         await client.query(
-            `INSERT INTO events (title, description_short, description_long, event_date, location, available_seats, image_url, created_by)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-            [data.title, data.description_short, data.description_long, data.event_date, data.location, data.available_seats, data.image_url, data.created_by]
+            `INSERT INTO events (title, description_short, description_long, event_date, location, available_seats, image_url, price, created_by)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+            [data.title, data.description_short, data.description_long, data.event_date, data.location, data.available_seats, data.image_url, data.price, data.created_by]
         );
         console.log("Event created successfully!");
         return true;
@@ -581,9 +586,10 @@ export async function updateEvent(eventId: number, data: Omit<Event, 'id' | 'reg
                 event_date = $4,
                 location = $5,
                 available_seats = $6,
-                image_url = $7
-            WHERE id = $8`,
-            [data.title, data.description_short, data.description_long, data.event_date, data.location, data.available_seats, data.image_url, eventId]
+                image_url = $7,
+                price = $8
+            WHERE id = $9`,
+            [data.title, data.description_short, data.description_long, data.event_date, data.location, data.available_seats, data.image_url, data.price, eventId]
         );
         console.log("Event updated successfully!");
         return true;

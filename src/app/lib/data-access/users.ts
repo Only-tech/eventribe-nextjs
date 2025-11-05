@@ -341,3 +341,70 @@ export async function isEmailAlreadyRegistered(email: string): Promise<boolean> 
         }
     }
 }
+
+
+// Activate 2FA and temporary keep code
+export async function setTwoFactorCode(userId: number, code: string, expiresAt: Date): Promise<boolean> {
+    const client = await pool.connect();
+    try {
+        await client.query(
+            `UPDATE users 
+            SET two_factor_code = $1, two_factor_expires_at = $2 
+            WHERE id = $3`,
+            [code, expiresAt, userId]
+        );
+        return true;
+    } catch (err) {
+        console.error("Erreur setTwoFactorCode:", err);
+        return false;
+    } finally {
+        client.release();
+    }
+}
+
+// Verify OTP code
+export async function verifyTwoFactorCode(userId: number, code: string): Promise<boolean> {
+    const client = await pool.connect();
+    try {
+        const result = await client.query(
+            `SELECT two_factor_code, two_factor_expires_at 
+            FROM users 
+            WHERE id = $1`,
+            [userId]
+        );
+
+        if (result.rows.length === 0) return false;
+        const row = result.rows[0];
+
+        return row.two_factor_code === code && row.two_factor_expires_at > new Date();
+    } catch (err) {
+        console.error("Erreur verifyTwoFactorCode:", err);
+        return false;
+    } finally {
+        client.release();
+    }
+}
+
+/**
+ * Retrieves a user by their Email.
+ * @param email
+ * @returns found, null otherwise.
+ */ 
+export async function getUserByEmail(email: string): Promise<User | null> {
+    const client = await pool.connect();
+    try {
+        const result = await client.query<User>(
+            `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name 
+            FROM users 
+            WHERE email = $1 
+            LIMIT 1`,
+            [email]
+        );
+        return result.rows[0] || null;
+    } catch (err) {
+        console.error("Erreur getUserByEmail:", err);
+        return null;
+    } finally {
+        client.release();
+    }
+}

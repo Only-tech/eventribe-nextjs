@@ -316,7 +316,7 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                             disabled={uploadingImage || isSubmittingEvent}
                         />
                         {(previewImage || imageUrl) && (
-                            <div className="mt-4 flex justify-center sm:absolute bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white rounded-xl px-2 pb-2">
+                            <div className="mt-4 flex justify-center md:absolute bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white rounded-xl px-2 pb-2">
                                 <Image
                                     src={previewImage || normalizeImagePath(imageUrl)}
                                     alt="Aperçu de l'image"
@@ -329,20 +329,20 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                         )}
                         {uploadingImage && (
                             <>
-                            <p className="text-center text-sm text-gray-500 mt-2">Chargement de l&apos;image</p>
-                            <Loader variant="dots" />
+                                <p className="text-center text-sm text-gray-500 mt-2">Chargement de l&apos;image</p>
+                                <Loader variant="dots" />
                             </>
                         )}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row sm:justify-end gap-4 mt-4 md:col-start-2">
+                    <div className="flex gap-4 mt-1">
                         <ActionButton
                             type="button"
                             variant="destructive"
                             onClick={() => {
                                 setAction('list');
                             }}
-                            className="min-w-32"
+                            className="flex-1 rounded-r"
                         >
                             <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" /> 
                             <span>Annuler</span>
@@ -351,7 +351,7 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                             type="submit"
                             variant="primary"
                             isLoading={isSubmittingEvent}
-                            className="min-w-32"
+                            className="flex-1 rounded-l"
                         >
                             {isSubmittingEvent ? (
                                 <span className="ml-3">
@@ -359,10 +359,10 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                                 </span>
                             ) : (
                                 <>
-                                    <PlusIcon className="inline-block size-5 mr-2 group-hover:animate-bounce" />
                                     <span>
                                         {action === 'create' ? 'Créer' : 'Mettre à jour'}
                                     </span>
+                                    <PlusIcon className="inline-block size-5 ml-3 group-hover:animate-bounce" />
                                 </>
                             )}
                         </ActionButton>

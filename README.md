@@ -51,6 +51,12 @@ The project is structured for maximum maintainability and clarity using modern N
 
 ---
 
+### UX eventribe
+
+Navigate to [https://www.figma.com/design/UhORJgT4rVQT8lkQ3MTnx3/eventribe-Web-App?node-id=0-1&p=f&t=jIa4fWGFIyDZCxUk-0](https://www.figma.com/design/UhORJgT4rVQT8lkQ3MTnx3/eventribe-Web-App?node-id=0-1&p=f&t=jIa4fWGFIyDZCxUk-0) to see the application UX.
+
+---
+
 ### File Structure
 
 ```
@@ -356,6 +362,12 @@ Le projet est structuré pour une maintenabilité et une clarté maximales en ut
 - **API Backend** : `src/app/api` héberge toute la logique backend (API Routes), soigneusement organisée par fonction (auth, admin, account, etc.).
 - **Logique Métier** : `src/lib` isole la logique principale : `data-access` (requêtes BDD), `services` (comme l'envoi d'emails), et la configuration de l'authentification.
 - **Bibliothèque UI** : `src/ui` contient tous les composants React réutilisables (boutons, modales, cartes), organisés par fonctionnalité.
+
+---
+
+### UX eventribe
+
+Rendez-vous sur [https://www.figma.com/design/UhORJgT4rVQT8lkQ3MTnx3/eventribe-Web-App?node-id=0-1&p=f&t=jIa4fWGFIyDZCxUk-0](https://www.figma.com/design/UhORJgT4rVQT8lkQ3MTnx3/eventribe-Web-App?node-id=0-1&p=f&t=jIa4fWGFIyDZCxUk-0) pour voir la maquette de l'application.
 
 ---
 

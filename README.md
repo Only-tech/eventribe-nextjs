@@ -32,6 +32,7 @@
 - **UI:** React, Tailwind CSS
 - **Authentication:** NextAuth.js
 - **Database:** Supabase (PostgreSQL)
+- **UX :** Figma
 - **UI & UX Components:** Heroicons, AOS (Animate On Scroll)
 - **Backend Services:** Next.js API Routes, Email Sending Service (with `lib/email-templates/`)
 
@@ -339,6 +340,7 @@ Let the install complete—it’ll download and configure everything you need.
 - **UI :** React, Tailwind CSS
 - **Authentification :** NextAuth.js
 - **Base de Données :** Supabase (PostgreSQL)
+- **UX :** Figma
 - **Composants UI & UX :** Heroicons, AOS (Animate On Scroll)
 - **Services Backend :** Next.js API Routes, Service d'envoi d'email (avec templates `lib/email-templates/`)
 

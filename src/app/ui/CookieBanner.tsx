@@ -65,7 +65,7 @@ export default function CookieBanner() {
                     onClick={() => handleChoice('accept')}
                     className="flex-1 rounded-l"
                 >
-                    J'accepte
+                    J&apos;accepte
                 </ActionButton>
             </div>
         </div>

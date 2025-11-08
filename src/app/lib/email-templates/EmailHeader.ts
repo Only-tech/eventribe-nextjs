@@ -1,7 +1,7 @@
 export function EmailHeader(firstName: string, lastName: string): string {
     return `
         <tr>
-            <td style="background-color:#E3E5DF;padding:0 12px;border-top-right-radius:8px;border-top-left-radius:8px;">
+            <td style="background-color:#f3f4f6;padding:0 12px;border-top-right-radius:8px;border-top-left-radius:8px;">
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                         <!-- Logo -->

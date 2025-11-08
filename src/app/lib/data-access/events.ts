@@ -333,7 +333,7 @@ export async function registerForEvent(userId: number, eventId: number): Promise
 
         // Check if seats are available
         const eventResult = await client.query<Event>(
-            `SELECT title, available_seats FROM events WHERE id = $1`,
+            `SELECT title, event_date, location, price, available_seats FROM events WHERE id = $1`,
             [eventId]
         );
         const event = eventResult.rows[0];
@@ -359,12 +359,12 @@ export async function registerForEvent(userId: number, eventId: number): Promise
         console.log("Registration successful!");
         // Send confirmation mail
         try {
-            const userResult = await client.query<User>(`SELECT email, first_name FROM users WHERE id = $1`, [userId]);
+            const userResult = await client.query<User>(`SELECT email, first_name, last_name FROM users WHERE id = $1`, [userId]);
             const user = userResult.rows[0];
 
             if (user && event) {
                 const subject = `Confirmation d'inscription à l'événement : ${event.title}`;
-                const html = ConfirmationEmail(user.first_name, user.last_name, event.title);
+                const html = ConfirmationEmail(user.first_name, user.last_name, event.title, event.event_date, event.location, `${event.price} €`);
                 await sendNotificationEmail(user.email, subject, html);
             }
         } catch (emailError) {

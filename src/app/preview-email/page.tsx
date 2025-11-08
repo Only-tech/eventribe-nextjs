@@ -46,7 +46,7 @@ export default function PreviewEmailPage() {
     const renderTemplateHTML = () => {
         switch (activeView) {
         case "confirmation":
-            return ConfirmationEmail("Cédric", "Ced", "Afterwork Design System");
+            return ConfirmationEmail("Cédric", "Ced", "Afterwork Design System", "22/01/2026", "La Maison, Nevers", "8,99 €");
         case "unregister":
             return UnregisterEmail("Cédric", "Ced", "Afterwork Design System");
         case "verification":

@@ -45,6 +45,7 @@ export type Registration = {
 export type Participant = {
     user_id: number;
     first_name: string;
+    last_name: string;
     email: string;
     registered_at: string;
 };

@@ -200,7 +200,7 @@ export default function ManageRegistrationsPage() {
                                                 <thead className="bg-gray-50">
                                                     <tr>
                                                         <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Abonné(e)</th>
-                                                        <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                        <th className="px-1 sm:px-6 py-3 text-left text-xs hidden sm:table-cell font-medium text-gray-500 uppercase tracking-wider">Email</th>
                                                         <th className="px-6 py-3 text-left text-xs hidden sm:table-cell font-medium text-gray-500 uppercase tracking-wider">Inscrit le</th>
                                                         <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                                     </tr>
@@ -208,8 +208,8 @@ export default function ManageRegistrationsPage() {
                                                 <tbody className="bg-white divide-y divide-gray-200">
                                                     {participants[event.id]?.map((participant) => (
                                                         <tr key={participant.user_id}>
-                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{participant.first_name}</td>
-                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">{participant.email}</td>
+                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{participant.first_name} {participant.last_name}</td>
+                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm hidden sm:table-cell text-gray-500">{participant.email}</td>
                                                         <td className="px-6 py-4 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500">
                                                             {new Date(participant.registered_at).toLocaleString('fr-FR', {
                                                                 day: '2-digit',

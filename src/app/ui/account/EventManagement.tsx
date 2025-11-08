@@ -460,8 +460,8 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                                                 <tbody className="bg-gray-100 dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-white/20">
                                                 {participants[event.id]?.map((participant) => (
                                                     <tr key={participant.user_id}>
-                                                        <td className="px-1.5 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.first_name}</td>
-                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm text-gray-500  dark:text-white/70">{participant.email}</td>
+                                                        <td className="px-1.5 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.first_name} {participant.last_name}</td>
+                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">{participant.email}</td>
                                                         <td className="px-1 sm:px-6 py-2 sm:py-3 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">
                                                             {new Date(participant.registered_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
                                                         </td>

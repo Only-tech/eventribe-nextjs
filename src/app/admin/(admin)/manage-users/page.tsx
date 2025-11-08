@@ -105,23 +105,23 @@ export default function ManageUsersPage() {
         setDeletingUserId(userId);
 
         try {
-        const response = await fetch('/api/admin/users', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ action: 'delete_user', userId }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-            addToast(data.message);
-            setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
-        } else {
-            addToast(data.message || 'Erreur lors de la suppression de l\'utilisateur.', 'error');
-        }
+            const response = await fetch('/api/admin/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'delete_user', userId }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                addToast(data.message);
+                setUsers(prevUsers => prevUsers.filter(user => user.id !== userId));
+            } else {
+                addToast(data.message || 'Erreur lors de la suppression de l\'utilisateur.', 'error');
+            }
         } catch (error) {
             console.error('Erreur lors de la suppression de l\'utilisateur:', error);
             addToast('Une erreur est survenue lors de la suppression.', 'error');
         } finally {
-        setDeletingUserId(null);
+            setDeletingUserId(null);
         }
     };
 
@@ -155,49 +155,49 @@ export default function ManageUsersPage() {
                     <table className="min-w-full divide-y divide-gray-200">
                         <thead className="bg-gray-50">
                             <tr>
-                                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
-                                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
+                                <th className="pl-3 pr-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nom</th>
+                                <th className="px-2 sm:px-6 py-3 hidden sm:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
                                 <th className="px-6 py-3 hidden md:table-cell text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date d&apos;inscription</th>
-                                <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th className="px-2 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                             {users.map((user) => (
                                 <tr key={user.id}>
-                                <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.first_name} {user.last_name}</td>
-                                <td className="px-1 sm:px-6 py-4 sm:whitespace-nowrap text-sm text-gray-500">{user.email}</td>
-                                <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                    <IconButton
-                                        onClick={() => handleToggleAdminStatus(user.id, user.is_admin, user.first_name)}
-                                        className={`px-3 py-1 text-xs font-semibold hover:before:[display:none] ${
-                                            user.is_admin ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                        } hover:opacity-80 transition-opacity duration-200`}
-                                        disabled={session?.user?.id === String(user.id)}
-                                    >
-                                        {user.is_admin ? 'Oui' : 'Non'}
-                                    </IconButton>
-                                </td>
-                                <td className="px-6 py-4 hidden md:table-cell whitespace-nowrap text-sm text-gray-500">
-                                    {new Date(user.created_at).toLocaleString('fr-FR', {
-                                        day: '2-digit',
-                                        month: '2-digit',
-                                        year: 'numeric',
-                                        hour: '2-digit',
-                                        minute: '2-digit'
-                                    })}
-                                </td>
-                                <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <IconButton
-                                        onClick={() => handleDeleteUser(user.id, user.first_name)}
-                                        className="text-red-600 hover:text-red-900"
-                                        isLoading={deletingUserId === user.id}
-                                        disabled={session?.user?.id === String(user.id)}
-                                        title="Supprimer l'utilisateur"
-                                    >
-                                        <TrashIcon className="w-5 h-5" />
-                                    </IconButton>
-                                </td>
+                                    <td className="pl-3 pr-2 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{user.first_name} {user.last_name}</td>
+                                    <td className="px-2 sm:px-6 py-4 hidden sm:table-cell sm:whitespace-nowrap text-sm text-gray-500">{user.email}</td>
+                                    <td className="px-2 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                        <IconButton
+                                            onClick={() => handleToggleAdminStatus(user.id, user.is_admin, user.first_name)}
+                                            className={`px-3 py-1 text-xs font-semibold hover:before:[display:none] ${
+                                                user.is_admin ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                                            } hover:opacity-80 transition-opacity duration-200`}
+                                            disabled={session?.user?.id === String(user.id)}
+                                        >
+                                            {user.is_admin ? 'Oui' : 'Non'}
+                                        </IconButton>
+                                    </td>
+                                    <td className="px-6 py-4 hidden md:table-cell whitespace-nowrap text-sm text-gray-500">
+                                        {new Date(user.created_at).toLocaleString('fr-FR', {
+                                            day: '2-digit',
+                                            month: '2-digit',
+                                            year: 'numeric',
+                                            hour: '2-digit',
+                                            minute: '2-digit'
+                                        })}
+                                    </td>
+                                    <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                        <IconButton
+                                            onClick={() => handleDeleteUser(user.id, user.first_name)}
+                                            className="text-red-600 hover:text-red-900"
+                                            isLoading={deletingUserId === user.id}
+                                            disabled={session?.user?.id === String(user.id)}
+                                            title="Supprimer l'utilisateur"
+                                        >
+                                            <TrashIcon className="w-5 h-5" />
+                                        </IconButton>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>

@@ -1,0 +1,38 @@
+services:
+  eventribe-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: eventribe_app
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    env_file:
+      - .env
+
+  db:
+    image: postgres:17.5
+    container_name: events_db
+    environment:
+      POSTGRES_PASSWORD: eventribe
+      POSTGRES_USER: eventribe
+      POSTGRES_DB: events_db
+      PGUSER: eventribe
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./dataTable.sql:/docker-entrypoint-initdb.d/dataTable.sql
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: events_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: events@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "8101:80"
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json

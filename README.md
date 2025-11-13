@@ -289,6 +289,43 @@ This project is licensed. See the `LICENSE` file (/LICENSE.md) for details.
 
 ## Additional Setup Tips
 
+## If you use Docker, it will need to conside adding some config
+
+### Environment Variables
+
+Create a `server.json` file at the root of the project with your database connection information:
+
+```
+DB_HOST=db
+DB_NAME=event_db
+DB_USER=user
+DB_PASSWORD=password
+```
+
+---
+
+### Database Initialization
+
+Run the `dataTable.sql` script inside your PostgreSQL container to create the tables.
+
+**Place `dataTable.sql` in `/docker-entrypoint-initdb.d/` so it will be executed automatically when the DB container starts.**
+
+---
+
+### Starting the Containers
+
+```bash
+docker-compose up --build -d
+```
+
+---
+
+### Accessing the Web Application
+
+[http://localhost:3000](http://localhost:3000)
+
+---
+
 If you’re starting a new project, run:
 
 ```bash
@@ -565,7 +602,7 @@ Assurez-vous d'avoir Node.js installé sur votre machine.
 1.  **Clonez le dépôt :**
 
     ```bash
-    git clone https://github.com/Only-tech/eventribe-nextjs.git
+    git clone --branch main-rebuild --single-branch https://github.com/Only-tech/eventribe-nextjs.git
     cd eventribe-nextjs
     ```
 
@@ -605,6 +642,30 @@ Ce projet est sous licence. Voir le fichier `LICENSE` (/LICENSE.md) pour plus de
 ---
 
 # Plus (Installation ----- Déploiement)
+
+Si vous utilisez docker, il faudra faire une configuration en plus.
+
+#### Variables d'environnement :
+
+Créez un fichier server.json à la racine du projet avec les informations de connexion à la base de données :
+
+DB_HOST=db
+DB_NAME=event_db
+DB_USER=user
+DB_PASSWORD=password
+
+#### Initialisation de la base de données:
+
+Exécutez le script dataTable.sql dans votre conteneur PostgreSQL pour créer les tables.
+
+**Placez data.sql dans /docker-entrypoint-initdb.d/ pour qu'il s'exécute automatiquement au démarrage du conteneur DB**
+
+#### Lancement des conteneurs:
+
+docker-compose up --build -d
+
+Accès à l'application web:
+http://localhost:8102
 
 ```
 Pour initier le projet et création du dossier projet, entrer cette commande dans le terminal
@@ -663,3 +724,54 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+MVP
+
+```
+Public
+│
+├── Visiteur
+│ ├── Accueil (/events)
+│ ├── Détails des événements (/event)
+│ ├── Inscription (/register)
+│ ├── Mentions légales (/legal-mentions)
+│ ├── Politiques de confidentialité (/legal-mentions)
+│ ├── Contact via formulaire de contact
+
+Connexion
+│
+├── Utilisateur
+│ ├── Accueil (/events)
+│ ├── Détails des événements (/event), (s'inscrire avec paiement, se désinscrire)
+│ ├── Mes inscriptions (/my-events; se désinscrire), à venir (remboursement)
+│ ├── Mon compte (/account)
+│ │ ├── Informations personnelles (voir, modifier)
+│ │ ├── Sécurité (suppression compte)
+│ │ ├── Moyens de paiement (ajouter, supprimer), à venir (voir l'historique de paiements)
+│ │ ├── Contact du support et aide
+│ │ └── Mes événements (EventManagement)
+│ │ ├── Créer événement
+│ │ ├── Voir liste des événement (créés par lui)
+│ │ ├── Modifier événement (créé par lui)
+│ │ ├── Supprimer événement (créé par lui)
+│ │ ├── Voir liste des participants
+│ │ └── Désinscrire un participant
+│
+│
+└── Administrateur
+├── Tableau de bord (/admin/dashboard)
+│ ├── Statistiques (users, events, registrations)
+│ └── Actions administrateur (Créer, modifier, supprimer des événements; voir les participants, les désinscrire; modifier le rôles des utilisateurs, les supprimer)
+├── Gérer les événements (/admin/manage-events)
+│ ├── Créer
+│ ├── Voir (tous les événements)
+│ ├── Modifier (tous les événements)
+│ ├── Supprimer (tous les événements)
+│ └── à venir (Vérification des événements crées par des uilisateur et validation pour apparition dans les événements)
+├── Gérer les inscriptions (/admin/manage-registrations)
+│ ├── Voir participants (tous les événements)
+│ └── Désinscrire (tous les événements)
+└── Gérer les utilisateurs (/admin/manage-users)
+├── Modifier rôles
+└── Supprimer
+```

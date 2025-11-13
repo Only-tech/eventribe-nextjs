@@ -115,3 +115,73 @@ Peintres, sculpteurs, photographes et musiciens partageront leurs processus, leu
     🎧 DJ set deep house avec DJ Kortex
     🎷 Jam session ouverte en fin de soirée
 Le tout dans une atmosphère chaleureuse, avec food trucks, bar à cocktails, et espace chill-out. Dress code : libre, mais stylé.', '2025-11-29 16:00:00', 'La Friche Musicale, Dijon', '2200', 'https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/DarkSmoke.jpg', '2025-08-31 00:26:07.520511', '23', '0.00'), ('18', 'Hunter × Hunter Fans Party', 'Un après-midi immersif Hunter × Hunter, avec quiz, épreuves stratégiques et projection d’un épisode culte.', 'Devenez un véritable Hunter en passant des épreuves ludiques et stratégiques : quiz sur les arcs emblématiques (Greed Island, York Shin City, Chimera Ant), jeu de rôle en équipe, tournoi de cartes, et projection d’un épisode culte suivie d’un débat entre passionnés. Cosplay libre, stand de goodies, photobooth Greed Island et tirage au sort pour gagner des coffrets manga ou DVD. Un badge officiel de Hunter sera remis aux participants ayant relevé tous les défis. Préparez votre Nen, votre esprit d’équipe et votre sens de l’aventure !', '2025-11-20 00:00:00', 'Maison des Associations, Nevers', '150', 'https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/hunterX.jpg', '2025-08-31 18:33:44.970271', '23', '7.99'), ('32', 'Stromae Multitude Tour', 'Une soirée électro-pop avec l’artiste belge-français Stromae', 'Stromae revient sur scène avec son album Multitude. Ce concert exceptionnel mêle performance vocale, scénographie immersive et rythmes électro-pop. Une expérience musicale et visuelle unique, portée par des titres comme L’enfer, Santé et Papaoutai.', '2026-04-06 20:00:00', 'Accor Arena, Paris', '12000', 'https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/stromae.png', '2025-10-06 10:30:16.038791', '23', '0.00'), ('33', 'Changer de Cap Reconversion', 'Une journée pour explorer les opportunités de reconversion professionnelle', 'Ce forum s’adresse à celles et ceux qui envisagent un changement de carrière, une réorientation ou un nouveau projet professionnel. Sur place : ateliers pratiques, bilans de compétences, témoignages d’anciens reconvertis, présence de centres de formation, organismes publics et recruteurs spécialisés.', '2026-05-06 09:30:00', 'Cité des Métiers, Lyon', '300', 'https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/reconversion.png', '2025-10-06 10:35:10.444677', '23', '0.00'), ('34', 'L’Art en Scène Pluridisciplinaire', 'Théâtre, peinture et performance réunis sur une même scène', 'Une soirée immersive où les arts visuels rencontrent les arts du spectacle. Sur scène : un monologue poétique, un peintre qui crée en direct, des projections numériques interactives, et une danse contemporaine improvisée. L’objectif : offrir une expérience sensorielle et réflexive, qui célèbre la créativité sous toutes ses formes.', '2026-04-06 19:00:00', 'La Maison de la Culture, Nevers', '450', 'https://mbt32mmfp6mvexeg.public.blob.vercel-storage.com/artCulture.png', '2025-10-06 10:38:17.008853', '23', '4.99');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- -- Table des utilisateurs
+-- CREATE TABLE IF NOT EXISTS users (
+--     id SERIAL PRIMARY KEY,
+--     username VARCHAR(50) UNIQUE NOT NULL,
+--     email VARCHAR(100) UNIQUE NOT NULL,
+--     password_hash VARCHAR(255) NOT NULL, -- Stocke le hash du mot de passe
+--     is_admin BOOLEAN DEFAULT FALSE,     -- Gestion des rôles
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
+
+-- -- Table des événements
+-- CREATE TABLE IF NOT EXISTS events (
+--     id SERIAL PRIMARY KEY,
+--     title VARCHAR(255) NOT NULL,
+--     description_short TEXT NOT NULL,
+--     description_long TEXT NOT NULL,
+--     event_date TIMESTAMP NOT NULL,
+--     location VARCHAR(255) NOT NULL,
+--     available_seats INTEGER NOT NULL CHECK (available_seats >= 0),
+--     image_url VARCHAR(255), -- URL de l'image de l'événement
+--     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+-- );
+
+-- -- Table des inscriptions (lien entre utilisateurs et événements)
+-- CREATE TABLE IF NOT EXISTS registrations (
+--     id SERIAL PRIMARY KEY,
+--     user_id INTEGER NOT NULL,
+--     event_id INTEGER NOT NULL,
+--     registered_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+--     FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+--     UNIQUE (user_id, event_id) -- Un utilisateur ne peut s'inscrire qu'une seule fois au même événement
+-- );
+
+-- -- Index pour améliorer les performances des requêtes
+-- CREATE INDEX IF NOT EXISTS idx_registrations_user_id ON registrations (user_id);
+-- CREATE INDEX IF NOT EXISTS idx_registrations_event_id ON registrations (event_id);
+-- CREATE INDEX IF NOT EXISTS idx_events_event_date ON events (event_date);
+
+
+-- CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- INSERT INTO users (username, email, password_hash, is_admin)
+-- VALUES (
+--     'admin',
+--     'admin@events.com',
+--     crypt('eventsmanager', gen_salt('bf')),
+--     TRUE
+-- );

@@ -22,11 +22,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
 
     const addToast = (message: string, type: ToastType = 'info') => {
         if (!message || !message.trim()) return; // Not display if empty message
+        // If there are multiple notifications at the same time, it creates different IDs so that they are all displayed
         const id = crypto.randomUUID();
         setToasts((prev) => [...prev, { id, message, type }]);
 
         setTimeout(() => {
-            setToasts((prev) => prev.filter((t) => t.id !== id));
+            setToasts((prev) => prev.filter((t) => t.id !== id)); // "t" comes from the type Toast 
         }, 5000);
     };
 

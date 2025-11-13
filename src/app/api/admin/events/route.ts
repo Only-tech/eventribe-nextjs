@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
+import { authOptions } from '@/app/lib/auth/options';
 
-import { createEvent, updateEvent, deleteEvent } from '@/app/lib/data';
+import { createEvent, updateEvent, deleteEvent } from '@/app/lib/data-access/events';
 
 // Helper function to check admin status
 async function checkAdminSession() {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     const { action, ...eventData } = await request.json();
 
     if (action === 'create') {
-      const { title, description_short, description_long, event_date, location, available_seats, image_url } = eventData;
+      const { title, description_short, description_long, event_date, location, available_seats, image_url, price } = eventData;
 
       if (!title || !event_date || !location || available_seats === undefined) {
         return NextResponse.json({ message: 'Veuillez remplir tous les champs obligatoires pour la création de l\'événement.' }, { status: 400 });
@@ -43,6 +43,7 @@ export async function POST(request: Request) {
         location,
         available_seats: Number(available_seats),
         image_url: image_url || null,
+        price: Number(price) || 0,
         created_by: session.user.id
       });
 
@@ -79,7 +80,7 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: 'ID de l\'événement manquant pour la modification.' }, { status: 400 });
     }
 
-    const { title, description_short, description_long, event_date, location, available_seats, image_url } = eventData;
+    const { title, description_short, description_long, event_date, location, available_seats, image_url, price } = eventData;
 
     if (!title || !event_date || !location || available_seats === undefined) {
       return NextResponse.json({ message: 'Veuillez remplir tous les champs obligatoires pour la modification de l\'événement.' }, { status: 400 });
@@ -93,6 +94,7 @@ export async function PUT(request: Request) {
       location,
       available_seats: Number(available_seats),
       image_url: image_url || null,
+      price: Number(price) || 0,
       created_by: session.user.id,
     });
 
@@ -137,7 +139,7 @@ export async function GET() {
   if (authError) return authError;
 
   try {
-    const { getAllEventsWithRegistrationCount } = await import('@/app/lib/data'); // Lazy import for GET only
+    const { getAllEventsWithRegistrationCount } = await import('@/app/lib/data-access/events'); // Lazy import for GET only
     const events = await getAllEventsWithRegistrationCount();
     return NextResponse.json({ events }, { status: 200 });
   } catch (error) {

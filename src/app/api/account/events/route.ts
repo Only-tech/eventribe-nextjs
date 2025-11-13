@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
-import { createEvent, updateEvent, deleteEvent, fetchEventsByUserId, fetchUserEventById } from '@/app/lib/data';
+import { authOptions } from '@/app/lib/auth/options';
+import { createEvent, updateEvent, deleteEvent, fetchEventsByUserId, fetchUserEventById } from '@/app/lib/data-access/events';
 
 // Handles GET requests to fetch events created by the logged-in user
 export async function GET() {
@@ -29,7 +29,7 @@ export async function POST(request: Request) {
     }
 
     try {
-        const { title, description_short, description_long, event_date, location, available_seats, image_url } = await request.json();
+        const { title, description_short, description_long, event_date, location, available_seats, image_url, price } = await request.json();
 
         if (!title || !event_date || !location || available_seats === undefined) {
             return NextResponse.json({ message: 'Veuillez remplir tous les champs obligatoires pour la création de l\'événement.' }, { status: 400 });
@@ -43,6 +43,7 @@ export async function POST(request: Request) {
             location,
             available_seats: Number(available_seats),
             image_url: image_url || null,
+            price: Number(price) || 0,
             created_by: session.user.id,
         };
 
@@ -68,12 +69,7 @@ export async function PUT(request: Request) {
     }
 
     try {
-        // const { id, ...data } = await request.json();
-        const { id, created_by: _unused, ...safeData } = await request.json();
-        // if (created_by !== session.user.id) {
-        //     return NextResponse.json({ message: 'Utilisateur non autorisé à modifier cet événement.' }, { status: 403 });
-        // }
-
+        const { id, ...safeData } = await request.json();
 
         // First, check if the event exists and belongs to the user
         const event = await fetchUserEventById(Number(session.user.id), id);
@@ -81,11 +77,7 @@ export async function PUT(request: Request) {
             return NextResponse.json({ message: 'Événement non trouvé ou non autorisé.' }, { status: 403 });
         }
 
-
-        // const success = await updateEvent(id, data);
         const success = await updateEvent(id, safeData);
-
-
 
         if (success) {
             return NextResponse.json({ message: 'Événement mis à jour avec succès.' }, { status: 200 });
@@ -114,7 +106,6 @@ export async function DELETE(request: Request) {
         if (!event) {
             return NextResponse.json({ message: 'Événement non trouvé ou non autorisé.' }, { status: 403 });
         }
-
 
         const success = await deleteEvent(eventId);
 

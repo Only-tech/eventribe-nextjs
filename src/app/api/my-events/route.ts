@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server';
-import { fetchRegisteredEventsForUser } from '@/app/lib/data';
-import { getServerSession } from 'next-auth'; // Import getServerSession for server-side session access
-import { authOptions } from '@/app/lib/auth';
+import { fetchRegisteredEventsForUser } from '@/app/lib/data-access/events';
+import { getServerSession } from 'next-auth'; 
+import { authOptions } from '@/app/lib/auth/options';
 
 
 export async function GET(request: Request) {
   try {
-    const session = await getServerSession(authOptions); // Get session on the server side
-
+    const session = await getServerSession(authOptions); 
     // Check if the user is authenticated
     if (!session || !session.user || !session.user.id) {
       return NextResponse.json({ message: 'Vous devez être connecté pour voir vos inscriptions.' }, { status: 401 });

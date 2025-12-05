@@ -310,7 +310,7 @@ export default function PasswordPage() {
                     {/* Branding column */}
                     <section className="relative max-w-sm flex-1 w-full flex flex-col items-center justify-center">
                         <IconHomeButton onClick={() => router.push(`/events`)} className="fixed top-4 right-4 cursor-pointer" title="Page d'accueil" />
-                        <LogoButton onClick={() => router.push(`/`)} className='max-md:w-25 max-md:h-16 max-[820px]:w-40 max-[820px]:h-32 w-55 h-38' />
+                        <LogoButton onClick={() => router.push(`/`)} className='max-md:w-28 max-md:h-12 max-[820px]:w-48 max-[820px]:h-22 w-66 h-30' />
                         <WellcomeLogo />
                         {step === 'email' ? (
                             <>

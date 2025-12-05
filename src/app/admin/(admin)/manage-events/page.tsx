@@ -330,8 +330,8 @@ export default function ManageEventsPage() {
                                         src={previewImage || normalizeImagePath(imageUrl)}
                                         alt="Aperçu de l'image"
                                         width={200}
-                                        height={150}
-                                        style={{ objectFit: 'cover', height: '150px' }}
+                                        height={120}
+                                        style={{ objectFit: 'cover', height: '120px' }}
                                         className="rounded-md shadow-sm"
                                     />
                                 </div>
@@ -361,15 +361,15 @@ export default function ManageEventsPage() {
                                 className="flex-1 rounded-l"
                             >
                                 {isSubmittingEvent ? (
-                                    <span className="ml-3">
+                                    <span className="ml-3 truncate">
                                         {action === 'create' ? 'Création' : 'Mise à jour'}
                                     </span>
                                 ) : (
                                     <>
                                         <span>
-                                            {action === 'create' ? 'Créer' : 'Mettre à jour'}
+                                            {action === 'create' ? 'Créer' : 'Modifier'}
                                         </span>
-                                        <PlusIcon className="inline-block size-5 ml-3 group-hover:animate-bounce" />
+                                        <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 group-hover:animate-bounce" />
                                     </>
                                 )}
                             </ActionButton>

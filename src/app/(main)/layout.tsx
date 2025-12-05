@@ -51,7 +51,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                 </div>
             )}
 
-            <main className="flex-grow w-full pt-20 pb-10 mx-auto my-6">
+            <main className="flex-grow w-full mt-30 mb-8 md:mt-24 lg:mb-16 mx-auto ">
                 {children}
             </main>
 

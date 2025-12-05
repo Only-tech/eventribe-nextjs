@@ -321,8 +321,8 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                                     src={previewImage || normalizeImagePath(imageUrl)}
                                     alt="Aperçu de l'image"
                                     width="200"
-                                    height="150"
-                                    style={{ objectFit: 'cover', height: '150px' }}
+                                    height="120"
+                                    style={{ objectFit: 'cover', height: '120px' }}
                                     className="rounded-md shadow-sm"
                                 />
                             </div>
@@ -354,15 +354,15 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                             className="flex-1 rounded-l"
                         >
                             {isSubmittingEvent ? (
-                                <span className="ml-3">
+                                <span className="ml-3 truncate">
                                     {action === 'create' ? 'Création' : 'Mise à jour'}
                                 </span>
                             ) : (
                                 <>
                                     <span>
-                                        {action === 'create' ? 'Créer' : 'Mettre à jour'}
+                                        {action === 'create' ? 'Créer' : 'Modifier'}
                                     </span>
-                                    <PlusIcon className="inline-block size-5 ml-3 group-hover:animate-bounce" />
+                                    <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 group-hover:animate-bounce" />
                                 </>
                             )}
                         </ActionButton>
@@ -407,86 +407,95 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                     Vous n&apos;avez pas encore créé d&apos;événements.
                 </p>
             ) : (
-                <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10">
+                <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10 items-end">
                     {events.map((event) => (
                         <div key={event.id} className=" max-w-4xl w-full mx-auto translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease group drop-shadow-lg hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] shadow-[hsl(var(--always-black)/5.1%)]">
                             <div className=" w-full sm:bg-gray-300 dark:sm:bg-white/10 sm:p-[0.5px] min-[639px]:[clip-path:var(--clip-path-squircle-60)]"  data-aos="fade-up">
-                            <div className=" w-full bg-[#FCFFF7] dark:bg-[#222222] rounded-xl p-2 sm:p-4 max-sm:border border-gray-300 dark:border-white/10 overflow-hidden group min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
-                                <div className="flex items-center cursor-pointer" onClick={() => toggleEventExpansion(event.id)}>
-                                    <div className="hidden sm:block relative w-100 h-50 overflow-hidden rounded-[2.5rem] mr-6">
-                                        <Image src={normalizeImagePath(event.image_url)} alt={`Image de l'événement ${event.title}`} fill style={{ objectFit: 'cover' }} className="w-full h-50 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1" />        
+                                
+                                {/* ========== Main container =========== */}
+                                <div className="flex flex-col w-full bg-[#FCFFF7] dark:bg-[#222222] rounded-xl p-2 sm:p-4 max-sm:border border-gray-300 dark:border-white/10 overflow-hidden group min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
+                                    
+                                    {/* Image and details content */}
+                                    <div className="flex items-center cursor-pointer" onClick={() => toggleEventExpansion(event.id)}>
+                                        <div className="hidden sm:block relative w-100 h-50 overflow-hidden rounded-[2.5rem] mr-6">
+                                            <Image src={normalizeImagePath(event.image_url)} alt={`Image de l'événement ${event.title}`} fill style={{ objectFit: 'cover' }} className="w-full h-50 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1" />        
+                                        </div>
+                                        <div className="flex flex-row justify-between items-center max-w-2xl w-full">
+                                            <div className="max-sm:pl-3">
+                                                <h2 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
+                                                <p className="text-gray-700 dark:text-gray-500 text-sm mt-1">
+                                                    <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
+                                                    {new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
+                                                    <span className="ml-4"><MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}</span>
+                                                </p>
+                                                <p className="text-gray-700 dark:text-white/70 mt-2">Inscrits: {event.registered_count} / {event.available_seats}</p>
+                                            </div>
+
+                                            {/* Buttons bar right side */}
+                                            <div className="flex flex-col gap-2 border-l-[0.2px] border-gray-300 dark:border-white/20 pl-2 ml-1 sm:ml-3">
+                                                <IconButton onClick={() => handleEditClick(event)} className="text-indigo-600 hover:text-indigo-900" title="Modifier">
+                                                    <PencilIcon className="w-6 h-6" />
+                                                </IconButton>
+                                                <IconButton onClick={() => handleDelete(event.id)} isLoading={deletingEventId === event.id} className="text-red-600 hover:text-red-900" title="Supprimer">
+                                                    <TrashIcon className="w-6 h-6" />
+                                                </IconButton>
+                                                <IconButton
+                                                    onClick={() => toggleEventExpansion(event.id)}
+                                                    aria-expanded={expandedEventId === event.id}
+                                                    aria-controls={`participants-table-${event.id}`}
+                                                    title="Voir les participants"
+                                                >
+                                                    <ChevronDownIcon className={`w-6 h-6 text-gray-800 transition-transform duration-700 ${expandedEventId === event.id ? 'rotate-180' : ''}`}/>
+                                                </IconButton>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex flex-row justify-between items-center max-w-2xl w-full">
-                                        <div className="max-sm:pl-3">
-                                            <h2 className="text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
-                                            <p className="text-gray-700 dark:text-gray-500 text-sm mt-1">
-                                                <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
-                                                {new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
-                                                <span className="ml-4"><MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}</span>
-                                            </p>
-                                            <p className="text-gray-700 dark:text-white/70 mt-2">Inscrits: {event.registered_count} / {event.available_seats}</p>
-                                        </div>
-                                        <div className="flex flex-col gap-2 border-l-[0.2px] border-gray-300 dark:border-white/20 pl-2 ml-1 sm:ml-3">
-                                            <IconButton onClick={() => handleEditClick(event)} className="text-indigo-600 hover:text-indigo-900" title="Modifier">
-                                                <PencilIcon className="w-6 h-6" />
-                                            </IconButton>
-                                            <IconButton onClick={() => handleDelete(event.id)} isLoading={deletingEventId === event.id} className="text-red-600 hover:text-red-900" title="Supprimer">
-                                                <TrashIcon className="w-6 h-6" />
-                                            </IconButton>
-                                            <IconButton
-                                                onClick={() => toggleEventExpansion(event.id)}
-                                                aria-expanded={expandedEventId === event.id}
-                                                aria-controls={`participants-table-${event.id}`}
-                                                title="Voir les participants"
-                                            >
-                                                <ChevronDownIcon className={`w-6 h-6 text-gray-800 transition-transform duration-300 ${expandedEventId === event.id ? 'rotate-180' : ''}`}/>
-                                            </IconButton>
-                                        </div>
+
+                                    {/* =========== Participants list ============ */}
+                                    <div className={`overflow-hidden transition-all duration-700 ease-in-out ${expandedEventId === event.id ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}`}>
+                                        {expandedEventId === event.id && (
+                                            <div id={`participants-table-${event.id}`} className="mt-4">
+                                                {loadingParticipants === event.id ? (
+                                                    <>
+                                                        <p className="text-center text-gray-700 dark:text-gray-500 mb-2">Chargement des participants</p>
+                                                        <Loader variant="dots" />
+                                                    </>
+                                                ) : participants[event.id]?.length === 0 ? (
+                                                    <p className="text-center text-gray-700 dark:text-gray-500">Aucun participant inscrit pour cet événement.</p>
+                                                ) : (
+                                                    <div className="overflow-x-auto">
+                                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-white/20 rounded-xl sm:rounded-3xl overflow-hidden">
+                                                            <tbody className="bg-gray-100 dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-white/20">
+                                                                {participants[event.id]?.map((participant) => (
+                                                                    <tr key={participant.user_id}>
+                                                                        <td className="px-1.5 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.first_name} {participant.last_name}</td>
+                                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">{participant.email}</td>
+                                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">
+                                                                            {new Date(participant.registered_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
+                                                                        </td>
+                                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium">
+                                                                            <ActionButton
+                                                                                variant="destructive"
+                                                                                onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.first_name)}
+                                                                                isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
+                                                                                className="max-md:px-2.5 text-sm"
+                                                                                title="Désinscrire"    
+                                                                            >                                                            
+                                                                                {!unregisteringInfo && ( <TrashIcon className="w-4 h-4" /> )}
+                                                                                <span className="hidden md:inline-flex md:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
+                                                                                
+                                                                            </ActionButton>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
-
-                                {expandedEventId === event.id && (
-                                    <div id={`participants-table-${event.id}`} className="mt-6">
-                                    {loadingParticipants === event.id ? (
-                                        <>
-                                            <p className="text-center text-gray-700 dark:text-gray-500 mb-2">Chargement des participants</p>
-                                            <Loader variant="dots" />
-                                        </>
-                                    ) : participants[event.id]?.length === 0 ? (
-                                        <p className="text-center text-gray-700 dark:text-gray-500">Aucun participant inscrit pour cet événement.</p>
-                                    ) : (
-                                        <div className="overflow-x-auto">
-                                            <table className="min-w-full divide-y divide-gray-200 dark:divide-white/20 rounded-xl sm:rounded-3xl overflow-hidden">
-                                                <tbody className="bg-gray-100 dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-white/20">
-                                                {participants[event.id]?.map((participant) => (
-                                                    <tr key={participant.user_id}>
-                                                        <td className="px-1.5 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.first_name} {participant.last_name}</td>
-                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">{participant.email}</td>
-                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">
-                                                            {new Date(participant.registered_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
-                                                        </td>
-                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium">
-                                                            <ActionButton
-                                                                variant="destructive"
-                                                                onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.first_name)}
-                                                                isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
-                                                                className="max-md:px-2.5 text-sm"
-                                                                title="Désinscrire"    
-                                                            >                                                            
-                                                                {!unregisteringInfo && ( <TrashIcon className="w-4 h-4" /> )}
-                                                                <span className="hidden md:inline-flex md:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
-                                                                
-                                                            </ActionButton>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    )}
-                                    </div>
-                                )}
-                            </div>
                             </div>
                         </div>
                     ))}

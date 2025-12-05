@@ -90,7 +90,7 @@ export default function Footer() {
                                 ))}
                             </ul>
                         </section>
-                        <LogoButton onClick={() => router.push(`/`)} className="w-25 h-18"/>
+                        <LogoButton onClick={() => router.push(`/`)} className="w-24 h-auto md:w-32 md:h-15"/>
                     </div>
                 </div>
             ) : (

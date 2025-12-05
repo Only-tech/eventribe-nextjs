@@ -7,6 +7,7 @@ import { useToast } from '@/app/ui/status/ToastProvider';
 import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { FingerPrintIcon, CalendarDaysIcon as CalendarDateRangeIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
+import { ChevronLeftIcon } from '@heroicons/react/20/solid';
 import LogoButton from '@/app/ui/buttons/LogoButton';
 import IconHomeButton from '@/app/ui/buttons/IconHomeButton';
 import LogoutLogo from '@/app/ui/logo/LogoutLogo';
@@ -16,6 +17,8 @@ import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-react';
 import SearchResults from '@/app/ui/SearchResults';
 import { Event } from '@/app/lib/definitions';
 import { usePathname, useRouter } from 'next/navigation';
+import Loader from '@/app/ui/animation/Loader';
+
 
 export default function Header() {
     const { data: session, status } = useSession();
@@ -49,6 +52,12 @@ export default function Header() {
     const userMenuRef = useRef<HTMLLIElement>(null);
 
     const hasValue = searchQuery.trim() !== '';
+
+    const isHomePage = pathname === '/' || pathname === '/events';
+
+    const handleBack = () => {
+        router.back();
+    };
 
     const handleClearSearch = () => {
         setSearchQuery('');
@@ -202,33 +211,73 @@ export default function Header() {
         <>
             <header
                 ref={headerRef}
-                className={`fixed top-0 z-10000 w-full bg-[#FCFFF7] dark:bg-[#222222] text-gray-800 dark:text-white/90 shadow-lg transition-all ease-in-out duration-800 py-1 px-3 min-[425px]:px-[5%] flex flex-row gap-3 justify-between items-center ${
-                scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
-                }`}
+ 
+                className={`fixed top-0 z-1000 w-full bg-[#FCFFF7] dark:bg-[#222222] text-gray-800 dark:text-white/90 shadow-lg transition-all ease-in-out duration-500 max-md:pb-1.5 p-0.5 px-3 min-[425px]:px-[5%] 
+                flex flex-wrap md:flex-nowrap items-center justify-between gap-y-2 gap-x-2
+                ${scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
             >
-                <div
-                    className={`transition-all duration-500 ease-in-out ${
-                        hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'
-                    }`}
-                >
-                    <LogoButton onClick={() => router.push(`/`)} className="w-26 h-18" />
+                          
+                <div className={`flex items-center gap-2 shrink-0 md:mr-4 transition-all duration-500 ease-in-out cursor-pointer ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    
+                    {/* Back Button if not in HomePage) */}
+                    {!isHomePage ? (
+                        <button 
+                            onClick={handleBack} 
+                            className="p-1 -ml-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                            aria-label="Retour"
+                            title="Retour"
+                        >
+                            <ChevronLeftIcon className="size-10 text-gray-700 dark:text-white" />
+                        </button>
+                    ) : (
+                        null 
+                    )}
+
+                    {/* Menu Burger button */}
+                    <button 
+                        className="min-[1025px]:hidden p-1 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                        aria-label="Menu"
+                        title={isMobileMenuOpen ? 'Fermer le Menu' : 'Ouvrir le Menu'} 
+                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    >
+                        {isMobileMenuOpen ? <XMarkIcon className="size-8 transition-all duration-500 ease" /> : <Bars3Icon className="size-8 transition-all duration-500 ease" />}
+                    </button>
                 </div>
 
-                {/* SearchBar */}
+                {/* Logo eventribe */}
+                <div className={`transition-all duration-500 ease-in-out max-lg:-ml-5 ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    <LogoButton onClick={() => router.push(`/`)} className="w-28 h-auto md:w-32 md:h-15" />
+                </div>
+
+                {/* User logo Link Account */}
+                <Link
+                    href="/account"
+                    className={`min-[1025px]:hidden p-3 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 duration-500 ease-in-out order-2 md:order-3 ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}
+                    onClick={() => setIsUserMenuOpen(false)}
+                    title='Espace Personnel'
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true">
+                        <path d="M234.38,210a123.36,123.36,0,0,0-60.78-53.23,76,76,0,1,0-91.2,0A123.36,123.36,0,0,0,21.62,210a12,12,0,1,0,20.77,12c18.12-31.32,50.12-50,85.61-50s67.49,18.69,85.61,50a12,12,0,0,0,20.77-12ZM76,96a52,52,0,1,1,52,52A52.06,52.06,0,0,1,76,96Z" />
+                    </svg>
+                </Link>
+       
+                {/* ========== Search container =========== */}
                 <section
                     ref={searchContainerRef}
-                    className={`relative flex flex-grow w-full transition-all duration-500 ease-in-out ${
-                        hasValue ? 'absolute inset-x-0 top-5 h-full z-50 flex items-center p-0 w-full' : ' max-w-lg'
+                    className={`relative flex transition-all duration-500 ease-in-out
+                        order-3 w-full flex-grow md:mx-10 md:order-2 ${
+                        hasValue ? 'absolute inset-x-0 top-5 h-full z-50 flex items-center p-0 w-full' : ' '
                     }`}
                 >
                     <div
-                        className={`flex items-center w-full bg-white dark:bg-[#303134] dark:hover:bg-[#292929] border text-gray-800 dark:text-white/90 border-gray-200 dark:border-white/10 
-                        transition-all ease-in-out duration-600 overflow-hidden shadow-[hsl(var(--always-black)/5.1%)]
+                        className={`flex items-center w-full bg-white dark:bg-[#303134] dark:hover:bg-[#292929] border text-gray-800 dark:text-white/90 border-gray-200 dark:border-white/10 max-sm:px-1 
+                        transition-all ease-in-out duration-600 overflow-hiddenshadow-[hsl(var(--always-black)/5.1%)]
                         ${showResults 
                             ? ' bg-white dark:bg-[#222222] rounded-t-2xl md:rounded-t-3xl  ' 
-                            : 'rounded-full hover:border-[#0088aa] dark:hover:border-[#ff952aff]'}
+                            : 'rounded-full hover:border-[#0088aa] dark:hover:border-[#ff952aff] shadow-sm '}
                         `}
                     >
+                        {/* Search button when tying */}
                         <button
                             type="submit"
                             className={`ml-4 p-2 size-10 my-auto rounded-full text-gray-500 hover:text-gray-900 dark:text-white/70 dark:hover:text-[#ff952aff] transition-all duration-500 ease-out cursor-pointer ${hasValue ? 'flex ' : 'hidden'} `}
@@ -259,6 +308,8 @@ export default function Header() {
                                 anchorRef={searchContainerRef}  
                             />
                         )}
+
+                        {/* Clear button */}
                         {hasValue && (
                             <button
                                 type="button"
@@ -270,11 +321,23 @@ export default function Header() {
                             </button>
                         )}
 
+                        {/* Search button on mobile display */}
+                        {!hasValue && (
+                            <button
+                                type="submit"
+                                className="sm:hidden p-2 my-auto rounded-full bg-[#101828] text-white dark:bg-[#ff952aff] hover:bg-gray-400 transition-all duration-500 ease-out cursor-pointer"
+                                title="Rechercher"
+                            >
+                                <MagnifyingGlassIcon className="size-5" />
+                            </button>
+                        )}
                     </div>
+
+                    {/* Search button */}
                     {!hasValue && (
                         <button
                             type="submit"
-                            className="ml-2 p-2 size-10 my-auto rounded-full bg-[#101828] text-white dark:bg-[#ff952aff] hover:bg-gray-400 transition-all duration-500 ease-out cursor-pointer"
+                            className="max-sm:hidden ml-2 p-2 size-10 my-auto rounded-full bg-[#101828] text-white dark:bg-[#ff952aff] hover:bg-gray-400 transition-all duration-500 ease-out cursor-pointer"
                             title="Rechercher"
                         >
                             <MagnifyingGlassIcon className="size-6" />
@@ -282,13 +345,12 @@ export default function Header() {
                     )}
                 </section>
 
-                {/* Navigation */}
-                <nav
-                    className={`flex flex-row gap-6 items-center transition-all duration-500 ease-in-out ${
-                        hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'
+                {/* ========= Desktop Navigation ============== */}
+                <nav className={`hidden  flex-row gap-6 items-center order-4 transition-all duration-500 ease-in-out ${
+                        hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100 min-[1025px]:flex'
                     }`}
                 >
-                    <ul className={`mobile-menu flex items-start min-[1025px]:items-center gap-4 min-[1025px]:gap-6 text-base xl:text-lg font-medium max-[1025px]:flex-col max-[1025px]:absolute max-[1025px]:top-full max-[1025px]:left-0 max-[1025px]:w-full bg-[#FCFFF7] dark:bg-[#222222] max-[1025px]:shadow-lg max-[1025px]:py-4 max-[1025px]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-[1025px]:flex rounded-b-2xl`}>
+                    <ul className={`flex items-center gap-4 min-[1025px]:gap-6 text-base xl:text-lg font-medium max-[1025px]:absolute max-[1025px]:top-full max-[1025px]:left-0 max-[1025px]:w-full bg-[#FCFFF7] dark:bg-[#222222] max-[1025px]:shadow-lg max-[1025px]:py-4 max-[1025px]:px-5 ${isMobileMenuOpen ? 'flex' : 'hidden'} min-[1025px]:flex rounded-b-2xl`}>
                         <li>
                             <Link href="/events" className={`inline-flex whitespace-nowrap items-center gap-3 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] group ${pathname === '/events' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`} onClick={() => setIsMobileMenuOpen(false)}>
                                 <IconHomeButton className="size-5 -translate-y-1" />
@@ -296,27 +358,17 @@ export default function Header() {
                             </Link>
                         </li>
 
-                        {!isMounted ? (
-                            <>
-                                <li><span className="inline-flex whitespace-nowrap items-center gap-1 p-2 text-gray-400/50 animate-pulse"><FingerPrintIcon className="inline-block size-5" /><span>Se Connecter</span></span></li>
-                            </>
-                        ) : status === 'loading' ? (
-                            <li>Chargement...</li>
-                        ) : session ? (
-                            <>
-                            {/* --- Navigation Mobile links hidden on desktop display --- */}
-                            <li className="min-[1025px]:hidden"><Link href="/my-events" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`} onClick={() => setIsMobileMenuOpen(false)}><CalendarDateRangeIcon className="inline-block size-5" /><span>Mes Inscriptions</span></Link></li>
-                            <li className="min-[1025px]:hidden"><Link href="/account" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`} onClick={() => setIsMobileMenuOpen(false)}><UserCircleIcon className="inline-block size-5" /><span>Compte</span></Link></li>
-                            {session.user.isAdmin && (
-                                <li className="min-[1025px]:hidden"><Link href="/admin" className="inline-flex items-center gap-2 whitespace-nowrap transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] group" title="Aller à l'administration" onClick={() => setIsMobileMenuOpen(false)}><AdminLogo className="size-6 animate-bounce group-hover:animate-none" /><span>Admin</span></Link></li>
-                            )}
-                            <li className="min-[1025px]:hidden"><button onClick={handleSignOut} className="inline-flex items-center gap-2 whitespace-nowrap transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] w-full text-left cursor-pointer rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray]" title="Se déconnecter"><span>Hi {session.user.firstName} !</span><LogoutLogo /></button></li>
+                    {!isMounted ? (
+                        <span className="inline-flex whitespace-nowrap items-center gap-1 p-2 text-gray-400/50 animate-pulse"><FingerPrintIcon className="inline-block size-5" /><span>Se Connecter</span></span>
+                    ) : status === 'loading' ? (
+                        <Loader variant='dots' />
+                    ) : session ? (
+                        <>
+                             {/* Registrations events link Desktop */}
+                            <Link href="/my-events" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`}><CalendarDateRangeIcon className="inline-block size-5" /><span>Mes Inscriptions</span></Link>
                             
-                            {/* --- Navigation Desktop links hidden on mobile display --- */}
-                            <li className="max-[1025px]:hidden"><Link href="/my-events" className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${pathname === '/my-events' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''}`}><CalendarDateRangeIcon className="inline-block size-5" /><span>Mes Inscriptions</span></Link></li>
-                            
-                            {/* --- NavCollapsed --- */}
-                            <li className="relative max-[1025px]:hidden" ref={userMenuRef}>
+                            {/* User Menu Dropdown Desktop */}
+                            <li className="relative" ref={userMenuRef}>
                                 <button
                                     onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                                     className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] cursor-pointer ${
@@ -329,8 +381,8 @@ export default function Header() {
                                 </button>
 
                                 {isUserMenuOpen && (
-                                    <div className={`absolute right-0 top-full mt-2 w-56 bg-white dark:bg-[#222222] rounded-lg translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease shadow-[0_10px_15px_rgb(0,0,0,0.4)] hover:shadow-[0_12px_20px_rgb(0,0,0,0.5)] dark:shadow-[0_15px_25px_rgb(0,0,0,0.8)] dark:hover:shadow-[0_15px_25px_rgb(0,0,0,0.9)] py-2 z-20 border border-gray-300 dark:border-white/20  ${isUserMenuOpen ? 'animate-slide-top' : ' animate-slide-bottom'}`} >
-                                        <div className="px-4 py-2 border-b border-gray-300 dark:border-white/20">
+                                    <div className={`absolute px-3 right-0 top-full mt-2 w-64 bg-white dark:bg-[#222222] rounded-lg translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease shadow-[0_10px_15px_rgb(0,0,0,0.4)] hover:shadow-[0_12px_20px_rgb(0,0,0,0.5)] dark:shadow-[0_15px_25px_rgb(0,0,0,0.8)] dark:hover:shadow-[0_15px_25px_rgb(0,0,0,0.9)] py-2 z-20 border border-gray-300 dark:border-white/20  ${isUserMenuOpen ? 'animate-slide-top' : ' animate-slide-bottom'}`} >
+                                        <div className="p-2 border-b border-gray-300 dark:border-white/20">
                                             <p className="text-sm font-medium text-gray-900 dark:text-white/95 truncate">
                                                 {session.user.name}
                                             </p>
@@ -342,17 +394,17 @@ export default function Header() {
                                             <li>
                                                 <Link
                                                     href="/account"
-                                                    className="flex items-center gap-3 px-4 py-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer"
+                                                    className="flex items-center gap-3 p-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
                                                     onClick={() => setIsUserMenuOpen(false)}
                                                 >
                                                     <UserCircleIcon className="size-5" />
-                                                    <span>Mon Compte</span>
+                                                    <span>Mon Espace Personnel</span>
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link
                                                     href="/my-events"
-                                                    className="flex items-center gap-3 px-4 py-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-gray-500"
+                                                    className="flex items-center gap-3 p-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10"
                                                     onClick={() => {
                                                         setIsUserMenuOpen(false);
                                                         setIsMobileMenuOpen(false);
@@ -366,21 +418,21 @@ export default function Header() {
                                                 <li>
                                                     <Link
                                                         href="/admin"
-                                                        className="flex items-center gap-3 px-4 py-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-gray-500"
+                                                        className="flex justify-start items-center bg-[url('/images/SplashPaintLeftSide.svg')] bg-no-repeat bg-cover bg-top p-2 pr-0 gap-3 text-base text-gray-950 dark:text-white  hover:bg-gray-100 dark:hover:bg-white/10 rounded-md border border-gray-300 dark:border-white/20 my-2"
                                                         onClick={() => setIsUserMenuOpen(false)}
                                                     >
-                                                        <AdminLogo className="size-5" />
-                                                        <span>Admin</span>
+                                                        <AdminLogo className='!size-14 drop-shadow-2xl' />
+                                                        <span className='drop-shadow-2xl'>Interface Administrateur</span>
                                                     </Link>
                                                 </li>
                                             )}
                                             <li className="border-t border-gray-300 dark:border-white/20 mt-1 pt-1">
                                                 <button
                                                     onClick={handleSignOut}
-                                                    className="flex items-center gap-3 w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-500 cursor-pointer"
+                                                    className="flex items-center gap-3 w-full text-left p-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
                                                 >
                                                     <LogoutLogo />
-                                                    <span>Déconnexion</span>
+                                                    <span>Se Déconnecter</span>
                                                 </button>
                                             </li>
                                         </ul>
@@ -397,7 +449,7 @@ export default function Header() {
                                         className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${
                                             (pathname === '/login' || pathname === '/register') ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''
                                         }`}
-                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        onClick={() => setIsUserMenuOpen(false)}
                                     >
                                         <FingerPrintIcon className="inline-block size-5" />
                                         <span className="w-25 xl:w-28 text-left">
@@ -409,12 +461,113 @@ export default function Header() {
                             </>
                         )}
                     </ul>
-                    <button id="burgerBtn" className="flex min-[1025px]:hidden cursor-pointer" title="Menu" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
-                        {isMobileMenuOpen ? <XMarkIcon className="w-8 h-8" /> : <Bars3Icon className="w-8 h-8" />}
-                    </button>
+           
                 </nav>
-            </header>
 
+                {/* ============ Mobile Navigation ==============*/}
+                {isMobileMenuOpen && (
+                    <div
+                        className="min-[1025px]:hidden fixed inset-0 bg-black/50 z-[9999] h-screen backdrop-blur-xs"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                    />
+                )}
+
+                <div className={`min-[1025px]:hidden absolute top-0 left-0 h-screen px-4 w-[85%] max-w-sm bg-[#FCFFF7] dark:bg-[#1f1f1f] z-10000 shadow-xl transition-transform transform duration-600 ease
+                    ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+                `}>
+                    {/* Menu burger/close button and eventrive logo */}
+                    <div className="flex items-center justify-between py-4">
+                        <button 
+                            className="min-[1025px]:hidden p-1 rounded-md hover:bg-gray-100 bg-white/5 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                            aria-label="Menu"
+                            title={isMobileMenuOpen ? 'Fermer le Menu' : 'Ouvrir le Menu'} 
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            {isMobileMenuOpen ? <XMarkIcon className="size-8 transition-all duration-500 ease" /> : <Bars3Icon className="size-8 transition-all duration-500 ease" />}
+                        </button>
+
+                        <div className={`transition-all duration-500 ease-in-out max-lg:-ml-5 ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                            <LogoButton onClick={() => router.push(`/`)} className="w-28 h-auto md:w-32 md:h-15" />
+                        </div>
+                        <div className='size-5'></div>
+                    </div>
+
+                    {/* User info */}
+                    {session ? (
+                        <>
+                            <div className=" w-full flex items-center gap-3 py-3 border-b border-t border-gray-300 dark:border-white/20">
+                                <img src="/images/User.svg" alt="Avatar" className="size-10" />
+                                <div>
+                                    <p className="text-base font-semibold">{session.user.name}</p>
+                                    <p className="text-sm text-gray-400">{session.user.email}</p>
+                                </div>
+                            </div>
+                        </>
+                    ) : (
+                        null
+                    )}
+                   
+                    {/* Navigation Links  */}
+                    <ul className="flex flex-col gap-2 py-4 text-base">
+                        <li>
+                            <Link 
+                                href="/events" 
+                                className="flex items-center gap-4 rounded-lg p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10"
+                                onClick={() => {
+                                    setIsMobileMenuOpen(false);
+                                }}
+                            >
+                                <IconHomeButton className="size-5 -translate-y-1" />
+                                <span>Accueil</span>
+                            </Link>
+                        </li>
+                        {session ? (
+                            <>
+                                <li>
+                                    <Link
+                                        href="/my-events"
+                                        className="flex items-center gap-3 rounded-lg p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10"
+                                        onClick={() => {
+                                            setIsMobileMenuOpen(false);
+                                        }}
+                                    >
+                                        <CalendarDateRangeIcon className="size-5" />
+                                        <span>Mes Inscriptions</span>
+                                    </Link>
+                                </li>                      
+                                {session.user.isAdmin && (
+                                    <li>
+                                        <Link
+                                            href="/admin"
+                                            className="max-w-60 mx-auto flex justify-start items-center bg-[url('/images/SplashPaintLeftSide.svg')] bg-no-repeat bg-cover bg-top p-2 pr-0 gap-3 text-base text-gray-950 dark:text-white  hover:bg-gray-100 dark:hover:bg-white/10 rounded-md border border-gray-300 dark:border-white/20 my-2"
+                                            onClick={() => setIsMobileMenuOpen(false)}
+                                        >
+                                            <AdminLogo className='!size-14 drop-shadow-2xl' />
+                                            <span className='drop-shadow-2xl'>Interface Administrateur</span>
+                                        </Link>
+                                    </li>
+                                )}
+                                <li className="border-t border-gray-300 dark:border-white/20 mt-1 pt-1">
+                                    <button
+                                        onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }}
+                                        className="flex items-center gap-3 w-full text-left rounded-lg p-2 text-red-600 dark:text-red-400 hover:bg-red-900/20 cursor-pointer"
+                                    >
+                                        <LogoutLogo />
+                                        <span>Se Déconnecter</span>
+                                    </button>
+                                </li>
+                            </>
+                        ) : (
+                            <li>
+                                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 rounded-lg p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10">
+                                    <FingerPrintIcon className="inline-block size-5" />
+                                    <span>Se Connecter</span>
+                                </Link>
+                            </li>
+                        )}
+                    </ul>
+                </div>
+            </header>
         </>
     );
 }

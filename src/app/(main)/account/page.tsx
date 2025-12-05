@@ -204,7 +204,7 @@ export default function UserAccountManageEventsPage() {
                         className={`flex items-center w-full gap-3 px-3 [1024px]:px-0.5 py-2 rounded-lg text-left transition-colors cursor-pointer ${isNavCollapsed ? 'lg:justify-center' : ''} ${
                             activeView === 'info' 
                             ? 'bg-[#d9dad9] dark:bg-gray-800 text-gray-800 dark:text-white/90 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,0.3)]' 
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-white/10'
                         }`}
                     >
                         <UserCircleIcon className={`${isNavCollapsed ? 'size-7' : 'size-5'} flex-shrink-0`} />
@@ -221,11 +221,11 @@ export default function UserAccountManageEventsPage() {
                         className={`flex items-center w-full gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                             activeView === 'payments'
                             ? 'bg-[#d9dad9] dark:bg-gray-800 text-gray-800 dark:text-white/90 shadow-lg'
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-white/10'
                         }`}
                     >
                         <BanknotesIcon className={`${isNavCollapsed ? 'ml-1.5 size-7' : 'size-5'} flex-shrink-0`} />
-                        <span className={isNavCollapsed ? 'lg:hidden' : ''}>Moyens de paiement</span>
+                        <span className={isNavCollapsed ? 'lg:hidden' : 'truncate'}>Moyens de paiement</span>
                     </button>
 
                     {/* ---- Payments Mobile Content --- */}
@@ -239,7 +239,7 @@ export default function UserAccountManageEventsPage() {
                         className={`flex items-center w-full gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${isNavCollapsed ? 'lg:justify-center' : ''} ${
                             activeView === 'security' 
                             ? 'bg-[#d9dad9] dark:bg-gray-800 text-gray-800 dark:text-white/90 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,0.3)]' 
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-white/10'
                         }`}
                     >
                         <ShieldCheckIcon className={`${isNavCollapsed ? 'size-7' : 'size-5'} flex-shrink-0`} />
@@ -261,7 +261,7 @@ export default function UserAccountManageEventsPage() {
                         className={`flex items-center w-full gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${isNavCollapsed ? 'lg:justify-center' : ''} ${
                             activeView === 'events' 
                             ? 'bg-[#d9dad9] dark:bg-gray-800 text-gray-800 dark:text-white/90 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,0.3)]' 
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-white/10'
                         }`}
                     >
                         <CalendarDaysIcon className={`${isNavCollapsed ? 'size-7' : 'size-5'} flex-shrink-0`} />
@@ -283,7 +283,7 @@ export default function UserAccountManageEventsPage() {
                         className={`flex items-center w-full gap-3 px-3 py-2 rounded-lg text-left transition-colors cursor-pointer ${isNavCollapsed ? 'lg:justify-center' : ''} ${
                             activeView === 'help' 
                             ? 'bg-[#d9dad9] dark:bg-gray-800 text-gray-800 dark:text-white/90 shadow-lg dark:shadow-[0px_2px_2px_rgba(0,0,0,0.3)]' 
-                            : 'hover:bg-gray-100 dark:hover:bg-gray-700'
+                            : 'hover:bg-gray-100 dark:hover:bg-white/10'
                         }`}
                     >
                         <QuestionMarkCircleIcon className={`${isNavCollapsed ? 'size-7' : 'size-5'} flex-shrink-0`} />
@@ -330,12 +330,14 @@ export default function UserAccountManageEventsPage() {
             <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-6">
                 Informations personnelles
             </h2>
-            <form className="space-y-6" onSubmit={handleUpdateAccount}>
+            <form className="space-y-6 lg:space-x-6 lg:grid lg:grid-cols-2" onSubmit={handleUpdateAccount}>
                 <FloatingLabelInput id="firstName" label="Prénom" type="text" value={firstName ?? ''} onChange={(e) => setFirstName(e.target.value)} required />
                 <FloatingLabelInput id="lastName" label="Nom" type="text" value={lastName ?? ''} onChange={(e) => setLastName(e.target.value)} required />
-                <FloatingLabelInput id="email" label="Adresse email" type="email" value={email ?? ''} onChange={(e) => setEmail(e.target.value)} required />
+                <div className=" lg:col-span-2">
+                    <FloatingLabelInput id="email" label="Adresse email" type="email" value={email ?? ''} onChange={(e) => setEmail(e.target.value)} required />                    
+                </div>
                 
-                <div className="flex justify-end">
+                <div className="flex justify-end lg:col-span-2">
                     <ActionButton type="submit" variant="primary" isLoading={isAccountUpdating} className="flex-1 sm:flex-none sm:w-48">
                         <span className="ml-2.5">{isAccountUpdating ? 'Mise à jour' : 'Enregistrer'}</span>
                         {!isAccountUpdating && ( <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 group-hover:animate-bounce" /> )}

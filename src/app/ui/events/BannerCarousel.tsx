@@ -173,7 +173,7 @@ export default function Carousel() {
     return (
         <div
             ref={containerRef}
-            className="carousel-container relative w-full mb-12 -mt-8 rounded-lg shadow-lg bg-gradient-to-b from-[#111] to-[#1E1E1E] border border-[rgba(255,255,255,0.08)] overflow-hidden"
+            className="carousel-container relative w-full mb-12 -mt-4 md:-mt-8 shadow-lg bg-gradient-to-b from-[#111] to-[#1E1E1E] border border-[rgba(255,255,255,0.08)] overflow-hidden"
         >
             {/* Slides track */}
             <div

@@ -38,7 +38,7 @@ export default function OnTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-2 right-2 z-[1001] flex size-11 dark:bg-black/20 bg-black/50 hover:bg-black/90 rounded-full overflow-hidden cursor-pointer justify-center items-center transition-opacity duration-300 ease-in-out group drop-shadow-[0px_3px_3px_rgba(0,0,0,0.6)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)] ${
+      className={`fixed bottom-2 right-2 z-1001 flex size-11 dark:bg-black/20 bg-black/50 hover:bg-black/90 rounded-full overflow-hidden cursor-pointer justify-center items-center transition-opacity duration-300 ease-in-out group drop-shadow-[0px_3px_3px_rgba(0,0,0,0.6)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)] ${
         isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
       title="Retour en Haut"
@@ -56,7 +56,7 @@ export default function OnTopButton() {
           strokeWidth="4"
           fill="none"
           strokeLinecap="round"
-          className="transition-colors duration-300 dark:[stroke:#03527780] group-hover:stroke-[#fff]"
+          className="transition-colors duration-300 dark:stroke-[#03527780] group-hover:stroke-white"
           style={{ strokeDasharray: circumference, strokeDashoffset: offset }}
         />
       </svg>
@@ -66,12 +66,12 @@ export default function OnTopButton() {
         xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          className="group-hover:fill-[#fff] dark:[fill:#03527780]"
+          className="group-hover:fill-white dark:fill-[#03527780]"
           d="M 38 24 L 38 36 L 74 15 L 110 36 L 110 24 L 74 2 L 38 24 Z"
           fill="#E8E5D8"
         />
         <path
-          className="group-hover:fill-[#E8E5D8] dark:[fill:white]/55"
+          className="group-hover:fill-[#E8E5D8] dark:fill-[white]/55"
           d="M 46 53 L 46 63 L 74 45 L 102 63 L 102 53 L 74 33 L 46 53 Z"
           fill="#fff"
         />

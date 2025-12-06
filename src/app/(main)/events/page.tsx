@@ -154,7 +154,7 @@ export default function EventsPage() {
 
                             {hasMoreEvents && (
                                 <div className="flex items-center justify-center mt-12 w-[70%] mx-auto">  
-                                    <div className="flex-grow border-t-3 dark:border-white/70 border-gray-500 rounded-full"></div>                            
+                                    <div className="grow border-t-3 dark:border-white/70 border-gray-500 rounded-full"></div>                            
                                     <ActionButton
                                         variant="primary"
                                         onClick={loadMoreEvents}
@@ -163,7 +163,7 @@ export default function EventsPage() {
                                         Voir {Math.min(eventsPerIncrement, filteredEvents.length - visibleCount)} de plus
                                         <ChevronDownIcon className="ml-2 size-6" />
                                     </ActionButton>
-                                    <div className="flex-grow border-t-3 dark:border-white/70 border-gray-500 rounded-full"></div>
+                                    <div className="grow border-t-3 dark:border-white/70 border-gray-500 rounded-full"></div>
                                 </div>
                             )}
                         </div>

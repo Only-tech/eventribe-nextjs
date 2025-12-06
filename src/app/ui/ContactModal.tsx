@@ -131,7 +131,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             isOpen && !isClosing ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}      
             onClick={handleClose}
         >
-            <div className=" max-w-[95%] mx-auto w-md sm:w-xl relative transform transition-transform duration-300 min-[769px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[769px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
+            <div className=" max-w-[95%] mx-auto w-md sm:w-xl relative transform transition-transform duration-300 min-[769px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[769px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)]">
                 <div className={`bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-1 pb-6 sm:px-6 md:p-8 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[769px]:[clip-path:var(--clip-path-squircle-60)]
                     ${isClosing ? 'translate-x-5 opacity-0 animate-slide-right' : 'translate-x-0 opacity-100 animate-slide-left'}`}        
                     onClick={(e) => e.stopPropagation()} 
@@ -192,7 +192,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     
                         <div className="flex flex-col min-[449px]:flex-row gap-10 items-start">
                             {/* Email Field */}
-                            <div className="flex-grow w-full">
+                            <div className="grow w-full">
                                 <FloatingLabelInput
                                     id="email"
                                     type="email"

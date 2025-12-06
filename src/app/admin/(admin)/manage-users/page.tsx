@@ -170,7 +170,7 @@ export default function ManageUsersPage() {
                                     <td className="px-2 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                         <IconButton
                                             onClick={() => handleToggleAdminStatus(user.id, user.is_admin, user.first_name)}
-                                            className={`px-3 py-1 text-xs font-semibold hover:before:[display:none] ${
+                                            className={`px-3 py-1 text-xs font-semibold hover:before:hidden ${
                                                 user.is_admin ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
                                             } hover:opacity-80 transition-opacity duration-200`}
                                             disabled={session?.user?.id === String(user.id)}

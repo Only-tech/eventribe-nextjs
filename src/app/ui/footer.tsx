@@ -39,7 +39,7 @@ export default function Footer() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex max-[925px]:flex-wrap gap-12 lg:gap-15 xl:gap-18 2xl:gap-28 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
                     {/* About us */}
                     <section className="w-full sm:col-span-2 flex-1 xl:w-100 text-justify max-lg:order-3 mx-auto">
-                        <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">À propos de nous</h3>
+                        <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-0.5 after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">À propos de nous</h3>
                         <p>
                             eventribe connecte organisateurs et passionnés à travers des rencontres humaines et projets culturels.
                             Que vous soyez artiste, pro ou curieux, la plateforme vous accompagne : création d’événements, inscriptions, suivi et bien plus encore.
@@ -49,7 +49,7 @@ export default function Footer() {
 
                     {/* Navigation */}
                     <section className="max-lg:order-1 col-span-1 sm:w-52 xl:w-95">
-                        <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">Navigation</h3>
+                        <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-0.5 after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">Navigation</h3>
                         <ul className="grid min-[400px]:grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-x-6 space-y-2 font-medium">
                             <li><Link href="/" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Accueil</Link></li>
                             {session ? (
@@ -73,7 +73,7 @@ export default function Footer() {
 
                     {/* Partners */}
                     <section className="max-lg:order-2 col-span-1">
-                        <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-2">Nos partenaires</h3>
+                        <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-0.5 after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-2">Nos partenaires</h3>
                         <ul className="flex flex-wrap min-[1024px]:w-xs min-[1900px]:w-2xl justify-between gap-5">
                             {PartnersData.map((partner) => (
                                 <li key={partner.id}>

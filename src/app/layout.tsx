@@ -9,8 +9,8 @@ import CookieBanner from '@/app/ui/CookieBanner';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-    title: 'eventribe - Événement à venir',
-    description: 'Gestion d\'événements et inscriptions',
+    title: 'eventribe',
+    description: 'evenements à venir. Gestion d\'événements et inscriptions, avec eventribe, l\événementiel au plus près de vous !',
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

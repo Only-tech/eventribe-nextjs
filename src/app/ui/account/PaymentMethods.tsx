@@ -139,7 +139,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
 
             {showForm ? (
                 <form onSubmit={handleAdd} className="space-y-6 animate-slide-top">
-                    <div className="w-[70%] mx-auto flex-grow border-t-5 dark:border-white/70 border-gray-500 rounded-full"></div>
+                    <div className="w-[70%] mx-auto grow border-t-5 dark:border-white/70 border-gray-500 rounded-full"></div>
                     <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white/90 mt-6">Ajouter un moyen de paiement</h3>
                     <FloatingLabelInput
                         id="cardNumber"

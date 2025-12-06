@@ -697,7 +697,7 @@ export default function UserAccountManageEventsPage() {
                                     : "hover:bg-gray-100 dark:hover:bg-white/10"
                                 }`}
                             >
-                                <Icon className={`${isNavCollapsed ? "size-9" : "size-6"} flex-shrink-0 text-[#08568a] dark:text-white/90`} />
+                                <Icon className={`${isNavCollapsed ? "size-9" : "size-6"} shrink-0 text-[#08568a] dark:text-white/90`} />
                                 <span className={isNavCollapsed ? "lg:hidden" : "truncate"}>{label}</span>
                             </button>
 

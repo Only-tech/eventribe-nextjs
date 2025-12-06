@@ -53,7 +53,7 @@ const SearchResults = forwardRef<OverlayScrollbarsComponentRef, SearchResultsPro
                                     className="object-cover object-center transition-transform duration-300 group-hover:scale-110"
                                 />
 
-                                <div className="absolute inset-0 flex flex-col justify-end group-hover:bg-gradient-to-t from-black/80 via-black/50 to-transparent
+                                <div className="absolute inset-0 flex flex-col justify-end group-hover:bg-linear-to-t from-black/80 via-black/50 to-transparent
                                                 text-white">
                                     
                                     <div className="w-full bg-black/35  backdrop-blur-xs group-hover:backdrop-blur-sm pt-0.5 pb-2 px-2.5 transition-transform duration-300 ease-in-out transform shadow-xl rounded-xl">

@@ -325,7 +325,7 @@ export default function ManageEventsPage() {
                             />
                             <label htmlFor="image" className="absolute pointer-events-none top-0 -translate-y-1/2 text-sm font-medium text-gray-700 group-hover:text-[#0676bdff] peer-focus:text-[#0676bdff] px-1 py-0 ml-4 bg-white">Image de l&apos;événement</label>
                             {(previewImage || imageUrl) && (
-                                <div className="mt-4 flex justify-center md:absolute bg-white sm:shadow-[0px_20px_15px_rgba(0,_0,_0,_0.1)] rounded-xl px-2 pb-2">
+                                <div className="mt-4 flex justify-center md:absolute bg-white sm:shadow-[0px_20px_15px_rgba(0,0,0,0.1)] rounded-xl px-2 pb-2">
                                     <Image
                                         src={previewImage || normalizeImagePath(imageUrl)}
                                         alt="Aperçu de l'image"

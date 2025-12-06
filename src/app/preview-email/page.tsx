@@ -196,7 +196,7 @@ export default function PreviewEmailPage() {
                                         : "hover:bg-gray-100 dark:hover:bg-gray-700"
                                     }`}
                                 >
-                                    <Icon className={`${isNavCollapsed ? "size-9" : "size-6"} flex-shrink-0 text-[#08568a] dark:text-[#ff952aff]`} />
+                                    <Icon className={`${isNavCollapsed ? "size-9" : "size-6"} shrink-0 text-[#08568a] dark:text-[#ff952aff]`} />
                                     <span className={isNavCollapsed ? "lg:hidden" : "truncate"}>{label}</span>
                                 </button>
 
@@ -243,7 +243,7 @@ export default function PreviewEmailPage() {
                                 onClick={handleSend}
                                 isLoading={isSending}
                                 variant="primary"
-                                className={`flex-1 w-full ${isNavCollapsed ? '!p-0 h-12 !rounded-lg' : ''}`}
+                                className={`flex-1 w-full ${isNavCollapsed ? 'p-0! h-12 rounded-lg!' : ''}`}
                             >
                                 {isSending ? (
                                     isNavCollapsed ? (

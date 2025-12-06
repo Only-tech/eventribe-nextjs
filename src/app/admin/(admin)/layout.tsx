@@ -29,7 +29,7 @@ export default async function AdminLayout({
                 style={{ backgroundImage: "url('/images/SplashPaint.svg')" }}
             > 
                 <AdminHeader />
-                    <main className="flex-grow max-w-[98%] sm:max-w-[95%] xl:max-w-[90%] w-full py-8 mx-auto mt-[80px]">
+                    <main className="grow max-w-[98%] sm:max-w-[95%] xl:max-w-[90%] w-full py-8 mx-auto mt-20">
                         {children}
                     </main>
                 <AdminFooter /> 

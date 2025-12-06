@@ -167,7 +167,7 @@ export default function MyEventsPage() {
                                                         {new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
                                                     </p>
                                                     <p className="text-gray-700 dark:text-white/60 text-sm mt-1"><MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}</p>
-                                                    <p className="text-gray-700 text-justify min-[500px]:text-start dark:text-white/70 mt-2  mb-2 flex-grow">{event.description_short}</p>
+                                                    <p className="text-gray-700 text-justify min-[500px]:text-start dark:text-white/70 mt-2  mb-2 grow">{event.description_short}</p>
                                                     
                                                     <p className="hidden text-sm text-gray-500 sm:flex xl:hidden justify-between gap-2 whitespace-nowrap">
                                                         <span className="text-sm inline-flex items-center text-[#08568a] whitespace-nowrap">

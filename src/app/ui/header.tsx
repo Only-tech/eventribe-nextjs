@@ -260,7 +260,7 @@ export default function Header() {
                         onClick={() => router.push(`/account`)}
                         title='Espace Personnel'
                     >
-                        <UserLogo className='!size-7 flex-1'/>
+                        <UserLogo className='size-7! flex-1'/>
                     </IconButton>
                 </div>
        
@@ -268,7 +268,7 @@ export default function Header() {
                 <section
                     ref={searchContainerRef}
                     className={`relative flex transition-all duration-500 ease-in-out
-                        order-3 w-full flex-grow md:mx-10 md:order-2 ${
+                        order-3 w-full grow md:mx-10 md:order-2 ${
                         hasValue ? 'absolute inset-x-0 top-5 h-full z-50 flex items-center p-0 w-full' : ' '
                     }`}
                 >
@@ -424,7 +424,7 @@ export default function Header() {
                                                         className="flex justify-start items-center bg-[url('/images/SplashPaintLeftSide.svg')] bg-no-repeat bg-cover bg-top p-2 pr-0 gap-3 text-base text-gray-950 dark:text-white  hover:bg-gray-100 dark:hover:bg-white/10 rounded-md border border-gray-300 dark:border-white/20 my-2"
                                                         onClick={() => setIsUserMenuOpen(false)}
                                                     >
-                                                        <AdminLogo className='!size-14 drop-shadow-2xl' />
+                                                        <AdminLogo className='size-14! drop-shadow-2xl' />
                                                         <span className='drop-shadow-2xl'>Interface Administrateur</span>
                                                     </Link>
                                                 </li>
@@ -470,7 +470,7 @@ export default function Header() {
                 {/* ============ Mobile Navigation ==============*/}
                 {isMobileMenuOpen && (
                     <div
-                        className="min-[1025px]:hidden fixed inset-0 bg-black/50 z-[9999] h-screen backdrop-blur-xs"
+                        className="min-[1025px]:hidden fixed inset-0 bg-black/50 z-9999 h-screen backdrop-blur-xs"
                         onClick={() => setIsMobileMenuOpen(false)}
                     />
                 )}
@@ -500,7 +500,7 @@ export default function Header() {
                         <div className="mt-15 w-full flex items-center gap-3 py-3 border-b border-gray-300 dark:border-white/10">
                             {session ? (
                                 <>
-                                    <UserLogo className="!size-10 text-gray-400 dark:text-[#444]" />
+                                    <UserLogo className="size-10! text-gray-400 dark:text-[#444]" />
                                     <div>
                                         <p className="text-base font-semibold">{session.user.name}</p>
                                         <p className="text-sm text-gray-400">{session.user.email}</p>
@@ -546,7 +546,7 @@ export default function Header() {
                                                 className="w-full mx-auto flex justify-start items-center bg-[url('/images/SplashPaintLeftSide.svg')] bg-no-repeat bg-cover bg-top p-[4%] pr-0 gap-[7%] text-lg text-gray-950 dark:text-white  hover:bg-gray-100 dark:hover:bg-white/10 rounded-md border border-gray-300 dark:border-white/20 my-2"
                                                 onClick={() => setIsMobileMenuOpen(false)}
                                             >
-                                                <AdminLogo className='!size-14 drop-shadow-2xl' />
+                                                <AdminLogo className='size-14! drop-shadow-2xl' />
                                                 <span className='drop-shadow-2xl font-medium'>Interface <br/>Administrateur</span>
                                             </Link>
                                         </li>

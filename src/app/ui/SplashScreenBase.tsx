@@ -117,7 +117,7 @@ export default function SplashScreenBase({ imageUrls, title, redirectTo, backgro
 
             <div className="relative z-10 w-xs min-[400px]:w-[400px] sm:w-xl md:w-2xl lg:w-210 drop-shadow-[3px_15px_5px_rgba(0,0,0,0.65)]">
                 <div className="bg-white/25 p-2 rounded-3xl min-[500px]:[clip-path:var(--clip-path-squircle-60)] ">
-                    <div className={`min-h-60 flex flex-col justify-center items-center ${ backgroundClass ?? "[background-color:#FCFFF7]/85 bg-[url('/images/SplashPaintBreak.svg')]" } bg-contain bg-fixed p-6 lg:p-12 rounded-2xl min-[500px]:[clip-path:var(--clip-path-squircle-60)]`}>
+                    <div className={`min-h-60 flex flex-col justify-center items-center ${ backgroundClass ?? "bg-[#FCFFF7]/85 bg-[url('/images/SplashPaintBreak.svg')]" } bg-contain bg-fixed p-6 lg:p-12 rounded-2xl min-[500px]:[clip-path:var(--clip-path-squircle-60)]`}>
                         <h1 className="text-center text-4xl lg:text-6xl font-extrabold text-gray-900 tracking-tight drop-shadow-lg mb-10">
                             {displayedH1}
                             <span className="animate-pulse text-3xl lg:text-5xl font-light">|</span>

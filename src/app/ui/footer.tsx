@@ -36,7 +36,7 @@ export default function Footer() {
         
             {!isSimpleFooter ? (
                 // --- Full footer ---
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex max-[925px]:flex-wrap gap-12 lg:gap-18 2xl:gap-28 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex max-[925px]:flex-wrap gap-12 lg:gap-15 xl:gap-18 2xl:gap-28 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
                     {/* About us */}
                     <section className="w-full sm:col-span-2 flex-1 xl:w-100 text-justify max-lg:order-3 mx-auto">
                         <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">À propos de nous</h3>
@@ -50,14 +50,14 @@ export default function Footer() {
                     {/* Navigation */}
                     <section className="max-lg:order-1 col-span-1 sm:w-52 xl:w-95">
                         <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">Navigation</h3>
-                        <ul className="grid min-[400px]:grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 space-y-2 font-medium">
+                        <ul className="grid min-[400px]:grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-x-6 space-y-2 font-medium">
                             <li><Link href="/" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Accueil</Link></li>
                             {session ? (
                                 <>
-                                    <li><Link href="/my-events" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Mes Inscriptions</Link></li>
-                                    <li><Link href="/account" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Espace Personnel</Link></li>
+                                    <li><Link href="/my-events" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Mes Inscriptions</Link></li>
+                                    <li><Link href="/account" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Espace Personnel</Link></li>
                                     {session.user.isAdmin && (
-                                        <li><Link href="/admin" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Interface Administration</Link></li>
+                                        <li><Link href="/admin" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Interface Administration</Link></li>
                                     )}
                                 </>
                             ) : (
@@ -66,34 +66,32 @@ export default function Footer() {
                                     <li><Link href="/register" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">S&apos;Inscrire</Link></li>
                                 </>
                             )}
-                            <li><Link href="/legal-mentions" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Mentions Légales</Link></li>
+                            <li><Link href="/legal-mentions" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Mentions Légales</Link></li>
                             <li><Link href="/legal-mentions#politique-confidentialite" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Politique de Confidentialité</Link></li>
                         </ul>
                     </section>
 
-                    <div className="max-lg:order-2 col-span-1">
-                        {/* Partners */}
-                        <section className="mb-6">
-                            <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-2">Nos partenaires</h3>
-                            <ul className="flex flex-wrap sm:w-xs min-[1900px]:w-2xl justify-between gap-5">
-                                {PartnersData.map((partner) => (
-                                    <li key={partner.id}>
-                                        <Image
-                                            src={partner.src}
-                                            alt={partner.alt}
-                                            title={partner.title}
-                                            width={88} 
-                                            height={72}  
-                                            className="h-17 w-21 object-contain shadow-[inset_0_-35px_4px_-5px_#f0f2ed] drop-shadow-[0px_3px_3px_rgba(0,0,0,0.2)] shadow-[hsl(var(--always-black)/5.1%)] rounded-b-xs" 
-                                        />
-                                    </li>
-                                ))}
-                            </ul>
-                        </section>
-                        <div className='flex justify-center'>
-                            <LogoButton onClick={() => router.push(`/`)} className="w-24 h-auto md:w-32 md:h-15"/>
+                    {/* Partners */}
+                    <section className="max-lg:order-2 col-span-1">
+                        <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-2">Nos partenaires</h3>
+                        <ul className="flex flex-wrap min-[1024px]:w-xs min-[1900px]:w-2xl justify-between gap-5">
+                            {PartnersData.map((partner) => (
+                                <li key={partner.id}>
+                                    <Image
+                                        src={partner.src}
+                                        alt={partner.alt}
+                                        title={partner.title}
+                                        width={88} 
+                                        height={72}  
+                                        className="h-17 w-21 object-contain shadow-[inset_0_-35px_4px_-5px_#f0f2ed] drop-shadow-[0px_3px_3px_rgba(0,0,0,0.2)] shadow-[hsl(var(--always-black)/5.1%)] rounded-b-xs" 
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                        <div className='flex justify-center mt-6'>
+                            <LogoButton onClick={() => router.push(`/`)} className="w-28 h-auto md:w-32 md:h-15"/>
                         </div>
-                    </div>
+                    </section>
                 </div>
             ) : (
                 // --- Light footer ---

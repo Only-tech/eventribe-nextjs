@@ -4,20 +4,24 @@ import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
 import { useToast } from '@/app/ui/status/ToastProvider';
-import { Bars3Icon, XMarkIcon, MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
+import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { FingerPrintIcon, CalendarDaysIcon as CalendarDateRangeIcon, UserCircleIcon } from '@heroicons/react/24/solid';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
-import { ChevronLeftIcon } from '@heroicons/react/20/solid';
+import { Bars3Icon, XMarkIcon, ChevronLeftIcon } from '@heroicons/react/20/solid';
 import LogoButton from '@/app/ui/buttons/LogoButton';
 import IconHomeButton from '@/app/ui/buttons/IconHomeButton';
 import LogoutLogo from '@/app/ui/logo/LogoutLogo';
 import AdminLogo from '@/app/ui/logo/AdminLogo';
 import { useScrollContainer } from '@/app/providers';
 import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-react';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import 'overlayscrollbars/styles/overlayscrollbars.css';;
 import SearchResults from '@/app/ui/SearchResults';
 import { Event } from '@/app/lib/definitions';
 import { usePathname, useRouter } from 'next/navigation';
 import Loader from '@/app/ui/animation/Loader';
+import IconButton from '@/app/ui/buttons/IconButton';
+import UserLogo from '@/app/ui/logo/UserLogo';
 
 
 export default function Header() {
@@ -217,31 +221,31 @@ export default function Header() {
                 ${scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
             >
                           
-                <div className={`flex items-center gap-2 shrink-0 md:mr-4 transition-all duration-500 ease-in-out cursor-pointer ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                <div className={`flex items-center gap-2 shrink-0 md:mr-6 transition-all duration-500 ease-in-out cursor-pointer ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
                     
                     {/* Back Button if not in HomePage) */}
                     {!isHomePage ? (
-                        <button 
+                        <IconButton 
                             onClick={handleBack} 
-                            className="p-1 -ml-1 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                            className="p-0 -ml-1 bg-transparent shadow-none dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
                             aria-label="Retour"
                             title="Retour"
                         >
-                            <ChevronLeftIcon className="size-10 text-gray-700 dark:text-white" />
-                        </button>
+                            <ChevronLeftIcon className="size-9 flex-1" />
+                        </IconButton>
                     ) : (
                         null 
                     )}
 
                     {/* Menu Burger button */}
-                    <button 
-                        className="min-[1025px]:hidden p-1 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                    <IconButton                     
+                        className="min-[1025px]:hidden p-0 rounded-md bg-transparent shadow-none hover:bg-gray-100 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
                         aria-label="Menu"
                         title={isMobileMenuOpen ? 'Fermer le Menu' : 'Ouvrir le Menu'} 
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
-                        {isMobileMenuOpen ? <XMarkIcon className="size-8 transition-all duration-500 ease" /> : <Bars3Icon className="size-8 transition-all duration-500 ease" />}
-                    </button>
+                        {isMobileMenuOpen ? <XMarkIcon className="size-7 flex-1" /> : <Bars3Icon className="size-7 flex-1" />}
+                    </IconButton>
                 </div>
 
                 {/* Logo eventribe */}
@@ -249,17 +253,16 @@ export default function Header() {
                     <LogoButton onClick={() => router.push(`/`)} className="w-28 h-auto md:w-32 md:h-15" />
                 </div>
 
-                {/* User logo Link Account */}
-                <Link
-                    href="/account"
-                    className={`min-[1025px]:hidden p-3 rounded-full hover:bg-gray-100 dark:hover:bg-white/10 duration-500 ease-in-out order-2 md:order-3 ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}
-                    onClick={() => setIsUserMenuOpen(false)}
-                    title='Espace Personnel'
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 256 256" aria-hidden="true">
-                        <path d="M234.38,210a123.36,123.36,0,0,0-60.78-53.23,76,76,0,1,0-91.2,0A123.36,123.36,0,0,0,21.62,210a12,12,0,1,0,20.77,12c18.12-31.32,50.12-50,85.61-50s67.49,18.69,85.61,50a12,12,0,0,0,20.77-12ZM76,96a52,52,0,1,1,52,52A52.06,52.06,0,0,1,76,96Z" />
-                    </svg>
-                </Link>
+                {/* User logo router Account */}
+                <div className={`min-[1025px]:hidden order-2 md:order-3 ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
+                    <IconButton
+                        className="bg-transparent shadow-none hover:bg-gray-100 dark:hover:bg-white/10"
+                        onClick={() => router.push(`/account`)}
+                        title='Espace Personnel'
+                    >
+                        <UserLogo className='!size-7 flex-1'/>
+                    </IconButton>
+                </div>
        
                 {/* ========== Search container =========== */}
                 <section
@@ -381,7 +384,7 @@ export default function Header() {
                                 </button>
 
                                 {isUserMenuOpen && (
-                                    <div className={`absolute px-3 right-0 top-full mt-2 w-64 bg-white dark:bg-[#222222] rounded-lg translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease shadow-[0_10px_15px_rgb(0,0,0,0.4)] hover:shadow-[0_12px_20px_rgb(0,0,0,0.5)] dark:shadow-[0_15px_25px_rgb(0,0,0,0.8)] dark:hover:shadow-[0_15px_25px_rgb(0,0,0,0.9)] py-2 z-20 border border-gray-300 dark:border-white/20  ${isUserMenuOpen ? 'animate-slide-top' : ' animate-slide-bottom'}`} >
+                                    <div className={`absolute px-3 right-0 top-full mt-2 w-64 bg-white dark:bg-[#1f1f1f] rounded-lg translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease shadow-[0_10px_15px_rgb(0,0,0,0.4)] hover:shadow-[0_12px_20px_rgb(0,0,0,0.5)] dark:shadow-[0_15px_25px_rgb(0,0,0,0.8)] dark:hover:shadow-[0_15px_25px_rgb(0,0,0,0.9)] py-2 z-20 border border-gray-300 dark:border-white/20  ${isUserMenuOpen ? 'animate-slide-top' : ' animate-slide-bottom'}`} >
                                         <div className="p-2 border-b border-gray-300 dark:border-white/20">
                                             <p className="text-sm font-medium text-gray-900 dark:text-white/95 truncate">
                                                 {session.user.name}
@@ -394,7 +397,7 @@ export default function Header() {
                                             <li>
                                                 <Link
                                                     href="/account"
-                                                    className="flex items-center gap-3 p-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
+                                                    className="flex items-center gap-3 p-2 text-sm text-gray-900 dark:text-white/95 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
                                                     onClick={() => setIsUserMenuOpen(false)}
                                                 >
                                                     <UserCircleIcon className="size-5" />
@@ -404,7 +407,7 @@ export default function Header() {
                                             <li>
                                                 <Link
                                                     href="/my-events"
-                                                    className="flex items-center gap-3 p-2 text-sm text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10"
+                                                    className="flex items-center gap-3 p-2 text-sm text-gray-900 dark:text-white/95 rounded-md hover:bg-gray-100 dark:hover:bg-white/10"
                                                     onClick={() => {
                                                         setIsUserMenuOpen(false);
                                                         setIsMobileMenuOpen(false);
@@ -429,7 +432,7 @@ export default function Header() {
                                             <li className="border-t border-gray-300 dark:border-white/20 mt-1 pt-1">
                                                 <button
                                                     onClick={handleSignOut}
-                                                    className="flex items-center gap-3 w-full text-left p-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
+                                                    className="flex items-center gap-3 w-full text-left p-2 text-sm rounded-md text-red-600 dark:text-red-400 hover:bg-red-900/20    cursor-pointer"
                                                 >
                                                     <LogoutLogo />
                                                     <span>Se Déconnecter</span>
@@ -472,19 +475,19 @@ export default function Header() {
                     />
                 )}
 
-                <div className={`min-[1025px]:hidden absolute top-0 left-0 h-screen px-4 w-[85%] max-w-sm bg-[#FCFFF7] dark:bg-[#1f1f1f] z-10000 shadow-xl transition-transform transform duration-600 ease
+                <div className={`min-[1025px]:hidden fixed top-0 left-0 pl-4 pr-0 w-[85%] max-w-sm bg-[#FCFFF7] dark:bg-[#1f1f1f] z-10000 shadow-xl transition-transform transform duration-600 ease
                     ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
                 `}>
                     {/* Menu burger/close button and eventrive logo */}
-                    <div className="flex items-center justify-between py-4">
-                        <button 
-                            className="min-[1025px]:hidden p-1 rounded-md hover:bg-gray-100 bg-white/5 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                    <div className="min-[1025px]:hidden absolute top-0 left-0 w-full bg-[#FCFFF7] dark:bg-[#1f1f1f] p-4 md:py-1 z-10001 flex items-center justify-between">
+                        <IconButton 
+                            className=" rounded-md bg-gray-100/50 hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
                             aria-label="Menu"
                             title={isMobileMenuOpen ? 'Fermer le Menu' : 'Ouvrir le Menu'} 
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         >
-                            {isMobileMenuOpen ? <XMarkIcon className="size-8 transition-all duration-500 ease" /> : <Bars3Icon className="size-8 transition-all duration-500 ease" />}
-                        </button>
+                            {isMobileMenuOpen ? <XMarkIcon className="size-7 transition-all transform-3d duration-500 ease-in" /> : <Bars3Icon className="size-7 transition-all transform-3d duration-500 ease-in" />}
+                        </IconButton>
 
                         <div className={`transition-all duration-500 ease-in-out max-lg:-ml-5 ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
                             <LogoButton onClick={() => router.push(`/`)} className="w-28 h-auto md:w-32 md:h-15" />
@@ -492,80 +495,83 @@ export default function Header() {
                         <div className='size-5'></div>
                     </div>
 
-                    {/* User info */}
-                    {session ? (
-                        <>
-                            <div className=" w-full flex items-center gap-3 py-3 border-b border-t border-gray-300 dark:border-white/20">
-                                <img src="/images/User.svg" alt="Avatar" className="size-10" />
-                                <div>
-                                    <p className="text-base font-semibold">{session.user.name}</p>
-                                    <p className="text-sm text-gray-400">{session.user.email}</p>
-                                </div>
-                            </div>
-                        </>
-                    ) : (
-                        null
-                    )}
-                   
-                    {/* Navigation Links  */}
-                    <ul className="flex flex-col gap-2 py-4 text-base">
-                        <li>
-                            <Link 
-                                href="/events" 
-                                className="flex items-center gap-4 rounded-lg p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10"
-                                onClick={() => {
-                                    setIsMobileMenuOpen(false);
-                                }}
-                            >
-                                <IconHomeButton className="size-5 -translate-y-1" />
-                                <span>Accueil</span>
-                            </Link>
-                        </li>
-                        {session ? (
-                            <>
-                                <li>
-                                    <Link
-                                        href="/my-events"
-                                        className="flex items-center gap-3 rounded-lg p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10"
-                                        onClick={() => {
-                                            setIsMobileMenuOpen(false);
-                                        }}
-                                    >
-                                        <CalendarDateRangeIcon className="size-5" />
-                                        <span>Mes Inscriptions</span>
-                                    </Link>
-                                </li>                      
-                                {session.user.isAdmin && (
-                                    <li>
-                                        <Link
-                                            href="/admin"
-                                            className="max-w-60 mx-auto flex justify-start items-center bg-[url('/images/SplashPaintLeftSide.svg')] bg-no-repeat bg-cover bg-top p-2 pr-0 gap-3 text-base text-gray-950 dark:text-white  hover:bg-gray-100 dark:hover:bg-white/10 rounded-md border border-gray-300 dark:border-white/20 my-2"
-                                            onClick={() => setIsMobileMenuOpen(false)}
-                                        >
-                                            <AdminLogo className='!size-14 drop-shadow-2xl' />
-                                            <span className='drop-shadow-2xl'>Interface Administrateur</span>
-                                        </Link>
-                                    </li>
-                                )}
-                                <li className="border-t border-gray-300 dark:border-white/20 mt-1 pt-1">
-                                    <button
-                                        onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }}
-                                        className="flex items-center gap-3 w-full text-left rounded-lg p-2 text-red-600 dark:text-red-400 hover:bg-red-900/20 cursor-pointer"
-                                    >
-                                        <LogoutLogo />
-                                        <span>Se Déconnecter</span>
-                                    </button>
-                                </li>
-                            </>
-                        ) : (
+                    <OverlayScrollbarsComponent className="mb-2 h-screen pr-5 relative shadow-[hsl(var(--always-black)/5.1%)]">                        
+                        {/* User info */}
+                        <div className="mt-15 w-full flex items-center gap-3 py-3 border-b border-gray-300 dark:border-white/10">
+                            {session ? (
+                                <>
+                                    <UserLogo className="!size-10 text-gray-400 dark:text-[#444]" />
+                                    <div>
+                                        <p className="text-base font-semibold">{session.user.name}</p>
+                                        <p className="text-sm text-gray-400">{session.user.email}</p>
+                                    </div>
+                                </>
+                            ) : (
+                                null
+                            )}
+                        </div>
+                    
+                        {/* Navigation Links  */}
+                        <ul className="flex flex-col gap-2 py-4 text-base mb-20">
                             <li>
-                                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 rounded-lg p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10">
-                                    <FingerPrintIcon className="inline-block size-5" />
-                                    <span>Se Connecter</span>
+                                <Link 
+                                    href="/events" 
+                                    className="flex items-center gap-4 rounded-md p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10"
+                                    onClick={() => {
+                                        setIsMobileMenuOpen(false);
+                                    }}
+                                >
+                                    <IconHomeButton className="size-5 -translate-y-1" />
+                                    <span>Accueil</span>
                                 </Link>
                             </li>
-                        )}
-                    </ul>
+                            {session ? (
+                                <>
+                                    <li>
+                                        <Link
+                                            href="/my-events"
+                                            className="flex items-center gap-3 rounded-md p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10"
+                                            onClick={() => {
+                                                setIsMobileMenuOpen(false);
+                                            }}
+                                        >
+                                            <CalendarDateRangeIcon className="size-5" />
+                                            <span>Mes Inscriptions</span>
+                                        </Link>
+                                    </li>                      
+                                    {session.user.isAdmin && (
+                                        <li className='flex items-center'>
+                                            <Link
+                                                href="/admin"
+                                                className="w-full mx-auto flex justify-start items-center bg-[url('/images/SplashPaintLeftSide.svg')] bg-no-repeat bg-cover bg-top p-[4%] pr-0 gap-[7%] text-lg text-gray-950 dark:text-white  hover:bg-gray-100 dark:hover:bg-white/10 rounded-md border border-gray-300 dark:border-white/20 my-2"
+                                                onClick={() => setIsMobileMenuOpen(false)}
+                                            >
+                                                <AdminLogo className='!size-14 drop-shadow-2xl' />
+                                                <span className='drop-shadow-2xl font-medium'>Interface <br/>Administrateur</span>
+                                            </Link>
+                                        </li>
+                                    )}
+                                    <li className="border-t border-gray-300 dark:border-white/20 mt-1 pt-1">
+                                        <button
+                                            onClick={() => { handleSignOut(); setIsMobileMenuOpen(false); }}
+                                            className="flex items-center gap-3 w-full text-left rounded-md p-2 text-red-600 dark:text-red-400 hover:bg-red-900/20 cursor-pointer"
+                                        >
+                                            <LogoutLogo />
+                                            <span>Se Déconnecter</span>
+                                        </button>
+                                    </li>
+                                </>
+                            ) : (
+                                <li>
+                                    <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3 rounded-md p-2 text-gray-900 dark:text-white/95 hover:bg-gray-100 dark:hover:bg-white/10">
+                                        <FingerPrintIcon className="inline-block size-5" />
+                                        <span>Se Connecter</span>
+                                    </Link>
+                                </li>
+                            )}
+                        </ul>
+                    </OverlayScrollbarsComponent>
+                    
                 </div>
             </header>
         </>

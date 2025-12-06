@@ -12,7 +12,7 @@ const IconButton: React.FC<IconButtonProps> = ({
   className = '',
   ...props
 }) => {
-  const baseStyles = 'p-2 rounded-full relative cursor-pointer bg-gray-100 hover:bg-gray-200 shadow-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseStyles = 'p-2 rounded-full relative cursor-pointer bg-gray-100 hover:bg-gray-200 shadow-lg transition-all duration-600 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed';
   const withIndicator = "group overflow-hidden place-content-center before:content-[''] before:absolute before:w-1.5 before:h-1.5 before:rounded-full before:bg-[currentColor] before:left-[calc(50%-3px)] before:-bottom-4 before:transition-all before:duration-300 before:ease-in-out hover:before:bottom-2 [&>svg]:transition-transform [&>svg]:duration-300 [&>svg]:ease-in-out hover:[&>svg]:-translate-y-1.5";
 
   return (

@@ -1,7 +1,11 @@
 import { EmailHeader } from "@/app/lib/email-templates/EmailHeader";
 import { EmailFooter } from "@/app/lib/email-templates/EmailFooter";
 
-export function WelcomeEmail(firstName: string, lastName: string): string {
+export function ContactEmail(name: string, email: string, message: string): string {
+    // Manage the name cause the Header wait two arguments
+    const names = name.split(' ');
+    const firstName = names[0];
+    const lastName = names.slice(1).join(' ') || ""; 
     return `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" 
             style="background-color:#f5f5f5;font-family:Segoe UI,Roboto,Helvetica,Arial,sans-serif;border-radius:8px;overflow:hidden;">
@@ -15,12 +19,11 @@ export function WelcomeEmail(firstName: string, lastName: string): string {
                                 ${EmailHeader(firstName, lastName)}
                                 <tr>
                                     <td style="max-width:600px;padding:15px 20px;text-align:left;">
-                                        <h1 style="font-size:22px;font-weight:bold;margin-bottom:16px">Bienvenue sur eventribe</h1>
-                                        <p style="margin:0 0 12px 0;">Bonjour ${firstName},</p>
-                                        <p style="margin:0 0 12px 0;">Votre compte a bien été créé.</p>
-                                        <p style="margin:0 0 12px 0;">Vous pouvez dès maintenant vous inscrire à des événements ou en organiser.</p>
+                                        <h1 style="font-size:22px;font-weight:bold;margin-bottom:16px">Nouveau message</h1>
+                                        <p style="margin:0 0 12px 0;"><a href="mailto:${email}" style="color:#1e2939;text-decoration:underline;">${email}</a></p>
+                                        <p style="margin:0 0 12px 0;">${message.replace(/\n/g, '<br>')}</p>
                                         <p style="margin-top:24px;color:#666;font-size:13px;">
-                                        — L’équipe eventribe
+                                        — ${name}
                                         </p>
                                     </td>
                                 </tr>

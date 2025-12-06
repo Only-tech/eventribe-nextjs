@@ -143,19 +143,19 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="absolute inset-0 bg-[#FCFFF7] min-[500px]:bg-[#FCFFF7]/65 dark:bg-[#222222]/65 max-[500px]:dark:bg-[#1E1E1E] backdrop-blur-sm min-h-screen overflow-y-auto max-[500px]:pt-0 max-[1025px]:py-10 flex items-start min-[1025px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out">
-            <div className="relative min-[500px]:drop-shadow-[0_10px_15px_rgb(0,0,0,0.2)] max-w-[95%] max-[769px]:w-md w-5xl mx-auto transform transition-transform duration-500 min-[500px]:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] group min-[500px]:dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] min-[500px]:dark:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
-                <div className="flex flex-col min-[769px]:flex-row items-center min-h-120  justify-evenly gap-6 min-[800px]:gap-10 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/75 p-2 max-[500]:pt-4 min-[500px]:p-6 lg:p-10 xl:p-12 min-[500px]:[clip-path:var(--clip-path-squircle-60)]" >      
+        <div className="absolute inset-0 bg-[#FCFFF7] sm:bg-transparent max-sm:dark:bg-[#1E1E1E]  min-h-screen overflow-y-auto max-[1025px]:pt-0 max-[1025px]:py-10 flex items-start min-[1025px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out">
+            <div className="relative sm:drop-shadow-[0_10px_15px_rgb(0,0,0,0.2)] max-w-[95%] max-md:w-lg max-[1025px]:w-xl w-5xl mx-auto transform transition-transform duration-500 min-[1025px]:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] group sm:dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] sm:dark:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
+                <div className="sm:rounded-3xl max-sm:mt-0 max-[1025px]:mt-20 flex flex-col min-[1025px]:flex-row items-center min-h-160 min-[1025px]:min-h-120 justify-evenly gap-6 min-[1025px]:gap-10 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/75 p-4 sm:p-10 xl:p-12 sm:[clip-path:var(--clip-path-squircle-60)]" >      
                     
                     {/* Branding column */}
                     <section className="relative max-w-sm flex-1 w-full flex flex-col items-center justify-center">
-                        <IconHomeButton onClick={() => router.push(`/events`)} className="fixed top-4 right-4 cursor-pointer" title="Page d'accueil"/>
-                        <LogoButton onClick={() => router.push(`/`)} className='max-md:w-28 max-md:h-12 max-[820px]:w-48 max-[820px]:h-22 w-66 h-30'/>
+                        <IconHomeButton onClick={() => router.push(`/events`)} className="fixed top-4 sm:top-24 min-[1025px]:!top-4 right-4 cursor-pointer" title="Page d'accueil"/>
+                        <LogoButton onClick={() => router.push(`/`)} className='w-28 h-12 sm:w-48 sm:h-22 min-[1025px]:w-66 min-[1025px]:h-30'/>
                         <WellcomeLogo/>
                         {step === 'login' ? (
                             <>
                                 <h5 className="text-gray-700 dark:text-white/55">Ravi de vous revoir, votre espace est prêt</h5>
-                                <p className="mt-6 text-center max-[769px]:hidden text-gray-700 dark:text-gray-500">
+                                <p className="mt-6 text-center max-[1025px]:hidden text-gray-700 dark:text-gray-500">
                                     Pas encore de compte ?{' '}
                                     <Link href="/register" className="text-indigo-600 hover:underline">Inscrivez-vous ici</Link>.
                                 </p>
@@ -163,7 +163,7 @@ export default function LoginPage() {
                         ) : (
                             <>
                                 <h5 className="text-gray-700 dark:text-white/55">Un code vous a été envoyé par email</h5>
-                                <p className="mt-6 text-center max-[769px]:hidden text-gray-700 dark:text-gray-500">
+                                <p className="mt-6 text-center max-[1025px]:hidden text-gray-700 dark:text-gray-500">
                                     Besoin de revenir ?{' '}
                                     <button
                                         type="button"
@@ -178,18 +178,18 @@ export default function LoginPage() {
                     </section>
 
                     {/* Separator */}
-                    <div className="w-full max-w-[90%] min-[769px]:w-0 max-h-[95%] min-[769px]:h-70  border-t border-gray-300 dark:border-white/20 min-[769px]:border-r"></div>
+                    <div className="w-full max-w-[90%] min-[1025px]:w-0 max-h-[95%] min-[1025px]:h-70  border-t border-gray-300 dark:border-white/20 min-[1025px]:border-r"></div>
 
                     {/* Form column*/}
-                    <section className="max-w-sm flex-1 w-full">
+                    <section className="min-[1025px]:max-w-sm flex-1 w-full">
                         {step === 'login' && (
                             <>
-                                <h1 className="flex flex-col items-center justify-center max-[920px]:text-2xl text-3xl font-bold text-gray-900 dark:text-white/85 mb-8">
-                                    <FingerPrintIcon className="w-auto h-16 mb-4 max-md:hidden"  />
+                                <h1 className="flex flex-col items-center justify-center text-2xl md:text-3xl font-bold text-gray-900 dark:text-white/85 mb-8">
+                                    <FingerPrintIcon className="w-auto h-16 mb-4 max-[1025px]:hidden"  />
                                     <span>Connectez-vous</span>
                                 </h1>
 
-                                <form className="space-y-6" onSubmit={handleLoginSubmit}>
+                                <form className="space-y-10" onSubmit={handleLoginSubmit}>
                                     <FloatingLabelInput
                                         id="email"
                                         label="Adresse email"
@@ -226,7 +226,7 @@ export default function LoginPage() {
                                         </button>
                                     </div>
 
-                                    <p className="text-right -mt-5">
+                                    <p className="text-right -mt-9">
                                         <Link href="/password" className="text-indigo-600 hover:underline">
                                             Mot de passe oublié ?
                                         </Link>
@@ -249,7 +249,7 @@ export default function LoginPage() {
                                     </ActionButton>
                                 </form>
 
-                                <p className="min-[769px]:hidden mt-6 text-center text-gray-700 dark:text-gray-500">
+                                <p className="min-[1025px]:hidden mt-6 text-center text-gray-700 dark:text-gray-500">
                                     Pas encore de compte ?{' '}
                                     <Link href="/register" className="text-indigo-600 hover:underline">Inscrivez-vous ici</Link>.
                                 </p>
@@ -258,12 +258,12 @@ export default function LoginPage() {
 
                         {step === '2fa' && (
                             <>
-                                <h1 className="flex flex-col items-center justify-center max-[920px]:text-2xl text-3xl font-bold text-gray-900 dark:text-white/85 mb-8">
-                                    <KeyIcon className="w-auto h-16 mb-4 max-md:hidden" />
+                                <h1 className="flex flex-col items-center justify-center max-md:text-2xl text-3xl font-bold text-gray-900 dark:text-white/85 mb-8">
+                                    <KeyIcon className="w-auto h-16 mb-4 max-[1025px]:hidden" />
                                     <span>Vérification 2FA</span>
                                 </h1>
 
-                                <form className="space-y-6" onSubmit={handleVerifySubmit}>
+                                <form className="space-y-10" onSubmit={handleVerifySubmit}>
                                     <FloatingLabelInput
                                         id="code"
                                         label="Code reçu par email"
@@ -275,11 +275,11 @@ export default function LoginPage() {
                                         maxLength={6}
                                     />
 
-                                    <div className="flex items-center justify-between -mt-4">
+                                    <div className="flex items-center justify-between -mt-8">
                                         <button
                                             type="button"
                                             onClick={() => setStep('login')}
-                                            className="text-sm text-gray-600 dark:text-white/70 hover:underline"
+                                            className="text-sm text-indigo-600 hover:text-indigo-700 hover:underline"
                                             title="Modifier l'email ou le mot de passe"
                                         >
                                             Modifier les identifiants

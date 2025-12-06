@@ -127,12 +127,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     return (
         <div
             id="contactModal"
-            className={`fixed inset-0 bg-[#FCFFF7] min-[450px]:bg-[#FCFFF7]/65 dark:bg-[#1E1E1E] min-[450px]:dark:bg-[#222222]/65 backdrop-blur-md min-h-screen overflow-y-auto p-2 min-[450px]:p-0 flex min-[450px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out overflow-hidden ${
+            className={`fixed inset-0 bg-[#FCFFF7] min-[769px]:bg-[#FCFFF7]/65 dark:bg-[#1E1E1E] min-[769px]:dark:bg-[#222222]/65 backdrop-blur-md min-h-screen overflow-y-auto p-4 min-[769px]:p-0 flex min-[769px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out overflow-hidden ${
             isOpen && !isClosing ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}      
             onClick={handleClose}
         >
-            <div className=" max-w-[95%] mx-auto w-md lg:w-xl relative transform transition-transform duration-300 min-[450px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[450px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
-                <div className={`bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-1 pb-6 min-[450px]:px-6 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[450px]:[clip-path:var(--clip-path-squircle-60)]
+            <div className=" max-w-[95%] mx-auto w-md sm:w-xl relative transform transition-transform duration-300 min-[769px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[769px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,_0.6)]">
+                <div className={`bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-1 pb-6 sm:px-6 md:p-8 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[769px]:[clip-path:var(--clip-path-squircle-60)]
                     ${isClosing ? 'translate-x-5 opacity-0 animate-slide-right' : 'translate-x-0 opacity-100 animate-slide-left'}`}        
                     onClick={(e) => e.stopPropagation()} 
                 >
@@ -152,7 +152,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         <span>Contactez-nous</span>
                     </h1>
                     
-                    <form id="contact-form" className="grid gap-6" onSubmit={handleSubmit} noValidate>
+                    <form id="contact-form" className="grid gap-10" onSubmit={handleSubmit} noValidate>
                         {/* Name Field */}
                         <div>
                             <FloatingLabelInput
@@ -190,7 +190,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                             </label>
                         </div>
                     
-                        <div className="flex flex-col min-[449px]:flex-row gap-4 items-start">
+                        <div className="flex flex-col min-[449px]:flex-row gap-10 items-start">
                             {/* Email Field */}
                             <div className="flex-grow w-full">
                                 <FloatingLabelInput

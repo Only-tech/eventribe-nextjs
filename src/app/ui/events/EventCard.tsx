@@ -28,7 +28,7 @@ export default function EventCard({ event }: { event: Event; }) {
         <div data-aos="fade-up">
             <Link 
                 href={`/event/${event.id}`} 
-                className="w-78 h-94 bg-[#FCFFF7] hover:bg-white dark:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] rounded-3xl overflow-hidden flex flex-col translate-y-0 scale-100 transform
+                className="w-[95%] sm:w-78 h-104 sm:h-94 bg-[#FCFFF7] hover:bg-white dark:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col translate-y-0 scale-100 transform
                     transition-transform duration-600 ease-in-out
                     hover:-translate-y-1.5 hover:scale-104 xl:hover:scale-106 hover:z-10
                     mx-auto relative shadow-[0_10px_15px_rgb(0,0,0,0.2)]
@@ -37,19 +37,19 @@ export default function EventCard({ event }: { event: Event; }) {
                     dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)] group will-change-transform isolate border border-gray-300 dark:border-white/10
                 "
             >
-                <div className="relative w-full h-40 overflow-hidden">
+                <div className="relative w-full h-50 sm:h-40 overflow-hidden">
                     <Image
                         src={finalImageSrc}
                         alt={`Image de l'événement ${event.title}`}
                         title={event.title}
                         fill
                         style={{ objectFit: 'cover' }}
-                        className="w-full h-42 object-cover rounded-t-lg transition-transform duration-500 ease-in-out will-change-transform group-hover:scale-110 group-hover:rotate-1 "
+                        className="w-full h-50 sm:h-42 object-cover rounded-t-lg transition-transform duration-500 ease-in-out will-change-transform group-hover:scale-110 group-hover:rotate-1 "
                     />
                 </div>
 
-                <div className="py-3 px-3.5 text-sm flex-grow flex flex-col">
-                    <h2 className="text-center text-base font-bold text-gray-900 dark:text-[#ff952aff] mb-2">{event.title}</h2>
+                <section className="py-3 px-3.5 text-sm grow flex flex-col">
+                    <h5 className="text-center text-lg sm:text-base font-bold text-gray-900 dark:text-[#ff952aff] mb-2">{event.title}</h5>
 
                     <p className="inline-flex items-center text-gray-700 dark:text-white/45 text-xs mb-1">
                         <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
@@ -66,7 +66,7 @@ export default function EventCard({ event }: { event: Event; }) {
                         <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
                     </p>
 
-                    <p className="text-gray-700 dark:text-white/65 mb-3 flex-grow">{event.description_short}</p>
+                    <p className="text-gray-700 text-justify dark:text-white/65 mb-3 grow">{event.description_short}</p>
 
                     <div className="mt-auto flex justify-between items-center">
                         <p className="relative flex items-center gap-1.5">
@@ -78,12 +78,12 @@ export default function EventCard({ event }: { event: Event; }) {
                             </span>
                         </p>
 
-                        <p className="inline-flex items-center h-8 pl-3 pr-0.5 rounded-full dark:bg-transparent dark:text-white/65 dark:hover:text-gray-800 border border-gray-400 dark:border-white/10 group-hover:border-transparent group-hover:text-gray-800 group-hover:bg-[#E8E5D8] transition-all drop-shadow-[0px_5px_5px_rgba(0,0,0,_0.2)] shadow-[hsl(var(--always-black)/5.1%)] duration-500 ease-in-out">
-                            <span className="text-sm whitespace-nowrap -translate-y-[1px]">En savoir plus</span>
+                        <p className="inline-flex items-center h-8 pl-3 pr-0.5 rounded-full dark:bg-transparent dark:text-white/65 dark:hover:text-gray-800 border border-gray-400 dark:border-white/10 group-hover:border-transparent group-hover:text-gray-800 group-hover:bg-[#E8E5D8] transition-all drop-shadow-[0px_5px_5px_rgba(0,0,0,0.2)] shadow-[hsl(var(--always-black)/5.1%)] duration-500 ease-in-out">
+                            <span className="text-sm whitespace-nowrap -translate-y-px">En savoir plus</span>
                             <ChevronUpIcon className="inline-block size-6 rotate-90 group-hover:animate-bounce" />
                         </p>
                     </div>
-                </div>
+                </section>
             </Link>
         </div>
     );

@@ -35,7 +35,7 @@ export function ToastProvider({ children }: { children: ReactNode }) {
         <ToastContext.Provider value={{ addToast }}>
             {children}
             {/* Toasts Display point */}
-            <div className="fixed bottom-6 right-2 sm:right-6 flex flex-col gap-3 ml-2 z-1000000">
+            <div className="fixed max-sm:bottom-20 bottom-6 right-2 sm:right-6 flex flex-col gap-3 ml-2 z-1000000">
                 {toasts.map((toast) => (
                     <div
                         key={toast.id}
@@ -46,9 +46,9 @@ export function ToastProvider({ children }: { children: ReactNode }) {
                             ${toast.type === 'info' ? 'bg-blue-100 text-blue-700 border-blue-300' : ''}
                         `}
                     >
-                        {toast.type === 'success' && <span className='h-10 w-10'><CheckCircleIcon className="!size-10" /></span>}
-                        {toast.type === 'error' && <span className='h-10 w-10'><ExclamationCircleIcon className="!size-10" /></span>}
-                        {toast.type === 'info' && <span className='h-10 w-10'><InformationCircleIcon className="!size-10" /></span>}
+                        {toast.type === 'success' && <span className='h-10 w-10'><CheckCircleIcon className="size-10!" /></span>}
+                        {toast.type === 'error' && <span className='h-10 w-10'><ExclamationCircleIcon className="size-10!" /></span>}
+                        {toast.type === 'info' && <span className='h-10 w-10'><InformationCircleIcon className="size-10!" /></span>}
                         <span>{toast.message}</span>
                     </div>
                 ))}

@@ -32,13 +32,13 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="relative bg-[#FCFFF7] dark:bg-[#1E1E1E] text-[15px] text-gray-700 dark:text-white/70 pt-10 pb-2 w-full rounded-t-2xl shadow-2xl">
+        <footer className="relative bg-[#FCFFF7] dark:bg-[#1E1E1E] text-[15px] text-gray-700 dark:text-white/70 pt-10 pb-5 w-full rounded-t-2xl shadow-2xl">
         
             {!isSimpleFooter ? (
                 // --- Full footer ---
-                <div className="flex flex-wrap gap-12 lg:gap-20 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex max-[925px]:flex-wrap gap-12 lg:gap-15 xl:gap-18 2xl:gap-28 justify-between pb-10 w-full max-w-[95%] px-3 mx-auto">
                     {/* About us */}
-                    <section className="max-w-lg min-[920px]:w-3xs min-lg:w-xs min-[1200px]:[width:520px!important] text-justify max-[849px]:order-3 max-[849px]:justify-center mx-auto">
+                    <section className="w-full sm:col-span-2 flex-1 xl:w-100 text-justify max-lg:order-3 mx-auto">
                         <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">À propos de nous</h3>
                         <p>
                             eventribe connecte organisateurs et passionnés à travers des rencontres humaines et projets culturels.
@@ -48,56 +48,56 @@ export default function Footer() {
                     </section>
 
                     {/* Navigation */}
-                    <section className="max-[849px]:order-1 max-[849px]:justify-center mx-auto">
+                    <section className="max-lg:order-1 col-span-1 sm:w-52 xl:w-95">
                         <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-6">Navigation</h3>
-                        <ul className="flex flex-col space-y-2 font-medium">
-                            <li><Link href="/" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Accueil</Link></li>
+                        <ul className="grid min-[400px]:grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-x-6 space-y-2 font-medium">
+                            <li><Link href="/" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Accueil</Link></li>
                             {session ? (
                                 <>
-                                    <li><Link href="/my-events" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Mes Inscriptions</Link></li>
-                                    <li><Link href="/account" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Compte</Link></li>
+                                    <li><Link href="/my-events" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Mes Inscriptions</Link></li>
+                                    <li><Link href="/account" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Espace Personnel</Link></li>
                                     {session.user.isAdmin && (
-                                        <li><Link href="/admin" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Administration</Link></li>
+                                        <li><Link href="/admin" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Interface Administration</Link></li>
                                     )}
                                 </>
                             ) : (
                                 <>
-                                    <li><Link href="/login" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Connexion</Link></li>
-                                    <li><Link href="/register" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Inscription</Link></li>
+                                    <li><Link href="/login" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Se Connecter</Link></li>
+                                    <li><Link href="/register" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">S&apos;Inscrire</Link></li>
                                 </>
                             )}
-                            <li><Link href="/legal-mentions" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Mentions Légales</Link></li>
-                            <li><Link href="/legal-mentions#politique-confidentialite" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Politique de Confidentialité</Link></li>
+                            <li><Link href="/legal-mentions" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Mentions Légales</Link></li>
+                            <li><Link href="/legal-mentions#politique-confidentialite" className="hover:text-[#08568a] hover:font-bold dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out whitespace-nowrap">Politique de Confidentialité</Link></li>
                         </ul>
                     </section>
 
-                    <div className="max-[849px]:order-2 max-[849px]:justify-center mx-auto">
-                        {/* Partners */}
-                        <section className="mb-6">
-                            <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-2">Nos partenaires</h3>
-                            <ul className="flex flex-wrap w-xs justify-between">
-                                {PartnersData.map((partner) => (
-                                    <li key={partner.id}>
-                                        <Image
-                                            src={partner.src}
-                                            alt={partner.alt}
-                                            title={partner.title}
-                                            width={88} 
-                                            height={72}  
-                                            className="h-17 w-21 object-contain shadow-[inset_0_-35px_4px_-5px_#f0f2ed] drop-shadow-[0px_3px_3px_rgba(0,0,0,0.2)] shadow-[hsl(var(--always-black)/5.1%)] rounded-b-xs" 
-                                        />
-                                    </li>
-                                ))}
-                            </ul>
-                        </section>
-                        <LogoButton onClick={() => router.push(`/`)} className="w-25 h-18"/>
-                    </div>
+                    {/* Partners */}
+                    <section className="max-lg:order-2 col-span-1">
+                        <h3 className="text-xl text-gray-800 dark:text-[#ff952aff] relative inline-block font-semibold after:content-[''] after:block after:h-[2px] after:bg-[#08568a] after:w-[70%] after:mt-1 after:left-0 after:relative pb-1 mb-2">Nos partenaires</h3>
+                        <ul className="flex flex-wrap min-[1024px]:w-xs min-[1900px]:w-2xl justify-between gap-5">
+                            {PartnersData.map((partner) => (
+                                <li key={partner.id}>
+                                    <Image
+                                        src={partner.src}
+                                        alt={partner.alt}
+                                        title={partner.title}
+                                        width={88} 
+                                        height={72}  
+                                        className="h-17 w-21 object-contain shadow-[inset_0_-35px_4px_-5px_#f0f2ed] drop-shadow-[0px_3px_3px_rgba(0,0,0,0.2)] shadow-[hsl(var(--always-black)/5.1%)] rounded-b-xs" 
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                        <div className='flex justify-center mt-6'>
+                            <LogoButton onClick={() => router.push(`/`)} className="w-28 h-auto md:w-32 md:h-15"/>
+                        </div>
+                    </section>
                 </div>
             ) : (
                 // --- Light footer ---
                 <ul className="flex flex-wrap justify-center space-x-3 pb-1 w-full max-w-[95%] mx-auto font-medium">
-                    <li><Link href="/legal-mentions" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300">Mentions Légales</Link></li> |
-                    <li><Link href="/legal-mentions#politique-confidentialite" className="hover:text-[#08568a] dark:hover:text-[#ff952aff] transition duration-300 ml-2">Politique de Confidentialité</Link></li>
+                    <li><Link href="/legal-mentions" className="hover:text-[#08568a] hover:underline dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out">Mentions Légales</Link></li> |
+                    <li><Link href="/legal-mentions#politique-confidentialite" className="hover:text-[#08568a] hover:underline dark:hover:text-[#ff952aff] transition-all duration-300 ease-in-out ml-2">Politique de Confidentialité</Link></li>
                 </ul>
             )}
 
@@ -108,14 +108,14 @@ export default function Footer() {
                 <ActionButton
                     variant="primary"
                     onClick={() => setIsContactModalOpen(true)}
-                    className="fixed bottom-0 left-2 sm:left-10 z-1000 pl-5 p-2 rounded-t-2xl rounded-b-xs dark:hover:text-gray-200 dark:text-gray-800 dark:hover:bg-gray-800 dark:bg-amber-50"
+                    className="fixed bottom-0 left-2 sm:left-6 z-1000 pl-5 p-2 rounded-t-2xl rounded-b-xs dark:hover:text-gray-200 dark:text-gray-800 dark:hover:bg-gray-800 dark:bg-amber-50"
                 >
                     <span>Contactez-nous</span>
                     <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 animate-bounce group-hover:animate-none" />
                 </ActionButton>
             )}
 
-            <p className="text-center text-sm max-[800px]:mb-10">
+            <p className="text-center text-sm max-md:mb-10">
                 All rights reserved. Cédrick &copy; {new Date().getFullYear()} eventribe
             </p>
 

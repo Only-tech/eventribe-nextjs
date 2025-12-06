@@ -174,6 +174,7 @@ eventribe-nextjs/
     │   │   │   ├── AccountDeletedEmail.ts
     │   │   │   ├── AccountUpdatedEmail.ts
     │   │   │   ├── ConfirmationEmail.ts
+    │   │   │   ├── ContactEmail.ts
     │   │   │   ├── EmailFooter.ts
     │   │   │   ├── EmailHeader.ts
     │   │   │   ├── UnregisterEmail.ts
@@ -527,6 +528,7 @@ eventribe-nextjs/
     │   │   │   ├── AccountDeletedEmail.ts
     │   │   │   ├── AccountUpdatedEmail.ts
     │   │   │   ├── ConfirmationEmail.ts
+    │   │   │   ├── ContactEmail.ts
     │   │   │   ├── EmailFooter.ts
     │   │   │   ├── EmailHeader.ts
     │   │   │   ├── UnregisterEmail.ts

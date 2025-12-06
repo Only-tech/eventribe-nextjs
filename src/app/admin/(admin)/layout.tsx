@@ -1,40 +1,39 @@
 import { getServerSession } from 'next-auth';
-import { authOptions } from '@/app/lib/auth';
+import { authOptions } from '@/app/lib/auth/options';
 import { redirect } from 'next/navigation';
 // Providers is in the global layout
-import OnTopButton from '@/app/ui/OnTopButton';
-import AdminHeader from '@/app/admin/(admin)/ui/admin-header'; 
-import AdminFooter from '@/app/admin/(admin)/ui/admin-footer'; 
+import AdminHeader from '@/app/admin/(admin)/ui/AdminHeader'; 
+import AdminFooter from '@/app/admin/(admin)/ui/AdminFooter'; 
 
 
 export const metadata = {
-  title: 'eventribe - Administration',
-  description: 'Tableau de bord d\'administration des événements',
+    title: 'eventribe - Administration',
+    description: 'Tableau de bord d\'administration des événements',
 };
 
 export default async function AdminLayout({
-  children,
+    children,
 }: {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
-  // Redirects user if is not logged in or is not admin
-  if (!session || !session.user || !session.user.isAdmin) {
-    redirect('/login');
-  }
+    // Redirects user if is not logged in or is not admin
+    if (!session || !session.user || !session.user.isAdmin) {
+        redirect('/login');
+    }
 
-  return (
-    <> {/* Using a fragment because <html> and <body> are in the global root layout */}
-      <div className="admin min-h-screen w-full flex flex-col text-[#333] bg-[#f4f7f6] bg-cover bg-fixed bg-center font-sans"
-          style={{ backgroundImage: "url('/images/SplashPaint.svg')" }}> 
-        <AdminHeader />
-        <main className="flex-grow max-w-[98%] sm:max-w-[95%] xl:max-w-[90%] w-full py-8 mx-auto mt-[80px]">
-          {children}
-        </main>
-        <OnTopButton /> 
-        <AdminFooter /> 
-      </div>
-    </>
-  );
+    return (
+        <> 
+            <div className="admin min-h-screen w-full flex flex-col text-[#333] bg-[#f4f7f6] bg-cover bg-fixed bg-center font-sans"
+                style={{ backgroundImage: "url('/images/SplashPaint.svg')" }}
+            > 
+                <AdminHeader />
+                    <main className="flex-grow max-w-[98%] sm:max-w-[95%] xl:max-w-[90%] w-full py-8 mx-auto mt-[80px]">
+                        {children}
+                    </main>
+                <AdminFooter /> 
+            </div>
+        </>
+    );
 }

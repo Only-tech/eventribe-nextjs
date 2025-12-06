@@ -94,52 +94,66 @@ export default function EventDetailsClient({ event, userId, isRegistered: initia
 
     return (
         <>
-            <div className="mt-8 lg:mt-2 mb-2 lg:mb-0 flex justify-center">
-                {isLoggedIn ? (
-                    registered ? ( 
-                        <ActionButton variant="destructive" onClick={handleUnregister} isLoading={isUnregistering}>
-                            {isUnregistering ? (
-                                <span className="ml-3">Désinscription</span>
-                            ) : (
-                                <>
-                                    <TrashIcon className="inline-block size-5 mr-2" />
-                                    <span>Se désinscrire</span>
-                                </>
-                            )}
-                        </ActionButton>
-                    ) : remainingSeats > 0 ? (
-                        <ActionButton
-                            variant="primary"
-                            onClick={() => {
-                                if (event.price > 0) {
-                                setShowPayment(true);
-                                } else {
-                                handleRegister();
-                                }
-                            }}
-                            isLoading={isRegistering}
-                        >
-                            {isRegistering ? (
-                                <span className="ml-3">Inscription</span>
-                            ) : (
-                                <>
-                                    <PlusIcon className="inline-block size-5 mr-2" />
-                                    <span>S&apos;inscrire</span>
-                                </>
-                            )}
-                        </ActionButton>
+            {/*  Fixed Bar Container on Mobile display */}
+            <div className="fixed bottom-0 left-0 right-0 z-10000 p-4 bg-white dark:bg-[#1E1E1E] border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] min-[1025px]:shadow-none min-[1025px]:static min-[1025px]:bg-transparent min-[1025px]:border-none min-[1025px]:p-0 min-[1025px]:mt-2 min-[1025px]:mb-0 flex justify-center transition-all duration-300">
+                
+                {/* Wrapper to manage width */}
+                <div className="w-full md:w-[85%] lg:w-[65%] flex justify-center">
+                    {isLoggedIn ? (
+                        registered ? ( 
+                                <ActionButton 
+                                    variant="destructive" 
+                                    onClick={handleUnregister} 
+                                    isLoading={isUnregistering}
+                                    className="w-full" 
+                                >
+                                    {isUnregistering ? (
+                                        <span className="ml-3">Désinscription</span>
+                                    ) : (
+                                        <>
+                                            <TrashIcon className="inline-block size-5 mr-2" />
+                                            <span>Se désinscrire</span>
+                                        </>
+                                    )}
+                                </ActionButton>
+                        ) : remainingSeats > 0 ? (
+                            <ActionButton
+                                variant="primary"
+                                onClick={() => {
+                                    if (event.price > 0) {
+                                    setShowPayment(true);
+                                    } else {
+                                    handleRegister();
+                                    }
+                                }}
+                                isLoading={isRegistering}
+                                className="w-full" 
+                            >
+                                {isRegistering ? (
+                                    <span className="ml-3">Inscription</span>
+                                ) : (
+                                    <>
+                                        <PlusIcon className="inline-block size-5 mr-2" />
+                                        <span>S&apos;inscrire</span>
+                                    </>
+                                )}
+                            </ActionButton>
+                        ) : (
+                            <p className="text-red-600 font-bold text-lg rounded-lg p-3 bg-red-100 w-full text-center">Complet !</p>
+                        )
                     ) : (
-                        <p className="text-red-600 font-bold text-lg rounded-lg p-3 bg-red-100">Complet !</p>
-                    )
-                ) : (
-                    <p className="text-gray-700 dark:text-gray-500">
-                        <Link href="/login" className="text-indigo-600 hover:underline">
-                        Connectez-vous
-                        </Link>{' '}
-                        pour vous inscrire à cet événement.
-                    </p>
-                )}
+                        <p className="text-gray-700 dark:text-gray-500 text-sm text-center">
+                            <Link href="/login" className="text-indigo-600 hover:underline font-semibold">
+                            Connectez-vous
+                            </Link>{' '}
+                            pour vous inscrire.
+                        </p>
+                    )}
+                </div>
             </div>
+
+            {/* Empty SPACER to avoid bar hidding content on mobile display */}
+            <div className="h-20 min-[1025px]:hidden" aria-hidden="true"></div>
 
             <PaymentModal
                 isOpen={showPayment}

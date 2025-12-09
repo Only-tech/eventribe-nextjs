@@ -349,7 +349,7 @@ export default function ManageEventsPage() {
                                 type="button"
                                 variant="destructive"
                                 onClick={() => router.push('/admin/manage-events')}
-                                className="flex-1 rounded-r"
+                                className="flex-1 rounded-r-xs!"
                             >
                                 <ChevronUpIcon className="inline-block size-6 mr-2 rotate-270 group-hover:animate-bounce" /> 
                                 <span>Annuler</span>
@@ -358,7 +358,7 @@ export default function ManageEventsPage() {
                                 type="submit"
                                 variant="primary"
                                 isLoading={isSubmittingEvent}
-                                className="flex-1 rounded-l"
+                                className="flex-1 rounded-l-xs!"
                             >
                                 {isSubmittingEvent ? (
                                     <span className="ml-3 truncate">
@@ -421,7 +421,7 @@ export default function ManageEventsPage() {
                                             <td className="px-6 py-4 hidden min-[900px]:table-cell whitespace-nowrap text-sm text-gray-500">{event.registered_count}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium flex justify-between gap-2">
                                                 <IconButton onClick={() => router.push(`/admin/manage-events?action=edit&id=${event.id}`)} className="text-indigo-600 hover:text-indigo-900" title="Modifier">
-                                                    <PencilIcon className="w-6 h-6" />
+                                                    <PencilIcon className="size-5" />
                                                 </IconButton>
                                                 <IconButton onClick={() => handleDelete(event.id)} isLoading={deletingEventId === event.id} className="text-red-600 hover:text-red-900" title="Supprimer">
                                                     <TrashIcon className="size-5" />

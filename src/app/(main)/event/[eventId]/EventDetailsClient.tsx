@@ -95,7 +95,7 @@ export default function EventDetailsClient({ event, userId, isRegistered: initia
     return (
         <>
             {/*  Fixed Bar Container on Mobile display */}
-            <div className="fixed bottom-0 left-0 right-0 z-10000 p-4 bg-white dark:bg-[#1E1E1E] border-t border-gray-200 dark:border-gray-800 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] min-[1025px]:shadow-none min-[1025px]:static min-[1025px]:bg-transparent min-[1025px]:border-none min-[1025px]:p-0 min-[1025px]:mt-2 min-[1025px]:mb-0 flex justify-center transition-all duration-300">
+            <div className="fixed bottom-0 left-0 right-0 z-1001 p-4 bg-white dark:bg-[#1E1E1E] border-t border-gray-200 dark:border-white/5 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] min-[1025px]:shadow-none min-[1025px]:static min-[1025px]:bg-transparent min-[1025px]:border-none min-[1025px]:p-0 min-[1025px]:mt-2 min-[1025px]:mb-0 flex justify-center transition-all duration-300">
                 
                 {/* Wrapper to manage width */}
                 <div className="w-full md:w-[85%] lg:w-[65%] flex justify-center">

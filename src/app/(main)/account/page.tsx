@@ -744,7 +744,7 @@ export default function UserAccountManageEventsPage() {
             <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-6">
                 Informations personnelles
             </h2>
-            <form className="space-y-6 lg:space-x-6 lg:grid lg:grid-cols-2" onSubmit={handleUpdateAccount}>
+            <form className="space-y-6 lg:gap-x-6 lg:grid lg:grid-cols-2" onSubmit={handleUpdateAccount}>
                 <FloatingLabelInput id="firstName" label="Prénom" type="text" value={firstName ?? ''} onChange={(e) => setFirstName(e.target.value)} required />
                 <FloatingLabelInput id="lastName" label="Nom" type="text" value={lastName ?? ''} onChange={(e) => setLastName(e.target.value)} required />
                 <div className=" lg:col-span-2">

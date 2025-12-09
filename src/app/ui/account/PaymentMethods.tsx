@@ -29,6 +29,35 @@ export default function PaymentMethods({ userId }: { userId: number }) {
 
     const { addToast } = useToast();
 
+    // MM/AA formatting function 
+    const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {    
+        let value = e.target.value.replace(/\D/g, '');  // Only numeric
+        if (value.length >= 3) {
+            value = value.slice(0, 2) + '/' + value.slice(2, 4);
+        }
+        setExpiry(value.slice(0, 5)); // Limit to 5 characters and state update
+    };
+
+    // Manage function for CVC
+    const handleCvcChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        // only numeric, limit to 4 max
+        const val = e.target.value.replace(/\D/g, '').slice(0, 4);
+        setCvc(val);
+    };
+
+    // Number card formatting to 4x4
+    const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value;
+
+        // Removes the non-numeric and space  
+        let cleanValue = value.replace(/[^0-9]/g, '');
+        cleanValue = cleanValue.slice(0, 16);
+
+        // formatting to 4 number + escap"
+        const formattedValue = cleanValue.match(/.{1,4}/g)?.join(' ') || '';
+        setCardNumber(formattedValue);
+    };
+
     // Fetch payment methods
     useEffect(() => {
         if (!userId) return;
@@ -114,24 +143,36 @@ export default function PaymentMethods({ userId }: { userId: number }) {
             <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-6">Moyens de paiement</h2>
             {methods.length > 0 ? (
                 <ul className="space-y-3 mb-10">
-                    {methods.map((m) => (
-                        <li key={m.id} className="flex justify-between items-center pl-6 p-1 rounded-full border border-gray-300 dark:border-white/10">
-                            <span>{m.card_brand} **** **** **** {m.card_last4}</span>
-                            <ActionButton
-                                variant="destructive"
-                                onClick={() => {
-                                    setSelectedId(m.id);
-                                    setIsModalOpen(true);
-                                }}
-                                isLoading={deletingId === m.id}
-                                className="max-md:px-2.5 text-sm"
-                                title="Supprimer"
-                            >
-                                {!deletingId && ( <TrashIcon className="w-4 h-4" /> )}
-                                <span className="hidden md:inline-flex md:ml-2">{deletingId ? 'Suppression' : 'Supprimer'}</span>
-                            </ActionButton>
-                        </li>
-                    ))}
+                    {methods.map((m) => {
+        
+                        // 12-star mask
+                        const maskedDigits = '**** **** ****'; 
+                        
+                        return (
+                            <li key={m.id} className="flex justify-between items-center pl-6 p-1 rounded-full border border-gray-300 dark:border-white/10">
+                                <span>
+                                    {m.card_brand} 
+                                    {/* display 12-star mask + last 4 card digit */}
+                                    {' '} 
+                                    {maskedDigits} 
+                                    {' '} 
+                                    {m.card_last4}
+                                </span>
+                                <ActionButton
+                                    variant="destructive"
+                                    onClick={() => {
+                                        setSelectedId(m.id);
+                                        setIsModalOpen(true);
+                                    }}
+                                    isLoading={deletingId === m.id}
+                                    className="p-2!"
+                                    title="Supprimer"
+                                >
+                                    {!deletingId && ( <TrashIcon className="size-5" /> )}
+                                </ActionButton>
+                            </li>
+                        );
+                    })}
                 </ul>
             ) : (
                 <p className="mb-4">Aucun moyen de paiement enregistré.</p>
@@ -145,26 +186,32 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                         id="cardNumber"
                         label="Numéro de carte"
                         type="text"
+                        inputMode="numeric"
                         value={cardNumber}
-                        onChange={(e) => setCardNumber(e.target.value)}
+                        onChange={handleCardNumberChange}
                         required
+                        maxLength={19}
                     />
                     <div className="flex gap-4">
                         <FloatingLabelInput
                             id="expiry"
                             label="MM/AA"
                             type="text"
+                            inputMode="numeric"
                             value={expiry}
-                            onChange={(e) => setExpiry(e.target.value)}
+                            onChange={handleExpiryChange}
                             required
+                            maxLength={5}
                         />
                         <FloatingLabelInput
                             id="cvc"
                             label="CVC"
                             type="password"
+                            inputMode="numeric"
                             value={cvc}
-                            onChange={(e) => setCvc(e.target.value)}
+                            onChange={handleCvcChange}
                             required
+                            maxLength={4}
                         />
                     </div>
 
@@ -179,7 +226,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                                     type="button" 
                                     variant="destructive" 
                                     onClick={() => setShowForm(false)}
-                                    className="w-40 max-sm:flex-1 sm:w-48 rounded-r"
+                                    className="w-40 max-sm:flex-1 sm:w-48 rounded-r-xs!"
                                 >
                                     <ChevronUpIcon className="inline-block size-6 -ml-3 mr-2 rotate-270 group-hover:animate-bounce" />
                                     Annuler
@@ -187,7 +234,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                                 <ActionButton 
                                     type="submit" 
                                     variant="primary"
-                                    className="w-40 max-sm:flex-1 sm:w-48 rounded-l"
+                                    className="w-40 max-sm:flex-1 sm:w-48 rounded-l-xs!"
                                 >
                                     Enregistrer
                                     <ChevronUpIcon className="inline-block size-6 ml-2 -mr-3 rotate-90 group-hover:animate-bounce" />
@@ -203,7 +250,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                     className="mt-4"
                 >
                     <PlusIcon className="inline-block size-5 mr-2 group-hover:animate-bounce" />
-                    Ajouter un moyen de paiement
+                    <span className=' truncate'>Ajouter un moyen de paiement</span>
                 </ActionButton>
             )}
 

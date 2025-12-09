@@ -18,10 +18,10 @@ export default function ConfirmationModal({ isOpen, message, onConfirm, onCancel
             <div className="bg-[#FCFFF7] dark:bg-[#1E1E1E] border border-gray-300 dark:border-white/20 rounded-xl drop-shadow-2xl max-w-xl w-full p-6 lg:p-10 group transition-all ease-in-out duration-500 translate-y-0 opacity-100 animate-slide-up mx-4 dark:hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.4)] dark:drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)]">
                 <p className="text-base font-semibold text-gray-800 dark:text-white/70 mb-8 leading-8 text-center">{message}</p>
                 <div className="flex justify-center pt-6 border-t border-gray-300 dark:border-white/20 gap-4">
-                    <ActionButton variant="destructive" onClick={onCancel} className="flex-1 rounded-r">
+                    <ActionButton variant="destructive" onClick={onCancel} className="flex-1 rounded-r-xs!">
                         Annuler
                     </ActionButton>
-                    <ActionButton variant="primary" onClick={onConfirm} className="flex-1 rounded-l">
+                    <ActionButton variant="primary" onClick={onConfirm} className="flex-1 rounded-l-xs!">
                         Confirmer
                     </ActionButton>
                 </div>

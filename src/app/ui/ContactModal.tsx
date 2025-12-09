@@ -29,6 +29,10 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
     const [isClosing, setIsClosing] = useState(false);
 
+    // To bind the input focus with the submit button (Email field)
+    const [isEmailFocused, setIsEmailFocused] = useState(false); 
+    const isEmailActive = isEmailFocused || email.length > 0;
+
     const handleClose = useCallback(() => {
         setIsClosing(true);
         setTimeout(() => {
@@ -127,14 +131,14 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
     return (
         <div
             id="contactModal"
-            className={`fixed inset-0 bg-[#FCFFF7] min-[769px]:bg-[#FCFFF7]/65 dark:bg-[#1E1E1E] min-[769px]:dark:bg-[#222222]/65 backdrop-blur-md min-h-screen overflow-y-auto p-4 min-[769px]:p-0 flex min-[769px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out overflow-hidden ${
+            className={`fixed inset-0 bg-[#FCFFF7] min-[769px]:bg-[#FCFFF7]/65 dark:bg-[#1E1E1E] min-[769px]:dark:bg-[#222222]/65 backdrop-blur-md min-h-screen overflow-y-auto min-[769px]:p-0 flex min-[769px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out overflow-hidden ${
             isOpen && !isClosing ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}      
             onClick={handleClose}
         >
-            <div className=" max-w-[95%] mx-auto w-md sm:w-xl relative transform transition-transform duration-300 min-[769px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[769px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)]">
-                <div className={`bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-1 pb-6 sm:px-6 md:p-8 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[769px]:[clip-path:var(--clip-path-squircle-60)]
+            <div className="w-full min-[769px]:w-fit relative transform transition-transform duration-300 min-[769px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[769px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)]" onClick={(e) => e.stopPropagation()}>
+                <div className={` mx-auto md:w-2xl bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-6 pb-6 sm:p-8 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[769px]:[clip-path:var(--clip-path-squircle-60)]
                     ${isClosing ? 'translate-x-5 opacity-0 animate-slide-right' : 'translate-x-0 opacity-100 animate-slide-left'}`}        
-                    onClick={(e) => e.stopPropagation()} 
+                     
                 >
                     <div className='absolute z-0 top-3 right-3'>
                         <IconButton
@@ -160,7 +164,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                                 type="text"
                                 name="name"
                                 label="Votre nom | Organisation *"
-                                className={`rounded-[9999px!important] ${nameError ? 'border-red-500' : 'rounded-full'}`}
+                                className={`rounded-full! ${nameError ? 'border-red-500' : 'rounded-full'}`}
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                             />
@@ -171,8 +175,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                             <textarea
                                 id="message"
                                 name="message"
-                                rows={4}
-                                className={`peer block w-full p-3 pt-3 border resize-none rounded-md shadow-sm focus:outline-none transition-all ease-in-out duration-400 ${messageError ? 'border-red-500' : 'border-gray-300 dark:border-white/20 focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]'}`}
+                                rows={5}
+                                className={`peer block w-full p-3 pt-3 border rounded-md shadow-sm focus:outline-none transition-all ease-in-out duration-400 ${messageError ? 'border-red-500' : 'border-gray-300 dark:border-white/20 focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]'}`}
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 onFocus={() => setIsMessageFocused(true)}
@@ -190,7 +194,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                             </label>
                         </div>
                     
-                        <div className="flex flex-col min-[449px]:flex-row gap-10 items-start">
+                        <div className="flex flex-col min-[449px]:flex-row gap-10 min-[449px]:gap-3 items-start">
                             {/* Email Field */}
                             <div className="grow w-full">
                                 <FloatingLabelInput
@@ -198,9 +202,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                                     type="email"
                                     name="email"
                                     label="Votre email *"
-                                    className={`rounded-[9999px!important] ${emailError ? 'border-red-500' : 'rounded-full'}`}
+                                    className={`rounded-full min-[449px]:rounded-r-xs! ${emailError ? 'border-red-500' : ''}`}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    onFocus={() => setIsEmailFocused(true)}
+                                    onBlur={() => setIsEmailFocused(false)}
                                 />
                             </div>
                             {/* Submit Button */}
@@ -208,7 +214,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                                 type="submit"
                                 variant="secondary"
                                 isLoading={loading}
-                                className="w-full lg:w-50 pl-5 pr-3 py-2 min-[449px]:w-32 min-w-35 h-11" 
+                                className={`w-full min-[449px]:rounded-l-xs! lg:w-50 pl-5 pr-3 py-2 min-[449px]:w-32 min-w-35 h-12 transition-transform! duration-500 ease-out! ${
+                                   isEmailActive ? "translate-y-0" : "translate-y-1"
+                                }`} 
                             >
                                 {loading ? (
                                     <span className="ml-3">Envoi</span>

@@ -224,10 +224,10 @@ export default function ManageRegistrationsPage() {
                                                                 variant="destructive"
                                                                 onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.first_name)}
                                                                 isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
-                                                                className="max-md:px-2.5 text-sm"
+                                                                className="max-md:p-1 md:py-2 text-sm"
                                                                 title="Désinscrire"    
                                                             >                                   
-                                                                {!unregisteringInfo && ( <TrashIcon className="w-4 h-4" /> )}
+                                                                {!unregisteringInfo && ( <TrashIcon className="max-md:size-5 size-4" /> )}
                                                                 <span className="hidden md:inline-flex md:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
                                                             </ActionButton>
                                                         </td>

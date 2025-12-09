@@ -108,7 +108,7 @@ export default function Footer() {
                 <ActionButton
                     variant="primary"
                     onClick={() => setIsContactModalOpen(true)}
-                    className="fixed bottom-0 left-2 sm:left-6 z-1000 pl-5 p-2 rounded-t-2xl rounded-b-xs dark:hover:text-gray-200 dark:text-gray-800 dark:hover:bg-gray-800 dark:bg-amber-50"
+                    className="fixed bottom-0 left-2 sm:left-6 z-1000 pl-5 p-2 rounded-t-2xl! rounded-b-xs! dark:hover:text-gray-200 dark:text-gray-800 dark:hover:bg-gray-800 dark:bg-amber-50"
                 >
                     <span>Contactez-nous</span>
                     <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 animate-bounce group-hover:animate-none" />

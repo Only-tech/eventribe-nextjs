@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
-import { EyeIcon, EyeSlashIcon, EnvelopeOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'; 
+import { EnvelopeOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'; 
 import { ChevronUpIcon } from '@heroicons/react/16/solid'; 
 import { ArrowPathIcon, PencilSquareIcon } from '@heroicons/react/24/solid';
 import { useToast } from '@/app/ui/status/ToastProvider';
@@ -33,13 +33,13 @@ export default function RegisterPage() {
     const [loading, setLoading] = useState(false);
     const helpRef = useRef<HTMLParagraphElement>(null);
     
-    
+    // To bind the input focus with edit/send code button
+    const [isCodeFocused, setIsCodeFocused] = useState(false);
+    const isCodeActive = isCodeFocused || (code && code.length > 0);
 
     // Step init
     const [step, setStep] = useState<RegistrationStep>('email'); 
     const router = useRouter();
-
-    const [showPassword, setShowPassword] = useState(false);
     
     // ------------------------------------
     // Step 1 Send code)
@@ -164,7 +164,7 @@ export default function RegisterPage() {
         switch (step) {
             case 'email':
                 return (
-                    <form className="space-y-6" onSubmit={handleEmailSubmit}>
+                    <form className="space-y-8" onSubmit={handleEmailSubmit}>
                         <h1 className="flex flex-col items-center justify-center text-2xl md:text-3xl font-bold text-gray-900 dark:text-white/85 mb-8">
                             <EnvelopeOpenIcon className="w-auto h-16 mb-4 max-[1025px]:hidden" />
                             <span>Quel est votre e-mail ?</span>
@@ -198,11 +198,11 @@ export default function RegisterPage() {
 
             case 'verification':
                 return (
-                    <form className="space-y-10" onSubmit={handleCodeSubmit}>
+                    <form className="space-y-8" onSubmit={handleCodeSubmit}>
                         <h1 className="text-center text-xl md:text-2xl font-bold text-gray-900 dark:text-white/85 mb-8">
                             Consultez vos e-mails et saisissez le code reçu
                         </h1>
-                        <div className="mb-10 relative">
+                        <div className="relative">
                             <FloatingLabelInput
                                 id="email_display"
                                 label="E-mail"
@@ -230,11 +230,15 @@ export default function RegisterPage() {
                                 onChange={(e) => setCode(e.target.value)}
                                 required
                                 maxLength={6}
+                                onFocus={() => setIsCodeFocused(true)}
+                                onBlur={() => setIsCodeFocused(false)}
                             />
                             <button
                                 type="button"
                                 onClick={() => handleEmailSubmit()} 
-                                className="absolute text-indigo-600 inset-y-0 right-0 flex items-center pr-3 hover:text-gray-700 cursor-pointer"
+                                className={`absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer text-indigo-600 hover:text-gray-700 transition-all duration-500 ease-out ${
+                                    isCodeActive ? "translate-y-0" : "translate-y-1"
+                                }`}
                                 disabled={loading}
                                 title="Renvoyer le code"
                             >
@@ -262,7 +266,7 @@ export default function RegisterPage() {
             case 'details_password':
                 // Step 3 : Details (First Name/  Last Name) + Password
                 return (
-                    <form className="space-y-10" onSubmit={handleFinalSubmit}>
+                    <form className="space-y-8" onSubmit={handleFinalSubmit}>
                         <h1 className="text-center text-2xl md:text-3xl font-bold text-gray-900 dark:text-white/85 mb-8">
                             Créons votre compte
                         </h1>
@@ -301,34 +305,19 @@ export default function RegisterPage() {
                         />
 
                         {/* Password */}
-                        <div className="relative">
-                            <FloatingLabelInput
-                                label="Mot de passe"
-                                type={showPassword ? 'text' : 'password'}
-                                id="password"
-                                name="password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                                className="pr-10" 
-                            />
-                            <button
-                                type="button" 
-                                onClick={() => setShowPassword(!showPassword)} 
-                                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-white/70 cursor-pointer"
-                                aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
-                                title={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
-                            >
-                                {showPassword ? (
-                                    <EyeSlashIcon className="h-5 w-5" />
-                                ) : (
-                                    <EyeIcon className="h-5 w-5" />
-                                )}
-                            </button>
-                        </div>
+                        <FloatingLabelInput
+                            label="Mot de passe"
+                            type='password'
+                            id="password"
+                            name="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                            className="pr-10" 
+                        />
 
                         {/* Password Infos */}
-                        <p className="text-xs text-gray-600 dark:text-white/50 -mt-9 mb-2" ref={helpRef}>
+                        <p className="text-xs text-gray-600 dark:text-white/50 -mt-7 mb-2" ref={helpRef}>
                             Saisissez au moins <strong>06 caractères</strong>, dont une <strong>
                                 minuscule</strong>, une <strong>majuscule</strong>, un <strong>chiffre</strong> et un <strong>caractère spécial </strong>
                             <TooltipWrapper
@@ -359,7 +348,7 @@ export default function RegisterPage() {
                         {/* Password confirmation */}
                         <FloatingLabelInput
                             label="Confirmer le mot de passe"
-                            type={showPassword ? 'text' : 'password'}
+                            type='password'
                             id="confirm_password"
                             name="confirm_password"
                             value={confirmPassword}

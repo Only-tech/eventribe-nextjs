@@ -38,7 +38,7 @@ export default function OnTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-2 right-2 z-1001 flex size-11 dark:bg-black/20 bg-black/50 hover:bg-black/90 rounded-full overflow-hidden cursor-pointer justify-center items-center transition-opacity duration-300 ease-in-out group drop-shadow-[0px_3px_3px_rgba(0,0,0,0.6)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)] ${
+      className={`fixed bottom-2 right-2 z-1000 flex size-11 dark:bg-black/20 bg-black/50 hover:bg-black/90 rounded-full overflow-hidden cursor-pointer justify-center items-center transition-opacity duration-300 ease-in-out group drop-shadow-[0px_3px_3px_rgba(0,0,0,0.6)] dark:shadow-[0px_5px_5px_rgba(0,0,0,0.4)] shadow-[hsl(var(--always-black)/5.1%)] ${
         isVisible ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
       title="Retour en Haut"

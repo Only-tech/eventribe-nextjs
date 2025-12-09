@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { signIn, getSession } from 'next-auth/react';
 import { useToast } from '@/app/ui/status/ToastProvider';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
-import { EyeIcon, EyeSlashIcon, FingerPrintIcon, ArrowPathIcon, KeyIcon } from '@heroicons/react/24/outline';
+import { FingerPrintIcon, ArrowPathIcon, KeyIcon } from '@heroicons/react/24/outline';
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
 import IconHomeButton from '@/app/ui/buttons/IconHomeButton';
 import LogoButton from '@/app/ui/buttons/LogoButton';
@@ -24,7 +24,6 @@ export default function LoginPage() {
     const [userId, setUserId] = useState<number | null>(null);
 
     const [loading, setLoading] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
 
     const { addToast } = useToast();
     const router = useRouter();
@@ -189,7 +188,7 @@ export default function LoginPage() {
                                     <span>Connectez-vous</span>
                                 </h1>
 
-                                <form className="space-y-10" onSubmit={handleLoginSubmit}>
+                                <form className="space-y-8" onSubmit={handleLoginSubmit}>
                                     <FloatingLabelInput
                                         id="email"
                                         label="Adresse email"
@@ -200,33 +199,18 @@ export default function LoginPage() {
                                         required
                                     />
 
-                                    <div className="relative">
-                                        <FloatingLabelInput
-                                            label="Mot de passe"
-                                            type={showPassword ? 'text' : 'password'}
-                                            id="password"
-                                            name="password"
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            required
-                                            className="pr-10" 
-                                        />
-                                        <button
-                                            type="button" 
-                                            onClick={() => setShowPassword(!showPassword)} 
-                                            className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 dark:text-white/70 cursor-pointer"
-                                            aria-label={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
-                                            title={showPassword ? "Cacher le mot de passe" : "Afficher le mot de passe"}
-                                        >
-                                            {showPassword ? (
-                                                <EyeSlashIcon className="h-5 w-5" />
-                                            ) : (
-                                                <EyeIcon className="h-5 w-5" />
-                                            )}
-                                        </button>
-                                    </div>
+                                    <FloatingLabelInput
+                                        label="Mot de passe"
+                                        type='password'
+                                        id="password"
+                                        name="password"
+                                        value={password}
+                                        onChange={(e) => setPassword(e.target.value)}
+                                        required
+                                        className="pr-10" 
+                                    />
 
-                                    <p className="text-right -mt-9">
+                                    <p className="text-right -mt-7">
                                         <Link href="/password" className="text-indigo-600 hover:underline">
                                             Mot de passe oublié ?
                                         </Link>
@@ -263,7 +247,7 @@ export default function LoginPage() {
                                     <span>Vérification 2FA</span>
                                 </h1>
 
-                                <form className="space-y-10" onSubmit={handleVerifySubmit}>
+                                <form className="space-y-8" onSubmit={handleVerifySubmit}>
                                     <FloatingLabelInput
                                         id="code"
                                         label="Code reçu par email"
@@ -275,11 +259,11 @@ export default function LoginPage() {
                                         maxLength={6}
                                     />
 
-                                    <div className="flex items-center justify-between -mt-8">
+                                    <div className="flex items-center justify-between -mt-6">
                                         <button
                                             type="button"
                                             onClick={() => setStep('login')}
-                                            className="text-sm text-indigo-600 hover:text-indigo-700 hover:underline"
+                                            className="text-sm text-indigo-600 hover:text-indigo-700 hover:underline cursor-pointer"
                                             title="Modifier l'email ou le mot de passe"
                                         >
                                             Modifier les identifiants
@@ -288,7 +272,7 @@ export default function LoginPage() {
                                         <button
                                             type="button"
                                             onClick={resendCode}
-                                            className="text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+                                            className="text-sm text-indigo-600 hover:text-indigo-700 flex items-center gap-1 hover:underline cursor-pointer"
                                             disabled={loading}
                                             title="Renvoyer le code"
                                         >

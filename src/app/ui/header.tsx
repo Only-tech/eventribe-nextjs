@@ -216,7 +216,7 @@ export default function Header() {
             <header
                 ref={headerRef}
  
-                className={`fixed top-0 z-1000 w-full bg-[#FCFFF7] dark:bg-[#222222] text-gray-800 dark:text-white/90 shadow-lg transition-all ease-in-out duration-500 max-md:pb-1.5 p-0.5 px-3 min-[425px]:px-[5%] 
+                className={`fixed top-0 z-1010 w-full bg-[#FCFFF7] dark:bg-[#222222] text-gray-800 dark:text-white/90 shadow-lg transition-all ease-in-out duration-500 max-md:pb-1.5 p-0.5 px-3 min-[425px]:px-[5%] 
                 flex flex-wrap md:flex-nowrap items-center justify-between gap-y-2 gap-x-2
                 ${scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
             >
@@ -227,7 +227,7 @@ export default function Header() {
                     {!isHomePage ? (
                         <IconButton 
                             onClick={handleBack} 
-                            className="p-0 -ml-1 bg-transparent shadow-none dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                            className="p-1! -ml-1 bg-transparent shadow-none dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
                             aria-label="Retour"
                             title="Retour"
                         >
@@ -239,7 +239,7 @@ export default function Header() {
 
                     {/* Menu Burger button */}
                     <IconButton                     
-                        className="min-[1025px]:hidden p-0 rounded-md bg-transparent shadow-none hover:bg-gray-100 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                        className="min-[1025px]:hidden p-1.5! rounded-md! bg-transparent shadow-none hover:bg-gray-100 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
                         aria-label="Menu"
                         title={isMobileMenuOpen ? 'Fermer le Menu' : 'Ouvrir le Menu'} 
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -470,7 +470,7 @@ export default function Header() {
                 {/* ============ Mobile Navigation ==============*/}
                 {isMobileMenuOpen && (
                     <div
-                        className="min-[1025px]:hidden fixed inset-0 bg-black/50 z-9999 h-screen backdrop-blur-xs"
+                        className="min-[1025px]:hidden fixed inset-0 bg-black/50 z-1 h-screen backdrop-blur-xs"
                         onClick={() => setIsMobileMenuOpen(false)}
                     />
                 )}
@@ -481,7 +481,7 @@ export default function Header() {
                     {/* Menu burger/close button and eventrive logo */}
                     <div className="min-[1025px]:hidden absolute top-0 left-0 w-full bg-[#FCFFF7] dark:bg-[#1f1f1f] p-4 md:py-1 z-10001 flex items-center justify-between">
                         <IconButton 
-                            className=" rounded-md bg-gray-100/50 hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                            className="p-1.5! rounded-md! bg-gray-100/50 hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
                             aria-label="Menu"
                             title={isMobileMenuOpen ? 'Fermer le Menu' : 'Ouvrir le Menu'} 
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}

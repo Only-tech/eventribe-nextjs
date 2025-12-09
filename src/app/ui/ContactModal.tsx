@@ -171,12 +171,12 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         </div>
 
                         {/* Message Field */}
-                        <div className="relative">
+                        <div className={`relative group w-full transition-all duration-500 ease-out ${isMessageLabelActive ? "translate-y-0" : "translate-y-1"}`}>
                             <textarea
                                 id="message"
                                 name="message"
-                                rows={5}
-                                className={`peer block w-full p-3 pt-3 border rounded-md shadow-sm focus:outline-none transition-all ease-in-out duration-400 ${messageError ? 'border-red-500' : 'border-gray-300 dark:border-white/20 focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]'}`}
+                                // rows={5}
+                                className={`peer w-full h-45 min-[400px]:h-55 min-[1025px]:h-35 overflow-y-auto px-3 py-4 border rounded-md shadow-sm focus:outline-none transition-all ease-in-out duration-400 ${messageError ? 'border-red-500' : 'border-gray-300 dark:border-white/20 focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff]'}`}
                                 value={message}
                                 onChange={(e) => setMessage(e.target.value)}
                                 onFocus={() => setIsMessageFocused(true)}
@@ -186,8 +186,8 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                                 htmlFor="message"
                                 className={`absolute pointer-events-none transition-all ease-in-out duration-400 px-3 ${
                                 isMessageLabelActive
-                                    ? 'top-0 -translate-y-1/2 text-sm font-medium text-gray-400 peer-focus:text-[#0088aa] group-hover:text-[#0088aa] dark:peer-focus:text-[#ff952aff] dark:group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70'
-                                    : 'top-1/12 -translate-y-1/12 text-base text-gray-500'
+                                    ? 'top-0 left-3 -translate-y-1/2 text-sm font-medium text-gray-500 peer-focus:text-[#0088aa] group-hover:text-[#0088aa] dark:peer-focus:text-[#ff952aff] dark:group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/45'
+                                    : 'top-1/12 left-2 -translate-y-1/12 text-base text-gray-500 dark:text-white/40'
                                 }`}
                             >
                                 Votre message *

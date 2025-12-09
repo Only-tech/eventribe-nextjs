@@ -58,8 +58,8 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                 htmlFor={id}
                 className={`absolute pointer-events-none transition-all duration-300 ease-out px-3 ${
                 isActive
-                    ? "top-0 left-6 -translate-y-1/2 text-sm rounded-full font-medium text-gray-500 peer-focus:text-[#0088aa] group-hover:text-[#0088aa] dark:peer-focus:text-[#ff952aff] dark:group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/45" 
-                    : "top-1/2 left-3 -translate-y-1/2 text-base text-gray-500 dark:text-white/40"
+                    ? "top-0 left-3 -translate-y-1/2 text-sm rounded-full font-medium text-gray-500 peer-focus:text-[#0088aa] group-hover:text-[#0088aa] dark:peer-focus:text-[#ff952aff] dark:group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/45" 
+                    : "top-1/2 left-2 -translate-y-1/2 text-base text-gray-500 dark:text-white/40"
                 }`}
             >
                 {label}

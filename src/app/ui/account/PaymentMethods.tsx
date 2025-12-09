@@ -47,7 +47,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
 
     // Number card formatting to 4x4
     const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let value = e.target.value;
+        const value = e.target.value;
 
         // Removes the non-numeric and space  
         let cleanValue = value.replace(/[^0-9]/g, '');

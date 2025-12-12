@@ -31,7 +31,14 @@ export const authOptions: AuthOptions = {
     jwt: { secret: process.env.NEXTAUTH_SECRET },
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
-        async jwt({ token, user }) {
+        async jwt({ token, user, trigger, session }) {
+            // Session update if trigger update is called
+            if (trigger === "update" && session?.image) {
+                token.picture = session.image;
+            }
+            if (trigger === "update" && session) {
+                return { ...token, ...session };
+            }
             if (user) {
                 token.id = user.id;
                 token.name = user.name;
@@ -39,6 +46,7 @@ export const authOptions: AuthOptions = {
                 token.lastName = user.lastName;
                 token.email = user.email;
                 token.isAdmin = user.isAdmin;
+                token.picture = user.image_url;
             }
             return token;
         },
@@ -50,6 +58,7 @@ export const authOptions: AuthOptions = {
             session.user.lastName = token.lastName;
             session.user.email = token.email;
             session.user.isAdmin = token.isAdmin as boolean;
+            session.user.image = token.picture;
         }
         return session;
         },

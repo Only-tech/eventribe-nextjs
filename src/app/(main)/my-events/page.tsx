@@ -132,15 +132,17 @@ export default function MyEventsPage() {
             <h1 className="text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff] mb-8 text-center">Mes Inscriptions</h1>
 
             {myEvents.length === 0 ? (
-                <>
-                    <p className="text-center text-gray-700 dark:text-white/70 text-lg">Vous n&apos;êtes inscrit à aucun événement pour le moment.</p>
-                    <div className="text-center mt-4">
-                        <ActionButton variant="secondary" onClick={() => router.push(`/events`)} >                    
-                            <span>Découvrir des événements</span>
-                            <ChevronDownIcon className="inline-block size-6 ml-2 group-hover:animate-bounce" />
-                        </ActionButton>
-                    </div>
-                </>
+                <div className="text-center py-4 space-y-10 text-gray-500 dark:text-gray-400">
+                    <CalendarDaysIcon className="size-44 mx-auto mb-3 opacity-50" />
+                    <p className="text-center  text-lg">
+                        Vous n&apos;êtes inscrit à aucun événement pour le moment !
+                    </p>
+                    <ActionButton variant="secondary" onClick={() => router.push(`/events`)} className='mx-auto'>                    
+                        <span>Découvrir des événements</span>
+                        <ChevronDownIcon className="inline-block size-6 ml-2 group-hover:animate-bounce" />
+                    </ActionButton>
+                </div>
+               
             ) : (
                 <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10">
 

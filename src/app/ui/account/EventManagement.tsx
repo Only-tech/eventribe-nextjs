@@ -3,9 +3,8 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 import type { Session } from 'next-auth';
 import Image from 'next/image';
-import { CalendarDaysIcon, MapPinIcon } from '@heroicons/react/24/outline'; 
-import { PencilIcon } from '@heroicons/react/24/solid'; 
-import { TrashIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
+import { PencilIcon , MapPinIcon } from '@heroicons/react/24/solid'; 
+import { TrashIcon, PlusIcon, ChevronUpIcon, ChevronDownIcon, CalendarDaysIcon } from '@heroicons/react/16/solid';
 import { normalizeImagePath } from '@/app/lib/utils';
 import { Event, Participant } from '@/app/lib/definitions';
 import { useToast } from '@/app/ui/status/ToastProvider'; 
@@ -374,7 +373,7 @@ export default function EventManagement({ session, openModal, closeModal }: Even
     // ========= Events List =============
     const renderEventList = () => (
         <div className="space-y-8 bg-white dark:bg-[#1E1E1E] rounded-xl p-1 sm:p-4 lg:p-8 mt-4 lg:mt-0 border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
-            <div className="flex justify-center sm:justify-end lg:justify-between items-center gap-5 max-sm:mt-1">
+            <div className="flex justify-center sm:justify-end lg:justify-between items-center gap-5 max-sm:mt-1 mb-8 border-b border-gray-300 dark:border-white/20 pb-4">
                 <h2 className="hidden lg:flex text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-[#ff952aff]">Mes événements</h2>
                 <ActionButton
                     onClick={() => {
@@ -403,9 +402,12 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                     <Loader variant="dots" />
                 </>
             ) : events.length === 0 ? (
-                <p className="text-center text-gray-700 dark:text-gray-300 text-lg">
-                    Vous n&apos;avez pas encore créé d&apos;événements.
-                </p>
+                <div className="text-center py-10 text-gray-500 dark:text-gray-400">
+                    <CalendarDaysIcon className="size-44 mx-auto mb-3 opacity-50" />
+                    <p className="text-center  text-lg">
+                        Vous n&apos;avez pas encore créé d&apos;événements.
+                    </p>
+                </div>
             ) : (
                 <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10 items-end">
                     {events.map((event) => (

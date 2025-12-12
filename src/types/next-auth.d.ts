@@ -9,6 +9,7 @@ declare module 'next-auth' {
       lastName: string;
       email: string;
       isAdmin: boolean;
+      image_url?: string | null
     } & DefaultSession['user'];
   }
 
@@ -18,6 +19,7 @@ declare module 'next-auth' {
     lastName: string;
     email: string;
     isAdmin: boolean;
+    image_url?: string | null
   }
 }
 

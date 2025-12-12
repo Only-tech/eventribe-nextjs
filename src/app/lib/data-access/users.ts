@@ -100,7 +100,7 @@ export async function loginUser(email: string, password_plain: string): Promise<
 
         // Retrieves the user by email
         const result = await client.query<User>( 
-            `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name FROM users WHERE email = $1`,
+            `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name, image_url FROM users WHERE email = $1`,
             [email]
         );
         const user = result.rows[0];
@@ -133,7 +133,7 @@ export async function getUserById(userId: number): Promise<User | null> {
     try {
         client = await pool.connect(); 
         const result = await client.query<User>( 
-            `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name FROM users WHERE id = $1`,
+            `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name, image_url FROM users WHERE id = $1`,
             [userId]
         );
         return result.rows[0] || null;
@@ -226,6 +226,29 @@ export async function updateUser(id: string, data: { email: string; firstName: s
         if (client) {
             client.release();
         }
+    }
+}
+
+/**
+ * Updates a user's picture.
+ * @param userId The user ID.
+ * @param imageUrl The new user picture link.
+ * @returns True if the update is successful, false otherwise.
+ */
+export async function updateUserImage(userId: number, imageUrl: string): Promise<boolean> {
+    let client;
+    try {
+        client = await pool.connect();
+        await client.query(
+            `UPDATE users SET image_url = $1 WHERE id = $2`,
+            [imageUrl, userId]
+        );
+        return true;
+    } catch (error) {
+        console.error("Erreur lors de la mise à jour de l'image de profil:", error);
+        return false;
+    } finally {
+        if (client) client.release();
     }
 }
 

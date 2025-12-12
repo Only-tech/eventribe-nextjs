@@ -474,11 +474,11 @@
 'use client';
 
 import type { Session } from 'next-auth';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
-import { UserCircleIcon, ShieldCheckIcon,  QuestionMarkCircleIcon, ExclamationTriangleIcon, BanknotesIcon } from '@heroicons/react/24/outline'; 
-import { ChevronUpIcon, CalendarDaysIcon } from '@heroicons/react/16/solid';
+import { signOut, useSession } from 'next-auth/react';
+import { UserCircleIcon, ShieldCheckIcon, QuestionMarkCircleIcon, ExclamationTriangleIcon, BanknotesIcon, CameraIcon } from '@heroicons/react/24/outline'; 
+import { ChevronUpIcon, CalendarDaysIcon, TrashIcon } from '@heroicons/react/16/solid';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import ActionButton from '@/app/ui/buttons/ActionButton';
@@ -488,32 +488,37 @@ import EventManagement from '@/app/ui/account/EventManagement';
 import PaymentMethods from '@/app/ui/account/PaymentMethods';
 import IconButton from '@/app/ui/buttons/IconButton';
 import { useToast } from '@/app/ui/status/ToastProvider';
-import { TrashIcon } from '@heroicons/react/24/solid';
+import { Avatar } from '@/app/ui/Avatar';
 
 type ActiveView = 'info' | 'security' | 'payments' | 'events' | 'help' | null;
 
 export default function UserAccountManageEventsPage() {
 
     const router = useRouter();
-
+    const { data: sessionData, status, update } = useSession();
     const [session, setSession] = useState<Session | null>(null);
-    const [authStatus, setAuthStatus] = useState<'loading' | 'authenticated' | 'unauthenticated'>('loading');
-    
+
     const [activeView, setActiveView] = useState<ActiveView>('info');
     const [isViewLoading, setIsViewLoading] = useState(false);
-
     const [isNavCollapsed, setIsNavCollapsed] = useState(false);
 
+    // Profile Info States
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [email, setEmail] = useState('');
     const [isAccountUpdating, setIsAccountUpdating] = useState(false);
     
+    // Avatar States
+    const [uploadingImage, setUploadingImage] = useState(false);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Stats
     const [eventCount, setEventCount] = useState(0);
     const [totalRegistered, setTotalRegistered] = useState(0);
     
     const { addToast } = useToast();
 
+    // Modal States
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalMessage, setModalMessage] = useState('');
     const [confirmAction, setConfirmAction] = useState<(() => void) | null>(null);
@@ -532,65 +537,34 @@ export default function UserAccountManageEventsPage() {
         setConfirmAction(null);
     };
 
-    // ====== Fetch session on loading =======
+    // ==== Authentication & Init =====
     useEffect(() => {
-        const fetchSession = async () => {
-            try {
-                const res = await fetch('/api/auth/session');
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && Object.keys(data).length > 0) {
-                        setSession(data);
-                        setAuthStatus('authenticated');
-                    } else {
-                        setSession(null);
-                        setAuthStatus('unauthenticated');
-                    }
-                } else {
-                    setAuthStatus('unauthenticated');
-                }
-            } catch (error) {
-                console.error('Failed to fetch session:', error);
-                setAuthStatus('unauthenticated');
-            }
-        };
-        fetchSession();
-    }, []);
-
-    // ==== Authentication status =====
-    useEffect(() => {
-        if (authStatus === 'unauthenticated') {
-            window.location.href = '/login';
-        }  
-        
-        if (authStatus === 'authenticated' && session?.user) {
-            setFirstName(session.user.firstName ?? '');
-            setLastName(session.user.lastName ?? '');
-            setEmail(session.user.email ?? '');
+        if (status === 'unauthenticated') {
+            router.push('/login');
+        }
+        if (status === 'authenticated' && sessionData) {
+            setSession(sessionData);
+            setFirstName(sessionData.user?.firstName ?? '');
+            setLastName(sessionData.user?.lastName ?? '');
+            setEmail(sessionData.user?.email ?? '');
             fetchEventSummary(); 
         }
-    }, [authStatus, session]);
+    }, [status, sessionData, router]);
 
     const handleViewChange = (view: ActiveView) => {
         if (window.innerWidth < 1024 && view === activeView) {
             setActiveView(null);
             return;
         }
-
         setIsViewLoading(true);
         setActiveView(view);
-        
-        setTimeout(() => {
-            setIsViewLoading(false);
-        }, 250);
+        setTimeout(() => setIsViewLoading(false), 250);
     };
 
-    // ==== Update Account =====
+    // ==== Update Account Info =====
     const handleUpdateAccount = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        addToast('');
         setIsAccountUpdating(true);
-
         try {
             const response = await fetch('/api/account/update', {
                 method: 'PUT',
@@ -600,8 +574,16 @@ export default function UserAccountManageEventsPage() {
             const data = await response.json();
 
             if (response.ok) {
-                addToast('Informations de compte mises à jour avec succès.', 'success');
-                router.refresh(); 
+                addToast('Informations mises à jour.', 'success');
+
+                // Update client side session without refreshing the page
+                await update({
+                    firstName: firstName,
+                    lastName: lastName,
+                    name: `${firstName} ${lastName}`,
+                    email: email
+                });
+                router.refresh();
             } else {
                 addToast(data.message || 'Échec de la mise à jour des informations.', 'error');
             }
@@ -613,9 +595,40 @@ export default function UserAccountManageEventsPage() {
         }
     };
 
+    // ==== Handle Avatar Upload =====
+    const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        setUploadingImage(true);
+        const formData = new FormData();
+        formData.append('image', file);
+
+        try {
+            const res = await fetch('/api/account/image', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await res.json();
+
+            if (res.ok) {
+                // Update NextAuth session without refreshing the page
+                await update({ image: data.imageUrl });
+                addToast("Photo de profil mise à jour !", "success");
+            } else {
+                addToast(data.message || "Erreur lors de l'envoi", "error");
+            }
+        } catch (error) {
+            console.error("Erreur upload:", error);
+            addToast("Erreur lors de l'envoi de l'image", "error");
+        } finally {
+            setUploadingImage(false);
+            if (fileInputRef.current) fileInputRef.current.value = "";
+        }
+    };
+
     // ===== Display Events Count & Events Registered Users count =====
     type EventWithCount = Event & { registered_count: number };
-
     const fetchEventSummary = async () => {
         try {
             const res = await fetch('/api/account/events'); 
@@ -712,7 +725,6 @@ export default function UserAccountManageEventsPage() {
         </>
     );
 
-    // ========= Main containt diplayed on Desktop =========
     const renderMainContent = () => {
         if (isViewLoading) {
             return (
@@ -741,23 +753,56 @@ export default function UserAccountManageEventsPage() {
     // ============ Account Info =============
     const renderAccountInfo = () => (
         <section className="bg-[#FCFFF7] dark:bg-[#1E1E1E] rounded-xl p-4 sm:p-6 md:p-8 my-4 lg:my-0  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
-            <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-6">
+            <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-12 border-b border-gray-300 dark:border-white/20 pb-4">
                 Informations personnelles
             </h2>
-            <form className="space-y-6 lg:gap-x-6 lg:grid lg:grid-cols-2" onSubmit={handleUpdateAccount}>
-                <FloatingLabelInput id="firstName" label="Prénom" type="text" value={firstName ?? ''} onChange={(e) => setFirstName(e.target.value)} required />
-                <FloatingLabelInput id="lastName" label="Nom" type="text" value={lastName ?? ''} onChange={(e) => setLastName(e.target.value)} required />
-                <div className=" lg:col-span-2">
-                    <FloatingLabelInput id="email" label="Adresse email" type="email" value={email ?? ''} onChange={(e) => setEmail(e.target.value)} required />                    
-                </div>
+            
+            <div className="flex flex-col md:flex-row gap-8 lg:gap-12 items-start">
                 
-                <div className="flex justify-end lg:col-span-2">
-                    <ActionButton type="submit" variant="primary" isLoading={isAccountUpdating} className="flex-1 sm:flex-none sm:w-48">
-                        <span className="ml-2.5">{isAccountUpdating ? 'Mise à jour' : 'Enregistrer'}</span>
-                        {!isAccountUpdating && ( <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 group-hover:animate-bounce" /> )}
-                    </ActionButton>
+                {/* Avatar */}
+                <div className="flex flex-col items-center gap-4 w-full md:w-auto mx-auto md:mx-0">
+                    <div className="relative group">
+                        <Avatar 
+                            src={session?.user?.image}
+                            alt={`${firstName} ${lastName}`.trim() || "Utilisateur"}
+                            className="size-24 md:size-32 text-4xl shadow-xl ring-4 ring-gray-200 dark:ring-gray-700"
+                        />
+                        <button 
+                            onClick={() => fileInputRef.current?.click()}
+                            className="absolute bottom-0 right-0 p-2 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-transform hover:scale-110 cursor-pointer"
+                            title="Changer la photo"
+                        >
+                            <CameraIcon className="size-5" />
+                        </button>
+                    </div>
+                    {/* Hide Input */}
+                    <input 
+                        type="file" 
+                        ref={fileInputRef} 
+                        onChange={handleImageChange} 
+                        hidden 
+                        accept="image/png, image/jpeg, image/webp" 
+                    />
+                    {uploadingImage && <Loader variant="dots" />}
+                    <p className="text-xs text-gray-500 dark:text-gray-400">JPG, PNG ou WebP. Max 5Mo.</p>
                 </div>
-            </form>
+
+                {/* Formulaire existant */}
+                <form className="flex-1 w-full space-y-6 md:gap-x-6 md:grid md:grid-cols-2" onSubmit={handleUpdateAccount}>
+                    <FloatingLabelInput id="firstName" label="Prénom" type="text" value={firstName ?? ''} onChange={(e) => setFirstName(e.target.value)} required />
+                    <FloatingLabelInput id="lastName" label="Nom" type="text" value={lastName ?? ''} onChange={(e) => setLastName(e.target.value)} required />
+                    <div className="md:col-span-2">
+                        <FloatingLabelInput id="email" label="Adresse email" type="email" value={email ?? ''} onChange={(e) => setEmail(e.target.value)} required />                    
+                    </div>
+                    
+                    <div className="flex justify-end md:col-span-2 pt-4">
+                        <ActionButton type="submit" variant="primary" isLoading={isAccountUpdating} className="flex-1 sm:flex-none sm:w-48">
+                            <span className="ml-2.5">{isAccountUpdating ? 'Mise à jour' : 'Enregistrer'}</span>
+                            {!isAccountUpdating && ( <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90" /> )}
+                        </ActionButton>
+                    </div>
+                </form>
+            </div>
         </section>
     );
 
@@ -769,7 +814,7 @@ export default function UserAccountManageEventsPage() {
     // ========= Delete Account =============
     const renderAccountSecurity = () => (
         <section className="bg-white dark:bg-[#1E1E1E] rounded-xl p-1 lg:p-8 mt-4 lg:mt-0 border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
-            <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-6">
+            <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-8 border-b border-gray-300 dark:border-white/20 pb-4">
                 Sécurité
             </h2>
             
@@ -806,7 +851,7 @@ export default function UserAccountManageEventsPage() {
     // ========= Support =============
     const renderHelpSection = () => (
         <section className="bg-white dark:bg-[#1E1E1E] rounded-xl p-3 sm:p-6 md:p-8 mt-4 lg:mt-0 border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
-            <h2 className="text-2xl font-bold hidden lg:flex text-gray-900 dark:text-white/90 mb-6">
+            <h2 className="text-2xl font-bold hidden lg:flex text-gray-900 dark:text-white/90 mb-8 border-b border-gray-300 dark:border-white/20 pb-4">
                 Aide et Support
             </h2>
             <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -841,37 +886,29 @@ export default function UserAccountManageEventsPage() {
     );
 
     // ===== Page Render =====
+    if (status === 'loading') return <div className="text-center py-10"><Loader variant="dots" /></div>;
+
     return (
         <div className="max-w-[95%] mx-auto">
-            {authStatus === 'loading' && (
-                <>
-                    <p className="text-center text-xl text-gray-700 dark:text-white/70 py-6">Chargement de la session</p>
-                    <Loader variant="dots" />
-                </>
-            )}
-            
-            {authStatus === 'authenticated' && session && (
+            {status === 'authenticated' && session && (
                 <div className="space-y-8">
-                    <div className="md:grid grid-cols-3 lg:grid-cols-4 gap-8 max-md:overflow-hidden max-md:rounded-xl max-md:border border-gray-300 dark:border-white/10 translate-y-0 hover:max-md:-translate-y-1 transform transition-transform duration-700 ease max-md:shadow-lg hover:max-md:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:max-md:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:max-md:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
+                    <div className="md:grid grid-cols-3 lg:grid-cols-4 gap-8 max-md:overflow-hidden max-md:bg-white max-md:dark:bg-[#1E1E1E] max-md:rounded-xl max-md:border border-gray-300 dark:border-white/10 translate-y-0 hover:max-md:-translate-y-1 transform transition-transform duration-700 ease max-md:shadow-lg hover:max-md:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:max-md:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:max-md:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
                         {/* --- head page --- */}
-                        <div className="flex space-x-4 md:col-span-2 lg:col-span-3 bg-white dark:bg-[#1E1E1E] md:rounded-xl  p-6 md:p-8 md:border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative md:shadow-lg hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:md:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
-                            <UserCircleIcon className="hidden min-[475px]:inline-block size-18" />
-                            <div className="">
-                                <h1 className="text-3xl font-bold text-gray-900 dark:text-white/90">
-                                    Bonjour {session.user.firstName},
-                                </h1>
-                                <p className="text-lg text-gray-600 dark:text-gray-400 mt-1">
-                                    Bienvenue sur votre espace personnel !
-                                </p>
+                        <div className="flex items-center space-x-4 md:space-x-6 md:col-span-2 lg:col-span-3 bg-white dark:bg-[#1E1E1E] md:rounded-xl p-3 md:p-5 md:pl-6 md:border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative md:shadow-lg hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:md:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">  
+                            <Avatar src={session.user?.image} alt="User" className="size-16 md:size-24 ring-1 ring-gray-300 dark:ring-white/40" />
+                            <div>
+                                <h1 className="text-3xl font-bold text-gray-900 dark:text-white/90 truncate">Bonjour {session.user.firstName},</h1>
+                                <p className="text-lg text-gray-600 dark:text-gray-400 mt-1 max-[450px]:hidden">Bienvenue sur votre espace personnel !</p>
                             </div>
                         </div>
+                        <p className="text-lg text-gray-600 dark:text-gray-400 ml-6 mb-1 min-[450px]:hidden">Bienvenue sur votre espace personnel !</p>
+
                         {renderSummarySidebar()}
                     </div>
-
+                    
                     {/* --- Main container --- */}
-                    <div className={`grid grid-cols-1 lg:gap-8 lg:grid ${ isNavCollapsed ? 'lg:grid-cols-[80px_1fr_288px]' : 'lg:grid-cols-[calc(25%)_1fr_calc(25%)]' } transition-all duration-300`}>
-                        
-                        <aside className={`relative space-y-6 lg:sticky lg:top-10 h-fit ${isNavCollapsed ? 'lg:space-y-0 lg:w-20 bg-white dark:bg-[#1E1E1E] rounded-xl border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease-in-out shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]' : 'lg:w-full'}`}>
+                    <div className={`grid grid-cols-1 lg:gap-8 ${ isNavCollapsed ? 'lg:grid-cols-[80px_1fr_288px]' : 'lg:grid-cols-[calc(25%)_1fr_calc(25%)]' } transition-all duration-300`}>
+                        <aside>
                             {renderSidebarNav()}
                         </aside>
                         

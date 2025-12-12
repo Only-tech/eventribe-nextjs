@@ -80,7 +80,7 @@ export default function Header() {
     }, []);
 
 
-    // ===== Type writing authantication =====
+    // ===== Type writing authentication =====
     useEffect(() => {
         if (status !== 'unauthenticated') {
             return;

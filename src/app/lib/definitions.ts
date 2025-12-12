@@ -33,6 +33,7 @@ export type User = {
     created_at: string;
     first_name: string;
     last_name: string;
+    image_url?: string | null;
 };
 
 export type Registration = {

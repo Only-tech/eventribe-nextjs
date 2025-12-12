@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useState, useEffect, useRef } from 'react';
 import { useToast } from '@/app/ui/status/ToastProvider';
 import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
-import { FingerPrintIcon, CalendarDaysIcon as CalendarDateRangeIcon, UserCircleIcon } from '@heroicons/react/24/solid';
+import { FingerPrintIcon, CalendarDaysIcon as CalendarDateRangeIcon } from '@heroicons/react/24/solid';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import { Bars3Icon, XMarkIcon, ChevronLeftIcon } from '@heroicons/react/20/solid';
 import LogoButton from '@/app/ui/buttons/LogoButton';

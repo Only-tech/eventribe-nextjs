@@ -22,6 +22,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import Loader from '@/app/ui/animation/Loader';
 import IconButton from '@/app/ui/buttons/IconButton';
 import UserLogo from '@/app/ui/logo/UserLogo';
+import { Avatar } from '@/app/ui/Avatar';
 
 
 export default function Header() {
@@ -378,8 +379,8 @@ export default function Header() {
                                         pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''
                                     }`}
                                 >
-                                    <UserCircleIcon className="inline-block size-5" />
-                                    <span>{session.user.firstName}</span>
+                                    <Avatar src={session.user?.image} alt="User" className="size-6 ring-1 ring-gray-300 dark:ring-white/40" />
+                                    <span className='ml-1'>{session.user.firstName}</span>
                                     <ChevronDownIcon className={`size-6 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
                                 </button>
 
@@ -400,7 +401,8 @@ export default function Header() {
                                                     className="flex items-center gap-3 p-2 text-sm text-gray-900 dark:text-white/95 rounded-md hover:bg-gray-100 dark:hover:bg-white/10 cursor-pointer"
                                                     onClick={() => setIsUserMenuOpen(false)}
                                                 >
-                                                    <UserCircleIcon className="size-5" />
+                                                    {/* <UserCircleIcon className="size-5" /> */}
+                                                    <Avatar src={session.user?.image} alt="User" className="size-5 ring-1 ring-gray-300 dark:ring-white/40" />
                                                     <span>Mon Espace Personnel</span>
                                                 </Link>
                                             </li>
@@ -497,10 +499,11 @@ export default function Header() {
 
                     <OverlayScrollbarsComponent className="mb-2 h-screen pr-5 relative shadow-[hsl(var(--always-black)/5.1%)]">                        
                         {/* User info */}
-                        <div className="mt-15 w-full flex items-center gap-3 py-3 border-b border-gray-300 dark:border-white/10">
+                        <div className="mt-15 sm:mt-16 w-full flex items-center gap-3 py-3 border-b border-gray-300 dark:border-white/10">
                             {session ? (
                                 <>
-                                    <UserLogo className="size-10! text-gray-400 dark:text-[#444]" />
+                                    {/* <UserLogo className="size-10! text-gray-400 dark:text-[#444]" /> */}
+                                    <Avatar src={session.user?.image} alt="User" className="size-10 sm:size-14 ring-1 ring-gray-300 dark:ring-white/40" />
                                     <div>
                                         <p className="text-base font-semibold">{session.user.name}</p>
                                         <p className="text-sm text-gray-400">{session.user.email}</p>

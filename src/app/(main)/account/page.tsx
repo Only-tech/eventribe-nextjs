@@ -765,7 +765,7 @@ export default function UserAccountManageEventsPage() {
                         <Avatar 
                             src={session?.user?.image}
                             alt={`${firstName} ${lastName}`.trim() || "Utilisateur"}
-                            className="size-24 md:size-32 text-4xl shadow-xl ring-4 ring-gray-200 dark:ring-gray-700"
+                            className="size-24 md:size-32 text-4xl md:text-5xl shadow-xl ring-4 ring-gray-200 dark:ring-gray-700"
                         />
                         <button 
                             onClick={() => fileInputRef.current?.click()}
@@ -895,7 +895,7 @@ export default function UserAccountManageEventsPage() {
                     <div className="md:grid grid-cols-3 lg:grid-cols-4 gap-8 max-md:overflow-hidden max-md:bg-white max-md:dark:bg-[#1E1E1E] max-md:rounded-xl max-md:border border-gray-300 dark:border-white/10 translate-y-0 hover:max-md:-translate-y-1 transform transition-transform duration-700 ease max-md:shadow-lg hover:max-md:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:max-md:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:max-md:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
                         {/* --- head page --- */}
                         <div className="flex items-center space-x-4 md:space-x-6 md:col-span-2 lg:col-span-3 bg-white dark:bg-[#1E1E1E] md:rounded-xl p-3 md:p-5 md:pl-6 md:border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative md:shadow-lg hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:md:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">  
-                            <Avatar src={session.user?.image} alt="User" className="size-16 md:size-24 ring-1 ring-gray-300 dark:ring-white/40" />
+                            <Avatar src={session.user?.image} alt={`${firstName} ${lastName}`.trim() || "Utilisateur"} className="size-16 md:size-24  text-2xl md:text-4xl ring-1 ring-gray-300 dark:ring-white/40" />
                             <div>
                                 <h1 className="text-3xl font-bold text-gray-900 dark:text-white/90 truncate">Bonjour {session.user.firstName},</h1>
                                 <p className="text-lg text-gray-600 dark:text-gray-400 mt-1 max-[450px]:hidden">Bienvenue sur votre espace personnel !</p>

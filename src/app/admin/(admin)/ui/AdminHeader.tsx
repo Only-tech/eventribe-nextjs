@@ -6,9 +6,11 @@ import { useState, useEffect, useRef } from 'react';
 import { useScrollContainer } from '@/app/providers';
 import { useToast } from '@/app/ui/status/ToastProvider';
 import { Bars3Icon, XMarkIcon, UserGroupIcon, Cog6ToothIcon } from '@heroicons/react/24/outline';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import LogoutLogo from '@/app/ui/logo/LogoutLogo';
 import AdminLogo from '@/app/ui/logo/AdminLogo';
+import IconButton from '@/app/ui/buttons/IconButton';
+import { ChevronLeftIcon } from '@heroicons/react/20/solid';
 
 export default function AdminHeader() {
     const { data: session, status } = useSession(); 
@@ -17,11 +19,18 @@ export default function AdminHeader() {
     const [scrollingUp, setScrollingUp] = useState(true); 
     const lastScrollY = useRef(0); 
 
+    const router = useRouter();
     const pathname = usePathname()
 
     const { scrollElement } = useScrollContainer();
 
     const { addToast } = useToast();
+
+    // For back button
+    const isDashboardPage = pathname === '/admin' || pathname === '/admin/dashboard';
+    const handleBack = () => {
+        router.back();
+    };
 
     useEffect(() => {
         const el = scrollElement;
@@ -59,9 +68,27 @@ export default function AdminHeader() {
                 scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'
             }`}
         >
-            <Link href="/admin" className="group" title="Administration">
-                <AdminLogo className="h-12 w-12 animate-pulse group-hover:animate-none transition-all duration-300 group-hover:opacity-65 group-hover:scale-110" />
-            </Link>
+            <div className="flex items-center gap-3 sm:gap-5 shrink-0">
+                    
+                {/* Back Button if not in DashboardPage) */}
+                {!isDashboardPage ? (
+                    <IconButton 
+                        onClick={handleBack} 
+                        className="p-1! -ml-2 bg-transparent shadow-none dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                        aria-label="Retour"
+                        title="Retour"
+                    >
+                        <ChevronLeftIcon className="size-9 sm:size-10 flex-1" />
+                    </IconButton>
+                ) : (
+                    null 
+                )}
+
+                {/* Admin logo */}
+                <Link href="/admin" className="group" title="Administration">
+                    <AdminLogo className="size-9 sm:size-12 animate-pulse group-hover:animate-none transition-all duration-300 group-hover:opacity-65 group-hover:scale-110" />
+                </Link>
+            </div>
 
             <nav className="flex flex-row gap-8 items-center">
                 <Link href="/admin/dashboard" className={`text-lg transition-all duration-300 hover:opacity-65 whitespace-nowrap rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${ 

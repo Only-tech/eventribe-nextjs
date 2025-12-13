@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { signIn, getSession } from 'next-auth/react';
+import { signIn, getSession, useSession } from 'next-auth/react';
 import { useToast } from '@/app/ui/status/ToastProvider';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import { FingerPrintIcon, ArrowPathIcon, KeyIcon } from '@heroicons/react/24/outline';
@@ -12,11 +12,16 @@ import IconHomeButton from '@/app/ui/buttons/IconHomeButton';
 import LogoButton from '@/app/ui/buttons/LogoButton';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import WellcomeLogo from '@/app/ui/logo/WellcomeLogo';
+import Loader from '@/app/ui/animation/Loader';
+import { TvIcon } from '@heroicons/react/24/solid';
 
 // Steps flow
 type Step = 'login' | '2fa';
 
 export default function LoginPage() {
+    // Check session on client side
+    const { data: session, status } = useSession();
+
     const [step, setStep] = useState<Step>('login');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,6 +33,25 @@ export default function LoginPage() {
     const { addToast } = useToast();
     const router = useRouter();
 
+    // Redirect if connected user's
+    useEffect(() => {
+        if (status === 'authenticated' && session) {
+            const isAdmin = session.user?.isAdmin;
+            router.replace(isAdmin ? '/admin' : '/events');
+        }
+    }, [status, session, router]);
+
+    // Conditional render during session checking 
+    if (status === 'loading' || status === 'authenticated') {
+        return (
+            <div className="absolute top-0 left-0 flex flex-col gap-10 inset-0 min-h-screen w-full items-center justify-center bg-[#FCFFF7] dark:bg-[#1E1E1E]">
+                <TvIcon className="size-32 sm:size-44 opacity-50" />
+                <p className="animate-pulse text-lg text-gray-700 dark:text-gray-300">Chargement de votre espace</p>
+                <Loader variant="both" />
+            </div>
+        );
+    }
+    
     // Login + send OTP code
     const handleLoginSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -58,7 +82,7 @@ export default function LoginPage() {
                         const session = await getSession();
                         const isAdmin = session?.user?.isAdmin;
                         addToast('Ravi de vous revoir, votre espace est prêt !');
-                        router.push(isAdmin ? '/admin' : '/');
+                        router.push(isAdmin ? '/admin' : '/events');
                     }, 1500);
                 }
             } else {
@@ -103,7 +127,7 @@ export default function LoginPage() {
                     const session = await getSession();
                     const isAdmin = session?.user?.isAdmin;
                     addToast('Ravi de vous revoir, votre espace est prêt !');
-                    router.push(isAdmin ? '/admin' : '/');
+                    router.push(isAdmin ? '/admin' : '/events');
                 }, 1000);
             } else {
                 addToast(data.message || 'Code invalide ou expiré.', 'error');

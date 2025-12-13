@@ -6,8 +6,8 @@ import { useState, useEffect, useRef } from 'react';
 import { useToast } from '@/app/ui/status/ToastProvider';
 import { MagnifyingGlassIcon, XCircleIcon } from '@heroicons/react/24/outline';
 import { FingerPrintIcon, CalendarDaysIcon as CalendarDateRangeIcon } from '@heroicons/react/24/solid';
-import { ChevronDownIcon } from '@heroicons/react/16/solid';
-import { Bars3Icon, XMarkIcon, ChevronLeftIcon } from '@heroicons/react/20/solid';
+import { Bars3CenterLeftIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
+import { XMarkIcon, ChevronLeftIcon } from '@heroicons/react/20/solid';
 import LogoButton from '@/app/ui/buttons/LogoButton';
 import IconHomeButton from '@/app/ui/buttons/IconHomeButton';
 import LogoutLogo from '@/app/ui/logo/LogoutLogo';
@@ -245,7 +245,7 @@ export default function Header() {
                         title={isMobileMenuOpen ? 'Fermer le Menu' : 'Ouvrir le Menu'} 
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                     >
-                        {isMobileMenuOpen ? <XMarkIcon className="size-7 flex-1" /> : <Bars3Icon className="size-7 flex-1" />}
+                        {isMobileMenuOpen ? <XMarkIcon className="size-7 flex-1" /> : <Bars3CenterLeftIcon className="size-7 flex-1" />}
                     </IconButton>
                 </div>
 
@@ -402,7 +402,7 @@ export default function Header() {
                                                     onClick={() => setIsUserMenuOpen(false)}
                                                 >
                                                     {/* <UserCircleIcon className="size-5" /> */}
-                                                    <Avatar src={session.user?.image} alt="User" className="size-5 ring-1 ring-gray-300 dark:ring-white/40" />
+                                                    <Avatar src={session.user?.image} alt={`${session.user.firstName} ${session.user.lastName}`.trim() || "Utilisateur"} className="size-5 ring-1 ring-gray-300 dark:ring-white/40" />
                                                     <span>Mon Espace Personnel</span>
                                                 </Link>
                                             </li>
@@ -488,7 +488,7 @@ export default function Header() {
                             title={isMobileMenuOpen ? 'Fermer le Menu' : 'Ouvrir le Menu'} 
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                         >
-                            {isMobileMenuOpen ? <XMarkIcon className="size-7 transition-all transform-3d duration-500 ease-in" /> : <Bars3Icon className="size-7 transition-all transform-3d duration-500 ease-in" />}
+                            {isMobileMenuOpen ? <XMarkIcon className="size-7 transition-all transform-3d duration-500 ease-in" /> : <Bars3CenterLeftIcon className="size-7 transition-all transform-3d duration-500 ease-in" />}
                         </IconButton>
 
                         <div className={`transition-all duration-500 ease-in-out max-lg:-ml-5 ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
@@ -503,7 +503,7 @@ export default function Header() {
                             {session ? (
                                 <>
                                     {/* <UserLogo className="size-10! text-gray-400 dark:text-[#444]" /> */}
-                                    <Avatar src={session.user?.image} alt="User" className="size-10 sm:size-14 ring-1 ring-gray-300 dark:ring-white/40" />
+                                    <Avatar src={session.user?.image} alt={`${session.user.firstName} ${session.user.lastName}`.trim() || "Utilisateur"} className="size-10 sm:size-14 ring-1 ring-gray-300 dark:ring-white/40" />
                                     <div>
                                         <p className="text-base font-semibold">{session.user.name}</p>
                                         <p className="text-sm text-gray-400">{session.user.email}</p>

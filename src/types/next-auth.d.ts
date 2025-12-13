@@ -30,5 +30,6 @@ declare module 'next-auth/jwt' {
     lastName: string;
     email: string;
     isAdmin: boolean;
+    image?: string | null
   }
 }

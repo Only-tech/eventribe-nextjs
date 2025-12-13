@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { useToast } from '@/app/ui/status/ToastProvider';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import TooltipWrapper from '@/app/ui/status/TooltipWrapper';
@@ -12,11 +13,16 @@ import LogoButton from '@/app/ui/buttons/LogoButton';
 import WellcomeLogo from '@/app/ui/logo/WellcomeLogo';
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
 import { EnvelopeOpenIcon, KeyIcon, ArrowPathIcon, PencilSquareIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline';
+import Loader from '@/app/ui/animation/Loader';
+import { TvIcon } from '@heroicons/react/24/solid';
 
 // Steps flow
 type ResetStep = 'email' | 'verification' | 'new_password';
 
 export default function PasswordPage() {
+    // Check session on client side
+    const { data: session, status } = useSession();
+    
     // Step init
     const [step, setStep] = useState<ResetStep>('email');
 
@@ -33,6 +39,25 @@ export default function PasswordPage() {
 
     const { addToast } = useToast();
     const router = useRouter();
+
+    // Redirect if connected user's
+    useEffect(() => {
+        if (status === 'authenticated' && session) {
+            const isAdmin = session.user?.isAdmin;
+            router.replace(isAdmin ? '/admin' : '/events');
+        }
+    }, [status, session, router]);
+
+    // Conditional render during session checking 
+    if (status === 'loading' || status === 'authenticated') {
+        return (
+            <div className="absolute top-0 left-0 flex flex-col gap-10 inset-0 min-h-screen w-full items-center justify-center bg-[#FCFFF7] dark:bg-[#1E1E1E]">
+                <TvIcon className="size-32 sm:size-44 opacity-50" />
+                <p className="animate-pulse text-lg text-gray-700 dark:text-gray-300">Chargement de votre espace</p>
+                <Loader variant="both" />
+            </div>
+        );
+    }
 
     const validateComplexity = (pwd: string) => {
         const hasUpper = /[A-Z]/.test(pwd);

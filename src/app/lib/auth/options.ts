@@ -21,6 +21,7 @@ export const authOptions: AuthOptions = {
                     lastName: user.last_name,
                     email: user.email,
                     isAdmin: user.is_admin,
+                    image: user.image_url, 
                 };
                 }
                 return null;
@@ -33,9 +34,9 @@ export const authOptions: AuthOptions = {
     callbacks: {
         async jwt({ token, user, trigger, session }) {
             // Session update if trigger update is called
-            if (trigger === "update" && session?.image) {
-                token.picture = session.image;
-            }
+            // if (trigger === "update" && session?.image) {
+            //     token.picture = session.image;
+            // }
             if (trigger === "update" && session) {
                 return { ...token, ...session };
             }
@@ -46,7 +47,7 @@ export const authOptions: AuthOptions = {
                 token.lastName = user.lastName;
                 token.email = user.email;
                 token.isAdmin = user.isAdmin;
-                token.picture = user.image_url;
+                token.image = user.image;
             }
             return token;
         },
@@ -58,7 +59,7 @@ export const authOptions: AuthOptions = {
             session.user.lastName = token.lastName;
             session.user.email = token.email;
             session.user.isAdmin = token.isAdmin as boolean;
-            session.user.image = token.picture;
+            session.user.image = token.image;
         }
         return session;
         },

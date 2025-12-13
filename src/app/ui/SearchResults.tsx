@@ -3,9 +3,8 @@ import { Event } from '@/app/lib/definitions';
 import Link from 'next/link';
 import Image from 'next/image';
 import { UsersIcon } from '@heroicons/react/24/solid';
-import { CalendarDaysIcon } from '@heroicons/react/24/outline';
 import IconButton from '@/app/ui/buttons/IconButton';
-import { XMarkIcon } from '@heroicons/react/16/solid';
+import { CalendarDaysIcon, XMarkIcon } from '@heroicons/react/16/solid';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-react';
 import 'overlayscrollbars/styles/overlayscrollbars.css';
@@ -53,8 +52,7 @@ const SearchResults = forwardRef<OverlayScrollbarsComponentRef, SearchResultsPro
                                     className="object-cover object-center transition-transform duration-300 group-hover:scale-110"
                                 />
 
-                                <div className="absolute inset-0 flex flex-col justify-end group-hover:bg-linear-to-t from-black/80 via-black/50 to-transparent
-                                                text-white">
+                                <div className="absolute inset-0 flex flex-col justify-end group-hover:bg-linear-to-t from-black/80 via-black/50 to-transparent text-white">
                                     
                                     <div className="w-full bg-black/35  backdrop-blur-xs group-hover:backdrop-blur-sm pt-0.5 pb-2 px-2.5 transition-transform duration-300 ease-in-out transform shadow-xl rounded-xl">
                                         <h3 className="text-base font-semibold leading-tight truncate">
@@ -82,7 +80,10 @@ const SearchResults = forwardRef<OverlayScrollbarsComponentRef, SearchResultsPro
                         ))}
                         </div>
                     ) : (
-                        <p className="text-center text-gray-700 dark:text-gray-300 py-8">Aucun événement trouvé.</p>
+                        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                            <CalendarDaysIcon className="size-32 mx-auto mb-3 opacity-50" />
+                            <p className="text-center">Aucun événement trouvé.</p>
+                        </div>
                     )}
                 </div>
                 <div className="relative text-center m-2">

@@ -1,8 +1,9 @@
 'use client'; 
 
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import { EnvelopeOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'; 
 import { ChevronUpIcon } from '@heroicons/react/16/solid'; 
@@ -14,6 +15,8 @@ import IconHomeButton from '@/app/ui/buttons/IconHomeButton';
 import LogoButton from '@/app/ui/buttons/LogoButton';
 import ActionButton from '@/app/ui/buttons/ActionButton';
 import WellcomeLogo from '@/app/ui/logo/WellcomeLogo';
+import Loader from '@/app/ui/animation/Loader';
+import { TvIcon } from '@heroicons/react/24/solid';
 
 
 // Steps flow
@@ -21,6 +24,9 @@ type RegistrationStep = 'email' | 'verification' | 'details_password';
 
 
 export default function RegisterPage() {
+// Check session on client side
+    const { data: session, status } = useSession();
+
     const [email, setEmail] = useState('');
     const [firstName, setFirstName] = useState(''); 
     const [lastName, setLastName] = useState('');   
@@ -40,6 +46,25 @@ export default function RegisterPage() {
     // Step init
     const [step, setStep] = useState<RegistrationStep>('email'); 
     const router = useRouter();
+
+    // Redirect if connected user's
+    useEffect(() => {
+        if (status === 'authenticated' && session) {
+            const isAdmin = session.user?.isAdmin;
+            router.replace(isAdmin ? '/admin' : '/events');
+        }
+    }, [status, session, router]);
+
+    // Conditional render during session checking 
+    if (status === 'loading' || status === 'authenticated') {
+        return (
+            <div className="absolute top-0 left-0 flex flex-col gap-10 inset-0 min-h-screen w-full items-center justify-center bg-[#FCFFF7] dark:bg-[#1E1E1E]">
+                <TvIcon className="size-32 sm:size-44 opacity-50" />
+                <p className="animate-pulse text-lg text-gray-700 dark:text-gray-300">Chargement de votre espace</p>
+                <Loader variant="both" />
+            </div>
+        );
+    }
     
     // ------------------------------------
     // Step 1 Send code)

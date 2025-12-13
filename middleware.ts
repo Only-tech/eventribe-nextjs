@@ -1,32 +1,52 @@
+import { withAuth } from "next-auth/middleware";
 import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-import type { NextRequest } from "next/server";
 
-export async function middleware(req: NextRequest) {
-    const { pathname } = req.nextUrl;
+export default withAuth(
+    // Execute if "authorized" send true
+    function middleware(req) {
+        const token = req.nextauth.token;
+        const { pathname } = req.nextUrl;
 
-    // Only act on /login (matcher below ensures this)
-    if (pathname !== "/login") {
+        // If user is authenticated, avoid to access /login
+        if (token && pathname.startsWith('/login')) {
+            const isAdmin = token.isAdmin;
+            const target = isAdmin ? "/admin" : "/events";
+            return NextResponse.redirect(new URL(target, req.url));
+        }
+
         return NextResponse.next();
+    },
+    {
+        callbacks: {
+            authorized: ({ req, token }) => {
+                const { pathname } = req.nextUrl;
+
+                // Allow authenticated users
+                if (token) return true;
+
+                if (
+                    pathname === "/" ||
+                    pathname.startsWith("/login") ||
+                    pathname.startsWith("/register") ||
+                    pathname.startsWith("/password") ||
+                    pathname.startsWith("/api/auth") ||
+                    pathname.startsWith("/_next") ||
+                    pathname.startsWith("/profiles") ||
+                    pathname.startsWith("/public")
+                ) {
+                    return true;
+                }
+
+                // Block if not
+                return false;
+            },
+        },
+        // For the token JWT server side
+        secret: process.env.NEXTAUTH_SECRET, 
     }
-
-    // Read NextAuth JWT; requires NEXTAUTH_SECRET
-    const token = await getToken({
-        req,
-        secret: process.env.NEXTAUTH_SECRET,
-    });
-
-    // If authenticated, redirect away from /login
-    if (token) {
-        const isAdmin = (token as any)?.isAdmin;
-        const target = isAdmin ? "/admin" : "/events";
-        return NextResponse.redirect(new URL(target, req.url));
-    }
-
-    // Not authenticated → allow access to /login
-    return NextResponse.next();
-}
+);
 
 export const config = {
-    matcher: ["/login"],
+    // The matcher excludes static files
+    matcher: ['/((?!_next/static|_next/image|favicon.ico|profiles).*)'],
 };

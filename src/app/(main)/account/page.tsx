@@ -873,7 +873,7 @@ export default function UserAccountManageEventsPage() {
 
     // ========= Summary Side Bar ===========
     const renderSummarySidebar = () => (
-        <aside className="max-md:flex max-md:justify-between lg:col-span-1 bg-white dark:bg-[#1E1E1E] md:rounded-xl max-md:pt-0 p-6 space-y-3 md:p-8 md:border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative md:shadow-lg hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:md:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
+        <aside className="max-md:flex max-md:justify-between lg:col-span-1 bg-white dark:bg-[#1E1E1E] md:rounded-xl max-md:pt-0 max-[450px]:p-3 p-6 space-y-3 md:p-8 md:border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative md:shadow-lg hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:md:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:md:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
             <p className="flex justify-between items-baseline  max-md:space-x-4">
                 <span className="text-gray-600 dark:text-gray-400">Événements créés </span>
                 <span className="text-2xl font-bold text-gray-900 dark:text-white/90">{eventCount}</span>
@@ -901,7 +901,7 @@ export default function UserAccountManageEventsPage() {
                                 <p className="text-lg text-gray-600 dark:text-gray-400 mt-1 max-[450px]:hidden">Bienvenue sur votre espace personnel !</p>
                             </div>
                         </div>
-                        <p className="text-lg text-gray-600 dark:text-gray-400 ml-6 mb-1 min-[450px]:hidden">Bienvenue sur votre espace personnel !</p>
+                        <p className="text-lg text-gray-600 dark:text-gray-400 ml-3 mb-1 min-[450px]:hidden">Bienvenue sur votre espace personnel !</p>
 
                         {renderSummarySidebar()}
                     </div>

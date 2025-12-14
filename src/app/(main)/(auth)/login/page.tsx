@@ -23,13 +23,15 @@ export default function LoginPage() {
     const { data: session, status } = useSession();
 
     const [step, setStep] = useState<Step>('login');
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [code, setCode] = useState('');
+    
+    // Back up numeric part code
+    const [codeDigits, setCodeDigits] = useState('');
     const [userId, setUserId] = useState<number | null>(null);
 
     const [loading, setLoading] = useState(false);
-
     const { addToast } = useToast();
     const router = useRouter();
 
@@ -59,7 +61,7 @@ export default function LoginPage() {
         setLoading(true);
 
         try {
-            // Send 2FA OTP code
+            // check credentials + status 2FA
             const res = await fetch('/api/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -67,32 +69,41 @@ export default function LoginPage() {
             });
             const data = await res.json();
 
-            if (res.ok && data.require2FA) {
-                setUserId(data.userId);
-                addToast('Code de vérification envoyé par email.', 'success');
-                setStep('2fa');
-            } else if (res.ok) {
-                // Classic connexion via NextAuth if no 2FA
-                const result = await signIn('credentials', { redirect: false, email, password });
-                if (result?.error) {
-                    addToast('Email ou mot de passe incorrect.', 'error');
+            if (res.ok) {
+                if (data.require2FA) {
+                    // Activated 2FA, ahead to step 2
+                    setUserId(data.userId);
+                    addToast('Code de sécurité envoyé par email', 'success');
+                    setStep('2fa');
                 } else {
-                    addToast('Connexion réussie.', 'success');
-                    setTimeout(async () => {
-                        const session = await getSession();
-                        const isAdmin = session?.user?.isAdmin;
-                        addToast('Ravi de vous revoir, votre espace est prêt !');
-                        router.push(isAdmin ? '/admin' : '/events');
-                    }, 1500);
+                    // No 2FA direct NextAuth login
+                    await performNextAuthSignIn();
                 }
             } else {
                 addToast(data.message || 'Erreur lors de la connexion.', 'error');
             }
         } catch (error) {
             console.error('Erreur login:', error);
-            addToast('Une erreur est survenue. Veuillez réessayer plus tard.', 'error');
+            addToast('Une erreur est survenue.', 'error');
         } finally {
-            setLoading(false);
+            // If no redirection and require2FA is true, stop loading and let user tying
+            if (!loading) setLoading(false);
+            else setLoading(false);
+        }
+    };
+
+    // NextAuth Helper
+    const performNextAuthSignIn = async () => {
+        const result = await signIn('credentials', { redirect: false, email, password });
+        if (result?.error) {
+            addToast('Erreur inattendue lors de la création de session.', 'error');
+        } else {
+            addToast('Connexion réussie.', 'success');
+            setTimeout(async () => {
+                const session = await getSession();
+                const isAdmin = session?.user?.isAdmin;
+                router.push(isAdmin ? '/admin' : '/events');
+            }, 1000);
         }
     };
 
@@ -100,43 +111,38 @@ export default function LoginPage() {
     const handleVerifySubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         addToast('');
-        if (!userId) {
-            addToast('Session 2FA manquante. Veuillez recommencer.', 'error');
-            setStep('login');
-            return;
-        }
         setLoading(true);
+
+        // Code rebuild for API Send
+        const fullCode = `ev - ${codeDigits}`;
 
         try {
             const res = await fetch('/api/auth/verify-2fa', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userId, code }),
+                body: JSON.stringify({ userId, code: fullCode }),
             });
             const data = await res.json();
 
             if (res.ok) {
-                // Finalize connexion via NextAuth JWT session and callbacks
-                const result = await signIn('credentials', { redirect: false, email, password });
-                if (result?.error) {
-                    addToast('Impossible de créer la session après 2FA.', 'error');
-                    return;
-                }
-                addToast('Connexion réussie.', 'success');
-                setTimeout(async () => {
-                    const session = await getSession();
-                    const isAdmin = session?.user?.isAdmin;
-                    addToast('Ravi de vous revoir, votre espace est prêt !');
-                    router.push(isAdmin ? '/admin' : '/events');
-                }, 1000);
+                // login if code checking is true
+                await performNextAuthSignIn();
             } else {
-                addToast(data.message || 'Code invalide ou expiré.', 'error');
+                addToast(data.message || 'Code invalide.', 'error');
+                setLoading(false);
             }
         } catch (error) {
             console.error('Erreur verify-2fa:', error);
-            addToast('Une erreur est survenue. Veuillez réessayer.', 'error');
-        } finally {
+            addToast('Erreur de vérification.', 'error');
             setLoading(false);
+        }
+    };
+    
+    // Manage and keep numeric code
+    const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value.replace(/\D/g, '');
+        if (val.length <= 6) {
+            setCodeDigits(val);
         }
     };
 
@@ -274,14 +280,15 @@ export default function LoginPage() {
                                 <form className="space-y-8" onSubmit={handleVerifySubmit}>
                                     <FloatingLabelInput
                                         id="code"
-                                        label="Code reçu par email"
-                                        type="text"
+                                        label="Entrez le code"
+                                        type="code"
                                         name="code"
-                                        value={code}
-                                        onChange={(e) => setCode(e.target.value)}
+                                        value={codeDigits}
+                                        onChange={handleCodeChange}
                                         required
-                                        maxLength={6}
-                                    />
+                                        inputMode="numeric"
+                                        autoFocus
+                                    />                                 
 
                                     <div className="flex items-center justify-between -mt-6">
                                         <button

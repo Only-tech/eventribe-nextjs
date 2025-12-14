@@ -173,7 +173,7 @@ export default function Carousel() {
     return (
         <div
             ref={containerRef}
-            className="carousel-container relative w-full mb-12 -mt-4 md:-mt-8 shadow-lg bg-linear-to-b from-[#111] to-[#1E1E1E] border border-[rgba(255,255,255,0.08)] overflow-hidden"
+            className="relative w-full mb-12 -mt-4 md:-mt-8 shadow-lg bg-linear-to-b from-[#111] to-[#1E1E1E] border-b border-white/10 overflow-hidden"
         >
             {/* Slides track */}
             <div
@@ -207,7 +207,7 @@ export default function Carousel() {
                                     height={200}
                                     className="relative object-cover bg-contain w-full h-auto max-w-[65%]]"
                                 />
-                                <span className="absolute z-10 bottom-3 right-3 bg-black/60 px-2 py-1 rounded-md text-xs text-gray-400">
+                                <span className="absolute z-10 bottom-4 sm:bottom-3 right-3 bg-black/60 px-2 py-1 rounded-md text-xs text-gray-400">
                                     {slide.credit}
                                 </span>
                             </div>
@@ -219,10 +219,12 @@ export default function Carousel() {
             {/* Navigation */}
             <div
                 ref={navRef}
-                className="carousel-nav absolute bottom-1  flex items-center gap-4 group"
+                className={`absolute -bottom-0.5 sm:bottom-2 left-1/2 flex items-center gap-4 group opacity-0 
+                    scale-80 -translate-x-1/2 -translate-y-4 transition-all duration-1000 ease-in-out
+                    [.is-visible_&]:opacity-100 [.is-visible_&]:scale-100 [.is-visible_&]:translate-y-0
+                `}
             >
                 <button
-                    id="play-pause-btn"
                     aria-label={isComplete ? "Rejouer" : isPaused ? "Lire" : "Mettre en pause"}
                     onClick={() => {
                         if (isComplete) {
@@ -237,7 +239,7 @@ export default function Carousel() {
                             pauseAutoplay(); // put userPaused = true
                         }
                     }}
-                    className="flex items-center justify-center text-white rounded-full size-7 bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl cursor-pointer"
+                    className="flex items-center justify-center text-white rounded-full size-5 sm:size-7 sm:bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl cursor-pointer"
                 >
                     {isComplete ? (
                         <svg 
@@ -258,12 +260,12 @@ export default function Carousel() {
                 </button>
 
                 {/* Dots with morphing + progress */}
-                <div className="relative w-35 h-9 rounded-full flex items-center justify-center bg-[rgba(144,144,146,0.25)] backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
+                <div className="relative w-35 h-7 sm:h-9 rounded-full flex items-center justify-center sm:bg-[rgba(144,144,146,0.25)] sm:backdrop-blur-sm transition-all ease-in-out duration-300 group group-hover:backdrop-blur-3xl">
                     <div className="absolute inset-0 flex px-3">
                         {slidesData.map((_, idx) => {
                             const active = idx === currentIndex && !isPaused && !isComplete;
                             
-                            const dotClasses = `mx-auto cursor-pointer flex-shrink-0 w-2 h-2 rounded-full bg-white/50 hover:bg-white transform hover:scale-110 transition-all duration-500 ease-in-out relative overflow-hidden ${active ? 'w-8 h-[0.4rem] first:ml-2 last:mr-2' : ''}`;
+                            const dotClasses = `mx-auto cursor-pointer shrink-0 size-2.5 border rounded-full bg-white/50 hover:bg-white hover:scale-110 transition-all duration-500 ease-in-out relative overflow-hidden ${active ? 'w-8 h-2 items-center first:ml-2 last:mr-2' : 'w-2.5'}`;
 
                             const afterClasses = `content-[''] absolute inset-0 w-0 h-full rounded-full bg-white ${active ? 'animate-[fillProgress_var(--progress-duration)_linear_forwards]' : ''}`;
 
@@ -283,6 +285,8 @@ export default function Carousel() {
                         })}
                     </div>
                 </div>
+                {/* Space right navigation */}
+                <div className="size-5 sm:size-7"></div>
             </div>
         </div>
     );

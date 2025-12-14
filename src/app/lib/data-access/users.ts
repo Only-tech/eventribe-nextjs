@@ -18,7 +18,8 @@ export async function finalRegisterUser(
     email: string, 
     firstName: string, 
     lastName: string, 
-    password_plain: string
+    password_plain: string,
+    enable2FA: boolean
 ): Promise<boolean> {
     let client;
     try {
@@ -50,9 +51,9 @@ export async function finalRegisterUser(
         await client.query('BEGIN');
 
         await client.query(
-            `INSERT INTO users (email, password_hash, is_admin, created_at, first_name, last_name)
-             VALUES ($1, $2, FALSE, NOW(), $3, $4)`,
-            [email, password_hash, firstName, lastName]
+            `INSERT INTO users (email, password_hash, is_admin, created_at, first_name, last_name, two_factor_enabled)
+             VALUES ($1, $2, FALSE, NOW(), $3, $4, $5)`,
+            [email, password_hash, firstName, lastName, enable2FA]
         );
         
         // Delete verification (email verified = registration is finished)
@@ -100,7 +101,7 @@ export async function loginUser(email: string, password_plain: string): Promise<
 
         // Retrieves the user by email
         const result = await client.query<User>( 
-            `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name, image_url FROM users WHERE email = $1`,
+            `SELECT id, email, password_hash, is_admin, created_at, first_name, last_name, image_url, two_factor_enabled FROM users WHERE email = $1`,
             [email]
         );
         const user = result.rows[0];

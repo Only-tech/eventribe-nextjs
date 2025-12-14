@@ -249,26 +249,6 @@ body.is-active::-webkit-scrollbar-thumb {
   animation: dot-bounce 1.4s infinite ease-in-out 0.4s;
 }
 
-/*====== Account Greating Notice ====== */
-@keyframes banner {
-  0% {
-    transform: translateX(100%);
-  }
-
-  100% {
-    transform: translateX(-100%);
-  }
-}
-
-.animate-banner {
-  animation: banner 10s linear infinite;
-}
-
-@media (min-width: 1024px) {
-  .animate-banner {
-    animation: banner 15s linear infinite;
-  }
-}
 
 /* =========== BANNER CAROUSEL ============ */
 /* === Animation Dot fillProgress === */
@@ -280,29 +260,6 @@ body.is-active::-webkit-scrollbar-thumb {
   to {
     width: 100%;
   }
-}
-
-/* === Navigation pop-in === */
-.carousel-nav {
-  left: 50%;
-  transform: translateX(-50%) scale(0);
-  opacity: 0;
-  transition: opacity 1.5s ease, transform 1.5s ease;
-}
-
-.carousel-container.is-visible .carousel-nav {
-  opacity: 1;
-  transform: translateX(-50%) scale(1);
-}
-
-.carousel-nav.below {
-  position: static;
-  margin-top: 1rem;
-  transform: scale(0.2);
-}
-
-.carousel-container.is-visible .carousel-nav.below {
-  transform: scale(1);
 }
 
 /* === Slides transition === */

@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
 import { EnvelopeOpenIcon, QuestionMarkCircleIcon } from '@heroicons/react/24/outline'; 
 import { ChevronUpIcon } from '@heroicons/react/16/solid'; 
@@ -22,6 +22,28 @@ import { TvIcon } from '@heroicons/react/24/solid';
 // Steps flow
 type RegistrationStep = 'email' | 'verification' | 'details_password';
 
+// CHECKBOX 2FA Component
+const TwoFactorCheckbox = ({ enable2FA, setEnable2FA }: { enable2FA: boolean, setEnable2FA: (value: boolean) => void }) => (
+    <div className="flex items-start p-4 mb-4 bg-gray-50 rounded-lg dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-[0_8px_10px_rgb(0,0,0,0.2)] hover:drop-shadow-[0_7px_10px_rgb(0,0,0,0.3)]">
+        <div className="flex items-center h-5">
+            <input
+                id="2fa_checkbox_input" // Changed by original ID
+                type="checkbox"
+                checked={enable2FA}
+                onChange={(e) => setEnable2FA(e.target.checked)}
+                className="w-4 h-4  bg-gray-100 border-gray-300 rounded focus:border-gray-400 dark:bg-gray-700 dark:border-gray-600"
+            />
+        </div>
+        <div className="ms-2 text-sm">
+            <label htmlFor="2fa_checkbox_input" className="font-medium text-gray-900 dark:text-gray-300 cursor-pointer select-none">
+                Activer la double authentification (2FA)
+            </label>
+            <p id="helper-checkbox-text" className="text-xs font-normal text-gray-500 dark:text-gray-400 mt-1">
+                Un code <span className="font-mono bg-gray-200 dark:bg-gray-600 px-1 mx-1 rounded">ev - </span> vous sera demandé à chaque connexion.
+            </p>
+        </div>
+    </div>
+);
 
 export default function RegisterPage() {
 // Check session on client side
@@ -46,6 +68,8 @@ export default function RegisterPage() {
     // Step init
     const [step, setStep] = useState<RegistrationStep>('email'); 
     const router = useRouter();
+
+    const [enable2FA, setEnable2FA] = useState(false);
 
     // Redirect if connected user's
     useEffect(() => {
@@ -86,7 +110,7 @@ export default function RegisterPage() {
             const data = await response.json();
 
             if (response.ok) {
-                addToast(`Code de vérification envoyé à ${email}.`);
+                addToast(`Code de vérification envoyé à ${email}`);
                 setStep('verification');
             } else if (response.status === 409) {
                     addToast(data.message);
@@ -94,11 +118,11 @@ export default function RegisterPage() {
                     router.push('/login');
                 }, 1500);
             } else {
-                addToast(data.message || "Erreur lors de l'envoi du code. Veuillez vérifier l'email.", 'error');
+                addToast(data.message || "Erreur lors de l'envoi du code. Veuillez vérifier l'email", 'error');
             }
         } catch (error) {
             console.error("Erreur lors de l'envoi du code:", error);
-            addToast("Une erreur est survenue lors de l'envoi du code.", 'error');
+            addToast("Une erreur est survenue lors de l'envoi du code", 'error');
         } finally {
             setLoading(false);
         }
@@ -160,17 +184,27 @@ export default function RegisterPage() {
             const response = await fetch('/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, firstName, lastName, password, confirm_password: confirmPassword }),
+                body: JSON.stringify({ email, firstName, lastName, password, confirm_password: confirmPassword, enable2FA: enable2FA }),
             });
 
             const data = await response.json();
 
             if (response.ok) {
-                addToast(data.message);
-                setLoading(false);
-                setTimeout(() => {
+                addToast('Compte créé avec succès ! Connexion en cours...', 'success');
+                
+                // AUTO LOGIN 
+                const result = await signIn('credentials', { 
+                    redirect: false, 
+                    email: email, 
+                    password: password 
+                });
+
+                if (result?.error) {
+                    addToast("Compte créé, mais redirection manuelle requise.", 'info');
                     router.push('/login');
-                }, 1500);
+                } else {
+                    router.push('/events');
+                }
             } else {
                 addToast(data.message || "Erreur d'inscription finale. Veuillez réessayer.", 'error');
                 setLoading(false);
@@ -248,8 +282,8 @@ export default function RegisterPage() {
                         <div className="relative">
                             <FloatingLabelInput
                                 id="code"
-                                label="Entrez le code à usage unique"
-                                type="text"
+                                label="Entrez le code"
+                                type="code"
                                 name="code"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
@@ -296,16 +330,17 @@ export default function RegisterPage() {
                             Créons votre compte
                         </h1>
 
-                        {/* Email */}
-                        <FloatingLabelInput
-                            id="email_display"
-                            label="E-mail"
-                            type="email"
-                            value={email}
-                            readOnly
-                            disabled
-                            className="bg-gray-100! dark:bg-gray-800!"
-                        />
+                        <div className='hidden'>
+                            {/* Email */}
+                            <FloatingLabelInput
+                                id="email_display"
+                                label="E-mail"
+                                type="email"
+                                value={email}
+                                readOnly
+                                disabled                           
+                            />
+                        </div>
 
                         {/* First Name */}
                         <FloatingLabelInput
@@ -349,7 +384,7 @@ export default function RegisterPage() {
                                 referenceElement={helpRef}
                                 content={
                                     <>
-                                        Votre mot de passe doit contenir 06 caractères minimum, dont :
+                                        Votre mot de passe doit contenir 12 caractères minimum, dont :
                                         <ul className="list-disc list-inside mt-2 space-y-1">
                                             <li>Une majuscule <strong>[A - Z]</strong></li>
                                             <li>Une minuscule <strong>[a - z]</strong></li>
@@ -382,6 +417,11 @@ export default function RegisterPage() {
                             className="pr-10" 
                         />
 
+                        {/* Display on Mobile */}
+                        <div className="min-[1025px]:hidden mt-4">
+                            <TwoFactorCheckbox enable2FA={enable2FA} setEnable2FA={setEnable2FA} />
+                        </div>
+                        
                         <ActionButton
                             type="submit"
                             variant="secondary"
@@ -416,6 +456,15 @@ export default function RegisterPage() {
                         <LogoButton onClick={() => router.push(`/`)} className='w-28 h-12 sm:w-48 sm:h-22 min-[1025px]:w-66 min-[1025px]:h-30'/>
                         <WellcomeLogo/>
                         <p className="text-gray-700 dark:text-white/55">Pas d’inquiétude, on vous guide pas à pas</p>
+
+                        {/* Display on Desktop, hide on Mobile */}
+                        {step === 'details_password' && (
+                            <div className="mt-8 w-full max-[1025px]:hidden"> 
+                                <h5 className="text-2xl font-bold text-gray-900 dark:text-white/85 mb-4 text-center">Sécurité optionnelle</h5>
+                                <TwoFactorCheckbox enable2FA={enable2FA} setEnable2FA={setEnable2FA} />
+                            </div>
+                        )}
+
                         <p className="mt-6 text-center max-[1025px]:hidden text-gray-700 dark:text-white/55">
                             Déjà un compte ?{' '}
                             <Link href="/login" className="text-indigo-600 hover:underline">

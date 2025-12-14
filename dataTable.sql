@@ -8,7 +8,7 @@ create table public.users (
     created_at timestamp without time zone null default CURRENT_TIMESTAMP,
     last_name character varying(100) null,
     two_factor_enabled boolean null default false,
-    two_factor_code character varying(6) null,
+    two_factor_code character varying(11) null,
     two_factor_expires_at timestamp without time zone null,
     constraint users_pkey primary key (id),
     constraint users_email_key unique (email),

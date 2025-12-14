@@ -23,8 +23,9 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
     
     const isActive = isFocused || (value && value.toString().length > 0);
 
-    // Check if input is a password enter
     const isPasswordInput = type === 'password';
+
+    const isCodeInput = type === 'code'; 
     
     // Check the type to display text or password
     const inputType = isPasswordInput ? (showPassword ? 'text' : 'password') : type;
@@ -39,9 +40,25 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
         if (onBlur) onBlur(e);
     };
 
-    // Padding-right if password to avoid the text under icon
-    const baseClasses = `peer w-full py-3 px-5 ${isPasswordInput ? 'pr-12' : ''}  border resize-none border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff] transition-all ease-in-out duration-400`;
+    // Default padding
+    let paddingClasses = 'px-5';
+
+    if (isPasswordInput) {
+        // Padding right for password show or hide
+        paddingClasses = 'pr-12 pl-5';
+    } else if (isCodeInput) {
+        // Padding left for "ev -"" prefix
+        paddingClasses = 'pl-16 pr-5 font-mono';
+    }
+
+    const baseClasses = `peer w-full py-3 ${paddingClasses} border resize-none border-gray-300 dark:border-white/20 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-[#0088aa] hover:border-[#0088aa] focus:border-[#0088aa] dark:focus:ring-[#ff952aff] dark:hover:border-[#ff952aff] dark:focus:border-[#ff952aff] transition-all ease-in-out duration-400`;
     const finalClassName = `${baseClasses} ${className || ''}`.trim();
+
+    // Manage inactive label according to the code input or not
+    const inactiveLabelPosition = isCodeInput
+        ? "top-1/2 left-14 font-mono -translate-y-1/2 text-base text-gray-500 dark:text-white/40"
+        : "top-1/2 left-2 -translate-y-1/2 text-base text-gray-500 dark:text-white/40";
+
 
     return (
         <div className={`relative group w-full transition-all duration-500 ease-out ${isActive ? "translate-y-0" : "translate-y-1"}`}>
@@ -59,7 +76,7 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                 className={`absolute pointer-events-none transition-all duration-300 ease-out px-3 ${
                 isActive
                     ? "top-0 left-3 -translate-y-1/2 text-sm rounded-full font-medium text-gray-500 peer-focus:text-[#0088aa] group-hover:text-[#0088aa] dark:peer-focus:text-[#ff952aff] dark:group-hover:text-[#ff952aff] px-1 py-0 ml-4 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/45" 
-                    : "top-1/2 left-2 -translate-y-1/2 text-base text-gray-500 dark:text-white/40"
+                    : inactiveLabelPosition 
                 }`}
             >
                 {label}
@@ -77,6 +94,13 @@ const FloatingLabelInput: React.FC<FloatingLabelInputProps> = ({
                 >
                     {showPassword ? ( <EyeSlashIcon className="size-5" /> ) : ( <EyeIcon className="size-5" />)}
                 </button>
+            )}
+
+            {/* Display  CODEt if it is a code */}
+            {isCodeInput && (
+                <span className="absolute left-4 top-2.5 text-lg text-gray-500 dark:text-gray-400 font-mono select-none">
+                    ev - 
+                </span>
             )}
         </div>
     );

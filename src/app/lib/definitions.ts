@@ -33,6 +33,7 @@ export type User = {
     created_at: string;
     first_name: string;
     last_name: string;
+    two_factor_enabled: boolean;
     image_url?: string | null;
 };
 

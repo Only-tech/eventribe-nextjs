@@ -28,7 +28,7 @@ export default function EventCard({ event }: { event: Event; }) {
         <div data-aos="fade-up">
             <Link 
                 href={`/event/${event.id}`} 
-                className="w-[95%] sm:w-78 h-104 sm:h-94 bg-[#FCFFF7] hover:bg-white dark:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col translate-y-0 scale-100 transform
+                className="w-[95%] max-sm:max-w-md sm:w-78 h-104 sm:h-94 bg-[#FCFFF7] hover:bg-white dark:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col translate-y-0 scale-100 transform
                     transition-transform duration-600 ease-in-out
                     hover:-translate-y-1.5 hover:scale-104 xl:hover:scale-106 hover:z-10
                     mx-auto relative shadow-[0_10px_15px_rgb(0,0,0,0.2)]

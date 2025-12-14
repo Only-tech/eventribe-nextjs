@@ -4,7 +4,7 @@ import { finalRegisterUser } from '@/app/lib/data-access/users';
 
 export async function POST(request: Request) {
   try {
-    const { email, firstName, lastName, password, confirm_password } = await request.json();
+    const { email, firstName, lastName, password, confirm_password, enable2FA } = await request.json();
 
     // Basic validation
     if (!email || !firstName || !lastName || !password || !confirm_password) {
@@ -15,8 +15,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ message: 'Les mots de passe ne correspondent pas.' }, { status: 400 });
     }
 
-    if (password.length < 6) {
-      return NextResponse.json({ message: 'Le mot de passe doit contenir au moins 6 caractères.' }, { status: 400 });
+    if (password.length < 12) {
+      return NextResponse.json({ message: 'Le mot de passe doit contenir au moins 12 caractères.' }, { status: 400 });
     }
 
     // Password character Validation
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     }
 
     // Attempt to register the user
-    const success = await finalRegisterUser(email, firstName, lastName, password);
+    const success = await finalRegisterUser(email, firstName, lastName, password, !!enable2FA);
 
     if (success) {
       return NextResponse.json({ message: 'Inscription réussie ! Vous pouvez maintenant vous connecter.' }, { status: 201 });

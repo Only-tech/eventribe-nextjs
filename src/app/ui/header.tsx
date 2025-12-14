@@ -217,9 +217,10 @@ export default function Header() {
             <header
                 ref={headerRef}
  
-                className={`fixed top-0 z-1010 w-full bg-[#FCFFF7] dark:bg-[#222222] text-gray-800 dark:text-white/90 shadow-lg transition-all ease-in-out duration-500 max-md:pb-1.5 p-0.5 px-3 min-[425px]:px-[5%] 
-                flex flex-wrap md:flex-nowrap items-center justify-between gap-y-2 gap-x-2
-                ${scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}
+                className={`fixed top-0 z-1010 w-full bg-[#FCFFF7] dark:bg-[#222222] text-gray-800 dark:text-white/90 shadow-lg transition-all ease-in-out duration-500 max-md:py-1.5 px-3 min-[425px]:px-[5%] 
+                    flex flex-wrap md:flex-nowrap items-center justify-between gap-y-2 gap-x-2
+                    ${scrollingUp ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}
+                `}
             >
                           
                 <div className={`flex items-center gap-2 shrink-0 md:mr-6 transition-all duration-500 ease-in-out cursor-pointer ${hasValue ? 'hidden opacity-0 pointer-events-none' : 'opacity-100'}`}>
@@ -379,7 +380,7 @@ export default function Header() {
                                         pathname === '/account' ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''
                                     }`}
                                 >
-                                    <Avatar src={session.user?.image} alt="User" className="size-6 ring-1 ring-gray-300 dark:ring-white/40" />
+                                    <Avatar src={session.user?.image} alt={`${session.user.firstName} ${session.user.lastName}`.trim() || "Utilisateur"} className="size-6 text-xs ring-1 ring-gray-300 dark:ring-white/40" />
                                     <span className='ml-1'>{session.user.firstName}</span>
                                     <ChevronDownIcon className={`size-6 transition-transform ${isUserMenuOpen ? 'rotate-180' : ''}`} />
                                 </button>
@@ -402,7 +403,7 @@ export default function Header() {
                                                     onClick={() => setIsUserMenuOpen(false)}
                                                 >
                                                     {/* <UserCircleIcon className="size-5" /> */}
-                                                    <Avatar src={session.user?.image} alt={`${session.user.firstName} ${session.user.lastName}`.trim() || "Utilisateur"} className="size-5 ring-1 ring-gray-300 dark:ring-white/40" />
+                                                    <Avatar src={session.user?.image} alt={`${session.user.firstName} ${session.user.lastName}`.trim() || "Utilisateur"} className="size-5 text-xs ring-1 ring-gray-300 dark:ring-white/40" />
                                                     <span>Mon Espace Personnel</span>
                                                 </Link>
                                             </li>
@@ -503,7 +504,7 @@ export default function Header() {
                             {session ? (
                                 <>
                                     {/* <UserLogo className="size-10! text-gray-400 dark:text-[#444]" /> */}
-                                    <Avatar src={session.user?.image} alt={`${session.user.firstName} ${session.user.lastName}`.trim() || "Utilisateur"} className="size-10 sm:size-14 ring-1 ring-gray-300 dark:ring-white/40" />
+                                    <Avatar src={session.user?.image} alt={`${session.user.firstName} ${session.user.lastName}`.trim() || "Utilisateur"} className="size-10 sm:size-14 text-xl sm:text-3xl ring-1 ring-gray-300 dark:ring-white/40" />
                                     <div>
                                         <p className="text-base font-semibold">{session.user.name}</p>
                                         <p className="text-sm text-gray-400">{session.user.email}</p>

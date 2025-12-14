@@ -218,8 +218,8 @@ export default function PasswordPage() {
                         <div className="relative">
                             <FloatingLabelInput
                                 id="code"
-                                label="Entrez le code à usage unique"
-                                type="text"
+                                label="Entrez le code"
+                                type="code"
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
                                 required

@@ -3,7 +3,7 @@ import { EmailFooter } from "@/app/lib/email-templates/EmailFooter";
 export function VerificationCodeEmail(code: string, recipientEmail: string): string {
     return `
         <table width="100%" cellpadding="0" cellspacing="0" border="0" 
-            style="background-color:#f5f5f5;font-family:Segoe UI,Roboto,Helvetica,Arial,sans-serif;border-radius:8px;overflow:hidden;">
+            style="background-color:#f3f4f6;font-family:Segoe UI,Roboto,Helvetica,Arial,sans-serif;border-radius:8px;overflow:hidden;">
             <tbody>
                 <tr>
                     <td align="center">
@@ -45,7 +45,7 @@ export function VerificationCodeEmail(code: string, recipientEmail: string): str
                                         <p style="margin:0 0 12px 0;">Bonjour,</p>
                                         <p style="margin:0 0 12px 0;">Vous avez demandé un code de vérification pour ${recipientEmail}.</p>
                                         <p>Voici votre code :</p>
-                                        <p style="font-size:28px;font-weight:bold;background-color:#f8f8ec;padding:10px 20px;margin:12px 60px;border-radius:8px;display:inline-block">${code}</p>
+                                        <p style="font-size:28px;font-weight:bold;background-color:#f8f8ec;padding:10px 20px;margin:12px 60px;border-radius:8px;display:inline-block;box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);white-space: nowrap;">${code}</p>
                                         <p style="margin:0 0 12px 0;">Ce code est valable pendant <strong>10 minutes</strong>.</p>
                                         <p style="margin-top:24px;color:#666;font-size:13px;">
                                         — L’équipe eventribe

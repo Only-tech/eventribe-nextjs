@@ -684,7 +684,7 @@ export default function UserAccountManageEventsPage() {
     const renderSidebarNav = () => (
         <>
             {/* ---- Generated Card Menu --- */}
-            <section className={`relative bg-white dark:bg-[#1E1E1E] rounded-xl transform transition-transform duration-700 ease ${isNavCollapsed ? 'p-2' : 'p-1 sm:p-8 lg:p-6 border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 relative shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]'}`}>
+            <section className={`relative bg-white dark:bg-[#1E1E1E] rounded-xl transform transition-transform duration-700 ease border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 shadow-lg hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)] ${isNavCollapsed ? 'p-2' : 'p-1 sm:p-8 lg:p-6 '}`}>
                 <div className={`hidden lg:flex  ${isNavCollapsed ? 'justify-end' : 'absolute z-0 top-0 right-0'}`}>
                     <IconButton onClick={() => setIsNavCollapsed(!isNavCollapsed)} title={isNavCollapsed ? 'Agrandir' : 'Réduire'} className={`bg-transparent p-0 shadow-none hover:bg-transparent hover:shadow-[0_12px_15px_rgb(0,0,0,0.4)] overflow-hidden group ${isNavCollapsed ? '-mt-3 -mr-3' : ''}`}>
                         <ChevronUpIcon className={`size-6 dark:text-gray-300 transition-transform duration-900 animate-bounce group-hover:animate-none ${isNavCollapsed ? ' rotate-45' : 'rotate-225'}`} />

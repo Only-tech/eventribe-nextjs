@@ -475,7 +475,7 @@
 
 import type { Session } from 'next-auth';
 import React, { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { UserCircleIcon, ShieldCheckIcon, QuestionMarkCircleIcon, ExclamationTriangleIcon, BanknotesIcon, CameraIcon } from '@heroicons/react/24/outline'; 
 import { ChevronUpIcon, CalendarDaysIcon, TrashIcon } from '@heroicons/react/16/solid';
@@ -495,6 +495,9 @@ type ActiveView = 'info' | 'security' | 'payments' | 'events' | 'help' | null;
 export default function UserAccountManageEventsPage() {
 
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const pathname = usePathname();
+
     const { data: sessionData, status, update } = useSession();
     const [session, setSession] = useState<Session | null>(null);
 
@@ -551,6 +554,19 @@ export default function UserAccountManageEventsPage() {
         }
     }, [status, sessionData, router]);
 
+    // Synchronize URL with loading state and the navigator navigation prev next
+    useEffect(() => {
+        const tab = searchParams.get('view'); 
+        const validTabs = ['info', 'security', 'payments', 'events', 'help'];
+        
+        if (tab && validTabs.includes(tab)) {
+            setActiveView(tab as ActiveView);
+        } else if (!tab && activeView !== 'info') {
+            // If no params keep 'info'
+            setActiveView('info');
+        }
+    }, [searchParams]);
+
     const handleViewChange = (view: ActiveView) => {
         if (window.innerWidth < 1024 && view === activeView) {
             setActiveView(null);
@@ -558,6 +574,18 @@ export default function UserAccountManageEventsPage() {
         }
         setIsViewLoading(true);
         setActiveView(view);
+
+        // URL update
+        const params = new URLSearchParams(searchParams.toString());
+        if (view) {
+            params.set('view', view); // Add ?view=view_name
+        } else {
+            params.delete('view');
+        }
+        
+        // Push the new URL wihtout page refresh (scroll: false, avoid to back up)
+        router.push(`${pathname}?${params.toString()}`, { scroll: false });
+
         setTimeout(() => setIsViewLoading(false), 250);
     };
 
@@ -798,7 +826,7 @@ export default function UserAccountManageEventsPage() {
                     <div className="flex justify-end md:col-span-2 pt-4">
                         <ActionButton type="submit" variant="primary" isLoading={isAccountUpdating} className="flex-1 sm:flex-none sm:w-48">
                             <span className="ml-2.5">{isAccountUpdating ? 'Mise à jour' : 'Enregistrer'}</span>
-                            {!isAccountUpdating && ( <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90" /> )}
+                            {!isAccountUpdating && ( <ChevronUpIcon className="inline-block size-6 ml-2 rotate-90 group-hover:animate-bounce" /> )}
                         </ActionButton>
                     </div>
                 </form>
@@ -823,7 +851,7 @@ export default function UserAccountManageEventsPage() {
                     <ExclamationTriangleIcon className="size-6" />
                     Zone de danger
                 </h3>
-                <p className="text-red-700 dark:text-red-400 mt-2 text-sm">
+                <p className="text-red-700 dark:text-red-400 text-justify mt-2 text-sm">
                     La suppression de votre compte est définitive. Toutes vos données, y compris les événements que vous avez créés et vos inscriptions, seront supprimées et ne pourront pas être récupérées.
                 </p>
                 <div className="mt-4 flex justify-center sm:justify-end">

@@ -10,6 +10,7 @@ import ActionButton from '@/app/ui/buttons/ActionButton';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import EventFilters, { EventFiltersState } from '@/app/ui/events/EventFilters';
 import Loader from '@/app/ui/animation/Loader'
+import { CalendarDaysIcon } from '@heroicons/react/16/solid';
 
 const ROWS_TO_SHOW = 2;
 
@@ -141,9 +142,12 @@ export default function EventsPage() {
                             <Loader variant="dots" /> 
                         </div>
                     ) : filteredEvents.length === 0 ? (
-                        <p className="text-center text-gray-700 dark:text-white/85 text-lg">
-                            Aucun événement ne correspond à vos critères. Essayez d&apos;autres filtres !
-                        </p>
+                        <div className="text-center py-10 text-gray-500 dark:text-gray-400">
+                            <CalendarDaysIcon className="size-44 mx-auto mb-3 opacity-50" />
+                            <p className="text-center  text-lg">
+                                Aucun événement ne correspond à vos critères. Essayez d&apos;autres filtres !
+                            </p>
+                        </div>
                     ) : (
                         <div className='w-full'>
                             <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-8 md:gap-10 2xl:gap-12 w-full">

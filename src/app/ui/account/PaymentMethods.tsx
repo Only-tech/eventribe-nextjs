@@ -10,6 +10,8 @@ import { PaymentMethod } from '@/app/lib/definitions';
 import { TrashIcon } from '@heroicons/react/16/solid';
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
 import { PlusIcon } from '@heroicons/react/16/solid';
+import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
+import 'overlayscrollbars/styles/overlayscrollbars.css';
 
 
 export default function PaymentMethods({ userId }: { userId: number }) {
@@ -139,9 +141,10 @@ export default function PaymentMethods({ userId }: { userId: number }) {
     };
 
     return (
-        <section className="bg-[#FCFFF7] dark:bg-[#1E1E1E] rounded-xl p-4 sm:p-6 md:p-8 my-4 lg:my-0  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
+        <section className="bg-[#FCFFF7] dark:bg-[#1E1E1E] rounded-xl py-4 sm:p-6 md:p-8 my-4 lg:my-0  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
             <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-8 border-b border-gray-300 dark:border-white/20 pb-4">Moyens de paiement</h2>
             {methods.length > 0 ? (
+                <OverlayScrollbarsComponent className='p-3 sm:p-6 h-[35vh]'> 
                 <ul className="gap-y-3 mb-10 grid md:grid-cols-2 md:gap-x-10 xl:gap-x-24 md:gap-y-5">
                     {methods.map((m) => {
         
@@ -150,7 +153,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                         
                         return (
                             <li key={m.id} className="flex justify-between items-center pl-6 p-1 rounded-full border border-gray-300 dark:border-white/10">
-                                <span>
+                                <span className='whitespace-nowrap'>
                                     {m.card_brand} 
                                     {/* display 12-star mask + last 4 card digit */}
                                     {' '} 
@@ -174,6 +177,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                         );
                     })}
                 </ul>
+                </OverlayScrollbarsComponent> 
             ) : (
                 <p className="mb-4">Aucun moyen de paiement enregistré.</p>
             )}
@@ -247,7 +251,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
                 <ActionButton 
                     variant="primary" 
                     onClick={() => setShowForm(true)}
-                    className="mt-4"
+                    className="mt-4 max-sm:mx-auto"
                 >
                     <PlusIcon className="inline-block size-5 mr-2 group-hover:animate-bounce" />
                     <span className=' truncate'>Ajouter un moyen de paiement</span>

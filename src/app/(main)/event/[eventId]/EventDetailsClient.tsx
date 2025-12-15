@@ -30,6 +30,13 @@ export default function EventDetailsClient({ event, userId, isRegistered: initia
 
     const { addToast } = useToast();
 
+    // Check if event has passed
+    const eventDate = new Date(event.event_date);
+    const now = new Date();
+    const fortyEightHoursInMs = 48 * 60 * 60 * 1000;
+    const isUnregisterBlocked = (eventDate.getTime() - now.getTime()) < fortyEightHoursInMs;
+    const isEventPassed = eventDate < now;
+
     // Fetch user payment method
     useEffect(() => {
         if (!userId) return;
@@ -57,7 +64,7 @@ export default function EventDetailsClient({ event, userId, isRegistered: initia
             const result = await registerAction(userId, event.id);
             if (result.success) {
                 setRegistered(true); // state update first
-                addToast(`Vous êtes inscrit(e) à l'événement ${event.title} !`);
+                addToast(`Vous êtes inscrit(e) à l'événement ${event.title} !`,"success");
                 setTimeout(() => router.refresh(), 2000);
             } else {
                 addToast("Erreur lors de l'inscription.");
@@ -78,10 +85,9 @@ export default function EventDetailsClient({ event, userId, isRegistered: initia
             if (result.success) {
                 setRegistered(false); // state update first
                 await fetch(`/api/account/payments?userId=${userId}&eventId=${event.id}`, { method: 'DELETE' });
-                addToast(`Vous êtes désinscrit(e) de l'événement ${event.title} !`);
-                setTimeout(() => router.refresh(), 2000);
+                addToast(result.message || 'Désinscription réussie !', 'success');
             } else {
-                addToast("Erreur lors de la désinscription.");
+                addToast(result.message || 'Erreur lors de la désinscription.', 'error');
             }
         } catch {
             addToast("Une erreur inattendue est survenue.");
@@ -105,6 +111,9 @@ export default function EventDetailsClient({ event, userId, isRegistered: initia
                                     variant="destructive" 
                                     onClick={handleUnregister} 
                                     isLoading={isUnregistering}
+                                    disabled={isUnregisterBlocked}
+                                    title={isUnregisterBlocked ? `Désinscription impossible moins de 48h avant le ${eventDate.toLocaleDateString()}` : ''}
+                                    aria-label={isUnregisterBlocked ? `Désinscription impossible moins de 48h avant le ${eventDate.toLocaleDateString()}` : 'Se désinscrire de l\'événement'}
                                     className="w-full" 
                                 >
                                     {isUnregistering ? (
@@ -116,6 +125,10 @@ export default function EventDetailsClient({ event, userId, isRegistered: initia
                                         </>
                                     )}
                                 </ActionButton>
+                        ) : isEventPassed ? (
+                            <p className="text-gray-500 dark:text-white/65 font-bold text-lg rounded-lg p-3 bg-cover bg-center bg-[url('/images/SplashPaintBreak.svg')] bg-gray-200 dark:bg-white/10 w-full font-mono text-center border border-gray-300 dark:border-white/20 shadow-xl dark:shadow-[0_6px_8px_rgba(0,0,0,0.3)]">
+                                Événement terminé
+                            </p>
                         ) : remainingSeats > 0 ? (
                             <ActionButton
                                 variant="primary"
@@ -139,7 +152,7 @@ export default function EventDetailsClient({ event, userId, isRegistered: initia
                                 )}
                             </ActionButton>
                         ) : (
-                            <p className="text-red-600 font-bold text-lg rounded-lg p-3 bg-red-100 w-full text-center">Complet !</p>
+                            <p className="text-gray-500 dark:text-white/65 font-bold text-lg rounded-lg p-3 bg-cover bg-center bg-[url('/images/SplashPaintBreak.svg')] bg-gray-200 dark:bg-white/10 w-full font-mono text-center border border-gray-300 dark:border-white/20 shadow-xl dark:shadow-[0_6px_8px_rgba(0,0,0,0.3)]">Complet !</p>
                         )
                     ) : (
                         <p className="text-gray-700 dark:text-gray-500 text-sm text-center">

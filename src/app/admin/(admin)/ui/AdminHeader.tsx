@@ -74,7 +74,7 @@ export default function AdminHeader() {
                 {!isDashboardPage ? (
                     <IconButton 
                         onClick={handleBack} 
-                        className="p-1! -ml-2 bg-transparent shadow-none dark:hover:bg-white/10 transition-all transform duration-600 ease-out cursor-pointer"
+                        className="p-1! -ml-2 bg-transparent shadow-none hover:bg-gray-800! transition-all transform duration-600 ease-out cursor-pointer"
                         aria-label="Retour"
                         title="Retour"
                     >

@@ -331,12 +331,20 @@ export async function registerForEvent(userId: number, eventId: number): Promise
             return false;
         }
 
-        // Check if seats are available
+        // Check if seats are available and event date validity
         const eventResult = await client.query<Event>(
             `SELECT title, event_date, location, price, available_seats FROM events WHERE id = $1`,
             [eventId]
         );
+        if (eventResult.rows.length === 0) return false;
         const event = eventResult.rows[0];
+
+        // Check if event has passed
+        if (new Date(event.event_date) < new Date()) {
+            console.warn("Impossible de s'inscrire : l'événement est terminé.");
+            return false;
+        }
+
         const registeredCountResult = await client.query(
             `SELECT COUNT(*) FROM registrations WHERE event_id = $1`,
             [eventId]

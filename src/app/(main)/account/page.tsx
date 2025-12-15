@@ -936,7 +936,7 @@ export default function UserAccountManageEventsPage() {
                     
                     {/* --- Main container --- */}
                     <div className={`grid grid-cols-1 lg:gap-8 ${ isNavCollapsed ? 'lg:grid-cols-[80px_1fr_288px]' : 'lg:grid-cols-[calc(25%)_1fr_calc(25%)]' } transition-all duration-300`}>
-                        <aside>
+                        <aside className='md:sticky md:top-10 h-fit'>
                             {renderSidebarNav()}
                         </aside>
                         

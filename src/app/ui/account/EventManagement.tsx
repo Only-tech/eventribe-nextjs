@@ -411,7 +411,7 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                     </p>
                 </div>
             ) : (
-                <OverlayScrollbarsComponent className='p-3 sm:p-6 h-[70vh]'> 
+                <OverlayScrollbarsComponent className='eventScroll py-3 pl-1 pr-2 sm:p-3 lg:p-6 h-[70vh]'> 
                 <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10">
                     {events.map((event) => (
                         <div key={event.id} className=" max-w-4xl w-full mx-auto translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease group drop-shadow-lg hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] shadow-[hsl(var(--always-black)/5.1%)]">

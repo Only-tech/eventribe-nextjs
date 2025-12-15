@@ -85,7 +85,7 @@ export default function RegisterPage() {
             <div className="absolute top-0 left-0 flex flex-col gap-10 inset-0 min-h-screen w-full items-center justify-center bg-[#FCFFF7] dark:bg-[#1E1E1E]">
                 <TvIcon className="size-32 sm:size-44 opacity-50" />
                 <p className="animate-pulse text-lg text-gray-700 dark:text-gray-300">Chargement de votre espace</p>
-                <Loader variant="both" />
+                <Loader variant="dots" />
             </div>
         );
     }

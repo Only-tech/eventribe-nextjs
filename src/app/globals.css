@@ -11,6 +11,7 @@
 
 .dark {
   --background: #222222;
+  /* --background: linear-gradient(to bottom left, #000, #1E1E1E, #000); */
   --foreground: #ededed;
 }
 
@@ -63,6 +64,13 @@ button:active {
   --os-track-border-radius: 10px !important;
   --os-handle-interactive-area-offset: 4px !important;
   --os-handle-border-radius: 10px !important;
+}
+
+.eventScroll .os-theme-dark,
+.eventScroll .os-theme-light {
+  --os-size: 4px !important;
+  --os-padding-perpendicular: 0px !important;
+  --os-track-border-radius: 6px !important;
 }
 
 .cookie .os-theme-dark,

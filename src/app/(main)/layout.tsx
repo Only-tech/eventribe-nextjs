@@ -35,7 +35,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
         }
     }, [pathname])
 
-    const hideLayout = pathname === '/register' || pathname === '/login' || pathname === '/password' || pathname === '/legal-mentions'
+    const hideLayout = pathname === '/register' || pathname === '/login' || pathname === '/password-reset' || pathname === '/legal-mentions'
 
     return (
         <div className="min-h-screen w-full flex flex-col text-[#333] dark:text-white/85 bg-cover bg-fixed bg-center font-sans bg-[url('/images/SplashPaintBreak.svg')] dark:bg-none">

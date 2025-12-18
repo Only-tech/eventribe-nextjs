@@ -451,9 +451,9 @@ export default function Header() {
                                 {/* --- login/register --- */}
                                 <li>
                                     <Link 
-                                        href={wordIndex === 0 ? '/login' : '/register'} 
+                                        href='/login' 
                                         className={`inline-flex whitespace-nowrap items-center gap-1 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] rounded-full p-2 hover:shadow-[inset_0px_2px_1px_gray] ${
-                                            (pathname === '/login' || pathname === '/register') ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''
+                                            (pathname === '/login') ? ' shadow-[inset_0px_2px_1px_#101828]  dark:shadow-[inset_0px_2px_1px_#ff952aff]' : ''
                                         }`}
                                         onClick={() => setIsUserMenuOpen(false)}
                                     >

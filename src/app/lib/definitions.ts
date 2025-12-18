@@ -50,6 +50,7 @@ export type Participant = {
     last_name: string;
     email: string;
     registered_at: string;
+    image_url?: string | null;
 };
 
 export type PaymentMethod = {

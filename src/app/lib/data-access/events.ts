@@ -504,6 +504,7 @@ export async function getParticipantsForEvent(eventId: number): Promise<Particip
                 u.first_name,
                 u.last_name,
                 u.email,
+                u.image_url,
                 r.registered_at
             FROM
                 users u

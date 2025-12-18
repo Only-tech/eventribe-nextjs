@@ -13,6 +13,7 @@ import IconButton from '@/app/ui/buttons/IconButton';
 import Loader from '@/app/ui/animation/Loader';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import 'overlayscrollbars/styles/overlayscrollbars.css';
+import { Avatar } from '@/app/ui/Avatar';
 
 type EventManagementProps = {
     session: Session | null;
@@ -473,22 +474,22 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                                                         <table className="min-w-full divide-y divide-gray-200 dark:divide-white/20 rounded-xl sm:rounded-3xl overflow-hidden">
                                                             <tbody className="bg-gray-100 dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-white/20">
                                                                 {participants[event.id]?.map((participant) => (
-                                                                    <tr key={participant.user_id}>
-                                                                        <td className="px-1.5 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300">{participant.first_name} {participant.last_name}</td>
-                                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">{participant.email}</td>
-                                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">
+                                                                    <tr key={participant.user_id} className='group'>
+                                                                        <td className="px-1.5 sm:px-4 py-1.5 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300 flex items-center gap-2 md:translate-y-1.5"><Avatar src={participant.image_url} alt={`${participant.first_name} ${participant.last_name}`.trim() || "Utilisateur"} className="size-7 text-xs" /> {participant.first_name} {participant.last_name}</td>
+                                                                        <td className="px-1 sm:px-4 py-1.5 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">{participant.email}</td>
+                                                                        <td className="px-1 sm:px-4 py-1.5 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">
                                                                             {new Date(participant.registered_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
                                                                         </td>
-                                                                        <td className="px-1 sm:px-6 py-2 sm:py-3 whitespace-nowrap text-sm font-medium">
+                                                                        <td className="px-1 sm:px-4 py-1.5 whitespace-nowrap text-sm font-medium">
                                                                             <ActionButton
                                                                                 variant="destructive"
                                                                                 onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.first_name)}
                                                                                 isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
-                                                                                className="max-md:p-1 md:py-2 text-sm"
+                                                                                className="max-[1025px]:p-1 min-[1025px]:py-2 text-sm"
                                                                                 title="Désinscrire"    
                                                                             >                                                            
-                                                                                {!unregisteringInfo && ( <TrashIcon className="max-md:size-5 size-4" /> )}
-                                                                                <span className="hidden md:inline-flex md:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
+                                                                                {!unregisteringInfo && ( <TrashIcon className="max-[1025px]:size-5 size-4" /> )}
+                                                                                <span className="hidden min-[1025px]:inline-flex min-[1025px]:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
                                                                                 
                                                                             </ActionButton>
                                                                         </td>

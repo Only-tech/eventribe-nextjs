@@ -31,13 +31,46 @@ export default function PaymentMethods({ userId }: { userId: number }) {
 
     const { addToast } = useToast();
 
-    // MM/AA formatting function 
-    const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {    
-        let value = e.target.value.replace(/\D/g, '');  // Only numeric
+    // MM/AA formatting function with validation
+    const handleExpiryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let value = e.target.value.replace(/\D/g, ''); // Only numeric
+        const currentYear = new Date().getFullYear() % 100;
+
+        // Month Validation
+        if (value.length >= 2) {
+            const month = parseInt(value.substring(0, 2));
+            if (month > 12) return; // avoiding to write 13+
+            if (month === 0 && value.length === 2) return; // avoiding to write "00"
+        }
+
+        // Year Validation
+        // Check wich number is writing after the second number
+        if (value.length >= 3) {
+            const yearPart = value.substring(2, 4);
+            
+            // First number checking, Year can't start to "0"
+            if (yearPart.length === 1) {
+                const firstDigit = parseInt(yearPart);
+                const minFirstDigit = Math.floor(currentYear / 10);
+                
+                // Avoid to write "1" when the minimum number is "2"
+                if (firstDigit < minFirstDigit) return; 
+            }
+
+            // Year checking
+            if (yearPart.length === 2) {
+                const fullYear = parseInt(yearPart);
+                // Avoid to write year less than the actual year
+                if (fullYear < currentYear) return;
+            }
+        }
+
+        // Visual formating, add slash
         if (value.length >= 3) {
             value = value.slice(0, 2) + '/' + value.slice(2, 4);
         }
-        setExpiry(value.slice(0, 5)); // Limit to 5 characters and state update
+
+        setExpiry(value.slice(0, 5));
     };
 
     // Manage function for CVC
@@ -112,7 +145,14 @@ export default function PaymentMethods({ userId }: { userId: number }) {
         }
 
         const last4 = cardNumber.slice(-4);
-        const brand = cardNumber.startsWith('4') ? 'Visa' : cardNumber.startsWith('5') ? 'Mastercard' : 'Carte';
+        let brand = 'Carte';
+        if (cardNumber.startsWith('4')) {
+            brand = 'Visa';
+        } else if (cardNumber.startsWith('5')) {
+            brand = 'Mastercard';
+        } else if (cardNumber.startsWith('34') || cardNumber.startsWith('37')) {
+            brand = 'Amex'; // American Express
+        }
 
         setIsAdding(true);
 
@@ -144,8 +184,8 @@ export default function PaymentMethods({ userId }: { userId: number }) {
         <section className="bg-[#FCFFF7] dark:bg-[#1E1E1E] rounded-xl p-4 sm:p-6 md:p-8 my-4 lg:my-0  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
             <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-8 border-b border-gray-300 dark:border-white/20 pb-4">Moyens de paiement</h2>
             {methods.length > 0 ? (
-                <OverlayScrollbarsComponent className='p-3 sm:p-6 h-[35vh]'> 
-                <ul className="gap-y-3 mb-10 grid md:grid-cols-2 md:gap-x-10 xl:gap-x-24 md:gap-y-5">
+                <OverlayScrollbarsComponent className='eventScroll p-1 pr-2.5 lg:p-3 h-[35vh]'> 
+                <ul className="gap-y-3 mb-10 grid md:grid-cols-2 md:gap-x-5 xl:gap-x-24 md:gap-y-5">
                     {methods.map((m) => {
         
                         // 12-star mask
@@ -185,7 +225,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
             {showForm ? (
                 <form onSubmit={handleAdd} className="space-y-6 animate-slide-top">
                     <div className="w-[70%] mx-auto grow border-t-5 dark:border-white/70 border-gray-500 rounded-full"></div>
-                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white/90 mt-6">Ajouter un moyen de paiement</h3>
+                    <h3 className="max-sm:text-center text-lg sm:text-xl font-bold text-gray-900 dark:text-white/90 mt-6">Ajouter un moyen de paiement</h3>
                     <FloatingLabelInput
                         id="cardNumber"
                         label="Numéro de carte"

@@ -777,3 +777,36 @@ Connexion
 ├── Modifier rôles
 └── Supprimer
 ```
+
+---
+
+## Payment Method Integration for test: **Stripe Hub**
+
+Stripe is used to accept cards, **PayPal**, **Google Pay**, and **Apple Pay** via a single, simplified API.
+
+### Quick Start
+
+1. **Stripe Keys (`.env`)**:
+
+- Create a Stripe account on [dashboard.stripe.com](https://dashboard.stripe.com).
+- Retrieve the **Public Key** (`pk_test_...`) and the **Secret Key** (`sk_test_...`).
+- Add to your environment file: `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` and `STRIPE_SECRET_KEY`.
+
+2. **Dependencies**:
+
+```bash
+npm install stripe @stripe/stripe-js @stripe/react-stripe-js
+
+```
+
+3. **Backend (Secure API)**:
+
+- Create the endpoint **`/api/stripe/create-setup-intent`** (`POST`).
+- Role: Retrieve the Stripe `customer ID` and generate a **`clientSecret`** to initialize the front-end form.
+
+4. **Frontend (Component)**:
+
+- Use `<Elements stripe={stripePromise} options={{ clientSecret, ... }}>` around the Stripe UI component (e.g., `StripeForm.tsx`).
+- The Stripe component automatically displays available payment methods (PayPal, GPay, etc.).
+
+---

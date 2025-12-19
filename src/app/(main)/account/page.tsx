@@ -4,7 +4,7 @@
 // import React, { useState, useEffect } from 'react';
 // import { useRouter } from 'next/navigation';
 // import { signOut } from 'next-auth/react';
-// import { UserCircleIcon, ShieldCheckIcon,  QuestionMarkCircleIcon, ExclamationTriangleIcon, BanknotesIcon } from '@heroicons/react/24/outline'; 
+// import { UserCircleIcon, ShieldCheckIcon,  QuestionMarkCircleIcon, ExclamationTriangleIcon, CreditCardIcon } from '@heroicons/react/24/outline'; 
 // import { ChevronUpIcon, CalendarDaysIcon } from '@heroicons/react/16/solid';
 // import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 // import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
@@ -224,7 +224,7 @@
 //                             : 'hover:bg-gray-100 dark:hover:bg-white/10'
 //                         }`}
 //                     >
-//                         <BanknotesIcon className={`${isNavCollapsed ? 'ml-1.5 size-7' : 'size-5'} flex-shrink-0`} />
+//                         <CreditCardIcon className={`${isNavCollapsed ? 'ml-1.5 size-7' : 'size-5'} flex-shrink-0`} />
 //                         <span className={isNavCollapsed ? 'lg:hidden' : 'truncate'}>Moyens de paiement</span>
 //                     </button>
 
@@ -477,7 +477,7 @@ import type { Session } from 'next-auth';
 import React, { useState, useEffect, useRef } from 'react';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
-import { UserCircleIcon, ShieldCheckIcon, QuestionMarkCircleIcon, ExclamationTriangleIcon, BanknotesIcon, CameraIcon } from '@heroicons/react/24/outline'; 
+import { UserCircleIcon, ShieldCheckIcon, QuestionMarkCircleIcon, ExclamationTriangleIcon, CreditCardIcon, CameraIcon } from '@heroicons/react/24/outline'; 
 import { ChevronUpIcon, CalendarDaysIcon, TrashIcon } from '@heroicons/react/16/solid';
 import ConfirmationModal from '@/app/ui/ConfirmationModal'; 
 import FloatingLabelInput from '@/app/ui/FloatingLabelInput';
@@ -702,7 +702,7 @@ export default function UserAccountManageEventsPage() {
 
     const menu = [
         { key: "info" as const, title: "Mon Compte", label: "Informations personnelles", icon: UserCircleIcon },
-        { key: "payments" as const, label: "Moyens de paiement", icon: BanknotesIcon },
+        { key: "payments" as const, label: "Moyens de paiement", icon: CreditCardIcon },
         { key: "security" as const, label: "Sécurité", icon: ShieldCheckIcon },
         { key: "events" as const, title: "Mes événements", label: "Gérer", icon: CalendarDaysIcon },
         { key: "help" as const, title: "Aide", label: "Support", icon: QuestionMarkCircleIcon },

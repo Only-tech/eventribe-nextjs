@@ -184,7 +184,7 @@ export default function PaymentMethods({ userId }: { userId: number }) {
         <section className="bg-[#FCFFF7] dark:bg-[#1E1E1E] rounded-xl p-4 max-[400px]:px-2 sm:p-6 md:p-8 my-4 lg:my-0  border border-gray-300 dark:border-white/10 translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease relative shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)]">
             <h2 className="hidden lg:flex text-2xl font-bold text-gray-900 dark:text-white/90 mb-8 border-b border-gray-300 dark:border-white/20 pb-4">Moyens de paiement</h2>
             {methods.length > 0 ? (
-                <OverlayScrollbarsComponent className='eventScroll p-1 pr-2.5 lg:p-3 h-[35vh]'> 
+                <OverlayScrollbarsComponent className='eventScroll p-1 pr-2.5 lg:p-3 lg:pr-6 h-[35vh]'> 
                 <ul className="gap-y-3 mb-10 grid md:grid-cols-2 md:gap-x-5 xl:gap-x-24 md:gap-y-5">
                     {methods.map((m) => {
         

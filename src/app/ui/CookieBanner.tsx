@@ -29,37 +29,26 @@ export default function CookieBanner() {
     };
 
     return (
-        // <div
-        //     className={clsx(
-        //         'fixed z-1000000000 bottom-4 right-4 max-w-[520px] w-[90%] p-2 bg-white dark:bg-[#303134] dark:hover:bg-[#292929] border border-gray-300 dark:border-white/10 rounded-2xl md:rounded-3xl shadow-[0_8px_15px_rgb(0,0,0,0.8)] dark:shadow-[0_8px_18px_rgb(0,0,0)] shadow-[hsl(var(--always-black)/5.1%)] transform transition-all duration-900 ease-in-out',
-        //         {
-        //         '-translate-x-full opacity-0': !visible && !closing, // Initial state from left
-        //         'translate-x-0 opacity-100': visible && !closing,    // Visible when stand to right-4
-        //         'translate-x-full opacity-0': closing,               // State to right + closing  
-        //         }
-        //     )}
-        // >
 
         <div
-    className={clsx(
-        'fixed lg:flex z-1000000000 bottom-4 w-[92%] xl:max-w-5xl p-2',
+            className={clsx(
+                'fixed lg:flex z-1000000000 bottom-4 w-[92%] xl:max-w-5xl p-2',
 
-        // Mobile & tablette : centré
-        'left-1/2 -translate-x-1/2',
+                // Mobile & tablette : centered
+                'left-1/2 -translate-x-1/2',
 
-        // Desktop ≥ 1200px : aligné à droite comme avant
-        'xl:left-auto xl:right-4 xl:translate-x-0',
+                // Desktop ≥ 1200px 
+                'xl:left-auto xl:right-4 xl:translate-x-0',
 
-        // Styles généraux
-        'bg-white dark:bg-[#303134] border border-gray-300 dark:border-white/10 rounded-4xl shadow-[0_8px_15px_rgb(0,0,0,0.8)] transform transition-all duration-700 ease-out',
+                'bg-white dark:bg-[#303134] border border-gray-300 dark:border-white/10 rounded-4xl shadow-[0_8px_15px_rgb(0,0,0,0.8)] transform transition-all duration-700 ease-out',
 
-        // Animation slide-up
-        {
-            'opacity-100 translate-y-0': visible && !closing,
-            'opacity-0 translate-y-10': !visible || closing,
-        }
-    )}
->
+                // Animation slide-up
+                {
+                    'opacity-100 translate-y-0': visible && !closing,
+                    'opacity-0 translate-y-10': !visible || closing,
+                }
+            )}
+        >
 
             <div className=" px-3 p-2 border border-gray-300 dark:border-white/20 rounded-3xl max-lg:rounded-b-lg lg:rounded-r-lg! bg-[#FCFFF7] dark:bg-[#1E1E1E] shadow-[0_5px_7px_rgb(0,0,0,0.2)] dark:shadow-[0_7px_10px_rgb(0,0,0,0.6)] shadow-[hsl(var(--always-black)/5.1%)]">
                 <h5 className="text-base text-center text-gray-800 dark:text-white/90 font-medium mb-1">La protection de votre vie privée est essentielle pour eventribe</h5>

@@ -276,7 +276,7 @@ export default function Header() {
                 >
                     <div
                         className={`flex items-center w-full bg-white dark:bg-[#303134] dark:hover:bg-[#292929] border text-gray-800 dark:text-white/90 border-gray-200 dark:border-white/10 max-sm:px-1 
-                        transition-all ease-in-out duration-600 overflow-hiddenshadow-[hsl(var(--always-black)/5.1%)]
+                        transition-all ease-in-out duration-600 overflow-hidden shadow-[hsl(var(--always-black)/5.1%)]
                         ${showResults 
                             ? ' bg-white dark:bg-[#222222] rounded-t-2xl md:rounded-t-3xl  ' 
                             : 'rounded-full hover:border-[#0088aa] dark:hover:border-[#ff952aff] shadow-sm '}

@@ -33,10 +33,6 @@ export const authOptions: AuthOptions = {
     secret: process.env.NEXTAUTH_SECRET,
     callbacks: {
         async jwt({ token, user, trigger, session }) {
-            // Session update if trigger update is called
-            // if (trigger === "update" && session?.image) {
-            //     token.picture = session.image;
-            // }
             if (trigger === "update" && session) {
                 return { ...token, ...session };
             }

@@ -276,7 +276,7 @@ export default function Carousel() {
                                         onClick={() => goToSlide(idx)}
                                         className={dotClasses}
                                         style={ active ? ({["--progress-duration" as string]: `${AUTOPLAY_DURATION}ms`} as React.CSSProperties) : undefined}
-                                        title={`Aller à la slide ${idx + 1}`}
+                                        title={`Aller à la slide ${slidesData[idx]?.title || 'Slide'}`}
                                     >
                                         <div className={afterClasses}></div>
                                     </div>

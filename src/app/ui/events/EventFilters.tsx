@@ -56,8 +56,7 @@ export default function EventFilters({ filters, onFilterChange, allEvents, onRes
 
     return (
         <div
-            className={` 
-                ${(isOpen || isClosing) ?  'max-h-15 px-2 -mb-15 size-15 -translate-y-25 min-[1900px]:absolute' : 'dark:text-white/60 flex min-[1900px]:flex-col min-[1900px]:sticky min-[1900px]:top-20 min-[1900px]:w-xs min-[1900px]:mr-10 flex-wrap gap-6 min-[1200px]:gap-2 min-[1900px]:gap-6 justify-between items-center sm:px-2 py-3 -mt-10 mb-7 bg-[#fcfff7] dark:bg-[#222222] rounded-3xl h-fit w-full max-h-125 px-3 transition-all duration-500 ease-in-out shadow-[0_0_32px_20px_#fcfff7] dark:shadow-[0_0_32px_20px_#222222]'}`}
+            className={` ${(isOpen || isClosing) ?  'max-h-15 px-2 -mb-15 size-15 -translate-y-25 min-[1900px]:absolute' : 'dark:text-white/60 flex min-[1900px]:flex-col min-[1900px]:sticky min-[1900px]:top-20 min-[1900px]:w-xs min-[1900px]:mr-10 flex-wrap gap-6 min-[1200px]:gap-2 min-[1900px]:gap-6 justify-between items-center sm:px-2 py-3 -mt-10 mb-7 bg-[#fcfff7] dark:bg-[#222222] rounded-3xl h-fit w-full max-h-125 px-3 transition-all duration-500 ease-in-out shadow-[0_0_32px_20px_#fcfff7] dark:shadow-[0_0_32px_20px_#222222]'} shrink-0`}
         >
             {/* Header filter with toggle button, increase button */}
             <div

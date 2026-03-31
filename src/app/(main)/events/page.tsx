@@ -149,7 +149,7 @@ export default function EventsPage() {
                             </p>
                         </div>
                     ) : (
-                        <div className='w-full'>
+                        <div className='w-full place-content-center'>
                             <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(290px,1fr))] gap-8 md:gap-10 2xl:gap-12 w-full">
                                 {eventsToDisplay.map((event: EventWithType) => (
                                     <EventCard key={event.id} event={event} />

@@ -143,33 +143,39 @@ export default function Carousel({ imageUrls }: CarouselProps) {
             const parallaxOffset = isActive ? 'translateY(0px)' : 'translateY(20px)';
             return (
               <div
-                className={`w-78 sm:w-82 h-55 xl:w-96 xl:h-65 shrink-0 bg-white/90 shadow-inner rounded-xl  transform transition-transform duration-700 hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.4)] drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)] ${
-                  isActive ? 'scale-105 z-10 shadow-[0_0_16px_rgba(7,2,52,0.7)] border border-white/70 -translate-y-4' : 'translate-y-0 scale-90 opacity-85'
+                className={`relative w-78 sm:w-82 h-55 xl:w-96 xl:h-65 shrink-0 transform transition-transform duration-700 hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.4)] drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)] ${
+                  isActive ? 'scale-105 z-10 drop-shadow-[0_0_16px_rgba(7,2,52,0.7)] -translate-y-4' : 'translate-y-0 scale-90 opacity-85'
                 }`}
                 key={index}
                 ref={index === numClones ? cardRef : null}
               >
-                <div
-                  onClick={() => router.push(`/event/${image.eventId}`)}
-                  className="relative w-full h-full overflow-hidden rounded-xl group cursor-pointer"
-                  style={{ transform: parallaxOffset, transition: 'transform 0.5s ease' }}
-                >
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    title={image.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
-                    className="group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                <div className="bg-white/90 shadow-inner squircle-16 sm:[clip-path:var(--clip-path-squircle-24)!important] relative size-full">
+                  <div className={`absolute -inset-px squircle-stroke-focused-16 sm:[clip-path:var(--clip-path-squircle-stroke-focused-24)!important] z-50 ${
+                      isActive ? 'bg-white' : ' bg-transparent'
+                    }`}
                   />
-                  <div className={`absolute inset-0 bg-black opacity-30 ${ isActive ? 'hidden' : ''}`}></div>
+                  <div
+                    onClick={() => router.push(`/event/${image.eventId}`)}
+                    className="relative w-full h-full overflow-hidden squircle-16 group cursor-pointer"
+                    style={{ transform: parallaxOffset, transition: 'transform 0.5s ease' }}
+                  >
+                    <Image
+                      src={image.url}
+                      alt={image.alt}
+                      title={image.title}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      className="group-hover:scale-110 transition-transform duration-700 ease-in-out"
+                    />
+                    <div className={`absolute inset-0 bg-black opacity-30 ${ isActive ? 'hidden' : ''}`}></div>
 
-                  {(isMobile || (isActive && isHovered)) && (
-                    <ActionButton variant="secondary" onClick={() => router.push(`/event/${image.eventId}`)} className="absolute pl-2 pr-4 py-2 bottom-4 left-1/2 transform -translate-x-1/2 h-9 text-sm text-white/70 group-hover:text-gray-800 border-white/40 bg-black/65 group-hover:bg-[#E8E5D8]">
-                      <EyeIcon className="w-6 h-6 mr-2" />
-                      <span className="whitespace-nowrap">Voir l&apos;événement</span>
-                    </ActionButton>
-                  )}
+                    {(isMobile || (isActive && isHovered)) && (
+                      <ActionButton variant="secondary" onClick={() => router.push(`/event/${image.eventId}`)} className="absolute pl-2 pr-4 py-2 bottom-4 left-1/2 transform -translate-x-1/2 h-9 text-sm text-white/70 group-hover:text-gray-800 border-white/40 bg-black/65 group-hover:bg-[#E8E5D8]">
+                        <EyeIcon className="w-6 h-6 mr-2" />
+                        <span className="whitespace-nowrap">Voir l&apos;événement</span>
+                      </ActionButton>
+                    )}
+                  </div>
                 </div>
                 <div className="w-full flex justify-center ">
                   <p

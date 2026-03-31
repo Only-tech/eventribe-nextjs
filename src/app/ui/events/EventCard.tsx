@@ -25,18 +25,19 @@ export default function EventCard({ event }: { event: Event; }) {
     const finalImageSrc = (event.image_url && isValidUrl(event.image_url)) ? event.image_url : fallbackImageSrc;
     
     return (
-        <div data-aos="fade-up">
+        <div 
+            className="drop-shadow-[0_10px_15px_rgb(0,0,0,0.2)] hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_12px_15px_rgb(0,0,0,0.6)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)]" 
+            data-aos="fade-up"
+        >
             <Link 
                 href={`/event/${event.id}`} 
-                className="w-[95%] max-sm:max-w-md sm:w-78 h-104 sm:h-94 bg-[#FCFFF7] hover:bg-white dark:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] rounded-2xl sm:rounded-3xl overflow-hidden flex flex-col translate-y-0 scale-100 transform
+                className="w-[95%] max-sm:max-w-md sm:w-78 h-104 sm:h-94 bg-[#FCFFF7] hover:bg-white dark:bg-[#1E1E1E] dark:hover:bg-[#1E1E1E] squircle-16 sm:[clip-path:var(--clip-path-squircle-24)!important] overflow-hidden flex flex-col translate-y-0 scale-100 transform
                     transition-transform duration-600 ease-in-out
                     hover:-translate-y-1.5 hover:scale-104 xl:hover:scale-106 hover:z-10
-                    mx-auto relative shadow-[0_10px_15px_rgb(0,0,0,0.2)]
-                    hover:shadow-[0_12px_15px_rgb(0,0,0,0.3)]
-                    dark:shadow-[0_12px_15px_rgb(0,0,0,0.6)]
-                    dark:hover:shadow-[0_12px_15px_rgb(0,0,0,0.8)] group will-change-transform isolate border border-gray-300 dark:border-white/10
+                    mx-auto relative group will-change-transform isolate
                 "
             >
+                <div className="bg-gray-300 dark:bg-[#2E2E2E] absolute -inset-px squircle-stroke-focused-16 sm:[clip-path:var(--clip-path-squircle-stroke-focused-24)!important] z-50"/>
                 <div className="relative w-full h-50 sm:h-40 overflow-hidden">
                     <Image
                         src={finalImageSrc}

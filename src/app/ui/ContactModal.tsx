@@ -136,7 +136,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             onClick={handleClose}
         >
             <div className="w-full min-[769px]:w-fit relative transform transition-transform duration-300 min-[769px]:hover:drop-shadow-[0px_1px_10px_rgba(0,0,0,0.4)] min-[769px]:drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)]" onClick={(e) => e.stopPropagation()}>
-                <div className={` mx-auto md:w-2xl bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-6 pb-6 sm:p-8 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[769px]:[clip-path:var(--clip-path-squircle-60)]
+                <div className={` mx-auto md:w-2xl bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/70 p-6 pb-6 sm:p-8 lg:p-10 lg:pt-2 group transition-all ease-in-out duration-500 min-[769px]:[clip-path:var(--clip-path-squircle-28)]
                     ${isClosing ? 'translate-x-5 opacity-0 animate-slide-right' : 'translate-x-0 opacity-100 animate-slide-left'}`}        
                      
                 >

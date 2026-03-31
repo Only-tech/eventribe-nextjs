@@ -35,11 +35,11 @@ async function EventDetails({ eventId }: { eventId: number }) {
 
     return (
         <div className="min-[769px]:drop-shadow-[0_10px_15px_rgb(0,0,0,0.3)] max-w-7xl xl:max-w-360 min-[769px]:w-[95%] mx-auto transform transition-transform duration-300 min-[769px]:hover:drop-shadow-2xl group min-[769px]:dark:hover:drop-shadow-[0px_1px_1px_rgba(255,255,255,0.4)] min-[769px]:dark:drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)]">
-            <div className="max-[769px]:-mt-6.5 max-[769px]:-mb-30 max-[769px]:min-h-screen px-5 py-8 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/95 md:px-10 items-center min-[769px]:[clip-path:var(--clip-path-squircle-60)]">
+            <div className="max-[769px]:-mt-6.5 max-[769px]:-mb-30 max-[769px]:min-h-screen px-5 py-8 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/95 md:px-10 items-center min-[769px]:[clip-path:var(--clip-path-squircle-28)]">
                 <section className="min-[1025px]:flex">
                     <h1 className="min-[1025px]:hidden text-3xl md:text-4xl text-center min-[1025px]:text-start font-extrabold text-gray-900 dark:text-white mb-4">{event.title}</h1>
 
-                    <div className="relative  w-full min-[1025px]:min-w-sm min-[1025px]:max-w-md xl:max-w-xl h-55 sm:h-80 xl:h-96 mb-6 rounded-xl md:rounded-4xl shadow-xl overflow-hidden">
+                    <div className="relative  w-full min-[1025px]:min-w-sm min-[1025px]:max-w-md xl:max-w-xl h-55 sm:h-80 xl:h-96 mb-6 rounded-xl md:rounded-2xl shadow-xl overflow-hidden">
                         <Image
                             src={imageUrl.startsWith('/https://') ? imageUrl.slice(1) : imageUrl}
                             alt={`${event.title}`}

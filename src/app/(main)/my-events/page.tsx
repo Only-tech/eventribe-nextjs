@@ -151,14 +151,14 @@ export default function MyEventsPage() {
 
                         return (
                             <div key={event.id} className=" max-w-4xl w-full min-[1460px]:max-w-200 mx-auto group drop-shadow-lg hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] shadow-[hsl(var(--always-black)/5.1%)]">
-                                <div className=" w-full sm:bg-gray-300 dark:sm:bg-white/10 sm:p-[0.5px] min-[639px]:[clip-path:var(--clip-path-squircle-60)]"  data-aos="fade-up">
+                                <div className=" w-full bg-gray-300 dark:bg-white/10 p-[0.5px] squircle-16 sm:[clip-path:var(--clip-path-squircle-28)!important]"  data-aos="fade-up">
                                     
                                     {/* =========== Main Container ============ */}
-                                    <div className="relative overflow-hidden w-full bg-white/95 dark:bg-[#1E1E1E] rounded-xl max-sm:border border-gray-300 dark:border-white/10 min-[639px]:[clip-path:var(--clip-path-squircle-60)]" >
+                                    <div className="relative overflow-hidden w-full bg-white/95 dark:bg-[#1E1E1E] squircle-16 dark:border-white/10 sm:[clip-path:var(--clip-path-squircle-28)!important]" >
                                         
                                         {/* Image and details content*/}
                                         <div className={`p-2 flex items-center cursor-pointer sm:p-4 transition-all duration-700 ease-in-out ${isExpanded ? '-translate-y-24 opacity-40 blur-[1px]' : 'translate-y-0 opacity-100'}`}>
-                                            <div className="hidden sm:block relative w-100 h-50 overflow-hidden rounded-[2.5rem] mr-6" onClick={() => toggleEventExpansion(event.id)}>
+                                            <div className="hidden sm:block relative w-100 h-50 overflow-hidden squircle-16 mr-6" onClick={() => toggleEventExpansion(event.id)}>
                                                 <Image src={normalizeImagePath(event.image_url)} alt={`Image de l'événement ${event.title}`} fill style={{ objectFit: 'cover' }} className="w-full h-50 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1" />        
                                             </div>
                                             <div className="flex items-start flex-col sm:flex-row xl:flex-col sm:items-center xl:items-start justify-between max-w-2xl w-full">

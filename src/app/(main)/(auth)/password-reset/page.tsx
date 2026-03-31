@@ -327,7 +327,7 @@ export default function PasswordPage() {
     return (
         <div className="absolute inset-0 bg-[#FCFFF7] sm:bg-transparent max-sm:dark:bg-[#1E1E1E]  min-h-screen overflow-y-auto max-[1025px]:pt-0 max-[1025px]:py-10 flex items-start min-[1025px]:items-center justify-center z-10000 transition-opacity duration-500 ease-in-out">
             <div className="relative sm:drop-shadow-[0_10px_15px_rgb(0,0,0,0.2)] max-w-[95%] max-md:w-lg max-[1025px]:w-xl w-5xl mx-auto transform transition-transform duration-500 min-[1025px]:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] group sm:dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] sm:dark:drop-shadow-[0px_15px_15px_rgba(0,0,0,0.6)]">
-                <div className="sm:rounded-3xl max-sm:mt-0 max-[1025px]:mt-20 flex flex-col min-[1025px]:flex-row items-center min-h-160 min-[1025px]:min-h-120 justify-evenly gap-6 min-[1025px]:gap-10 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/75 p-4 sm:p-10 xl:p-12 sm:[clip-path:var(--clip-path-squircle-60)]" >      
+                <div className="sm:rounded-3xl max-sm:mt-0 max-[1025px]:mt-20 flex flex-col min-[1025px]:flex-row items-center min-h-160 min-[1025px]:min-h-120 justify-evenly gap-6 min-[1025px]:gap-10 bg-[#FCFFF7] dark:bg-[#1E1E1E] dark:text-white/75 p-4 sm:p-10 xl:p-12 sm:[clip-path:var(--clip-path-squircle-28)]" >      
                     
                     {/* Branding column */}
                     <section className="relative max-w-sm flex-1 w-full flex flex-col items-center justify-center">

@@ -413,100 +413,135 @@ export default function EventManagement({ session, openModal, closeModal }: Even
                 </div>
             ) : (
                 <OverlayScrollbarsComponent className='eventScroll py-3 pl-1 pr-2 sm:p-3 lg:p-6 h-[70vh]'> 
-                <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10">
-                    {events.map((event) => (
-                        <div key={event.id} className=" max-w-4xl w-full mx-auto translate-y-0 hover:-translate-y-1 transform transition-transform duration-700 ease group drop-shadow-lg hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)] shadow-[hsl(var(--always-black)/5.1%)]">
-                            <div className=" w-full bg-gray-300 dark:bg-white/10 p-[0.5px] squircle-16 sm:[clip-path:var(--clip-path-squircle-28)!important]"  
-                            // data-aos="fade-up"
-                            >
-                                
-                                {/* ========== Main container =========== */}
-                                <div className="flex flex-col w-full bg-[#FCFFF7] dark:bg-[#222222] p-2 sm:p-4 overflow-hidden group squircle-16 sm:[clip-path:var(--clip-path-squircle-28)!important]" >
-                                    
-                                    {/* Image and details content */}
-                                    <div className="flex items-center cursor-pointer" onClick={() => toggleEventExpansion(event.id)}>
-                                        <div className="hidden sm:block relative w-100 h-50 overflow-hidden squircle-16 mr-6">
-                                            <Image src={normalizeImagePath(event.image_url)} alt={`Image de l'événement ${event.title}`} fill style={{ objectFit: 'cover' }} className="w-full h-50 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1" />        
-                                        </div>
-                                        <div className="flex flex-row justify-between items-center max-w-2xl w-full">
-                                            <div className="max-sm:pl-1">
-                                                <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
-                                                <p className="text-gray-700 dark:text-gray-500 text-sm mt-1 flex items-center gap-x-4 flex-wrap">
-                                                    <span className='inline-flex items-center'><CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />{new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</span>
-                                                    <span className="inline-flex items-center"><MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}</span>
-                                                </p>
-                                                <p className="text-gray-700 dark:text-white/70 mt-2">Inscrits: {event.registered_count} / {event.available_seats}</p>
-                                            </div>
+                    <div className="grid grid-cols-1 min-[1460px]:grid-cols-[repeat(auto-fit,minmax(696px,1fr))] gap-10">
+                        {events.map((event) => {
+                            const isExpanded = expandedEventId === event.id;
 
-                                            {/* Buttons bar right side */}
-                                            <div className="flex flex-col gap-2 border-l-[0.2px] border-gray-300 dark:border-white/20 pl-2 ml-1 sm:ml-3">
-                                                <IconButton onClick={() => handleEditClick(event)} className="text-indigo-600 hover:text-indigo-900" title="Modifier">
-                                                    <PencilIcon className="w-6 h-6" />
-                                                </IconButton>
-                                                <IconButton onClick={() => handleDelete(event.id)} isLoading={deletingEventId === event.id} className="text-red-600 hover:text-red-900" title="Supprimer">
-                                                    <TrashIcon className="w-6 h-6" />
-                                                </IconButton>
-                                                <IconButton
-                                                    onClick={() => toggleEventExpansion(event.id)}
-                                                    aria-expanded={expandedEventId === event.id}
-                                                    aria-controls={`participants-table-${event.id}`}
-                                                    title="Voir les participants"
-                                                >
-                                                    <ChevronDownIcon className={`w-6 h-6 text-gray-800 transition-transform duration-700 ${expandedEventId === event.id ? 'rotate-180' : ''}`}/>
-                                                </IconButton>
+                            return (
+                                <div key={event.id} className={`relative max-w-4xl w-full mx-auto ${isExpanded ? 'z-50' : 'z-0'}`}>
+                                    
+                                    {/* FANTÔME INVISIBLE : Maintient l'espace exact dans le flux normal */}
+                                    <div className="opacity-0 pointer-events-none select-none" aria-hidden="true">
+                                        <div className="w-full p-[0.5px]">
+                                            <div className="flex flex-col w-full p-2 sm:p-4">
+                                                <div className="flex items-center">
+                                                    {/* Même taille que l'image */}
+                                                    <div className="hidden sm:block relative w-100 h-50 mr-6"></div>
+                                                    <div className="flex flex-row justify-between items-center max-w-2xl w-full">
+                                                        <div className="max-sm:pl-1">
+                                                            {/* Titre pour imiter le retour à la ligne automatique */}
+                                                            <h2 className="text-lg sm:text-2xl font-bold">{event.title}</h2>
+                                                            <p className="text-sm mt-1 py-1">Espace date</p>
+                                                            <p className="mt-2">Espace inscrits</p>
+                                                        </div>
+                                                        <div className="flex flex-col gap-2 pl-2 ml-1 sm:ml-3">
+                                                            {/* Espace des 3 icônes (IconButtons) */}
+                                                            <div className="w-10 h-10"></div>
+                                                            <div className="w-10 h-10"></div>
+                                                            <div className="w-10 h-10"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* =========== Participants list ============ */}
-                                    <div className={`overflow-hidden transition-all duration-700 ease-in-out ${expandedEventId === event.id ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}`}>
-                                        {expandedEventId === event.id && (
-                                            <div id={`participants-table-${event.id}`} className="mt-4">
-                                                {loadingParticipants === event.id ? (
-                                                    <>
-                                                        <p className="text-center text-gray-700 dark:text-gray-500 mb-2">Chargement des participants</p>
-                                                        <Loader variant="dots" />
-                                                    </>
-                                                ) : participants[event.id]?.length === 0 ? (
-                                                    <p className="text-center text-gray-700 dark:text-gray-500">Aucun participant inscrit pour cet événement.</p>
-                                                ) : (
-                                                    <div className="overflow-x-auto">
-                                                        <table className="min-w-full divide-y divide-gray-200 dark:divide-white/20 squircle-16 overflow-hidden">
-                                                            <tbody className="bg-gray-100 dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-white/20">
-                                                                {participants[event.id]?.map((participant) => (
-                                                                    <tr key={participant.user_id} className='group'>
-                                                                        <td className="px-1.5 sm:px-4 py-1.5 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300 flex items-center gap-2 md:translate-y-1.5"><Avatar src={participant.image_url} alt={`${participant.first_name} ${participant.last_name}`.trim() || "Utilisateur"} className="size-7 text-xs" /> {participant.first_name} {participant.last_name}</td>
-                                                                        <td className="px-1 sm:px-4 py-1.5 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">{participant.email}</td>
-                                                                        <td className="px-1 sm:px-4 py-1.5 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500  dark:text-white/70">
-                                                                            {new Date(participant.registered_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
-                                                                        </td>
-                                                                        <td className="px-1 sm:px-4 py-1.5 whitespace-nowrap text-sm font-medium">
-                                                                            <ActionButton
-                                                                                variant="destructive"
-                                                                                onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.first_name)}
-                                                                                isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
-                                                                                className="max-[1025px]:p-1 min-[1025px]:py-2 text-sm"
-                                                                                title="Désinscrire"    
-                                                                            >                                                            
-                                                                                {!unregisteringInfo && ( <TrashIcon className="max-[1025px]:size-5 size-4" /> )}
-                                                                                <span className="hidden min-[1025px]:inline-flex min-[1025px]:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
-                                                                                
-                                                                            </ActionButton>
-                                                                        </td>
-                                                                    </tr>
-                                                                ))}
-                                                            </tbody>
-                                                        </table>
+                                    {/* CARTE RÉELLE (Absolute) : Peut s'agrandir sans casser la grille */}
+                                    <div className={`absolute top-0 left-0 w-full transform transition-all duration-700 ease-in-out group shadow-[hsl(var(--always-black)/5.1%)] ${
+                                        isExpanded 
+                                        ? 'z-50 scale-[1.02] drop-shadow-[0_25px_25px_rgba(0,0,0,0.4)] dark:drop-shadow-[0_25px_25px_rgba(0,0,0,0.7)]' 
+                                        : 'z-0 scale-100 drop-shadow-lg hover:-translate-y-1 hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.3)] dark:drop-shadow-[0_10px_12px_rgb(0,0,0,0.5)] dark:hover:drop-shadow-[0_12px_15px_rgb(0,0,0,0.8)]'
+                                    }`}>
+                                        <div className="w-full bg-gray-300 dark:bg-white/10 p-[0.5px] squircle-16 sm:[clip-path:var(--clip-path-squircle-28)!important]">
+                                            
+                                            {/* ========== Main container =========== */}
+                                            <div className="flex flex-col w-full bg-[#FCFFF7] dark:bg-[#222222] p-2 sm:p-4 overflow-hidden group squircle-16 sm:[clip-path:var(--clip-path-squircle-28)!important]">
+                                                
+                                                {/* Image and details content */}
+                                                <div className="flex items-center cursor-pointer" onClick={() => toggleEventExpansion(event.id)}>
+                                                    <div className="hidden sm:block relative w-100 h-50 overflow-hidden squircle-16 mr-6">
+                                                        <Image src={normalizeImagePath(event.image_url)} alt={`Image de l'événement ${event.title}`} fill style={{ objectFit: 'cover' }} className="w-full h-50 object-cover group-hover:scale-110 transition duration-500 ease-in-out group-hover:rotate-1" />        
                                                     </div>
-                                                )}
+                                                    <div className="flex flex-row justify-between items-center max-w-2xl w-full">
+                                                        <div className="max-sm:pl-1">
+                                                            <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-[#ff952aff]">{event.title}</h2>
+                                                            <p className="text-gray-700 dark:text-gray-500 text-sm mt-1 flex items-center gap-x-4 flex-wrap">
+                                                                <span className='inline-flex items-center'><CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />{new Date(event.event_date).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}</span>
+                                                                <span className="inline-flex items-center"><MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}</span>
+                                                            </p>
+                                                            <p className="text-gray-700 dark:text-white/70 mt-2">Inscrits: {event.registered_count} / {event.available_seats}</p>
+                                                        </div>
+
+                                                        {/* Buttons bar right side */}
+                                                        <div className="flex flex-col gap-2 border-l-[0.2px] border-gray-300 dark:border-white/20 pl-2 ml-1 sm:ml-3">
+                                                            <IconButton onClick={(e) => { e.stopPropagation(); handleEditClick(event); }} className="text-indigo-600 hover:text-indigo-900" title="Modifier">
+                                                                <PencilIcon className="w-6 h-6" />
+                                                            </IconButton>
+                                                            <IconButton onClick={(e) => { e.stopPropagation(); handleDelete(event.id); }} isLoading={deletingEventId === event.id} className="text-red-600 hover:text-red-900" title="Supprimer">
+                                                                <TrashIcon className="w-6 h-6" />
+                                                            </IconButton>
+                                                            <IconButton
+                                                                onClick={(e) => { e.stopPropagation(); toggleEventExpansion(event.id); }}
+                                                                aria-expanded={expandedEventId === event.id}
+                                                                aria-controls={`participants-table-${event.id}`}
+                                                                title="Voir les participants"
+                                                            >
+                                                                <ChevronDownIcon className={`w-6 h-6 text-gray-800 transition-transform duration-700 ${expandedEventId === event.id ? 'rotate-180' : ''}`}/>
+                                                            </IconButton>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* =========== Participants list ============ */}
+                                                <div className={`overflow-hidden transition-all duration-700 ease-in-out ${expandedEventId === event.id ? 'max-h-[500px] opacity-100 mt-4' : 'max-h-0 opacity-0 mt-0'}`}>
+                                                    {expandedEventId === event.id && (
+                                                        <div id={`participants-table-${event.id}`} className="mt-4">
+                                                            {loadingParticipants === event.id ? (
+                                                                <>
+                                                                    <p className="text-center text-gray-700 dark:text-gray-500 mb-2">Chargement des participants</p>
+                                                                    <Loader variant="dots" />
+                                                                </>
+                                                            ) : participants[event.id]?.length === 0 ? (
+                                                                <p className="text-center text-gray-700 dark:text-gray-500">Aucun participant inscrit pour cet événement.</p>
+                                                            ) : (
+                                                                <div className="overflow-x-auto">
+                                                                    <table className="min-w-full divide-y divide-gray-200 dark:divide-white/20 squircle-16 overflow-hidden">
+                                                                        <tbody className="bg-gray-100 dark:bg-zinc-700 divide-y divide-gray-200 dark:divide-white/20">
+                                                                            {participants[event.id]?.map((participant) => (
+                                                                                <tr key={participant.user_id} className='group'>
+                                                                                    <td className="px-1.5 sm:px-4 py-1.5 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-300 flex items-center gap-2 md:translate-y-1.5"><Avatar src={participant.image_url} alt={`${participant.first_name} ${participant.last_name}`.trim() || "Utilisateur"} className="size-7 text-xs" /> {participant.first_name} {participant.last_name}</td>
+                                                                                    <td className="px-1 sm:px-4 py-1.5 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500 dark:text-white/70">{participant.email}</td>
+                                                                                    <td className="px-1 sm:px-4 py-1.5 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500 dark:text-white/70">
+                                                                                        {new Date(participant.registered_at).toLocaleString('fr-FR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'})}
+                                                                                    </td>
+                                                                                    <td className="px-1 sm:px-4 py-1.5 whitespace-nowrap text-sm font-medium">
+                                                                                        <ActionButton
+                                                                                            variant="destructive"
+                                                                                            onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.first_name)}
+                                                                                            isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
+                                                                                            className="max-[1025px]:p-1 min-[1025px]:py-2 text-sm"
+                                                                                            title="Désinscrire"    
+                                                                                        >                                                            
+                                                                                            {!unregisteringInfo && ( <TrashIcon className="max-[1025px]:size-5 size-4" /> )}
+                                                                                            <span className="hidden min-[1025px]:inline-flex min-[1025px]:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
+                                                                                        </ActionButton>
+                                                                                    </td>
+                                                                                </tr>
+                                                                            ))}
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
-                                        )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    ))}
-                        </div>
+                            );
+                        })}
+                    </div>
                 </OverlayScrollbarsComponent>
             )}
         </div>

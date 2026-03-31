@@ -153,94 +153,138 @@ export default function ManageRegistrationsPage() {
                 <p className="text-center text-gray-700 text-lg">Aucun événement avec des inscriptions à gérer pour le moment.</p>
             ) : (
                 <div className="grid grid-cols-1 [@media(min-width:1600px)]:grid-cols-2 gap-10">
-                    {events.map((event) => (
-                        <div key={event.id} className="max-w-5xl w-full bg-white rounded-lg shadow-lg p-4 md:p-6 mx-auto overflow-hidden" data-aos="fade-up">
-                            <div
-                                className="flex justify-between items-center cursor-pointer"
-                                onClick={() => toggleEventExpansion(event.id)}
-                            >
-                                <div>
-                                    <h2 className="text-2xl font-bold text-gray-900">{event.title}</h2>
-                                    <p className="text-gray-700 text-sm mt-1">
-                                        <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
-                                        {new Date(event.event_date).toLocaleString('fr-FR', {
-                                            day: '2-digit',
-                                            month: '2-digit',
-                                            year: 'numeric',
-                                            hour: '2-digit',
-                                            minute: '2-digit'
-                                        })}
-                                        <span className="ml-4">
-                                            <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
-                                        </span>
-                                    </p>
-                                    <p className="text-gray-700 mt-2">
-                                        Inscrits: {event.registered_count} / {event.available_seats}
-                                    </p>
-                                </div>
-                                <IconButton
-                                    onClick={() => toggleEventExpansion(event.id)}
-                                    aria-expanded={expandedEventId === event.id}
-                                    aria-controls={`participants-table-${event.id}`}
-                                    title="Voir les participants"
-                                >
-                                    <ChevronDownIcon className={`w-6 h-6 text-gray-800 transition-transform duration-300 ${expandedEventId === event.id ? 'rotate-180' : ''}`}/>
-                                </IconButton>
-                            </div>
+                    {events.map((event) => {
+                        const isExpanded = expandedEventId === event.id;
 
-                            {expandedEventId === event.id && (
-                                <div id={`participants-table-${event.id}`} className="mt-6">
-                                    {loadingParticipants === event.id ? (
-                                        <p className="text-center text-gray-700">Chargement des participants...</p>
-                                    ) : participants[event.id]?.length === 0 ? (
-                                        <p className="text-center text-gray-700">Aucun participant inscrit pour cet événement.</p>
-                                    ) : (
-                                        <div className="overflow-x-auto">
-                                            <table className="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden">
-                                                <thead className="bg-gray-50">
-                                                    <tr>
-                                                        <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Abonné(e)</th>
-                                                        <th className="px-1 sm:px-6 py-3 text-left text-xs hidden sm:table-cell font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                                                        <th className="px-6 py-3 text-left text-xs hidden sm:table-cell font-medium text-gray-500 uppercase tracking-wider">Inscrit le</th>
-                                                        <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody className="bg-white divide-y divide-gray-200">
-                                                    {participants[event.id]?.map((participant) => (
-                                                        <tr key={participant.user_id}>
-                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{participant.first_name} {participant.last_name}</td>
-                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm hidden sm:table-cell text-gray-500">{participant.email}</td>
-                                                        <td className="px-6 py-4 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500">
-                                                            {new Date(participant.registered_at).toLocaleString('fr-FR', {
-                                                                day: '2-digit',
-                                                                month: '2-digit',
-                                                                year: 'numeric',
-                                                                hour: '2-digit',
-                                                                minute: '2-digit'
-                                                            })}
-                                                        </td>
-                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                            <ActionButton
-                                                                variant="destructive"
-                                                                onClick={() => handleUnregisterParticipant(participant.user_id, event.id, participant.first_name)}
-                                                                isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
-                                                                className="max-md:p-1 md:py-2 text-sm"
-                                                                title="Désinscrire"    
-                                                            >                                   
-                                                                {!unregisteringInfo && ( <TrashIcon className="max-md:size-5 size-4" /> )}
-                                                                <span className="hidden md:inline-flex md:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
-                                                            </ActionButton>
-                                                        </td>
-                                                        </tr>
-                                                    ))}
-                                                </tbody>
-                                            </table>
+                        return (
+                            <div key={event.id} className={`relative max-w-5xl w-full mx-auto ${isExpanded ? 'z-50' : 'z-0'}`}>
+                                
+                                {/* FANTÔME INVISIBLE : Maintient l'espace exact de la carte repliée */}
+                                <div className="opacity-0 pointer-events-none select-none" aria-hidden="true">
+                                    <div className="w-full bg-white rounded-lg p-4 md:p-6">
+                                        <div className="flex justify-between items-center">
+                                            <div>
+                                                <h2 className="text-2xl font-bold">{event.title}</h2>
+                                                <p className="text-sm mt-1">
+                                                    <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
+                                                    Date factice
+                                                    <span className="ml-4">
+                                                        <MapPinIcon className="inline-block w-4 h-4 mr-1" /> Lieu factice
+                                                    </span>
+                                                </p>
+                                                <p className="mt-2">Inscrits: factice</p>
+                                            </div>
+                                            <div className="w-6 h-6"></div> {/* Espace bouton chevron */}
                                         </div>
-                                    )}
+                                    </div>
                                 </div>
-                            )}
-                        </div>
-                    ))}
+
+                                {/* CARTE RÉELLE (Absolute) */}
+                                <div 
+                                    className={`absolute top-0 left-0 w-full bg-white rounded-lg p-4 md:p-6 overflow-hidden transform transition-all duration-700 ease-in-out ${
+                                        isExpanded 
+                                        ? 'z-50 scale-[1.02] shadow-[0_25px_25px_rgba(0,0,0,0.4)] opacity-100' 
+                                        : 'z-0 scale-100 shadow-lg hover:-translate-y-1 hover:shadow-[0_12px_15px_rgb(0,0,0,0.2)]'
+                                    }`}
+                                    // data-aos="fade-up"
+                                >
+                                    <div
+                                        className="flex justify-between items-center cursor-pointer"
+                                        onClick={() => toggleEventExpansion(event.id)}
+                                    >
+                                        <div>
+                                            <h2 className="text-2xl font-bold text-gray-900">{event.title}</h2>
+                                            <p className="text-gray-700 text-sm mt-1">
+                                                <CalendarDaysIcon className="inline-block w-4 h-4 mr-1" />
+                                                {new Date(event.event_date).toLocaleString('fr-FR', {
+                                                    day: '2-digit',
+                                                    month: '2-digit',
+                                                    year: 'numeric',
+                                                    hour: '2-digit',
+                                                    minute: '2-digit'
+                                                })}
+                                                <span className="ml-4">
+                                                    <MapPinIcon className="inline-block w-4 h-4 mr-1" /> {event.location}
+                                                </span>
+                                            </p>
+                                            <p className="text-gray-700 mt-2">
+                                                Inscrits: {event.registered_count} / {event.available_seats}
+                                            </p>
+                                        </div>
+                                        <IconButton
+                                            onClick={(e) => { 
+                                                e.stopPropagation(); 
+                                                toggleEventExpansion(event.id); 
+                                            }}
+                                            aria-expanded={expandedEventId === event.id}
+                                            aria-controls={`participants-table-${event.id}`}
+                                            title="Voir les participants"
+                                        >
+                                            <ChevronDownIcon className={`w-6 h-6 text-gray-800 transition-transform duration-500 ${isExpanded ? 'rotate-180' : ''}`}/>
+                                        </IconButton>
+                                    </div>
+
+                                    {/* Zone extensible pour les participants */}
+                                    <div className={`overflow-hidden transition-all duration-700 ease-in-out ${isExpanded ? 'max-h-[800px] opacity-100 mt-6' : 'max-h-0 opacity-0 mt-0'}`}>
+                                        {isExpanded && (
+                                            <div id={`participants-table-${event.id}`}>
+                                                {loadingParticipants === event.id ? (
+                                                    <p className="text-center text-gray-700">Chargement des participants...</p>
+                                                ) : participants[event.id]?.length === 0 ? (
+                                                    <p className="text-center text-gray-700">Aucun participant inscrit pour cet événement.</p>
+                                                ) : (
+                                                    <div className="overflow-x-auto">
+                                                        <table className="min-w-full divide-y divide-gray-200 rounded-xl overflow-hidden">
+                                                            <thead className="bg-gray-50">
+                                                                <tr>
+                                                                    <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Abonné(e)</th>
+                                                                    <th className="px-1 sm:px-6 py-3 text-left text-xs hidden sm:table-cell font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                                                                    <th className="px-6 py-3 text-left text-xs hidden sm:table-cell font-medium text-gray-500 uppercase tracking-wider">Inscrit le</th>
+                                                                    <th className="px-1 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody className="bg-white divide-y divide-gray-200">
+                                                                {participants[event.id]?.map((participant) => (
+                                                                    <tr key={participant.user_id}>
+                                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{participant.first_name} {participant.last_name}</td>
+                                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm hidden sm:table-cell text-gray-500">{participant.email}</td>
+                                                                        <td className="px-6 py-4 hidden sm:table-cell whitespace-nowrap text-sm text-gray-500">
+                                                                            {new Date(participant.registered_at).toLocaleString('fr-FR', {
+                                                                                day: '2-digit',
+                                                                                month: '2-digit',
+                                                                                year: 'numeric',
+                                                                                hour: '2-digit',
+                                                                                minute: '2-digit'
+                                                                            })}
+                                                                        </td>
+                                                                        <td className="px-1 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                                            <ActionButton
+                                                                                variant="destructive"
+                                                                                onClick={(e) => {
+                                                                                    e.stopPropagation();
+                                                                                    handleUnregisterParticipant(participant.user_id, event.id, participant.first_name);
+                                                                                }}
+                                                                                isLoading={unregisteringInfo?.userId === participant.user_id && unregisteringInfo?.eventId === event.id}
+                                                                                className="max-md:p-1 md:py-2 text-sm"
+                                                                                title="Désinscrire"    
+                                                                            >                                   
+                                                                                {!unregisteringInfo && ( <TrashIcon className="max-md:size-5 size-4" /> )}
+                                                                                <span className="hidden md:inline-flex md:ml-2">{unregisteringInfo ? 'Désinscription' : 'Désinscrire'}</span>
+                                                                            </ActionButton>
+                                                                        </td>
+                                                                    </tr>
+                                                                ))}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        );
+                    })}
                 </div>
             )}
 

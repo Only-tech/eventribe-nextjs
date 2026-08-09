@@ -12,7 +12,6 @@ import ActionButton from '@/app/ui/buttons/ActionButton';
 import IconButton from '@/app/ui/buttons/IconButton';
 import Loader from '@/app/ui/animation/Loader';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import 'overlayscrollbars/styles/overlayscrollbars.css';
 import { Avatar } from '@/app/ui/Avatar';
 
 type EventManagementProps = {

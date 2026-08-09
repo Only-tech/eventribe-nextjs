@@ -89,7 +89,7 @@ export default function Footer() {
                             ))}
                         </ul>
                         <div className='flex justify-center mt-6'>
-                            <LogoButton onClick={() => router.push(`/`)} className="w-28 h-auto md:w-32 md:h-15"/>
+                            <LogoButton onClick={() => router.push(`/events`)} className="w-28 h-auto md:w-32 md:h-15"/>
                         </div>
                     </section>
                 </div>

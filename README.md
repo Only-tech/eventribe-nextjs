@@ -107,7 +107,7 @@ eventribe-nextjs/
     │   │   │   └── register/page.tsx    # Registration page
     │   │   ├── account/page.tsx         # User account page
     │   │   ├── event/[eventId]/       # Dynamic event page
-    │   │   │   ├── EventDetailsClient.tsx # Client component for details
+    │   │   │   ├── EventActions.tsx # Client component for details
     │   │   │   └── page.tsx             # Event page
     │   │   ├── events/page.tsx          # Events list
     │   │   ├── legal-mentions/page.tsx  # Legal mentions
@@ -461,7 +461,7 @@ eventribe-nextjs/
     │   │   │   └── register/page.tsx     # Page d’inscription
     │   │   ├── account/page.tsx          # Page compte utilisateur
     │   │   ├── event/[eventId]/          # Page événement dynamique
-    │   │   │   ├── EventDetailsClient.tsx # Composant client pour détails
+    │   │   │   ├── EventActions.tsx # Composant client pour détails
     │   │   │   └── page.tsx              # Page événement
     │   │   ├── events/page.tsx           # Liste des événements
     │   │   ├── legal-mentions/page.tsx   # Mentions légales

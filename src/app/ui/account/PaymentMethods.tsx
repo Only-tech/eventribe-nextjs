@@ -11,7 +11,6 @@ import { TrashIcon } from '@heroicons/react/16/solid';
 import { ChevronUpIcon } from '@heroicons/react/16/solid';
 import { PlusIcon } from '@heroicons/react/16/solid';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
-import 'overlayscrollbars/styles/overlayscrollbars.css';
 
 
 export default function PaymentMethods({ userId }: { userId: number }) {

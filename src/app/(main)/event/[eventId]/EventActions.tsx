@@ -11,14 +11,14 @@ import PaymentModal from '@/app/ui/event/PaymentModal';
 import { PaymentMethod } from '@/app/lib/definitions';
 import { PlusIcon, TrashIcon } from '@heroicons/react/16/solid';
 
-interface EventDetailsClientProps {
+interface EventActionsProps {
     event: Event;
     userId: number | undefined;
     isRegistered: boolean;
     isLoggedIn: boolean;
 }
 
-export default function EventDetailsClient({ event, userId, isRegistered: initialRegistered, isLoggedIn }: EventDetailsClientProps) {
+export default function EventActions({ event, userId, isRegistered: initialRegistered, isLoggedIn }: EventActionsProps) {
     const router = useRouter();
     const [isRegistering, setIsRegistering] = useState(false);
     const [isUnregistering, setIsUnregistering] = useState(false);

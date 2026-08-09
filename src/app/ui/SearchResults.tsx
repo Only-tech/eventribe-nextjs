@@ -7,7 +7,6 @@ import IconButton from '@/app/ui/buttons/IconButton';
 import { CalendarDaysIcon, XMarkIcon } from '@heroicons/react/16/solid';
 import { OverlayScrollbarsComponent } from 'overlayscrollbars-react';
 import type { OverlayScrollbarsComponentRef } from 'overlayscrollbars-react';
-import 'overlayscrollbars/styles/overlayscrollbars.css';
 import Loader from '@/app/ui/animation/Loader';
 
 interface SearchResultsProps {
@@ -43,6 +42,7 @@ const SearchResults = forwardRef<OverlayScrollbarsComponentRef, SearchResultsPro
                             <Link
                                 href={`/event/${event.id}`}
                                 key={event.id}
+                                onClick={onClose}
                                 className="relative w-70 h-45 rounded-xl overflow-hidden border border-gray-300/20 dark:border-white/10 hover:border-[#08568a] dark:hover:border-[#ff952a] shadow-[0_10px_15px_rgb(0,0,0,0.4)] hover:shadow-[0_10px_15px_rgb(8,86,138,0.8)] dark:hover:shadow-[0_15px_20px_rgb(0,0,0,0.8)] bg-gray-500 group transform transition-all duration-600 ease-in-out translate-y-0 hover:-translate-y-1 scale-100 hover:scale-105"
                             >
                                 <Image

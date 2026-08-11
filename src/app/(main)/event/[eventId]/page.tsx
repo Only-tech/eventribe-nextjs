@@ -49,34 +49,32 @@ async function EventDetails({ eventId }: { eventId: number }) {
                         />
                     </div>
 
-                    <div className="min-[1025px]:col-span-3 text-sm min-[1025px]:pl-6 mb-6">
-                        <h1 className="hidden min-[1025px]:flex text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-300 mb-4">{event.title}</h1>
-                        <p className="flex-wrap max-[1025px]:mt-3">
-                            <span className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2 mr-10">
-                                <CalendarDaysIcon className="inline-block w-5 h-5 mr-2" />{' '}
-                                {new Date(event.event_date).toLocaleString('fr-FR', {
-                                    day: '2-digit',
-                                    month: '2-digit',
-                                    year: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                })}{' '}
-                                GMT+2
-                            </span>
-                            <span className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2">
-                                <MapPinIcon className="inline-block w-5 h-5 mr-2" /> {event.location}
-                            </span>
+                    <div className="min-[1025px]:col-span-3 text-sm min-[1025px]:pl-6 mb-6 space-y-2">
+                        <h1 className="hidden min-[1025px]:flex text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-gray-300 pb-3">{event.title}</h1>
+                        <p className="flex items-center max-[1025px]:mt-3 text-gray-700 dark:text-white/70">
+                            <CalendarDaysIcon className="inline-block w-5 h-5 mr-2" />{' '}
+                            {new Date(event.event_date).toLocaleString('fr-FR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                            })}{' '}
+                            GMT+2
                         </p>
-                        <p className="inline-flex items-center text-gray-700 dark:text-white/70 mb-2">
-                            <UsersIcon className="inline-block w-6 h-6 mr-2" />{event.registered_count}
-                            <UserGroupIcon className="size-8 ml-8"/><strong className="text-gray-800 dark:text-gray-300 ml-2">Places disponibles &nbsp; </strong>&nbsp;  {event.available_seats}
+                        <p className="flex items-center text-gray-700 dark:text-white/70">
+                            <MapPinIcon className="inline-block w-5 h-5 mr-2" /> {event.location}
                         </p>
-                        <p className="inline-flex items-center text-gray-700 dark:text-white/70 mb-5">
+                        <p className="flex items-center text-gray-700 dark:text-white/70">
+                            <UserGroupIcon className="size-8"/><strong className="text-gray-800 dark:text-gray-300 ml-2">Places disponibles &nbsp; </strong>&nbsp;  {event.available_seats}
+                            <UsersIcon className="inline-block w-6 h-6  ml-8 mr-2" />{event.registered_count}
+                        </p>
+                        <p className="inline-flex items-center text-gray-700 dark:text-white/70">
                             <BanknotesIcon className="size-8 mr-3"/>
                             <strong>Pass </strong> &nbsp;&nbsp; {event.price > 0 ? `${event.price} €` : "Gratuit"}
                         </p>
                     
-                        <p className="text-justify text-gray-700 dark:text-white/70 leading-relaxed whitespace-pre-line">
+                        <p className="text-justify text-gray-700 dark:text-white/70 leading-relaxed whitespace-pre-line pt-3">
                             {event.description_long}
                         </p>
                     </div>

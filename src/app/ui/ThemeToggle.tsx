@@ -28,7 +28,7 @@ export function ThemeToggle() {
     return (
         <label
             htmlFor="themeToggle"
-            className="absolute right-16 bottom-3 inline-flex items-center cursor-pointer rounded-full"
+            className="absolute right-22 bottom-3 inline-flex items-center cursor-pointer rounded-full"
             title="Changer le thème"
         >
             <input

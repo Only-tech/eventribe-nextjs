@@ -291,7 +291,7 @@ export default function Header() {
                     <div className="min-[1025px]:hidden flex items-center gap-3 pb-3 px-4 border-b border-gray-200 dark:border-white/10">
                         <Avatar src={session?.user?.image} alt={`${session?.user.firstName} ${session?.user.lastName}`.trim() || "Utilisateur"} className="size-12 text-2xl ring-1 ring-gray-300 dark:ring-white/40" />
                         <span className="flex flex-col">
-                            <span className="font-semibold">{session?.user.name}</span>
+                            <span className="font-semibold">{session ? `${session.user.firstName} ${session.user.lastName}` : "Invité"}</span>
                             <span className="text-sm text-gray-500">{session?.user.email}</span>
                         </span>
                     </div>
@@ -365,20 +365,28 @@ export default function Header() {
                         )}
 
                     </ul>
-                    <div className="min-[1025px]:hidden py-2 px-4 border-t border-gray-200 dark:border-white/10">
+                    <ul className="py-2 px-4 min-[1025px]:pl-6 max-[1025px]:border-t border-gray-200 dark:border-white/10 text-base xl:text-lg font-medium">
                         {session ? (
-                            <button onClick={handleSignOut} className="flex items-center gap-3 w-full text-left p-2 rounded-md text-red-600 dark:text-red-400 hover:bg-red-900/20 text-base min-[1025px]:text-sm">
+                            <button onClick={handleSignOut} className="min-[1025px]:hidden flex items-center gap-3 w-full text-left p-2 rounded-md text-red-600 dark:text-red-400 hover:bg-red-900/20 text-base min-[1025px]:text-sm">
                                 <LogoutLogo />
                                 <span>Se Déconnecter</span>
                             </button>
                         ) : (
-                            <Link href="/login" onClick={closeAllMenus} className="flex items-center gap-3 p-2 rounded-md min-[1025px]:rounded-full hover:bg-gray-100 dark:hover:bg-white/10 min-[1025px]:hover:bg-transparent min-[1025px]:hover:shadow-[inset_0px_2px_1px_gray]">
-                                <FingerPrintIcon className="size-5" />
-                                <span className="min-[1025px]:hidden">Se Connecter</span>
-                                <span className="hidden min-[1025px]:inline min-[1025px]:w-25 xl:w-28 text-left">{animatedAuthText}<span className="animate-pulse">|</span></span>
+                            <Link 
+                                href='/login' 
+                                className={`w-full inline-flex whitespace-nowrap items-center gap-2 transition-all ease-in-out duration-600 dark:hover:text-[#ff952aff] p-2 rounded-md min-[1025px]:rounded-full hover:bg-gray-100 dark:hover:bg-white/10 min-[1025px]:hover:bg-transparent min-[1025px]:hover:shadow-[inset_0px_2px_1px_gray] ${
+                                    (pathname === '/login') ? ' min-[1025px]:shadow-[inset_0px_2px_1px_#101828]  dark:min-[1025px]:shadow-[inset_0px_2px_1px_#ff952aff] bg-blue-50 dark:bg-white/5 min-[1025px]:bg-transparent' : ''
+                                }`}
+                                onClick={closeAllMenus} 
+                            >
+                                <FingerPrintIcon className="inline-block size-5" />
+                                <span className="w-25 xl:w-28 text-left">
+                                    {animatedAuthText}
+                                    <span className="animate-pulse">|</span>
+                                </span>
                             </Link>
                         )}
-                    </div>
+                    </ul>
                 </nav>
             </header>
         </>
